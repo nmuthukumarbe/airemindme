@@ -10,6 +10,5 @@ import com.server.realsync.entity.Account;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 	
-	List<Account> findByRefAccId(Integer refAccId);
 	
 }

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Admin - Reminder Me</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    .plan-card { transition: all 0.2s; }
+    .plan-card.selected { border-color: #4f46e5 !important; background: #eef2ff; }
+    .nav-item { transition: all 0.15s; }
+    .nav-item.active { background: #4f46e5 !important; color: white !important; }
+    .nav-item.active span { color: white !important; }
+    .nav-item.active svg { color: white !important; }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- ===== SIDEBAR (Desktop) ===== -->
+  <div class="hidden md:flex fixed left-0 top-0 h-screen w-56 bg-slate-900 flex-col z-30">
+    <div class="px-4 pt-5 pb-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-indigo-500 flex items-center justify-center shadow-sm">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        </div>
+        <div>
+          <p class="text-sm font-bold text-white leading-none">Reminder Me</p>
+          <p class="text-[10px] text-slate-400 mt-0.5">Super Admin</p>
+        </div>
+      </div>
+    </div>
+    <nav class="flex-1 px-3 py-2 overflow-y-auto space-y-0.5">
+      <a href="#" onclick="switchSA('dashboard',this)" class="nav-item active flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-400 mb-0.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span class="text-sm font-medium">Dashboard</span>
+      </a>
+      <a href="#" onclick="switchSA('businesses',this)" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 mb-0.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        <span class="text-sm font-medium">Businesses</span>
+      </a>
+      <a href="#" onclick="switchSA('analytics',this)" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 mb-0.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <span class="text-sm font-medium">Analytics</span>
+      </a>
+      <a href="#" onclick="switchSA('settings',this)" class="nav-item flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800 mb-0.5">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="text-sm font-medium">Settings</span>
+      </a>
+    </nav>
+    <div class="px-3 py-3 border-t border-slate-800">
+      <div class="flex items-center gap-2.5 px-2 py-1.5">
+        <div class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center flex-shrink-0"><span class="text-white text-xs font-bold">S</span></div>
+        <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-white truncate leading-none">Super Admin</p><p class="text-[10px] text-slate-400 truncate mt-0.5">admin@reminderme.app</p></div>
+      </div>
+      <button onclick="window.location.href='super-admin-login.html'" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-slate-400 hover:bg-red-900/30 hover:text-red-400 mt-1 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        <span class="text-sm font-medium">Sign Out</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== MOBILE HEADER ===== -->
+  <div class="md:hidden fixed top-0 left-0 right-0 bg-slate-900 border-b border-slate-800 z-40 h-14 flex items-center justify-between px-4 shadow-sm">
+    <button onclick="openMobileNav()" class="w-9 h-9 flex items-center justify-center rounded-xl text-slate-400 hover:bg-slate-800 transition">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-lg bg-indigo-500 flex items-center justify-center shadow-sm"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
+      <span class="text-sm font-bold text-white">Reminder Me</span>
+      <span class="text-[10px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded font-medium">Admin</span>
+    </div>
+    <button onclick="window.location.href='super-admin-login.html'" class="w-9 h-9 flex items-center justify-center rounded-xl text-slate-400 hover:bg-red-900 hover:text-red-400 transition">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+    </button>
+  </div>
+
+  <!-- Mobile Nav Drawer Overlay -->
+  <div id="mobileNavBg" class="md:hidden hidden fixed inset-0 bg-black/60 z-[45] backdrop-blur-sm" onclick="closeMobileNav()"></div>
+  <div id="mobileNavDrawer" class="md:hidden fixed top-0 left-0 h-screen w-72 bg-slate-900 z-[46] shadow-2xl flex flex-col transition-transform duration-300" style="transform:translateX(-100%)">
+    <div class="px-4 pt-5 pb-3 border-b border-slate-800 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-indigo-500 flex items-center justify-center shadow-sm"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
+        <div><p class="text-sm font-bold text-white leading-none">Reminder Me</p><p class="text-[10px] text-slate-400 mt-0.5">Super Admin Panel</p></div>
+      </div>
+      <button onclick="closeMobileNav()" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-slate-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <nav class="flex-1 px-3 py-3 overflow-y-auto space-y-0.5">
+      <a href="#" onclick="closeMobileNav();switchSA('dashboard')" id="mob-dashboard" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span class="text-sm font-semibold">Dashboard</span>
+      </a>
+      <a href="#" onclick="closeMobileNav();switchSA('businesses')" id="mob-businesses" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        <span class="text-sm font-semibold">Businesses</span>
+      </a>
+      <a href="#" onclick="closeMobileNav();switchSA('analytics')" id="mob-analytics" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        <span class="text-sm font-semibold">Analytics</span>
+      </a>
+      <a href="#" onclick="closeMobileNav();switchSA('settings')" id="mob-settings" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-400 hover:bg-slate-800">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="text-sm font-semibold">Settings</span>
+      </a>
+    </nav>
+    <div class="px-3 py-3 border-t border-slate-800 flex-shrink-0">
+      <div class="flex items-center gap-2.5 px-2 py-1.5"><div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span class="text-white text-xs font-bold">SA</span></div><div class="flex-1 min-w-0"><p class="text-sm font-semibold text-white truncate leading-none">Super Admin</p><p class="text-[10px] text-slate-400 truncate mt-0.5">admin@reminderme.app</p></div></div>
+      <button onclick="window.location.href='super-admin-login.html'" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-slate-400 hover:bg-red-900 hover:text-red-400 mt-1 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg><span class="text-sm font-medium">Sign Out</span></button>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="md:ml-56 min-h-screen pt-14 md:pt-0 pb-24 md:pb-0">
+
+    <!-- Top Sub-Header -->
+    <div class="bg-white border-b border-gray-100 px-4 md:px-6 py-4 flex items-center justify-between sticky top-14 md:top-0 z-20">
+      <div>
+        <p class="text-xs text-gray-400 mb-1">Super Admin / <span class="text-gray-700" id="breadcrumb">Dashboard</span></p>
+        <h1 class="text-xl font-bold text-gray-900" id="pageTitle">Super Admin Dashboard</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="openOnboard()" class="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition shadow-sm">
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span class="hidden sm:inline">Onboard Business</span>
+          <span class="sm:hidden">Onboard</span>
+        </button>
+        <div class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0"><span class="text-white text-sm font-bold">S</span></div>
+      </div>
+    </div>
+
+    <!-- ===== DASHBOARD PANEL ===== -->
+    <div id="sa-dashboard" class="px-4 md:px-6 py-5">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4"><div class="flex items-center justify-between mb-3"><div class="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg></div><span class="text-xs text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full font-medium">+3 this week</span></div><p class="text-2xl font-bold text-gray-900">24</p><p class="text-xs text-gray-500 mt-0.5">Businesses</p></div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4"><div class="flex items-center justify-between mb-3"><div class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg></div><span class="text-xs text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full font-medium">+12%</span></div><p class="text-2xl font-bold text-gray-900">1,847</p><p class="text-xs text-gray-500 mt-0.5">Total Customers</p></div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4"><div class="flex items-center justify-between mb-3"><div class="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center"><svg class="w-4 h-4 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></div><span class="text-xs text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full font-medium">+8%</span></div><p class="text-2xl font-bold text-gray-900">12,450</p><p class="text-xs text-gray-500 mt-0.5">Messages Sent</p></div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4"><div class="flex items-center justify-between mb-3"><div class="w-9 h-9 rounded-xl bg-orange-50 flex items-center justify-center"><svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><span class="text-xs text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full font-medium">+22%</span></div><p class="text-2xl font-bold text-gray-900">₹1.2L</p><p class="text-xs text-gray-500 mt-0.5">Revenue (MRR)</p></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-5">
+        <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div class="flex items-center justify-between mb-4"><div><h3 class="text-sm font-semibold text-gray-900">Platform Message Activity</h3><p class="text-xs text-gray-400">Messages sent across all businesses this week</p></div></div>
+          <div style="position:relative;height:180px;width:100%"><canvas id="saChart"></canvas></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <h3 class="text-sm font-semibold text-gray-900 mb-4">Plan Distribution</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-indigo-500"></div><span class="text-sm text-gray-700">Professional</span></div><div class="flex items-center gap-2"><div class="flex-1 w-24 h-2 bg-gray-100 rounded-full"><div class="h-2 bg-indigo-500 rounded-full" style="width:60%"></div></div><span class="text-xs text-gray-500 w-6">14</span></div></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div><span class="text-sm text-gray-700">Starter</span></div><div class="flex items-center gap-2"><div class="flex-1 w-24 h-2 bg-gray-100 rounded-full"><div class="h-2 bg-emerald-500 rounded-full" style="width:35%"></div></div><span class="text-xs text-gray-500 w-6">7</span></div></div>
+            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-2.5 h-2.5 rounded-full bg-orange-400"></div><span class="text-sm text-gray-700">Enterprise</span></div><div class="flex items-center gap-2"><div class="flex-1 w-24 h-2 bg-gray-100 rounded-full"><div class="h-2 bg-orange-400 rounded-full" style="width:15%"></div></div><span class="text-xs text-gray-500 w-6">3</span></div></div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-gray-50">
+            <h4 class="text-xs font-semibold text-gray-500 mb-3">Pending Actions</h4>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-orange-50 border border-orange-100"><span class="text-xs text-orange-700 font-medium">2 pending approvals</span><button onclick="switchSA('businesses')" class="text-xs text-orange-600 font-semibold hover:underline">Review</button></div>
+              <div class="flex items-center justify-between px-3 py-2 rounded-xl bg-blue-50 border border-blue-100"><span class="text-xs text-blue-700 font-medium">5 support tickets</span><button class="text-xs text-blue-600 font-semibold hover:underline">View</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Businesses Table -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-5 pt-4 pb-3">
+          <h3 class="text-sm font-semibold text-gray-900">Recent Businesses</h3>
+          <button onclick="switchSA('businesses')" class="text-xs text-indigo-600 font-medium hover:text-indigo-700 flex items-center gap-1">View all <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead><tr class="bg-gray-50 border-y border-gray-100"><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500">Business</th><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500 hidden md:table-cell">Industry</th><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500 hidden md:table-cell">Plan</th><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500">Status</th><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500 hidden lg:table-cell">Customers</th><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500 hidden lg:table-cell">Joined</th><th class="px-5 py-2.5"></th></tr></thead>
+            <tbody class="divide-y divide-gray-50" id="bizTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BUSINESSES PANEL ===== -->
+    <div id="sa-businesses" class="hidden px-4 md:px-6 py-5">
+      <div class="flex flex-wrap items-center gap-3 mb-5">
+        <div class="relative flex-1 min-w-[200px]">
+          <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input type="text" placeholder="Search businesses..." oninput="filterBiz(this.value)" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div class="flex gap-2">
+          <button onclick="setBizFilter('all')" id="bf-all" class="px-3.5 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium">All</button>
+          <button onclick="setBizFilter('active')" id="bf-active" class="px-3.5 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50">Active</button>
+          <button onclick="setBizFilter('pending')" id="bf-pending" class="px-3.5 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50">Pending</button>
+        </div>
+        <button onclick="openOnboard()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>Onboard
+        </button>
+      </div>
+      <div id="bizGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-5"></div>
+      <div class="flex items-center justify-between">
+        <p class="text-sm text-gray-500">Showing 1–6 of 24</p>
+        <div class="flex items-center gap-1">
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-400 opacity-50"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-medium">1</button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 text-sm hover:bg-gray-50">2</button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 text-sm hover:bg-gray-50">3</button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BUSINESS DETAIL PANEL ===== -->
+    <div id="sa-bizdetail" class="hidden px-4 md:px-6 py-5">
+      <div class="mb-4">
+        <button onclick="switchSA('businesses')" class="flex items-center gap-2 text-sm text-indigo-600 font-medium hover:text-indigo-700 mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          Back to Businesses
+        </button>
+      </div>
+      <div id="bizDetailContent"></div>
+    </div>
+
+    <!-- ===== ANALYTICS PANEL ===== -->
+    <div id="sa-analytics" class="hidden px-4 md:px-6 py-5">
+      <!-- KPI Row -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+          <p class="text-xs text-gray-500 mb-1">Total MRR</p>
+          <p class="text-2xl font-bold text-gray-900">₹1.24L</p>
+          <div class="flex items-center gap-1 mt-1"><svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg><span class="text-xs text-emerald-600 font-medium">+22% vs last month</span></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+          <p class="text-xs text-gray-500 mb-1">ARR</p>
+          <p class="text-2xl font-bold text-gray-900">₹14.9L</p>
+          <div class="flex items-center gap-1 mt-1"><svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg><span class="text-xs text-emerald-600 font-medium">+18% YoY</span></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+          <p class="text-xs text-gray-500 mb-1">Avg Revenue / Business</p>
+          <p class="text-2xl font-bold text-gray-900">₹5,167</p>
+          <div class="flex items-center gap-1 mt-1"><svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg><span class="text-xs text-emerald-600 font-medium">+7% vs last month</span></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+          <p class="text-xs text-gray-500 mb-1">Churn Rate</p>
+          <p class="text-2xl font-bold text-gray-900">2.1%</p>
+          <div class="flex items-center gap-1 mt-1"><svg class="w-3 h-3 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"/></svg><span class="text-xs text-red-500 font-medium">+0.3% vs last month</span></div>
+        </div>
+      </div>
+
+      <!-- Revenue & Businesses Chart Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div><h3 class="text-sm font-semibold text-gray-900">Monthly Revenue (₹)</h3><p class="text-xs text-gray-400">Last 6 months</p></div>
+            <span class="text-xs text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full font-medium">+22% MoM</span>
+          </div>
+          <div style="position:relative;height:200px;width:100%"><canvas id="revenueChart"></canvas></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div class="flex items-center justify-between mb-4">
+            <div><h3 class="text-sm font-semibold text-gray-900">New Business Signups</h3><p class="text-xs text-gray-400">Last 6 months</p></div>
+          </div>
+          <div style="position:relative;height:200px;width:100%"><canvas id="signupChart"></canvas></div>
+        </div>
+      </div>
+
+      <!-- Message Delivery Stats -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-6">
+        <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div class="flex items-center justify-between mb-4"><h3 class="text-sm font-semibold text-gray-900">Message Volume by Channel</h3><p class="text-xs text-gray-400">This month</p></div>
+          <div style="position:relative;height:200px;width:100%"><canvas id="channelChart"></canvas></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <h3 class="text-sm font-semibold text-gray-900 mb-4">Delivery Performance</h3>
+          <div class="space-y-4">
+            <div>
+              <div class="flex items-center justify-between mb-1"><span class="text-xs text-gray-600">WhatsApp Delivery</span><span class="text-xs font-semibold text-emerald-600">97.2%</span></div>
+              <div class="w-full h-2 bg-gray-100 rounded-full"><div class="h-2 bg-emerald-500 rounded-full" style="width:97.2%"></div></div>
+            </div>
+            <div>
+              <div class="flex items-center justify-between mb-1"><span class="text-xs text-gray-600">SMS Delivery</span><span class="text-xs font-semibold text-blue-600">94.8%</span></div>
+              <div class="w-full h-2 bg-gray-100 rounded-full"><div class="h-2 bg-blue-500 rounded-full" style="width:94.8%"></div></div>
+            </div>
+            <div>
+              <div class="flex items-center justify-between mb-1"><span class="text-xs text-gray-600">Email Open Rate</span><span class="text-xs font-semibold text-violet-600">38.1%</span></div>
+              <div class="w-full h-2 bg-gray-100 rounded-full"><div class="h-2 bg-violet-500 rounded-full" style="width:38.1%"></div></div>
+            </div>
+            <div>
+              <div class="flex items-center justify-between mb-1"><span class="text-xs text-gray-600">Email Click Rate</span><span class="text-xs font-semibold text-orange-500">12.4%</span></div>
+              <div class="w-full h-2 bg-gray-100 rounded-full"><div class="h-2 bg-orange-400 rounded-full" style="width:12.4%"></div></div>
+            </div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-gray-50">
+            <div class="grid grid-cols-2 gap-3">
+              <div class="text-center"><p class="text-xl font-bold text-gray-900">12,450</p><p class="text-[10px] text-gray-400">Total Messages</p></div>
+              <div class="text-center"><p class="text-xl font-bold text-gray-900">98.5%</p><p class="text-[10px] text-gray-400">Uptime</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Businesses by Revenue -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-5 pt-4 pb-3">
+          <h3 class="text-sm font-semibold text-gray-900">Top Businesses by Revenue</h3>
+          <span class="text-xs text-gray-400">This month</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead><tr class="bg-gray-50 border-y border-gray-100"><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500">Business</th><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500">Plan</th><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500">MRR</th><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500 hidden md:table-cell">Messages</th><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500 hidden md:table-cell">Customers</th><th class="text-left px-5 py-2.5 text-xs font-semibold text-gray-500">Growth</th></tr></thead>
+            <tbody class="divide-y divide-gray-50">
+              <tr class="hover:bg-gray-50"><td class="px-5 py-3"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center font-bold text-indigo-700 text-xs">A</div><span class="text-sm font-semibold text-gray-900">Acme Financial</span></div></td><td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-indigo-100 text-indigo-700">Professional</span></td><td class="px-5 py-3"><span class="text-sm font-semibold text-gray-900">₹2,499</span></td><td class="px-5 py-3 hidden md:table-cell"><span class="text-sm text-gray-600">2,340</span></td><td class="px-5 py-3 hidden md:table-cell"><span class="text-sm text-gray-600">247</span></td><td class="px-5 py-3"><span class="text-xs text-emerald-600 font-medium">+18%</span></td></tr>
+              <tr class="hover:bg-gray-50"><td class="px-5 py-3"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-rose-100 flex items-center justify-center font-bold text-rose-700 text-xs">T</div><span class="text-sm font-semibold text-gray-900">TechCare Solutions</span></div></td><td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-purple-100 text-purple-700">Enterprise</span></td><td class="px-5 py-3"><span class="text-sm font-semibold text-gray-900">Custom</span></td><td class="px-5 py-3 hidden md:table-cell"><span class="text-sm text-gray-600">5,120</span></td><td class="px-5 py-3 hidden md:table-cell"><span class="text-sm text-gray-600">512</span></td><td class="px-5 py-3"><span class="text-xs text-emerald-600 font-medium">+31%</span></td></tr>
+              <tr class="hover:bg-gray-50"><td class="px-5 py-3"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center font-bold text-emerald-700 text-xs">P</div><span class="text-sm font-semibold text-gray-900">PureWealth Invest.</span></div></td><td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-indigo-100 text-indigo-700">Professional</span></td><td class="px-5 py-3"><span class="text-sm font-semibold text-gray-900">₹2,499</span></td><td class="px-5 py-3 hidden md:table-cell"><span class="text-sm text-gray-600">1,850</span></td><td class="px-5 py-3 hidden md:table-cell"><span class="text-sm text-gray-600">183</span></td><td class="px-5 py-3"><span class="text-xs text-emerald-600 font-medium">+12%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS PANEL ===== -->
+    <div id="sa-settings" class="hidden px-4 md:px-6 py-5 max-w-3xl">
+      <!-- Profile Section -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+        <h3 class="text-sm font-bold text-gray-900 mb-4">Profile Information</h3>
+        <div class="flex items-center gap-4 mb-5">
+          <div class="w-16 h-16 rounded-2xl bg-indigo-600 flex items-center justify-center flex-shrink-0"><span class="text-white text-xl font-bold">SA</span></div>
+          <div>
+            <p class="text-sm font-semibold text-gray-900">Super Admin</p>
+            <p class="text-xs text-gray-400">admin@reminderme.app</p>
+            <button class="mt-1.5 text-xs text-indigo-600 font-medium hover:text-indigo-700">Change avatar</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div><label class="text-xs font-semibold text-gray-600 mb-1.5 block">Full Name</label><input type="text" value="Super Admin" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+          <div><label class="text-xs font-semibold text-gray-600 mb-1.5 block">Email Address</label><input type="email" value="admin@reminderme.app" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+          <div><label class="text-xs font-semibold text-gray-600 mb-1.5 block">Phone Number</label><input type="tel" value="+91 98765 00001" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+          <div><label class="text-xs font-semibold text-gray-600 mb-1.5 block">Timezone</label><select class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"><option>Asia/Kolkata (IST)</option><option>UTC</option><option>America/New_York</option></select></div>
+        </div>
+        <button onclick="alert('Profile saved!')" class="mt-4 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition">Save Changes</button>
+      </div>
+
+      <!-- Password Section -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+        <h3 class="text-sm font-bold text-gray-900 mb-4">Change Password</h3>
+        <div class="space-y-3">
+          <div><label class="text-xs font-semibold text-gray-600 mb-1.5 block">Current Password</label><input type="password" placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+          <div><label class="text-xs font-semibold text-gray-600 mb-1.5 block">New Password</label><input type="password" placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+          <div><label class="text-xs font-semibold text-gray-600 mb-1.5 block">Confirm New Password</label><input type="password" placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+        </div>
+        <div class="flex items-center gap-3 mt-4">
+          <button onclick="alert('Password updated!')" class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition">Update Password</button>
+          <button onclick="alert('Reset link sent!')" class="px-5 py-2.5 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition">Send Reset Link</button>
+        </div>
+      </div>
+
+      <!-- 2FA Section -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-sm font-bold text-gray-900">Two-Factor Authentication</h3>
+            <p class="text-xs text-gray-400 mt-0.5">Add an extra layer of security to your admin account</p>
+          </div>
+          <button onclick="this.textContent=this.textContent==='Enable'?'Disable':'Enable'" class="px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-semibold hover:bg-emerald-100 transition">Enable</button>
+        </div>
+      </div>
+
+      <!-- Notification Preferences -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+        <h3 class="text-sm font-bold text-gray-900 mb-4">Notification Preferences</h3>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between py-2 border-b border-gray-50"><div><p class="text-sm font-medium text-gray-900">New Business Registrations</p><p class="text-xs text-gray-400">Get notified when a new business signs up</p></div><input type="checkbox" checked class="w-4 h-4 rounded accent-indigo-600"></div>
+          <div class="flex items-center justify-between py-2 border-b border-gray-50"><div><p class="text-sm font-medium text-gray-900">Pending Approvals</p><p class="text-xs text-gray-400">Alert when businesses are pending approval</p></div><input type="checkbox" checked class="w-4 h-4 rounded accent-indigo-600"></div>
+          <div class="flex items-center justify-between py-2 border-b border-gray-50"><div><p class="text-sm font-medium text-gray-900">Revenue Milestones</p><p class="text-xs text-gray-400">Notify on MRR milestones</p></div><input type="checkbox" checked class="w-4 h-4 rounded accent-indigo-600"></div>
+          <div class="flex items-center justify-between py-2"><div><p class="text-sm font-medium text-gray-900">System Alerts</p><p class="text-xs text-gray-400">Critical system issues and downtime alerts</p></div><input type="checkbox" checked class="w-4 h-4 rounded accent-indigo-600"></div>
+        </div>
+        <button onclick="alert('Preferences saved!')" class="mt-4 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition">Save Preferences</button>
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="bg-white rounded-2xl border border-red-100 shadow-sm p-5">
+        <h3 class="text-sm font-bold text-red-600 mb-3">Danger Zone</h3>
+        <div class="flex items-center justify-between p-3 rounded-xl bg-red-50 border border-red-100">
+          <div><p class="text-sm font-medium text-gray-900">Sign out all sessions</p><p class="text-xs text-gray-400">Revoke all active admin sessions immediately</p></div>
+          <button onclick="alert('All sessions revoked!')" class="px-4 py-2 rounded-xl bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition">Sign Out All</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /Main -->
+
+  <!-- ===== MOBILE BOTTOM NAV ===== -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 px-1 pb-2 pt-1 flex items-end justify-around z-30">
+    <a href="#" onclick="switchSA('dashboard')" class="flex flex-col items-center gap-0.5 text-indigo-400 px-2 py-1 mob-nav-item active" data-panel="dashboard"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-[10px] font-medium">Dashboard</span></a>
+    <a href="#" onclick="switchSA('businesses')" class="flex flex-col items-center gap-0.5 text-slate-400 px-2 py-1 mob-nav-item" data-panel="businesses"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg><span class="text-[10px] font-medium">Businesses</span></a>
+    <div class="relative flex flex-col items-center" style="margin-bottom:8px">
+      <button onclick="openOnboard()" class="w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-900 -mt-5 transition-transform active:scale-95">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      </button>
+      <span class="text-[10px] font-medium text-indigo-400 mt-0.5">Onboard</span>
+    </div>
+    <a href="#" onclick="switchSA('analytics')" class="flex flex-col items-center gap-0.5 text-slate-400 px-2 py-1 mob-nav-item" data-panel="analytics"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg><span class="text-[10px] font-medium">Analytics</span></a>
+    <a href="#" onclick="switchSA('settings')" class="flex flex-col items-center gap-0.5 text-slate-400 px-2 py-1 mob-nav-item" data-panel="settings"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-[10px] font-medium">Settings</span></a>
+  </div>
+
+  <!-- ===== ONBOARD BUSINESS MODAL (3-step stepper) ===== -->
+  <div id="onboardModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeOnboard()"></div>
+    <div class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg max-h-[95vh] overflow-y-auto shadow-2xl">
+      <div class="flex justify-center pt-3 pb-1 md:hidden"><div class="w-10 h-1 rounded-full bg-gray-200"></div></div>
+
+      <!-- Modal Logo + Close -->
+      <div class="flex items-center justify-between px-5 pt-3 pb-2">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
+          <span class="text-sm font-bold text-gray-900">Onboard Business</span>
+        </div>
+        <button onclick="closeOnboard()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+
+      <!-- Stepper -->
+      <div class="flex items-center px-5 pb-4">
+        <div class="flex items-center flex-1">
+          <div class="flex flex-col items-center">
+            <div id="ob-dot1" class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">1</div>
+            <span class="text-[10px] font-semibold text-indigo-600 mt-1 whitespace-nowrap">Business Info</span>
+          </div>
+          <div id="ob-line1" class="flex-1 h-0.5 bg-gray-200 mx-1 mb-4"></div>
+          <div class="flex flex-col items-center">
+            <div id="ob-dot2" class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs font-bold">2</div>
+            <span id="ob-label2" class="text-[10px] font-medium text-gray-400 mt-1 whitespace-nowrap">Location & Plan</span>
+          </div>
+          <div id="ob-line2" class="flex-1 h-0.5 bg-gray-200 mx-1 mb-4"></div>
+          <div class="flex flex-col items-center">
+            <div id="ob-dot3" class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs font-bold">3</div>
+            <span id="ob-label3" class="text-[10px] font-medium text-gray-400 mt-1">Confirm</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-5 pb-6">
+        <!-- OB Step 1: Business Info -->
+        <div id="ob-step1" class="flex flex-col gap-4">
+          <div class="mb-1"><h3 class="text-lg font-bold text-gray-900">Business Details</h3><p class="text-sm text-gray-400">Tell us about the business</p></div>
+          <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Business Name <span class="text-red-500">*</span></label><input type="text" id="obName" placeholder="Acme Financial Services" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"></div>
+          <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Industry</label><div class="relative"><select class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none bg-white"><option>Financial Services</option><option>Insurance</option><option>Real Estate</option><option>Healthcare</option><option>Education</option><option>Retail</option><option>Technology</option></select><svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div></div>
+          <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Admin Name <span class="text-red-500">*</span></label><input type="text" id="obAdmin" placeholder="Arjun Sharma" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"></div>
+          <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Admin Email <span class="text-red-500">*</span></label><input type="email" id="obEmail" placeholder="arjun@acmefinancial.com" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"></div>
+          <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Phone</label><input type="tel" placeholder="+91 98765 43210" class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"></div>
+          <button onclick="goObStep(2)" class="w-full py-3.5 rounded-2xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition flex items-center justify-center gap-2">Continue <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
+        </div>
+
+        <!-- OB Step 2: Location & Plan -->
+        <div id="ob-step2" class="hidden flex flex-col gap-4">
+          <div class="mb-1"><h3 class="text-lg font-bold text-gray-900">Location & Plan</h3><p class="text-sm text-gray-400">Configure region and choose a plan</p></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Country</label><div class="relative"><select class="w-full px-3.5 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none bg-white"><option>India</option><option>UAE</option><option>USA</option><option>UK</option><option>Singapore</option></select><svg class="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div></div>
+            <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Currency</label><div class="relative"><select class="w-full px-3.5 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none bg-white"><option>INR</option><option>AED</option><option>USD</option><option>GBP</option></select><svg class="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></div></div>
+          </div>
+          <div>
+            <label class="text-sm font-medium text-gray-700 mb-2 block">Select Plan <span class="text-red-500">*</span></label>
+            <div class="space-y-2">
+              <div class="ob-plan-card plan-card border-2 border-gray-200 rounded-2xl p-3.5 cursor-pointer hover:border-indigo-300 transition" onclick="selectObPlan('starter',this)"><div class="flex items-center justify-between"><div><p class="text-sm font-bold text-gray-900">Starter</p><p class="text-xs text-gray-400">Up to 500 customers · 1,000 messages/month</p></div><p class="text-sm font-bold text-indigo-600 flex-shrink-0 ml-3">₹999<span class="text-xs font-normal text-gray-400">/mo</span></p></div></div>
+              <div class="ob-plan-card plan-card selected border-2 border-indigo-500 rounded-2xl p-3.5 cursor-pointer transition" onclick="selectObPlan('professional',this)"><div class="flex items-center justify-between"><div><div class="flex items-center gap-2"><p class="text-sm font-bold text-gray-900">Professional</p><span class="px-1.5 py-0.5 rounded-full bg-indigo-600 text-white text-[9px] font-bold">Popular</span></div><p class="text-xs text-gray-400">Up to 5,000 customers · 10,000 messages/month</p></div><p class="text-sm font-bold text-indigo-600 flex-shrink-0 ml-3">₹2,499<span class="text-xs font-normal text-gray-400">/mo</span></p></div></div>
+              <div class="ob-plan-card plan-card border-2 border-gray-200 rounded-2xl p-3.5 cursor-pointer hover:border-indigo-300 transition" onclick="selectObPlan('enterprise',this)"><div class="flex items-center justify-between"><div><p class="text-sm font-bold text-gray-900">Enterprise</p><p class="text-xs text-gray-400">Unlimited customers · Unlimited messages</p></div><p class="text-sm font-bold text-indigo-600 flex-shrink-0 ml-3">Custom</p></div></div>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="goObStep(1)" class="flex-1 py-3 rounded-2xl border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 flex items-center justify-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg> Back</button>
+            <button onclick="goObStep(3)" class="flex-1 py-3 rounded-2xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 flex items-center justify-center gap-2">Continue <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
+          </div>
+        </div>
+
+        <!-- OB Step 3: Confirm -->
+        <div id="ob-step3" class="hidden flex flex-col gap-4">
+          <div class="mb-1"><h3 class="text-lg font-bold text-gray-900">Confirm & Launch</h3><p class="text-sm text-gray-400">Review the business setup</p></div>
+          <div class="bg-gray-50 rounded-2xl overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100"><span class="text-sm text-gray-500">Business</span><span id="ob-confirm-biz" class="text-sm font-semibold text-gray-900">—</span></div>
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100"><span class="text-sm text-gray-500">Admin</span><span id="ob-confirm-admin" class="text-sm font-semibold text-gray-900">—</span></div>
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100"><span class="text-sm text-gray-500">Email</span><span id="ob-confirm-email" class="text-sm font-semibold text-gray-900">—</span></div>
+            <div class="flex items-center justify-between px-4 py-3"><span class="text-sm text-gray-500">Plan</span><span id="ob-confirm-plan" class="text-sm font-bold text-indigo-600">Professional</span></div>
+          </div>
+          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-3 flex items-start gap-2">
+            <svg class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <p class="text-sm text-emerald-700 font-medium">Login credentials will be emailed to the admin. Business will be active immediately.</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="goObStep(2)" class="flex-1 py-3 rounded-2xl border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 flex items-center justify-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18"/></svg> Back</button>
+            <button onclick="submitOnboard()" class="flex-1 py-3 rounded-2xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 flex items-center justify-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Launch!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== DATA =====
+    const businesses = [
+      { id:1, name:'Acme Financial Services', industry:'Finance', plan:'Professional', status:'active', customers:247, messages:2340, mrr:'₹2,499', joined:'1 Mar 2025', initials:'A', color:'bg-indigo-100 text-indigo-700', email:'arjun@acmefinancial.com', phone:'+91 98765 43210', country:'India', currency:'INR' },
+      { id:2, name:'PureWealth Investments', industry:'Finance', plan:'Professional', status:'active', customers:183, messages:1850, mrr:'₹2,499', joined:'5 Mar 2025', initials:'P', color:'bg-emerald-100 text-emerald-700', email:'admin@purewealth.in', phone:'+91 87654 32109', country:'India', currency:'INR' },
+      { id:3, name:'BrightStar Insurance', industry:'Insurance', plan:'Starter', status:'active', customers:94, messages:820, mrr:'₹999', joined:'10 Feb 2025', initials:'B', color:'bg-blue-100 text-blue-700', email:'info@brightstar.co', phone:'+91 76543 21098', country:'India', currency:'INR' },
+      { id:4, name:'Golden Gate Realty', industry:'Real Estate', plan:'Starter', status:'pending', customers:0, messages:0, mrr:'₹999', joined:'11 Mar 2025', initials:'G', color:'bg-yellow-100 text-yellow-700', email:'contact@goldengate.in', phone:'+91 65432 10987', country:'India', currency:'INR' },
+      { id:5, name:'TechCare Solutions', industry:'Healthcare', plan:'Enterprise', status:'active', customers:512, messages:5120, mrr:'Custom', joined:'15 Jan 2025', initials:'T', color:'bg-rose-100 text-rose-700', email:'admin@techcare.com', phone:'+91 54321 09876', country:'India', currency:'INR' },
+      { id:6, name:'Sunrise Education Hub', industry:'Education', plan:'Starter', status:'pending', customers:0, messages:0, mrr:'₹999', joined:'11 Mar 2025', initials:'S', color:'bg-orange-100 text-orange-700', email:'info@sunrise.edu', phone:'+91 43210 98765', country:'India', currency:'INR' },
+    ];
+
+    const statusBadge = { active:'bg-green-100 text-green-700', pending:'bg-orange-100 text-orange-700', suspended:'bg-red-100 text-red-700' };
+    const planBadge = { Professional:'bg-indigo-100 text-indigo-700', Starter:'bg-blue-100 text-blue-700', Enterprise:'bg-purple-100 text-purple-700' };
+
+    // ===== NAVIGATION =====
+    let currentPanel = 'dashboard';
+
+    function switchSA(panel, el) {
+      currentPanel = panel;
+      const allPanels = ['dashboard','businesses','bizdetail','analytics','settings'];
+      allPanels.forEach(p => {
+        const el = document.getElementById('sa-'+p);
+        if (el) el.classList.add('hidden');
+      });
+      document.getElementById('sa-'+panel).classList.remove('hidden');
+
+      const labels = { dashboard:'Dashboard', businesses:'Businesses', bizdetail:'Business Detail', analytics:'Analytics', settings:'Settings' };
+      const titles = { dashboard:'Super Admin Dashboard', businesses:'All Businesses', bizdetail:'Business Detail', analytics:'Analytics', settings:'Settings' };
+      document.getElementById('pageTitle').textContent = titles[panel] || panel;
+      document.getElementById('breadcrumb').textContent = labels[panel] || panel;
+
+      // Update desktop sidebar active state
+      document.querySelectorAll('.nav-item').forEach(n => {
+        n.classList.remove('active');
+        n.classList.add('text-slate-400');
+        n.classList.remove('text-white');
+      });
+      // Find matching nav item
+      const sidebarLinks = document.querySelectorAll('.nav-item');
+      sidebarLinks.forEach(link => {
+        if (link.getAttribute('onclick') && link.getAttribute('onclick').includes("'"+panel+"'")) {
+          link.classList.add('active');
+          link.classList.remove('text-slate-400');
+        }
+      });
+
+      // Mobile bottom nav
+      document.querySelectorAll('.mob-nav-item').forEach(n => {
+        if (n.dataset.panel === panel) {
+          n.classList.add('text-indigo-400');
+          n.classList.remove('text-slate-400');
+        } else {
+          n.classList.remove('text-indigo-400');
+          n.classList.add('text-slate-400');
+        }
+      });
+
+      if (panel === 'analytics') initAnalyticsCharts();
+    }
+
+    // ===== BUSINESS TABLE =====
+    function renderBizTable(list) {
+      const tbody = document.getElementById('bizTableBody');
+      tbody.innerHTML = list.map(b => `
+        <tr class="hover:bg-gray-50 transition cursor-pointer" onclick="showBizDetail(${b.id})">
+          <td class="px-5 py-3"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-xl ${b.color} flex items-center justify-center font-bold text-sm flex-shrink-0">${b.initials}</div><div><p class="text-sm font-semibold text-gray-900">${b.name}</p><p class="text-xs text-gray-400">${b.industry}</p></div></div></td>
+          <td class="px-5 py-3 hidden md:table-cell"><span class="text-sm text-gray-600">${b.industry}</span></td>
+          <td class="px-5 py-3 hidden md:table-cell"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${planBadge[b.plan]}">${b.plan}</span></td>
+          <td class="px-5 py-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusBadge[b.status]}">${b.status.charAt(0).toUpperCase()+b.status.slice(1)}</span></td>
+          <td class="px-5 py-3 hidden lg:table-cell"><span class="text-sm text-gray-600">${b.customers}</span></td>
+          <td class="px-5 py-3 hidden lg:table-cell"><span class="text-sm text-gray-400">${b.joined}</span></td>
+          <td class="px-5 py-3"><button class="text-xs text-indigo-600 font-medium hover:underline">View →</button></td>
+        </tr>`).join('');
+    }
+
+    // ===== BUSINESS GRID =====
+    function renderBizGrid(list) {
+      const g = document.getElementById('bizGrid');
+      g.innerHTML = list.map(b => `
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 hover:shadow-md transition cursor-pointer" onclick="showBizDetail(${b.id})">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-2xl ${b.color} flex items-center justify-center font-bold flex-shrink-0">${b.initials}</div>
+              <div><p class="text-sm font-bold text-gray-900">${b.name}</p><p class="text-xs text-gray-400">${b.industry}</p></div>
+            </div>
+            <div class="flex flex-col items-end gap-1">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusBadge[b.status]}">${b.status.charAt(0).toUpperCase()+b.status.slice(1)}</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${planBadge[b.plan]}">${b.plan}</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 py-3 border-t border-b border-gray-50 mb-3">
+            <div class="text-center"><p class="text-sm font-bold text-gray-900">${b.customers}</p><p class="text-[10px] text-gray-400">Customers</p></div>
+            <div class="text-center"><p class="text-sm font-bold text-gray-900">${b.messages}</p><p class="text-[10px] text-gray-400">Messages</p></div>
+            <div class="text-center"><p class="text-sm font-bold text-gray-900">${b.mrr}</p><p class="text-[10px] text-gray-400">MRR</p></div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-gray-400">Joined ${b.joined}</span>
+            <div class="flex gap-2">
+              ${b.status==='pending'?`<button class="py-1.5 px-3 rounded-xl bg-green-600 text-white text-xs hover:bg-green-700 font-medium" onclick="event.stopPropagation();alert('Business approved!')">Approve</button>`:`<button class="py-1.5 px-3 rounded-xl border border-indigo-200 text-indigo-600 text-xs hover:bg-indigo-50 font-medium" onclick="event.stopPropagation();showBizDetail(${b.id})">View Details</button>`}
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    // ===== BUSINESS DETAIL =====
+    function showBizDetail(id) {
+      const b = businesses.find(x => x.id === id);
+      if (!b) return;
+      const content = document.getElementById('bizDetailContent');
+      content.innerHTML = `
+        <div class="space-y-5">
+          <!-- Header Card -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <div class="flex items-start justify-between flex-wrap gap-3">
+              <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl ${b.color} flex items-center justify-center font-bold text-xl flex-shrink-0">${b.initials}</div>
+                <div>
+                  <h2 class="text-xl font-bold text-gray-900">${b.name}</h2>
+                  <p class="text-sm text-gray-400">${b.industry} · Joined ${b.joined}</p>
+                  <div class="flex items-center gap-2 mt-2">
+                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${statusBadge[b.status]}">${b.status.charAt(0).toUpperCase()+b.status.slice(1)}</span>
+                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${planBadge[b.plan]}">${b.plan} Plan</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex gap-2">
+                ${b.status==='pending'?`<button onclick="alert('Business approved!')" class="px-4 py-2 rounded-xl bg-green-600 text-white text-sm font-semibold hover:bg-green-700">Approve</button>`:''}
+                <button onclick="alert('Suspended!')" class="px-4 py-2 rounded-xl border border-red-200 text-red-600 text-sm font-semibold hover:bg-red-50">Suspend</button>
+                <button onclick="alert('Settings saved!')" class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-center"><p class="text-2xl font-bold text-gray-900">${b.customers}</p><p class="text-xs text-gray-500 mt-0.5">Customers</p></div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-center"><p class="text-2xl font-bold text-gray-900">${b.messages}</p><p class="text-xs text-gray-500 mt-0.5">Messages Sent</p></div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-center"><p class="text-2xl font-bold text-gray-900">${b.mrr}</p><p class="text-xs text-gray-500 mt-0.5">MRR</p></div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-center"><p class="text-2xl font-bold text-emerald-600">98%</p><p class="text-xs text-gray-500 mt-0.5">Delivery Rate</p></div>
+          </div>
+
+          <!-- Contact & Account Info -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+              <h3 class="text-sm font-bold text-gray-900 mb-4">Contact Information</h3>
+              <div class="space-y-3">
+                <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div><p class="text-xs text-gray-400">Email</p><p class="text-sm font-medium text-gray-900">${b.email}</p></div></div>
+                <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></div><div><p class="text-xs text-gray-400">Phone</p><p class="text-sm font-medium text-gray-900">${b.phone}</p></div></div>
+                <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center flex-shrink-0"><svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div><p class="text-xs text-gray-400">Country / Currency</p><p class="text-sm font-medium text-gray-900">${b.country} · ${b.currency}</p></div></div>
+              </div>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+              <h3 class="text-sm font-bold text-gray-900 mb-4">Subscription Details</h3>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between py-2 border-b border-gray-50"><span class="text-sm text-gray-500">Current Plan</span><span class="px-2.5 py-1 rounded-full text-xs font-semibold ${planBadge[b.plan]}">${b.plan}</span></div>
+                <div class="flex items-center justify-between py-2 border-b border-gray-50"><span class="text-sm text-gray-500">Billing</span><span class="text-sm font-semibold text-gray-900">Monthly</span></div>
+                <div class="flex items-center justify-between py-2 border-b border-gray-50"><span class="text-sm text-gray-500">MRR</span><span class="text-sm font-bold text-indigo-600">${b.mrr}</span></div>
+                <div class="flex items-center justify-between py-2"><span class="text-sm text-gray-500">Next Renewal</span><span class="text-sm font-medium text-gray-900">1 Apr 2025</span></div>
+              </div>
+              <div class="flex gap-2 mt-4">
+                <button onclick="alert('Plan changed!')" class="flex-1 py-2 rounded-xl border border-indigo-200 text-indigo-600 text-xs font-semibold hover:bg-indigo-50">Change Plan</button>
+                <button onclick="alert('Invoice sent!')" class="flex-1 py-2 rounded-xl border border-gray-200 text-gray-600 text-xs font-semibold hover:bg-gray-50">View Invoices</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Channel Config -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <h3 class="text-sm font-bold text-gray-900 mb-4">Active Channels</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-green-50 border border-green-100"><div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg></div><div><p class="text-xs font-semibold text-green-700">WhatsApp</p><p class="text-[10px] text-green-600">Active</p></div><div class="ml-auto w-2 h-2 rounded-full bg-green-500"></div></div>
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-blue-50 border border-blue-100"><div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></div><div><p class="text-xs font-semibold text-blue-700">SMS</p><p class="text-[10px] text-blue-600">Active</p></div><div class="ml-auto w-2 h-2 rounded-full bg-blue-500"></div></div>
+              <div class="flex items-center gap-3 p-3 rounded-xl bg-violet-50 border border-violet-100"><div class="w-8 h-8 rounded-lg bg-violet-100 flex items-center justify-center"><svg class="w-4 h-4 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div><p class="text-xs font-semibold text-violet-700">Email</p><p class="text-[10px] text-violet-600">Active</p></div><div class="ml-auto w-2 h-2 rounded-full bg-violet-500"></div></div>
+            </div>
+          </div>
+
+          <!-- Activity Timeline -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <h3 class="text-sm font-bold text-gray-900 mb-4">Recent Activity</h3>
+            <div class="space-y-3">
+              <div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></div><div class="flex-1"><p class="text-sm font-medium text-gray-900">342 messages sent</p><p class="text-xs text-gray-400">Today at 9:42 AM</p></div></div>
+              <div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg></div><div class="flex-1"><p class="text-sm font-medium text-gray-900">12 new customers added</p><p class="text-xs text-gray-400">Yesterday at 3:15 PM</p></div></div>
+              <div class="flex items-start gap-3"><div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="flex-1"><p class="text-sm font-medium text-gray-900">Plan renewed successfully</p><p class="text-xs text-gray-400">1 Mar 2025</p></div></div>
+            </div>
+          </div>
+        </div>`;
+      switchSA('bizdetail');
+    }
+
+    // ===== FILTERS =====
+    let bizFilter = 'all', bizSearch = '';
+    function filterBiz(q) { bizSearch = q.toLowerCase(); applyBizFilter(); }
+    function setBizFilter(f) {
+      bizFilter = f;
+      ['all','active','pending'].forEach(x => {
+        const b = document.getElementById('bf-'+x);
+        b.className = x===f ? 'px-3.5 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium' : 'px-3.5 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50';
+      });
+      applyBizFilter();
+    }
+    function applyBizFilter() {
+      let list = businesses;
+      if (bizFilter !== 'all') list = list.filter(b => b.status === bizFilter);
+      if (bizSearch) list = list.filter(b => b.name.toLowerCase().includes(bizSearch) || b.industry.toLowerCase().includes(bizSearch));
+      renderBizGrid(list);
+    }
+
+    // ===== MOBILE NAV =====
+    function openMobileNav() { document.getElementById('mobileNavDrawer').style.transform='translateX(0)'; document.getElementById('mobileNavBg').classList.remove('hidden'); document.body.style.overflow='hidden'; }
+    function closeMobileNav() { document.getElementById('mobileNavDrawer').style.transform='translateX(-100%)'; document.getElementById('mobileNavBg').classList.add('hidden'); document.body.style.overflow=''; }
+
+    // ===== ONBOARD MODAL =====
+    let obSelectedPlan = 'professional';
+    let obStep = 1;
+
+    function openOnboard() { document.getElementById('onboardModal').classList.remove('hidden'); goObStep(1); }
+    function closeOnboard() { document.getElementById('onboardModal').classList.add('hidden'); }
+
+    function goObStep(s) {
+      obStep = s;
+      [1,2,3].forEach(x => document.getElementById('ob-step'+x).classList.add('hidden'));
+      document.getElementById('ob-step'+s).classList.remove('hidden');
+
+      // Update stepper dots
+      for (let i = 1; i <= 3; i++) {
+        const dot = document.getElementById('ob-dot'+i);
+        if (i < s) {
+          dot.className = 'w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-sm';
+          dot.innerHTML = '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>';
+        } else if (i === s) {
+          dot.className = 'w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-sm';
+          dot.innerHTML = i;
+        } else {
+          dot.className = 'w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-xs font-bold';
+          dot.innerHTML = i;
+        }
+      }
+      // Update lines
+      if (document.getElementById('ob-line1')) document.getElementById('ob-line1').style.background = s > 1 ? '#4f46e5' : '#e2e8f0';
+      if (document.getElementById('ob-line2')) document.getElementById('ob-line2').style.background = s > 2 ? '#4f46e5' : '#e2e8f0';
+
+      if (s === 3) {
+        document.getElementById('ob-confirm-biz').textContent = document.getElementById('obName').value || '—';
+        document.getElementById('ob-confirm-admin').textContent = document.getElementById('obAdmin').value || '—';
+        document.getElementById('ob-confirm-email').textContent = document.getElementById('obEmail').value || '—';
+        const planNames = { starter:'Starter', professional:'Professional', enterprise:'Enterprise' };
+        document.getElementById('ob-confirm-plan').textContent = planNames[obSelectedPlan];
+      }
+    }
+
+    function selectObPlan(plan, el) {
+      obSelectedPlan = plan;
+      document.querySelectorAll('.ob-plan-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function submitOnboard() {
+      closeOnboard();
+      setTimeout(() => alert('✅ Business onboarded successfully! Login credentials have been emailed to the admin.'), 200);
+    }
+
+    // ===== MAIN CHART =====
+    let dashChartInited = false;
+    function initDashChart() {
+      if (dashChartInited) return;
+      dashChartInited = true;
+      const ctx = document.getElementById('saChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{ label: 'Messages', data: [1820, 2340, 1960, 2780, 2450, 2100, 1640], backgroundColor: '#4f46e5', borderRadius: 6 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { color: '#94a3b8', font: { size: 10 } } }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } } } }
+      });
+    }
+
+    // ===== ANALYTICS CHARTS =====
+    let analyticsInited = false;
+    function initAnalyticsCharts() {
+      if (analyticsInited) return;
+      analyticsInited = true;
+
+      // Revenue chart
+      new Chart(document.getElementById('revenueChart').getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
+          datasets: [{
+            label: 'MRR (₹)',
+            data: [72000, 84000, 91000, 98000, 108000, 124000],
+            borderColor: '#4f46e5', backgroundColor: 'rgba(79,70,229,0.08)',
+            fill: true, tension: 0.4, pointRadius: 4, pointBackgroundColor: '#4f46e5'
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, grid: { color: '#f1f5f9' }, ticks: { color: '#94a3b8', font: { size: 10 }, callback: v => '₹'+Math.round(v/1000)+'K' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } } } }
+      });
+
+      // Signup chart
+      new Chart(document.getElementById('signupChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
+          datasets: [{ label: 'New Businesses', data: [2, 3, 4, 5, 7, 3], backgroundColor: '#10b981', borderRadius: 6 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { color: '#94a3b8', font: { size: 10 } } }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } } } }
+      });
+
+      // Channel chart
+      new Chart(document.getElementById('channelChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: ['WhatsApp', 'SMS', 'Email'],
+          datasets: [
+            { label: 'Sent', data: [7840, 2940, 1670], backgroundColor: ['#22c55e','#3b82f6','#8b5cf6'], borderRadius: 8 }
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { color: '#94a3b8', font: { size: 10 } } }, x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } } } }
+      });
+    }
+
+    // ===== INIT =====
+    renderBizTable(businesses);
+    renderBizGrid(businesses);
+    setTimeout(initDashChart, 100);
+  </script>
+</body>
+</html>

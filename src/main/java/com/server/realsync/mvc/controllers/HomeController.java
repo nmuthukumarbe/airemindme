@@ -58,7 +58,7 @@ public class HomeController {
 		if ("true".equals(error)) {
 			model.addAttribute("errorMessage", "Invalid username or password");
 		}
-		return "remindme/login";
+		return "remindmeui/login";
 		// return "realsync/index";
 	}
 
@@ -70,10 +70,58 @@ public class HomeController {
 		return "remindme/signup";
 	}
 
-	@GetMapping("/dashboard.html")
+	@GetMapping("/home.html")
 	public String getAdminDashboard(Model model) {
 
-		return "remindme/dashboard";
+		return "remindmeui/home";
+	}
+	
+	@GetMapping("/customers.html")
+	public String getCustomers(Model model) {
+
+		return "remindmeui/customers";
+	}
+	
+	@GetMapping("/customer-detail.html")
+	public String getCustomerDetail(Model model) {
+
+		return "remindmeui/customer-detail";
+	}
+	
+	@GetMapping("/engagement.html")
+	public String getEngagement(Model model) {
+
+		return "remindmeui/engagement";
+	}
+	
+	@GetMapping("/promotions.html")
+	public String getPromotions(Model model) {
+
+		return "remindmeui/promotions";
+	}
+	
+	@GetMapping("/reminder-detail.html")
+	public String getReminderDetail(Model model) {
+
+		return "remindmeui/reminder-detail";
+	}
+	
+	@GetMapping("/greeting-detail.html")
+	public String getGreetingDetail(Model model) {
+
+		return "remindmeui/greeting-detail";
+	}
+	
+	@GetMapping("/promo-landing.html")
+	public String getPromoLanding(Model model) {
+
+		return "remindmeui/promo-landing";
+	}
+	
+	@GetMapping("/catalog.html")
+	public String getCatalog(Model model) {
+
+		return "remindmeui/catalog.html";
 	}
 	
 	@GetMapping("/reports.html")
@@ -82,93 +130,13 @@ public class HomeController {
 		return "remindme/reports";
 	}
 
-	@GetMapping("/dashboard1.html")
-	public String getDashboard(Model model) {
-
-		User user = SecurityUtil.getLoggedInUser();
-		model.addAttribute("userRole", user.getRole().getName());
-
-		Account account = SecurityUtil.getCurrentAccountId();
-		Pageable pageable = PageRequest.of(0, 100, Sort.by("visitDate").descending());
-
-		boolean isAdminOrManager = user.getRole().getName().equalsIgnoreCase("Admin")
-				|| user.getRole().getName().equalsIgnoreCase("Manager");
-
-		String role = user.getRole().getName();
-		long leadCount;
-		long visitCount;
-
-		model.addAttribute("totalPromptCount", 0);
-		model.addAttribute("imagePromptCount", 0);
-		model.addAttribute("videoPromptCount", 0);
-
-		model.addAttribute("leadCount", 0);
-		model.addAttribute("propertyCount", 0);
-
-		return "realsync/rs/dashboard";
-	}
-
-	@GetMapping("/users.html")
-	public String getUsers(Model model) {
-
-		Account account = SecurityUtil.getCurrentAccountId();
-		//
-		model.addAttribute("userCount", userService.countByAccountId(account.getId()));
-		model.addAttribute("adminCount", userService.countByRoleId(1l));
-		model.addAttribute("sourceCount", userService.countByRoleId(2l));
-		model.addAttribute("managerCount", userService.countByRoleId(3l));
-		//
-		model.addAttribute("userList", userService.getUsersByAccountId(account.getId()));
-		//
-		User user = SecurityUtil.getLoggedInUser();
-		model.addAttribute("userRole", user.getRole().getName());
-		return "realsync/rs/users";
-	}
-
-	@GetMapping("/user-create.html")
-	public String getUserCreate(Model model, @RequestParam(required = false) Long id) {
-
-		User usr = null;
-
-		if (id != null && id > 0) {
-			Optional<User> userOpt = userService.findUserById(id);
-			if (userOpt.isPresent()) {
-				usr = userOpt.get();
-			}
-		}
-
-		model.addAttribute("user", usr != null ? usr : null);
-
-		User user = SecurityUtil.getLoggedInUser();
-		model.addAttribute("userRole", user.getRole().getName());
-		return "realsync/rs/user-create";
-	}
-
-	@GetMapping("/user-view.html")
-	public String viewUser(Model model, @RequestParam Long id) {
-		Optional<User> userOpt = userService.findUserById(id);
-
-		if (userOpt.isEmpty()) {
-			// Redirect to list page or show error
-			return "redirect:/users.html";
-		}
-
-		User usr = userOpt.get();
-		model.addAttribute("user", usr);
-
-		User user = SecurityUtil.getLoggedInUser();
-		model.addAttribute("userRole", user.getRole().getName());
-
-		return "realsync/rs/user-view";
-	}
-
 	@GetMapping("/settings.html")
 	public String getSettings(Model model) {
 
-		User user = SecurityUtil.getLoggedInUser();
-		model.addAttribute("userRole", user.getRole().getName());
-		model.addAttribute("user", user);
-		return "realsync/rs/settings";
+		//User user = SecurityUtil.getLoggedInUser();
+		//model.addAttribute("userRole", user.getRole().getName());
+		//model.addAttribute("user", user);
+		return "remindmeui/settings";
 	}
 
 	@GetMapping("index.html")

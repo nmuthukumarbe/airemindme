@@ -31,10 +31,6 @@ public class AccountService {
         repository.deleteById(id);
     }
     
-    // Method to get accounts by refAccId
-    public List<Account> getAccountsByRefAccId(Integer refAccId) {
-        return repository.findByRefAccId(refAccId);
-    }
     
     /*public void updateProfile(String username, Account account) {
     	Account accountData = repository.findById(account.getId())

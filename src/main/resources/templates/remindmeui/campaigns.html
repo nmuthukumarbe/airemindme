@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campaigns - Reminder Me</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>body { font-family: 'Inter', sans-serif; } ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:4px}</style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar -->
+  <div class="hidden md:flex fixed left-0 top-0 h-screen w-56 bg-white border-r border-gray-100 flex-col z-30">
+    <div class="px-4 pt-5 pb-3"><a href="home.html" class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><div><p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p><p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p></div></a></div>
+    <nav class="flex-1 px-3 py-2 overflow-y-auto">
+      <a href="home.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-sm font-medium">Home</span></a>
+      <a href="customers.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-sm font-medium">Customers</span></a>
+      <a href="engagement.html" class="flex items-center gap-3 px-3 py-3 rounded-xl bg-indigo-600 text-white mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-sm font-semibold">Engage</span></a>
+      <a href="promotions.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg><span class="text-sm font-medium">Promotions</span></a>
+      <a href="settings.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-medium">Settings</span></a>
+      <div class="mt-6">
+        <p class="px-3 text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-3">Quick Actions</p>
+        <a href="engagement.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><span class="text-sm">Create Reminder</span></a>
+        <a href="engagement.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div><span class="text-sm">Send Greeting</span></a>
+        <a href="promotions.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg></div><span class="text-sm">Create Promotion</span></a>
+        <a href="customers.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg></div><span class="text-sm">Add Customer</span></a>
+      </div>
+    </nav>
+    <div class="px-4 py-4 border-t border-gray-100">
+      <div class="flex items-center gap-3 mb-3"><div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span class="text-white text-sm font-bold">A</span></div><div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p><p class="text-xs text-gray-400 truncate mt-0.5">Acme Financial Services</p></div></div>
+      <button onclick="window.location.href='login.html'" class="flex items-center gap-2 px-1 py-1 text-gray-500 hover:text-red-600 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg><span class="text-sm font-medium">Sign Out</span></button>
+    </div>
+  </div>
+
+  <!-- MOBILE HEADER -->
+  <div class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-100 z-40 h-14 flex items-center justify-between px-4 shadow-sm">
+    <button onclick="openMobileNav()" class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-600 hover:bg-gray-100 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><span class="text-sm font-bold text-gray-900">Reminder Me</span></div>
+    <button onclick="window.location.href='login.html'" class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 hover:bg-red-50 hover:text-red-500 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></button>
+  </div>
+  <div id="mobileNavBg" class="md:hidden hidden fixed inset-0 bg-black/50 z-[45] backdrop-blur-sm" onclick="closeMobileNav()"></div>
+  <div id="mobileNavDrawer" class="md:hidden fixed top-0 left-0 h-screen w-72 bg-white z-[46] shadow-2xl flex flex-col transition-transform duration-300" style="transform:translateX(-100%)">
+    <div class="px-4 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between flex-shrink-0"><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><div><p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p><p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p></div></div><button onclick="closeMobileNav()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button></div>
+    <nav class="flex-1 px-3 py-3 overflow-y-auto space-y-0.5">
+      <a href="home.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-sm font-semibold">Home</span></a>
+      <a href="customers.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-sm font-semibold">Customers</span></a>
+      <a href="engagement.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-sm font-semibold">Engage</span></a>
+      <a href="promotions.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg><span class="text-sm font-semibold">Promotions</span></a>
+      <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-semibold">Settings</span></a>
+    </nav>
+    <div class="px-3 py-3 border-t border-gray-100 flex-shrink-0"><div class="flex items-center gap-2.5 px-2 py-1.5"><div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span class="text-white text-xs font-bold">A</span></div><div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p><p class="text-[10px] text-gray-400 truncate mt-0.5">Acme Financial Services</p></div></div></div>
+  </div>
+
+  <!-- Main -->
+  <div class="md:ml-56 min-h-screen pb-24 md:pb-0 pt-14 md:pt-0">
+    <div class="bg-white border-b border-gray-100 px-4 md:px-6 py-4 flex items-center justify-between sticky top-14 md:top-0 z-20">
+      <div>
+        <p class="text-xs text-gray-400 mb-1"><a href="home.html" class="hover:text-indigo-600">Home</a> / <span class="text-gray-700">Campaigns</span></p>
+        <h1 class="text-xl font-bold text-gray-900">Campaigns</h1>
+      </div>
+      <button onclick="alert('Create Campaign coming soon!')" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        New Campaign
+      </button>
+    </div>
+
+    <div class="px-6 py-5">
+      <!-- Stats -->
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4"><div class="flex items-center gap-3 mb-2"><div class="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center"><svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg></div></div><p class="text-2xl font-bold text-gray-900">10</p><p class="text-xs text-gray-500 mt-0.5">Campaigns</p></div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4"><div class="flex items-center gap-3 mb-2"><div class="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div></div><p class="text-2xl font-bold text-gray-900">1,198</p><p class="text-xs text-gray-500 mt-0.5">Total Reach</p></div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4"><div class="flex items-center gap-3 mb-2"><div class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg></div></div><p class="text-2xl font-bold text-gray-900">808</p><p class="text-xs text-gray-500 mt-0.5">Sent</p></div>
+      </div>
+
+      <!-- Filters + View -->
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-2 overflow-x-auto">
+          <button onclick="setFilter('all')" id="cf-all" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-600 text-white text-sm font-medium">All <span class="bg-white/25 px-1.5 py-0.5 rounded-full text-xs">10</span></button>
+          <button onclick="setFilter('scheduled')" id="cf-scheduled" class="px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-600 text-sm font-medium hover:border-gray-300">Scheduled <span class="bg-gray-100 px-1.5 py-0.5 rounded-full text-xs ml-1">3</span></button>
+          <button onclick="setFilter('active')" id="cf-active" class="px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-600 text-sm font-medium hover:border-gray-300">Active <span class="bg-gray-100 px-1.5 py-0.5 rounded-full text-xs ml-1">2</span></button>
+          <button onclick="setFilter('completed')" id="cf-completed" class="px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-600 text-sm font-medium hover:border-gray-300">Completed <span class="bg-gray-100 px-1.5 py-0.5 rounded-full text-xs ml-1">3</span></button>
+          <button onclick="setFilter('draft')" id="cf-draft" class="px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-600 text-sm font-medium hover:border-gray-300">Draft <span class="bg-gray-100 px-1.5 py-0.5 rounded-full text-xs ml-1">2</span></button>
+        </div>
+        <div class="flex items-center gap-1 ml-2 flex-shrink-0">
+          <button onclick="setCView('card')" id="cv-card" class="p-2 rounded-lg bg-indigo-50 text-indigo-600"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg></button>
+          <button onclick="setCView('list')" id="cv-list" class="p-2 rounded-lg text-gray-400 hover:bg-gray-100"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        </div>
+      </div>
+
+      <p class="text-sm text-gray-500 mb-4">10 campaigns</p>
+
+      <div id="campaignGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mb-5"></div>
+      <div id="campaignList" class="hidden bg-white rounded-2xl border border-gray-100 divide-y divide-gray-50 mb-5"></div>
+
+      <!-- Pagination -->
+      <div class="flex items-center justify-between">
+        <p class="text-sm text-gray-500">Showing 1–6 of 10</p>
+        <div class="flex items-center gap-1">
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-400 opacity-50"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-medium">1</button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 text-sm hover:bg-gray-50">2</button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-1 pb-2 pt-1 flex items-end justify-around z-30">
+    <a href="home.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-[10px] font-medium">Home</span></a>
+    <a href="customers.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-[10px] font-medium">Customers</span></a>
+    <!-- FAB Center -->
+    <div class="relative flex flex-col items-center" style="margin-bottom:8px">
+      <a href="engagement.html" class="w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-300 -mt-5 transition-transform active:scale-95">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </a>
+      <span class="text-[10px] font-medium text-indigo-600 mt-0.5">Engage</span>
+    </div>
+    <a href="promotions.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg><span class="text-[10px] font-medium">Promos</span></a>
+    <a href="settings.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-[10px] font-medium">Settings</span></a>
+  </div>
+
+  <script>
+    const campaigns = [
+      { id:1, title:'Monsoon Investment Offers', type:'Promotion', msg:'🌧️ Monsoon Special! Earn up to 12% returns on our new investment plans. Limited time offer...', status:'Scheduled', recipients:62, date:'20 Mar 2025', channels:['wa','phone'], img:'https://images.unsplash.com/photo-1633158829875-e5316a358c6f?w=400&q=80' },
+      { id:2, title:'Holi Festival Greetings', type:'Bulk', msg:'🎨 Happy Holi from Acme Financial! Wishing you and your family a colorful and joyful...', status:'Completed', recipients:248, date:'14 Mar 2025', channels:['wa'], img:'https://images.unsplash.com/photo-1635247055412-6007edbd9af7?w=400&q=80' },
+      { id:3, title:'New SIP Plans Launch', type:'Promotion', msg:'🚀 Exciting News! We\'ve launched new SIP plans starting from just ₹500/month. Zero ent...', status:'Draft', recipients:89, date:'25 Mar 2025', channels:['wa','em'], img:'https://images.unsplash.com/photo-1768839721483-c4501b5d6eb3?w=400&q=80' },
+      { id:4, title:'Inactive Customer Re-engagement', type:'Followup', msg:'👋 Hi! We miss you at Acme Financial. We have exciting new services and personalized offer...', status:'Scheduled', recipients:34, date:'28 Mar 2025', channels:['phone','em'], img:'' },
+      { id:5, title:'Tax Saving Season Reminder', type:'Promotion', msg:'⏰ Tax Saving Alert! Only days left to invest in ELSS & PPF for tax benefits under Sec 80C...', status:'Active', recipients:248, date:'15 Mar 2025', channels:['wa','em'], img:'https://images.unsplash.com/photo-1574884280706-7342ca3d4231?w=400&q=80' },
+      { id:6, title:'VIP Wealth Management Summit', type:'Bulk', msg:'⭐ Exclusive Invite! Join our VIP Wealth Management Summit on April 5th...', status:'Scheduled', recipients:48, date:'1 Apr 2025', channels:['em'], img:'' },
+    ];
+
+    const statusColors = { Scheduled:'bg-blue-100 text-blue-700', Active:'bg-green-100 text-green-700', Completed:'bg-purple-100 text-purple-700', Draft:'bg-gray-100 text-gray-600', Pending:'bg-orange-100 text-orange-700' };
+    const typeColors = { Promotion:'bg-orange-100 text-orange-700', Bulk:'bg-blue-100 text-blue-700', Followup:'bg-violet-100 text-violet-700' };
+    const typeIcons = { Promotion:'<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>', Bulk:'<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>', Followup:'<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>' };
+    const chIcons = { wa:`<svg class="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>`, phone:`<svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>`, em:`<svg class="w-3.5 h-3.5 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>` };
+    let cFilter = 'all', cView = 'card';
+
+    function render() {
+      const list = cFilter === 'all' ? campaigns : campaigns.filter(c => c.status.toLowerCase() === cFilter);
+      const grid = document.getElementById('campaignGrid');
+      const listEl = document.getElementById('campaignList');
+      grid.innerHTML = '';
+      listEl.innerHTML = '';
+      list.forEach(c => {
+        const chHtml = c.channels.map(ch => chIcons[ch]).join('');
+        const imgHtml = c.img ? `<div class="h-40 overflow-hidden relative"><img src="${c.img}" class="w-full h-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div><span class="absolute top-2 left-2 flex items-center gap-1 px-2 py-1 rounded-full bg-black/50 text-white text-[10px] font-semibold">${typeIcons[c.type]} ${c.type}</span></div>` : `<div class="h-24 bg-gradient-to-br from-indigo-50 to-violet-50 flex items-center justify-center"><span class="flex items-center gap-1 px-2 py-1 rounded-full ${typeColors[c.type]} text-xs font-semibold">${typeIcons[c.type]} ${c.type}</span></div>`;
+        grid.innerHTML += `<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition cursor-pointer" onclick="window.location.href='campaign-detail.html'">
+          ${imgHtml}
+          <div class="p-4">
+            <div class="flex items-start justify-between mb-1.5">
+              <p class="text-sm font-bold text-gray-900 flex-1 pr-2">${c.title}</p>
+              <button class="text-gray-300 hover:text-red-400 flex-shrink-0"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+            </div>
+            <p class="text-xs text-gray-500 mb-3 line-clamp-2">${c.msg}</p>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusColors[c.status]}">${c.status}</span>
+                <span class="text-xs text-gray-400">${c.recipients} recipients</span>
+              </div>
+              <div class="flex items-center gap-1">${chHtml}</div>
+            </div>
+            <p class="text-xs text-gray-400 mt-2 flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>${c.date}</p>
+            ${c.status==='Completed'?`<button class="w-full mt-2 py-1.5 rounded-xl border border-indigo-200 text-indigo-600 text-xs font-semibold hover:bg-indigo-50 transition flex items-center justify-center gap-1"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>Analytics</button>`:''}
+          </div>
+        </div>`;
+        listEl.innerHTML += `<div class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition cursor-pointer" onclick="window.location.href='campaign-detail.html'">
+          ${c.img?`<div class="w-12 h-10 rounded-xl overflow-hidden flex-shrink-0"><img src="${c.img}" class="w-full h-full object-cover"></div>`:`<div class="w-12 h-10 rounded-xl bg-indigo-50 flex items-center justify-center flex-shrink-0"><span class="text-xs ${typeColors[c.type]} px-1.5 py-0.5 rounded-full">${typeIcons[c.type]}</span></div>`}
+          <div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-900 truncate">${c.title}</p><p class="text-xs text-gray-400">${c.recipients} recipients · ${c.date}</p></div>
+          <div class="flex items-center gap-2">${chHtml}<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusColors[c.status]}">${c.status}</span></div>
+        </div>`;
+      });
+    }
+
+    function setFilter(f) {
+      cFilter = f;
+      ['all','scheduled','active','completed','draft'].forEach(x => {
+        const b = document.getElementById('cf-'+x);
+        if (x===f) { b.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-600 text-white text-sm font-medium'; }
+        else { b.className = 'px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-600 text-sm font-medium hover:border-gray-300'; }
+      });
+      render();
+    }
+
+    function setCView(v) {
+      cView = v;
+      document.getElementById('campaignGrid').classList.toggle('hidden', v!=='card');
+      document.getElementById('campaignList').classList.toggle('hidden', v!=='list');
+      document.getElementById('cv-card').className = v==='card'?'p-2 rounded-lg bg-indigo-50 text-indigo-600':'p-2 rounded-lg text-gray-400 hover:bg-gray-100';
+      document.getElementById('cv-list').className = v==='list'?'p-2 rounded-lg bg-indigo-50 text-indigo-600':'p-2 rounded-lg text-gray-400 hover:bg-gray-100';
+    }
+
+    function openMobileNav() {
+      document.getElementById('mobileNavBg').classList.remove('hidden');
+      document.getElementById('mobileNavDrawer').style.transform = 'translateX(0)';
+    }
+
+    function closeMobileNav() {
+      document.getElementById('mobileNavBg').classList.add('hidden');
+      document.getElementById('mobileNavDrawer').style.transform = 'translateX(-100%)';
+    }
+
+    render();
+  </script>
+</body>
+</html>

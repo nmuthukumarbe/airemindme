@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customers - Reminder Me</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #f8f9fb; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
+    .drop-zone.drag-over { border-color: #4f46e5 !important; background: #eef2ff; }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- Sidebar -->
+  <div class="hidden md:flex fixed left-0 top-0 h-screen w-56 bg-white border-r border-gray-100 flex-col z-30">
+    <div class="px-4 pt-5 pb-3"><a href="home.html" class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><div><p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p><p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p></div></a></div>
+    <nav class="flex-1 px-3 py-2 overflow-y-auto">
+      <a href="home.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-sm font-medium">Home</span></a>
+      <a href="customers.html" class="flex items-center gap-3 px-3 py-3 rounded-xl bg-indigo-600 text-white mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-sm font-semibold">Customers</span></a>
+      <a href="engagement.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-sm font-medium">Engage</span></a>
+      <a href="promotions.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg><span class="text-sm font-medium">Promotions</span></a>
+      <a href="settings.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-medium">Settings</span></a>
+      <div class="mt-6">
+        <p class="px-3 text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-3">Quick Actions</p>
+        <button onclick="window.location.href='engagement.html'" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><span class="text-sm">Create Reminder</span></button>
+        <button onclick="window.location.href='engagement.html'" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></div><span class="text-sm">Send Greeting</span></button>
+        <button onclick="window.location.href='promotions.html'" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg></div><span class="text-sm">Create Promotion</span></button>
+        <button onclick="showAddCustomerModal()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg></div><span class="text-sm">Add Customer</span></button>
+      </div>
+    </nav>
+    <div class="px-4 py-4 border-t border-gray-100">
+      <div class="flex items-center gap-3 mb-3"><div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span class="text-white text-sm font-bold">A</span></div><div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p><p class="text-xs text-gray-400 truncate mt-0.5">Acme Financial Services</p></div></div>
+      <button onclick="window.location.href='login.html'" class="flex items-center gap-2 px-1 py-1 text-gray-500 hover:text-red-600 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg><span class="text-sm font-medium">Sign Out</span></button>
+    </div>
+  </div>
+
+  <!-- MOBILE HEADER -->
+  <div class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-100 z-40 h-14 flex items-center justify-between px-4 shadow-sm">
+    <button onclick="openMobileNav()" class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-600 hover:bg-gray-100 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><span class="text-sm font-bold text-gray-900">Reminder Me</span></div>
+    <button onclick="window.location.href='login.html'" class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 hover:bg-red-50 hover:text-red-500 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></button>
+  </div>
+  <div id="mobileNavBg" class="md:hidden hidden fixed inset-0 bg-black/50 z-[45] backdrop-blur-sm" onclick="closeMobileNav()"></div>
+  <div id="mobileNavDrawer" class="md:hidden fixed top-0 left-0 h-screen w-72 bg-white z-[46] shadow-2xl flex flex-col transition-transform duration-300" style="transform:translateX(-100%)">
+    <div class="px-4 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between flex-shrink-0"><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><div><p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p><p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p></div></div><button onclick="closeMobileNav()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button></div>
+    <nav class="flex-1 px-3 py-3 overflow-y-auto space-y-0.5">
+      <a href="home.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-sm font-semibold">Home</span></a>
+      <a href="customers.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-sm font-semibold">Customers</span></a>
+      <a href="engagement.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-sm font-semibold">Engage</span></a>
+      <a href="promotions.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg><span class="text-sm font-semibold">Promotions</span></a>
+      <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-semibold">Settings</span></a>
+    </nav>
+    <div class="px-3 py-3 border-t border-gray-100 flex-shrink-0"><div class="flex items-center gap-2.5 px-2 py-1.5"><div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span class="text-white text-xs font-bold">A</span></div><div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p><p class="text-[10px] text-gray-400 truncate mt-0.5">Acme Financial Services</p></div></div><button onclick="window.location.href='login.html'" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-gray-500 hover:bg-red-50 hover:text-red-600 mt-1 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg><span class="text-sm font-medium">Sign Out</span></button></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="md:ml-56 min-h-screen pb-24 md:pb-0 pt-14 md:pt-0">
+    <div class="bg-white border-b border-gray-100 px-4 md:px-6 py-4 flex items-center justify-between sticky top-14 md:top-0 z-20">
+      <div>
+        <p class="text-xs text-gray-400 mb-1"><a href="home.html" class="hover:text-indigo-600">Home</a> / <span class="text-gray-700">Customers</span></p>
+        <h1 class="text-xl font-bold text-gray-900">Customers</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="showImportModal()" class="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          Import CSV
+        </button>
+        <button onclick="showAddCustomerModal()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          Add Customer
+        </button>
+      </div>
+    </div>
+
+    <div class="px-4 md:px-6 py-5">
+      <!-- Search -->
+      <div class="relative mb-4">
+        <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input id="searchInput" type="text" placeholder="Search customers..." oninput="filterAndRender()" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+      </div>
+
+      <!-- Filters + View Toggle -->
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2 overflow-x-auto">
+          <button onclick="setFilter('all')" id="f-all" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-indigo-600 text-white text-sm font-medium whitespace-nowrap">All <span class="bg-white/25 px-1.5 py-0.5 rounded-full text-xs">20</span></button>
+          <button onclick="setFilter('vip')" id="f-vip" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-600 text-sm font-medium hover:border-gray-300 whitespace-nowrap">⭐ VIP <span class="bg-gray-100 px-1.5 py-0.5 rounded-full text-xs">6</span></button>
+          <button onclick="setFilter('regular')" id="f-regular" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-600 text-sm font-medium hover:border-gray-300 whitespace-nowrap">Regular <span class="bg-gray-100 px-1.5 py-0.5 rounded-full text-xs">6</span></button>
+          <button onclick="setFilter('new')" id="f-new" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-600 text-sm font-medium hover:border-gray-300 whitespace-nowrap">New <span class="bg-gray-100 px-1.5 py-0.5 rounded-full text-xs">5</span></button>
+          <button onclick="setFilter('inactive')" id="f-inactive" class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-600 text-sm font-medium hover:border-gray-300 whitespace-nowrap">Inactive <span class="bg-gray-100 px-1.5 py-0.5 rounded-full text-xs">3</span></button>
+        </div>
+        <div class="flex items-center gap-1 ml-2 flex-shrink-0">
+          <button onclick="setView('card')" id="v-card" class="p-2 rounded-lg bg-indigo-50 text-indigo-600"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg></button>
+          <button onclick="setView('list')" id="v-list" class="p-2 rounded-lg text-gray-400 hover:bg-gray-100"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        </div>
+      </div>
+
+      <p id="countLabel" class="text-sm text-gray-500 mb-4">20 customers</p>
+      <div id="customerGrid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mb-5"></div>
+      <div id="customerList" class="hidden bg-white rounded-2xl border border-gray-100 divide-y divide-gray-50 mb-5"></div>
+      <div class="flex items-center justify-between">
+        <p id="pageLabel" class="text-sm text-gray-500">Showing 1–6 of 20</p>
+        <div id="pagination" class="flex items-center gap-1"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Customer Modal -->
+  <div id="addCustomerModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="hideAddCustomerModal()"></div>
+    <div class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-md max-h-[95vh] overflow-y-auto shadow-2xl">
+      <div class="flex justify-center pt-3 pb-1 md:hidden"><div class="w-10 h-1 rounded-full bg-gray-200"></div></div>
+      <div class="flex items-center justify-between px-5 pt-4 pb-3">
+        <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-emerald-50 flex items-center justify-center"><svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg></div><h2 class="text-lg font-bold text-gray-900">Add Customer</h2></div>
+        <button onclick="hideAddCustomerModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <form onsubmit="addCustomer(event)" class="px-5 pb-6 flex flex-col gap-4">
+        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Full Name <span class="text-red-500">*</span></label><input type="text" id="cName" placeholder="Rajesh Kumar" required class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"></div>
+        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Phone Number <span class="text-red-500">*</span></label><input type="tel" id="cPhone" placeholder="+91 98765 43210" required class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"></div>
+        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Email Address</label><input type="email" id="cEmail" placeholder="customer@email.com" class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400"></div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Birthday</label><input type="date" id="cBirthday" class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+          <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Anniversary</label><input type="date" id="cAnniversary" class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+        </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700 mb-2 block">Customer Group</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="selectSeg('vip')" id="sb-vip" class="flex items-center gap-2 p-3 rounded-2xl border-2 border-gray-200 hover:border-gray-300 transition text-left"><span class="text-lg">⭐</span><div><p class="text-sm font-semibold text-gray-800 sbl">VIP</p><p class="text-xs text-gray-400">Premium</p></div></button>
+            <button type="button" onclick="selectSeg('regular')" id="sb-regular" class="flex items-center gap-2 p-3 rounded-2xl border-2 border-indigo-500 bg-indigo-50 transition text-left"><span class="text-lg">🔄</span><div><p class="text-sm font-semibold text-indigo-700 sbl">Regular</p><p class="text-xs text-gray-400">Standard</p></div></button>
+            <button type="button" onclick="selectSeg('new')" id="sb-new" class="flex items-center gap-2 p-3 rounded-2xl border-2 border-gray-200 hover:border-gray-300 transition text-left"><span class="text-lg">🆕</span><div><p class="text-sm font-semibold text-gray-800 sbl">New</p><p class="text-xs text-gray-400">Just joined</p></div></button>
+            <button type="button" onclick="selectSeg('inactive')" id="sb-inactive" class="flex items-center gap-2 p-3 rounded-2xl border-2 border-gray-200 hover:border-gray-300 transition text-left"><span class="text-lg">💤</span><div><p class="text-sm font-semibold text-gray-800 sbl">Inactive</p><p class="text-xs text-gray-400">Churned</p></div></button>
+          </div>
+          <input type="hidden" id="cSegment" value="regular">
+        </div>
+        <div>
+          <label class="text-sm font-medium text-gray-700 mb-2 block">Messaging Channels</label>
+          <div class="flex gap-2">
+            <button type="button" onclick="toggleCh('whatsapp')" id="ch-wa" class="flex-1 py-2.5 rounded-full text-sm font-semibold bg-green-500 text-white transition">WhatsApp</button>
+            <button type="button" onclick="toggleCh('sms')" id="ch-sms" class="flex-1 py-2.5 rounded-full text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition">SMS</button>
+            <button type="button" onclick="toggleCh('email')" id="ch-email" class="flex-1 py-2.5 rounded-full text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition">Email</button>
+          </div>
+        </div>
+        <button type="submit" class="w-full py-4 rounded-2xl bg-emerald-700 text-white font-semibold flex items-center justify-center gap-2 hover:bg-emerald-800 transition mt-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+          Add Customer
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Import CSV Modal -->
+  <div id="importModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="hideImportModal()"></div>
+    <div class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-6 pt-5 pb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-blue-50 flex items-center justify-center"><svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg></div>
+          <div><h2 class="text-base font-bold text-gray-900">Bulk Import Customers</h2><p class="text-xs text-gray-400">Upload a CSV file to import multiple customers</p></div>
+        </div>
+        <button onclick="hideImportModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+
+      <div id="importStep1" class="px-6 pb-6">
+        <!-- Template Download -->
+        <div class="flex items-center justify-between px-4 py-3 rounded-2xl bg-indigo-50 border border-indigo-100 mb-4">
+          <div>
+            <p class="text-sm font-semibold text-indigo-800">Download Template</p>
+            <p class="text-xs text-indigo-500">Get the correct CSV format first</p>
+          </div>
+          <button onclick="downloadTemplate()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Download
+          </button>
+        </div>
+
+        <!-- CSV Format Guide -->
+        <div class="bg-gray-50 rounded-2xl p-4 mb-4 font-mono text-xs text-gray-500">
+          <p class="text-xs font-semibold text-gray-600 font-sans mb-1.5">CSV Column Order:</p>
+          <p>name, phone, email, segment, channel, birthday, anniversary</p>
+          <p class="mt-1 text-gray-400">e.g. Rajesh Kumar,+919876543210,r@email.com,vip,whatsapp,1985-06-12,</p>
+        </div>
+
+        <!-- Drop Zone -->
+        <div id="dropZone" class="drop-zone border-2 border-dashed border-gray-300 rounded-2xl p-8 text-center cursor-pointer hover:border-indigo-400 hover:bg-indigo-50/30 transition mb-4"
+          ondragover="event.preventDefault(); this.classList.add('drag-over')"
+          ondragleave="this.classList.remove('drag-over')"
+          ondrop="handleFileDrop(event)"
+          onclick="document.getElementById('csvFileInput').click()">
+          <div class="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+          </div>
+          <p class="text-sm font-semibold text-gray-700 mb-1">Drop your CSV file here</p>
+          <p class="text-xs text-gray-400 mb-3">or click to browse files</p>
+          <span class="px-3 py-1.5 rounded-full bg-indigo-100 text-indigo-600 text-xs font-medium">Choose File</span>
+          <input type="file" id="csvFileInput" accept=".csv,text/csv" class="hidden" onchange="handleFileSelect(this)">
+        </div>
+
+        <!-- Selected file display -->
+        <div id="fileSelected" class="hidden flex items-center gap-3 px-4 py-3 rounded-2xl bg-emerald-50 border border-emerald-200 mb-4">
+          <div class="w-8 h-8 rounded-xl bg-emerald-100 flex items-center justify-center"><svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <div class="flex-1"><p class="text-sm font-semibold text-emerald-800" id="selectedFileName">file.csv</p><p class="text-xs text-emerald-600" id="selectedFileSize">0 KB</p></div>
+          <button onclick="clearFile()" class="text-emerald-500 hover:text-emerald-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+
+        <button id="parseBtn" onclick="parseCSV()" disabled class="w-full py-3.5 rounded-2xl bg-indigo-600 text-white font-semibold text-sm hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          Preview Import
+        </button>
+      </div>
+
+      <!-- Preview Step -->
+      <div id="importStep2" class="hidden px-6 pb-6">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-sm font-bold text-gray-900">Preview Import</p>
+          <span id="previewCount" class="px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-700 text-xs font-semibold">0 rows</span>
+        </div>
+        <!-- Error rows -->
+        <div id="errorRows" class="hidden mb-3 px-4 py-3 rounded-2xl bg-red-50 border border-red-200">
+          <p class="text-xs font-semibold text-red-700 mb-1">⚠️ Issues found:</p>
+          <ul id="errorList" class="text-xs text-red-600 list-disc list-inside space-y-0.5"></ul>
+        </div>
+        <div class="overflow-hidden rounded-2xl border border-gray-100 mb-4">
+          <div class="overflow-x-auto max-h-48">
+            <table class="w-full text-xs">
+              <thead><tr class="bg-gray-50 border-b border-gray-100"><th class="text-left px-3 py-2 font-semibold text-gray-500">Name</th><th class="text-left px-3 py-2 font-semibold text-gray-500">Phone</th><th class="text-left px-3 py-2 font-semibold text-gray-500">Email</th><th class="text-left px-3 py-2 font-semibold text-gray-500">Segment</th><th class="text-left px-3 py-2 font-semibold text-gray-500">Status</th></tr></thead>
+              <tbody id="previewTable" class="divide-y divide-gray-50"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <button onclick="resetImport()" class="flex-1 py-3 rounded-2xl border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50">← Back</button>
+          <button id="importBtn" onclick="confirmImport()" class="flex-1 py-3 rounded-2xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            Import All
+          </button>
+        </div>
+      </div>
+
+      <!-- Success Step -->
+      <div id="importStep3" class="hidden px-6 pb-6 text-center">
+        <div class="w-16 h-16 rounded-2xl bg-emerald-100 flex items-center justify-center mx-auto mb-4"><svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <h3 class="text-lg font-bold text-gray-900 mb-1">Import Successful!</h3>
+        <p class="text-sm text-gray-500 mb-5" id="importSuccessMsg">0 customers added.</p>
+        <button onclick="hideImportModal()" class="w-full py-3.5 rounded-2xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav Mobile -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-1 pb-2 pt-1 flex items-end justify-around z-30">
+    <a href="home.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-[10px] font-medium">Home</span></a>
+    <a href="customers.html" class="flex flex-col items-center gap-0.5 text-indigo-600 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-[10px] font-medium">Customers</span></a>
+    <!-- FAB Center -->
+    <div class="relative flex flex-col items-center" style="margin-bottom:8px">
+      <button onclick="showAddCustomerModal()" class="w-14 h-14 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg shadow-emerald-300 transition-transform active:scale-95 -mt-5">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+      </button>
+      <span class="text-[10px] font-medium text-emerald-600 mt-0.5">Add</span>
+    </div>
+    <a href="engagement.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-[10px] font-medium">Engage</span></a>
+    <a href="settings.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-[10px] font-medium">Settings</span></a>
+  </div>
+
+  <script>
+    const COLORS = ['bg-indigo-100 text-indigo-700','bg-pink-100 text-pink-700','bg-emerald-100 text-emerald-700','bg-orange-100 text-orange-700','bg-violet-100 text-violet-700','bg-blue-100 text-blue-700'];
+    const allCustomers = [
+      { id:1, name:'Rajesh Kumar', phone:'+91 98765 11111', email:'rajesh.kumar@email.com', segment:'vip', channels:['whatsapp','sms'], msgs:24, last:'5 Mar', active:true },
+      { id:2, name:'Anjali Singh', phone:'+91 87654 22222', email:'anjali.singh@email.com', segment:'regular', channels:['whatsapp','email'], msgs:11, last:'28 Feb', active:true },
+      { id:3, name:'Mohammed Ibrahim', phone:'+91 76543 33333', email:'mohammed.i@email.com', segment:'vip', channels:['sms','email'], msgs:38, last:'8 Mar', active:true },
+      { id:4, name:'Sunita Patel', phone:'+91 65432 44444', email:'sunita.patel@email.com', segment:'new', channels:['whatsapp'], msgs:2, last:'', active:true },
+      { id:5, name:'Vikram Nair', phone:'+91 54321 55555', email:'vikram.nair@email.com', segment:'regular', channels:['whatsapp','sms','email'], msgs:17, last:'1 Mar', active:true },
+      { id:6, name:'Deepa Krishnan', phone:'+91 43210 66666', email:'deepa.k@email.com', segment:'inactive', channels:['email'], msgs:5, last:'10 Jun', active:false },
+      { id:7, name:'Amit Gupta', phone:'+91 98765 77777', email:'amit.gupta@email.com', segment:'regular', channels:['whatsapp','sms'], msgs:19, last:'7 Mar', active:true },
+      { id:8, name:'Priya Mehta', phone:'+91 87654 88888', email:'priya.m@email.com', segment:'vip', channels:['whatsapp','email'], msgs:32, last:'9 Mar', active:true },
+      { id:9, name:'Kiran Bose', phone:'+91 76543 99999', email:'kiran.b@email.com', segment:'new', channels:['whatsapp'], msgs:1, last:'', active:true },
+      { id:10, name:'Suresh Reddy', phone:'+91 65432 10101', email:'suresh.r@email.com', segment:'inactive', channels:['sms'], msgs:3, last:'20 Jan', active:false },
+      { id:11, name:'Kavita Sharma', phone:'+91 54321 11212', email:'kavita.s@email.com', segment:'regular', channels:['email'], msgs:8, last:'4 Mar', active:true },
+      { id:12, name:'Rohit Joshi', phone:'+91 43210 13131', email:'rohit.j@email.com', segment:'new', channels:['whatsapp','sms'], msgs:4, last:'2 Mar', active:true },
+    ];
+
+    const segBadge = { vip:'bg-yellow-100 text-yellow-700', regular:'bg-blue-100 text-blue-700', new:'bg-green-100 text-green-700', inactive:'bg-gray-100 text-gray-500' };
+    const chBadge = { whatsapp:'bg-green-100 text-green-700', sms:'bg-blue-100 text-blue-700', email:'bg-violet-100 text-violet-700' };
+
+    let currentFilter = 'all', currentView = 'card', currentPage = 1, searchTerm = '';
+    const PER_PAGE = 6;
+
+    function getFiltered() {
+      return allCustomers.filter(c => {
+        const seg = currentFilter === 'all' || c.segment === currentFilter;
+        const q = searchTerm === '' || c.name.toLowerCase().includes(searchTerm) || c.phone.includes(searchTerm) || c.email.toLowerCase().includes(searchTerm);
+        return seg && q;
+      });
+    }
+
+    function renderCustomers() {
+      const filtered = getFiltered();
+      const total = filtered.length;
+      const start = (currentPage - 1) * PER_PAGE;
+      const page = filtered.slice(start, start + PER_PAGE);
+
+      document.getElementById('countLabel').textContent = total + ' customer' + (total !== 1 ? 's' : '');
+      document.getElementById('pageLabel').textContent = `Showing ${start+1}–${Math.min(start+PER_PAGE, total)} of ${total}`;
+
+      const grid = document.getElementById('customerGrid');
+      const list = document.getElementById('customerList');
+      grid.innerHTML = '';
+      list.innerHTML = '';
+
+      page.forEach((c) => {
+        const color = COLORS[c.name.charCodeAt(0) % COLORS.length];
+        const initial = c.name.charAt(0);
+        const chHtml = c.channels.map(ch => `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${chBadge[ch]}">${ch==='whatsapp'?'WhatsApp':ch==='sms'?'SMS':'Email'}</span>`).join('');
+
+        grid.innerHTML += `
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 hover:shadow-md transition cursor-pointer" onclick="window.location.href='customer-detail.html'">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl ${color} flex items-center justify-center flex-shrink-0 text-lg font-bold">${initial}</div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-semibold text-gray-900">${c.name}</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${segBadge[c.segment]}">${c.segment.charAt(0).toUpperCase()+c.segment.slice(1)}</span>
+                  </div>
+                  <p class="text-xs text-gray-500 mt-0.5">${c.phone}</p>
+                  <p class="text-xs text-gray-400">${c.email}</p>
+                </div>
+              </div>
+              <button class="text-gray-300 hover:text-gray-500 p-1"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button>
+            </div>
+            <div class="flex flex-wrap gap-1 mb-3">${chHtml}</div>
+            <div class="flex items-center justify-between pt-3 border-t border-gray-50">
+              <span class="text-xs text-gray-500">${c.msgs} messages${c.last?' · Last: '+c.last:''}</span>
+              <span class="w-2 h-2 rounded-full ${c.active?'bg-emerald-400':'bg-gray-300'}"></span>
+            </div>
+          </div>`;
+
+        list.innerHTML += `
+          <div class="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition cursor-pointer" onclick="window.location.href='customer-detail.html'">
+            <div class="w-9 h-9 rounded-xl ${color} flex items-center justify-center flex-shrink-0 font-bold text-sm">${initial}</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-semibold text-gray-900 truncate">${c.name}</span>
+                <span class="hidden sm:inline px-2 py-0.5 rounded-full text-[10px] font-semibold ${segBadge[c.segment]}">${c.segment}</span>
+              </div>
+              <p class="text-xs text-gray-400">${c.phone} · ${c.email}</p>
+            </div>
+            <div class="hidden md:flex gap-1">${chHtml}</div>
+            <span class="text-xs text-gray-400 hidden md:block">${c.msgs} msgs</span>
+            <span class="w-2 h-2 rounded-full flex-shrink-0 ${c.active?'bg-emerald-400':'bg-gray-300'}"></span>
+          </div>`;
+      });
+
+      const totalPages = Math.ceil(total / PER_PAGE);
+      const pagEl = document.getElementById('pagination');
+      pagEl.innerHTML = '';
+      if (totalPages <= 1) return;
+      const prev = `<button onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''} class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>`;
+      const next = `<button onclick="goPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''} class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>`;
+      let pages = '';
+      for (let i = 1; i <= totalPages; i++) {
+        pages += `<button onclick="goPage(${i})" class="w-8 h-8 flex items-center justify-center rounded-lg text-sm font-medium ${i===currentPage?'bg-indigo-600 text-white':'border border-gray-200 text-gray-600 hover:bg-gray-50'}">${i}</button>`;
+      }
+      pagEl.innerHTML = prev + pages + next;
+    }
+
+    function goPage(p) { const f = getFiltered(); const tp = Math.ceil(f.length/PER_PAGE); if (p<1||p>tp) return; currentPage=p; renderCustomers(); }
+    function setFilter(f) {
+      currentFilter = f; currentPage = 1;
+      ['all','vip','regular','new','inactive'].forEach(s => {
+        const b = document.getElementById('f-'+s);
+        if (s===f) { b.classList.add('bg-indigo-600','text-white'); b.classList.remove('border','border-gray-200','text-gray-600','hover:border-gray-300'); }
+        else { b.className = 'flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-gray-200 text-gray-600 text-sm font-medium hover:border-gray-300 whitespace-nowrap'; }
+      });
+      renderCustomers();
+    }
+    function setView(v) {
+      currentView = v;
+      document.getElementById('customerGrid').classList.toggle('hidden', v!=='card');
+      document.getElementById('customerList').classList.toggle('hidden', v!=='list');
+      document.getElementById('v-card').className = v==='card'?'p-2 rounded-lg bg-indigo-50 text-indigo-600':'p-2 rounded-lg text-gray-400 hover:bg-gray-100';
+      document.getElementById('v-list').className = v==='list'?'p-2 rounded-lg bg-indigo-50 text-indigo-600':'p-2 rounded-lg text-gray-400 hover:bg-gray-100';
+    }
+    function filterAndRender() { searchTerm = document.getElementById('searchInput').value.toLowerCase().trim(); currentPage = 1; renderCustomers(); }
+
+    // Add Customer
+    function showAddCustomerModal() { document.getElementById('addCustomerModal').classList.remove('hidden'); }
+    function hideAddCustomerModal() { document.getElementById('addCustomerModal').classList.add('hidden'); }
+    function selectSeg(s) {
+      document.getElementById('cSegment').value = s;
+      ['vip','regular','new','inactive'].forEach(x => {
+        const b = document.getElementById('sb-'+x);
+        if (x===s) { b.classList.add('border-indigo-500','bg-indigo-50'); b.classList.remove('border-gray-200'); b.querySelector('.sbl').className='text-sm font-semibold text-indigo-700 sbl'; }
+        else { b.classList.remove('border-indigo-500','bg-indigo-50'); b.classList.add('border-gray-200'); b.querySelector('.sbl').className='text-sm font-semibold text-gray-800 sbl'; }
+      });
+    }
+    let selCh = 'whatsapp';
+    function toggleCh(ch) {
+      selCh = ch;
+      ['wa','sms','email'].forEach(x => {
+        const b = document.getElementById('ch-'+x);
+        const isActive = (x==='wa'&&ch==='whatsapp')||(x===ch);
+        if (isActive) { b.className = `flex-1 py-2.5 rounded-full text-sm font-semibold transition ${ch==='whatsapp'?'bg-green-500 text-white':ch==='sms'?'bg-blue-500 text-white':'bg-violet-500 text-white'}`; }
+        else { b.className = 'flex-1 py-2.5 rounded-full text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition'; }
+      });
+    }
+    function addCustomer(e) {
+      e.preventDefault();
+      allCustomers.unshift({ id: Date.now(), name: document.getElementById('cName').value, phone: document.getElementById('cPhone').value, email: document.getElementById('cEmail').value || 'N/A', segment: document.getElementById('cSegment').value, channels: [selCh], msgs: 0, last: '', active: true });
+      hideAddCustomerModal(); e.target.reset(); currentPage = 1; renderCustomers();
+    }
+
+    // =================== CSV IMPORT ===================
+    let csvParsedRows = [];
+    let csvFile = null;
+
+    function showImportModal() {
+      document.getElementById('importModal').classList.remove('hidden');
+      resetImport();
+    }
+    function hideImportModal() {
+      document.getElementById('importModal').classList.add('hidden');
+    }
+    function resetImport() {
+      csvParsedRows = [];
+      csvFile = null;
+      document.getElementById('csvFileInput').value = '';
+      document.getElementById('fileSelected').classList.add('hidden');
+      document.getElementById('parseBtn').disabled = true;
+      document.getElementById('importStep1').classList.remove('hidden');
+      document.getElementById('importStep2').classList.add('hidden');
+      document.getElementById('importStep3').classList.add('hidden');
+    }
+    function downloadTemplate() {
+      const header = 'name,phone,email,segment,channel,birthday,anniversary';
+      const rows = [
+        'Rajesh Kumar,+919876543210,rajesh@email.com,vip,whatsapp,1985-06-12,2010-11-20',
+        'Anjali Singh,+918765432100,anjali@email.com,regular,email,,',
+        'Vikram Nair,+917654321000,vikram@email.com,new,sms,1990-03-15,'
+      ];
+      const csvContent = [header, ...rows].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'customers_template.csv'; a.click();
+      URL.revokeObjectURL(url);
+    }
+    function handleFileSelect(input) {
+      if (input.files && input.files[0]) { setCSVFile(input.files[0]); }
+    }
+    function handleFileDrop(event) {
+      event.preventDefault();
+      document.getElementById('dropZone').classList.remove('drag-over');
+      const file = event.dataTransfer.files[0];
+      if (file && (file.name.endsWith('.csv') || file.type === 'text/csv')) { setCSVFile(file); }
+      else { alert('Please upload a .csv file'); }
+    }
+    function setCSVFile(file) {
+      csvFile = file;
+      document.getElementById('fileSelected').classList.remove('hidden');
+      document.getElementById('selectedFileName').textContent = file.name;
+      document.getElementById('selectedFileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+      document.getElementById('parseBtn').disabled = false;
+    }
+    function clearFile() {
+      csvFile = null;
+      document.getElementById('csvFileInput').value = '';
+      document.getElementById('fileSelected').classList.add('hidden');
+      document.getElementById('parseBtn').disabled = true;
+    }
+
+    function parseCSV() {
+      if (!csvFile) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const text = e.target.result;
+        const lines = text.trim().split('\n').filter(l => l.trim());
+        if (lines.length < 2) { alert('CSV must have at least one data row.'); return; }
+
+        const headerRow = lines[0].toLowerCase();
+        const isFirstRowHeader = headerRow.includes('name') || headerRow.includes('phone');
+        const dataLines = isFirstRowHeader ? lines.slice(1) : lines;
+
+        csvParsedRows = [];
+        const validSegs = ['vip','regular','new','inactive'];
+        const validChs = ['whatsapp','sms','email'];
+
+        dataLines.forEach((line, i) => {
+          const cols = line.split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+          if (cols.length < 2 || !cols[0] || !cols[1]) return;
+          const seg = validSegs.includes((cols[3]||'regular').toLowerCase()) ? cols[3].toLowerCase() : 'regular';
+          const ch = validChs.includes((cols[4]||'whatsapp').toLowerCase()) ? cols[4].toLowerCase() : 'whatsapp';
+          csvParsedRows.push({
+            name: cols[0] || '',
+            phone: cols[1] || '',
+            email: cols[2] || '',
+            segment: seg,
+            channel: ch,
+            birthday: cols[5] || '',
+            anniversary: cols[6] || '',
+            valid: !!(cols[0] && cols[1])
+          });
+        });
+
+        showPreview();
+      };
+      reader.readAsText(csvFile);
+    }
+
+    function showPreview() {
+      document.getElementById('importStep1').classList.add('hidden');
+      document.getElementById('importStep2').classList.remove('hidden');
+
+      const valid = csvParsedRows.filter(r => r.valid);
+      const invalid = csvParsedRows.filter(r => !r.valid);
+
+      document.getElementById('previewCount').textContent = valid.length + ' valid rows';
+
+      const errorDiv = document.getElementById('errorRows');
+      const errorList = document.getElementById('errorList');
+      if (invalid.length > 0) {
+        errorDiv.classList.remove('hidden');
+        errorList.innerHTML = invalid.map((r, i) => `<li>Row ${i+1}: Missing name or phone</li>`).join('');
+      } else {
+        errorDiv.classList.add('hidden');
+      }
+
+      const tbody = document.getElementById('previewTable');
+      tbody.innerHTML = valid.slice(0, 20).map(r => `
+        <tr class="hover:bg-gray-50">
+          <td class="px-3 py-2">${r.name}</td>
+          <td class="px-3 py-2 text-gray-500">${r.phone}</td>
+          <td class="px-3 py-2 text-gray-500">${r.email || '—'}</td>
+          <td class="px-3 py-2"><span class="px-2 py-0.5 rounded-full ${segBadge[r.segment]} font-semibold">${r.segment}</span></td>
+          <td class="px-3 py-2"><span class="text-emerald-600 font-medium">✓ Valid</span></td>
+        </tr>`).join('');
+
+      if (valid.length > 20) {
+        tbody.innerHTML += `<tr><td colspan="5" class="px-3 py-2 text-center text-gray-400">... and ${valid.length - 20} more rows</td></tr>`;
+      }
+
+      document.getElementById('importBtn').textContent = `Import ${valid.length} Customers`;
+    }
+
+    function confirmImport() {
+      const valid = csvParsedRows.filter(r => r.valid);
+      valid.forEach(r => {
+        allCustomers.unshift({
+          id: Date.now() + Math.random(),
+          name: r.name,
+          phone: r.phone,
+          email: r.email || 'N/A',
+          segment: r.segment,
+          channels: [r.channel],
+          msgs: 0,
+          last: '',
+          active: true
+        });
+      });
+
+      document.getElementById('importStep2').classList.add('hidden');
+      document.getElementById('importStep3').classList.remove('hidden');
+      document.getElementById('importSuccessMsg').textContent = `${valid.length} customers successfully added to your list.`;
+      currentPage = 1;
+      renderCustomers();
+    }
+
+    renderCustomers();
+    function openMobileNav(){document.getElementById('mobileNavDrawer').style.transform='translateX(0)';document.getElementById('mobileNavBg').classList.remove('hidden');document.body.style.overflow='hidden';}
+    function closeMobileNav(){document.getElementById('mobileNavDrawer').style.transform='translateX(-100%)';document.getElementById('mobileNavBg').classList.add('hidden');document.body.style.overflow='';}
+  </script>
+</body>
+</html>

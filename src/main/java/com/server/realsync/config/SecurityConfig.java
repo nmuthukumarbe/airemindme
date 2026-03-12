@@ -42,7 +42,7 @@ public class SecurityConfig {
 				.formLogin(form -> form
 		                .loginPage("/login.html")           // GET /login (login page)
 		                .loginProcessingUrl("/login")  // POST /login (handled by Spring Security)
-		                .defaultSuccessUrl("/dashboard.html", true)
+		                .defaultSuccessUrl("/home.html", true)
 		                .failureUrl("/login.html?error=true")
 		                .permitAll()
 		        )
