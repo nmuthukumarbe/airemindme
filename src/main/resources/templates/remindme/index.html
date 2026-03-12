@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reminder Me - Premium Business Communication Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#f0fdf4",
+                100: "#dcfce7",
+                200: "#bbf7d0",
+                300: "#86efac",
+                400: "#4ade80",
+                500: "#48B26F",
+                600: "#3a9360",
+                700: "#15803d",
+                800: "#166534",
+                900: "#14532d",
+              },
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Hide scrollbars for the hero carousel while keeping scroll functionality */
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      /* Reveal on scroll */
+      .reveal {
+        opacity: 0;
+        transform: translateY(16px);
+        transition:
+          opacity 0.7s ease,
+          transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
+      }
+      .reveal.is-visible {
+        opacity: 1;
+        transform: none;
+      }
+      @keyframes pulseGlow {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(72, 178, 111, 0.45);
+        }
+        50% {
+          box-shadow: 0 0 0 14px rgba(72, 178, 111, 0);
+        }
+      }
+      .btn-glow {
+        animation: pulseGlow 2.4s infinite;
+      }
+    </style>
+  </head>
+  <body class="font-sans antialiased">
+    <!-- Navigation -->
+    <nav
+      class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <a href="index.html" class="flex items-center space-x-3">
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets%2Ffbb0194a6d774fff8617236e5030fdfd%2F95b642517bf849079b5f6a616232ebb4?format=webp&width=800"
+              alt="REMINDERme logo"
+              class="w-[250px] h-auto object-contain"
+            />
+          </a>
+
+          <!-- Desktop Navigation -->
+          <div class="hidden md:flex items-center space-x-8">
+            <div class="flex items-center space-x-6">
+              <a
+                href="#features"
+                class="text-gray-600 hover:text-brand-500 font-medium transition-colors"
+                >Features</a
+              >
+              <a
+                href="#pricing"
+                class="text-gray-600 hover:text-brand-500 font-medium transition-colors"
+                >Pricing</a
+              >
+              <a
+                href="#testimonials"
+                class="text-gray-600 hover:text-brand-500 font-medium transition-colors"
+                >Reviews</a
+              >
+              <a
+                href="#support"
+                class="text-gray-600 hover:text-brand-500 font-medium transition-colors"
+                >Support</a
+              >
+            </div>
+            <div class="flex items-center space-x-3">
+              <a
+                href="signin.html"
+                class="text-gray-600 hover:text-brand-500 font-medium transition-colors"
+                >Sign In</a
+              >
+              <a
+                href="signup.html"
+                class="bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+              >
+                Get Started
+              </a>
+            </div>
+          </div>
+
+          <!-- Mobile menu button -->
+          <button class="md:hidden p-2" onclick="toggleMobileMenu()">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div
+        id="mobile-menu"
+        class="md:hidden hidden bg-white border-t border-gray-100"
+      >
+        <div class="px-4 pt-2 pb-3 space-y-1">
+          <a
+            href="#features"
+            class="block px-3 py-2 text-gray-600 hover:text-brand-500"
+            >Features</a
+          >
+          <a
+            href="#pricing"
+            class="block px-3 py-2 text-gray-600 hover:text-brand-500"
+            >Pricing</a
+          >
+          <a
+            href="#testimonials"
+            class="block px-3 py-2 text-gray-600 hover:text-brand-500"
+            >Reviews</a
+          >
+          <a
+            href="#support"
+            class="block px-3 py-2 text-gray-600 hover:text-brand-500"
+            >Support</a
+          >
+          <a
+            href="signin.html"
+            class="block px-3 py-2 text-gray-600 hover:text-brand-500"
+            >Sign In</a
+          >
+          <a
+            href="signup.html"
+            class="block px-3 py-2 bg-brand-500 text-white rounded-lg mt-2"
+            >Get Started</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section: Full-width scrollable carousel (500px height) -->
+    <section id="hero" class="relative w-full bg-gray-100">
+      <div
+        id="hero-carousel"
+        class="relative flex overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth w-full h-[500px]"
+      >
+        <img
+          src="https://picsum.photos/seed/rm-1/1920/1080"
+          alt="Hero slide 1"
+          class="snap-start flex-none w-screen h-[500px] object-cover"
+        />
+        <img
+          src="https://picsum.photos/seed/rm-2/1920/1080"
+          alt="Hero slide 2"
+          class="snap-start flex-none w-screen h-[500px] object-cover"
+        />
+        <img
+          src="https://picsum.photos/seed/rm-3/1920/1080"
+          alt="Hero slide 3"
+          class="snap-start flex-none w-screen h-[500px] object-cover"
+        />
+        <img
+          src="https://picsum.photos/seed/rm-4/1920/1080"
+          alt="Hero slide 4"
+          class="snap-start flex-none w-screen h-[500px] object-cover"
+        />
+      </div>
+      <!-- Controls -->
+      <button
+        type="button"
+        aria-label="Previous slide"
+        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow"
+        onclick="scrollHero(-1)"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+      <button
+        type="button"
+        aria-label="Next slide"
+        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 rounded-full p-2 shadow"
+        onclick="scrollHero(1)"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+      <!-- Dots -->
+      <div
+        class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2"
+        id="hero-dots"
+      ></div>
+    </section>
+
+    <!-- Trusted by Section -->
+    <section class="py-10 bg-white/60 reveal">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="flex flex-wrap items-center justify-center gap-8 opacity-80"
+        >
+          <img src="public/placeholder.svg" alt="logo" class="h-8" />
+          <img src="public/placeholder.svg" alt="logo" class="h-8" />
+          <img src="public/placeholder.svg" alt="logo" class="h-8" />
+          <img src="public/placeholder.svg" alt="logo" class="h-8" />
+          <img src="public/placeholder.svg" alt="logo" class="h-8" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact Metrics -->
+    <section class="py-16 bg-gradient-to-b from-white to-gray-50 reveal">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div
+              class="text-4xl font-extrabold text-gray-900"
+              data-count="25000"
+            >
+              0
+            </div>
+            <p class="text-gray-600">Businesses onboarded</p>
+          </div>
+          <div>
+            <div class="text-4xl font-extrabold text-gray-900" data-count="980">
+              0
+            </div>
+            <p class="text-gray-600">Delivery rate (%)</p>
+          </div>
+          <div>
+            <div class="text-4xl font-extrabold text-gray-900" data-count="120">
+              0
+            </div>
+            <p class="text-gray-600">Countries reached</p>
+          </div>
+          <div>
+            <div
+              class="text-4xl font-extrabold text-gray-900"
+              data-count="1000000"
+            >
+              0
+            </div>
+            <p class="text-gray-600">Reminders sent</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="py-16 bg-white reveal">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900">
+            Built for every workflow
+          </h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            From local retailers to global brands, automate follow-ups,
+            promotions, and feedback loops effortlessly.
+          </p>
+        </div>
+        <div class="grid md:grid-cols-4 gap-6">
+          <div
+            class="p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all"
+          >
+            <h3 class="font-semibold text-gray-900 mb-2">Appointments</h3>
+            <p class="text-gray-600">
+              Reduce no-shows with timely WhatsApp reminders and SMS nudge
+              sequences.
+            </p>
+          </div>
+          <div
+            class="p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all"
+          >
+            <h3 class="font-semibold text-gray-900 mb-2">Re-Engagement</h3>
+            <p class="text-gray-600">
+              Win back churned users with targeted offers based on inactivity
+              windows.
+            </p>
+          </div>
+          <div
+            class="p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all"
+          >
+            <h3 class="font-semibold text-gray-900 mb-2">Payments</h3>
+            <p class="text-gray-600">
+              Gentle follow-ups with dynamic payment links and
+              auto-confirmations.
+            </p>
+          </div>
+          <div
+            class="p-6 rounded-xl border border-gray-100 hover:shadow-lg transition-all"
+          >
+            <h3 class="font-semibold text-gray-900 mb-2">Feedback</h3>
+            <p class="text-gray-600">
+              Collect reviews after key moments to boost ratings and referrals.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white reveal">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Enterprise-Grade Features
+          </h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Everything you need to build meaningful relationships with your
+            customers
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div
+            class="text-center p-6 rounded-xl border border-gray-100 hover:border-brand-200 hover:shadow-lg transition-all"
+          >
+            <div
+              class="w-16 h-16 bg-brand-100 rounded-lg flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-8 h-8 text-brand-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Customer Management
+            </h3>
+            <p class="text-gray-600">
+              Seamlessly onboard and manage your customer base with intelligent
+              organization and automated workflows.
+            </p>
+          </div>
+
+          <div
+            class="text-center p-6 rounded-xl border border-gray-100 hover:border-brand-200 hover:shadow-lg transition-all"
+          >
+            <div
+              class="w-16 h-16 bg-brand-100 rounded-lg flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-8 h-8 text-brand-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 17h5l-5 5v-5zM4.343 12.344l7.539 7.539a2.25 2.25 0 003.182 0l2.829-2.829a2.25 2.25 0 000-3.182L10.354 6.333a2.25 2.25 0 00-3.182 0L4.343 9.162a2.25 2.25 0 000 3.182z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Smart Reminders
+            </h3>
+            <p class="text-gray-600">
+              Send perfectly timed reminders that drive engagement and keep your
+              business top-of-mind.
+            </p>
+          </div>
+
+          <div
+            class="text-center p-6 rounded-xl border border-gray-100 hover:border-brand-200 hover:shadow-lg transition-all"
+          >
+            <div
+              class="w-16 h-16 bg-brand-100 rounded-lg flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-8 h-8 text-brand-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                ></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-3">
+              Targeted Promotions
+            </h3>
+            <p class="text-gray-600">
+              Create and deploy personalized promotional campaigns that convert
+              prospects into loyal customers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-20 bg-gray-50 reveal">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            How Reminder Me Works
+          </h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Get started in minutes with our simple, powerful platform
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-8">
+          <div class="text-center">
+            <div class="relative">
+              <div
+                class="w-12 h-12 bg-brand-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold"
+              >
+                1
+              </div>
+              <div
+                class="w-16 h-16 bg-brand-100 rounded-lg flex items-center justify-center mx-auto mb-4"
+              >
+                <svg
+                  class="w-8 h-8 text-brand-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Sign Up & Setup
+            </h3>
+            <p class="text-gray-600">
+              Create your account and set up your business profile in under 5
+              minutes.
+            </p>
+          </div>
+
+          <div class="text-center">
+            <div class="relative">
+              <div
+                class="w-12 h-12 bg-brand-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold"
+              >
+                2
+              </div>
+              <div
+                class="w-16 h-16 bg-brand-100 rounded-lg flex items-center justify-center mx-auto mb-4"
+              >
+                <svg
+                  class="w-8 h-8 text-brand-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Import Customers
+            </h3>
+            <p class="text-gray-600">
+              Upload your customer list or integrate with your existing CRM
+              system.
+            </p>
+          </div>
+
+          <div class="text-center">
+            <div class="relative">
+              <div
+                class="w-12 h-12 bg-brand-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold"
+              >
+                3
+              </div>
+              <div
+                class="w-16 h-16 bg-brand-100 rounded-lg flex items-center justify-center mx-auto mb-4"
+              >
+                <svg
+                  class="w-8 h-8 text-brand-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  ></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Configure Campaigns
+            </h3>
+            <p class="text-gray-600">
+              Set up automated reminders, promotions, and personalized
+              messaging.
+            </p>
+          </div>
+
+          <div class="text-center">
+            <div class="relative">
+              <div
+                class="w-12 h-12 bg-brand-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 font-bold"
+              >
+                4
+              </div>
+              <div
+                class="w-16 h-16 bg-brand-100 rounded-lg flex items-center justify-center mx-auto mb-4"
+              >
+                <svg
+                  class="w-8 h-8 text-brand-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">
+              Track Results
+            </h3>
+            <p class="text-gray-600">
+              Monitor engagement metrics and optimize your communication
+              strategy.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-white reveal">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Choose Your Plan
+          </h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Flexible pricing for businesses of all sizes
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <!-- Starter Plan -->
+          <div
+            class="border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow"
+          >
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Starter</h3>
+            <div class="mb-6">
+              <span class="text-4xl font-bold text-gray-900">$29</span>
+              <span class="text-gray-600">/month</span>
+            </div>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Up to 1,000 customers
+              </li>
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                5,000 reminders/month
+              </li>
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Basic analytics
+              </li>
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Email support
+              </li>
+            </ul>
+            <a
+              href="signup.html"
+              class="w-full border border-brand-500 text-brand-500 hover:bg-brand-500 hover:text-white px-6 py-3 rounded-lg font-medium transition-colors block text-center"
+            >
+              Get Started
+            </a>
+          </div>
+
+          <!-- Professional Plan -->
+          <div
+            class="border-2 border-brand-500 rounded-xl p-8 relative hover:shadow-lg transition-shadow"
+          >
+            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+              <span
+                class="bg-brand-500 text-white px-4 py-1 rounded-full text-sm font-medium"
+                >Most Popular</span
+              >
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">
+              Professional
+            </h3>
+            <div class="mb-6">
+              <span class="text-4xl font-bold text-gray-900">$79</span>
+              <span class="text-gray-600">/month</span>
+            </div>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Up to 10,000 customers
+              </li>
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                50,000 reminders/month
+              </li>
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Advanced analytics
+              </li>
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Priority support
+              </li>
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                API access
+              </li>
+            </ul>
+            <a
+              href="signup.html"
+              class="w-full bg-brand-500 hover:bg-brand-600 text-white px-6 py-3 rounded-lg font-medium transition-colors block text-center"
+            >
+              Get Started
+            </a>
+          </div>
+
+          <!-- Enterprise Plan -->
+          <div
+            class="border border-gray-200 rounded-xl p-8 hover:shadow-lg transition-shadow"
+          >
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Enterprise</h3>
+            <div class="mb-6">
+              <span class="text-4xl font-bold text-gray-900">$199</span>
+              <span class="text-gray-600">/month</span>
+            </div>
+            <ul class="space-y-3 mb-8">
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Unlimited customers
+              </li>
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Unlimited reminders
+              </li>
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                Custom analytics
+              </li>
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                24/7 phone support
+              </li>
+              <li class="flex items-center">
+                <svg
+                  class="w-5 h-5 text-brand-500 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                White-label solution
+              </li>
+            </ul>
+            <a
+              href="signup.html"
+              class="w-full border border-brand-500 text-brand-500 hover:bg-brand-500 hover:text-white px-6 py-3 rounded-lg font-medium transition-colors block text-center"
+            >
+              Contact Sales
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-gray-50 reveal">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            What Our Customers Say
+          </h2>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Join thousands of businesses that trust Reminder Me
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <p class="text-gray-600 mb-6">
+              "Reminder Me has transformed how we communicate with our
+              customers. Our engagement rates have increased by 300% since we
+              started using the platform."
+            </p>
+            <div class="flex items-center">
+              <img
+                class="w-12 h-12 rounded-full mr-4"
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face&q=80"
+                alt="John Smith"
+              />
+              <div>
+                <h4 class="font-semibold text-gray-900">John Smith</h4>
+                <p class="text-gray-600 text-sm">CEO, TechCorp</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <p class="text-gray-600 mb-6">
+              "The automation features are incredible. We've saved 20 hours per
+              week on customer communication tasks, allowing us to focus on
+              growing our business."
+            </p>
+            <div class="flex items-center">
+              <img
+                class="w-12 h-12 rounded-full mr-4"
+                src="https://images.unsplash.com/photo-1494790108755-2616b332e234?w=100&h=100&fit=crop&crop=face&q=80"
+                alt="Sarah Johnson"
+              />
+              <div>
+                <h4 class="font-semibold text-gray-900">Sarah Johnson</h4>
+                <p class="text-gray-600 text-sm">
+                  Marketing Director, GrowthCo
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <p class="text-gray-600 mb-6">
+              "The analytics and insights provided by Reminder Me have helped us
+              understand our customers better and improve our retention rates
+              significantly."
+            </p>
+            <div class="flex items-center">
+              <img
+                class="w-12 h-12 rounded-full mr-4"
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face&q=80"
+                alt="Michael Chen"
+              />
+              <div>
+                <h4 class="font-semibold text-gray-900">Michael Chen</h4>
+                <p class="text-gray-600 text-sm">Founder, StartupXYZ</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid md:grid-cols-4 gap-8">
+          <div class="md:col-span-1">
+            <div class="flex items-center space-x-3 mb-4">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Ffbb0194a6d774fff8617236e5030fdfd%2F95b642517bf849079b5f6a616232ebb4?format=webp&width=800"
+                alt="REMINDERme logo"
+                class="w-[250px] h-auto object-contain"
+              />
+            </div>
+            <p class="text-gray-600">Premium business communication platform</p>
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-gray-900 mb-4">Product</h4>
+            <ul class="space-y-2">
+              <li>
+                <a href="#features" class="text-gray-600 hover:text-brand-500"
+                  >Features</a
+                >
+              </li>
+              <li>
+                <a href="#pricing" class="text-gray-600 hover:text-brand-500"
+                  >Pricing</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-600 hover:text-brand-500">API</a>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-gray-900 mb-4">Company</h4>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="text-gray-600 hover:text-brand-500">About</a>
+              </li>
+              <li>
+                <a href="#" class="text-gray-600 hover:text-brand-500"
+                  >Careers</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-600 hover:text-brand-500"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="font-semibold text-gray-900 mb-4">Support</h4>
+            <ul class="space-y-2">
+              <li>
+                <a href="#" class="text-gray-600 hover:text-brand-500"
+                  >Help Center</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-600 hover:text-brand-500"
+                  >Documentation</a
+                >
+              </li>
+              <li>
+                <a href="#" class="text-gray-600 hover:text-brand-500"
+                  >Status</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center"
+        >
+          <p class="text-gray-600">
+            &copy; 2024 Reminder Me. All rights reserved.
+          </p>
+          <div class="flex space-x-6 mt-4 md:mt-0">
+            <a href="#" class="text-gray-600 hover:text-brand-500"
+              >Privacy Policy</a
+            >
+            <a href="#" class="text-gray-600 hover:text-brand-500"
+              >Terms of Service</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/app.js?v=2"></script>
+    <script>
+      // Mobile menu toggle
+      function toggleMobileMenu() {
+        const menu = document.getElementById("mobile-menu");
+        menu.classList.toggle("hidden");
+      }
+
+      // Hide mobile menu when clicking on links
+      document.querySelectorAll("#mobile-menu a").forEach((link) => {
+        link.addEventListener("click", () => {
+          document.getElementById("mobile-menu").classList.add("hidden");
+        });
+      });
+
+      // Simple scroll-based navigation for the hero carousel
+      function scrollHero(direction) {
+        const el = document.getElementById("hero-carousel");
+        if (!el) return;
+        const width = window.innerWidth;
+        el.scrollBy({ left: direction * width, behavior: "smooth" });
+      }
+      window.scrollHero = scrollHero;
+
+      // Auto-advance and dots for hero
+      (function () {
+        const el = document.getElementById("hero-carousel");
+        if (!el) return;
+        const slides = Array.from(el.querySelectorAll("img"));
+        const dots = document.getElementById("hero-dots");
+        function updateDots() {
+          const idx = Math.round(el.scrollLeft / window.innerWidth);
+          dots.querySelectorAll("button").forEach((b, i) => {
+            b.className =
+              "w-2.5 h-2.5 rounded-full " +
+              (i === idx ? "bg-brand-500" : "bg-gray-300");
+          });
+        }
+        slides.forEach((_, i) => {
+          const d = document.createElement("button");
+          d.className = "w-2.5 h-2.5 rounded-full bg-gray-300";
+          d.addEventListener("click", () => {
+            el.scrollTo({ left: i * window.innerWidth, behavior: "smooth" });
+          });
+          dots.appendChild(d);
+        });
+        el.addEventListener("scroll", updateDots, { passive: true });
+        updateDots();
+        setInterval(() => scrollHero(1), 5000);
+      })();
+
+      // Reveal on scroll
+      (function () {
+        const revealEls = document.querySelectorAll(".reveal");
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("is-visible");
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.15 },
+        );
+        revealEls.forEach((el) => io.observe(el));
+      })();
+
+      // Counter animation
+      (function () {
+        const els = document.querySelectorAll("[data-count]");
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const el = entry.target;
+                const end = parseInt(el.getAttribute("data-count") || "0", 10);
+                const start = 0;
+                const dur = 1200;
+                const st = performance.now();
+                function step(t) {
+                  const p = Math.min((t - st) / dur, 1);
+                  const val = Math.floor(start + (end - start) * p);
+                  el.textContent = end >= 100000 ? val.toLocaleString() : val;
+                  if (p < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+                io.unobserve(el);
+              }
+            });
+          },
+          { threshold: 0.3 },
+        );
+        els.forEach((el) => io.observe(el));
+      })();
+    </script>
+  </body>
+</html>

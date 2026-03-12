@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Reports - Reminder Me</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: "#f0fdf4",
+                100: "#dcfce7",
+                200: "#bbf7d0",
+                300: "#86efac",
+                400: "#4ade80",
+                500: "#48B26F",
+                600: "#3a9360",
+                700: "#15803d",
+              },
+            },
+            fontFamily: { sans: ["Inter", "sans-serif"] },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="font-sans bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between"
+      >
+        <a href="dashboard.html" class="inline-flex items-center space-x-3">
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets%2Ffbb0194a6d774fff8617236e5030fdfd%2F8eed054b31ff4abfa882868a9f63cc71?format=webp&width=800"
+            alt="REMINDERme logo"
+            class="w-[200px] h-[54px] object-contain"
+          />
+        </a>
+        <div class="flex items-center space-x-3">
+          <a
+            href="dashboard.html"
+            class="px-3 py-2 text-sm rounded-lg border border-gray-200 hover:bg-gray-50"
+            >Back to Dashboard</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Title and timeframe -->
+      <div
+        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6"
+      >
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold text-gray-900">
+            Business Reports
+          </h1>
+          <p class="text-gray-600">
+            Customers, promotions, and reminders — detailed analytics
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-sm text-gray-600">Timeframe</label>
+          <select
+            id="timeframe"
+            class="px-3 py-2 border border-gray-300 rounded-lg"
+          >
+            <option value="30">Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="365">Last 12 months</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div
+        id="kpis"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+      ></div>
+
+      <!-- Charts grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-semibold text-gray-900">Customers Growth</h3>
+            <span class="text-xs text-gray-500" id="customers-range"></span>
+          </div>
+          <canvas id="customersChart" height="140"></canvas>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-semibold text-gray-900">Reminders Status</h3>
+            <span class="text-xs text-gray-500" id="reminders-range"></span>
+          </div>
+          <canvas id="remindersChart" height="140"></canvas>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-semibold text-gray-900">Promotions Performance</h3>
+            <span class="text-xs text-gray-500" id="promotions-range"></span>
+          </div>
+          <canvas id="promotionsChart" height="140"></canvas>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-semibold text-gray-900">Engagement Funnel</h3>
+            <span class="text-xs text-gray-500" id="funnel-range"></span>
+          </div>
+          <canvas id="funnelChart" height="140"></canvas>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function getLS(key, fallback) {
+        try {
+          return JSON.parse(
+            localStorage.getItem(key) || JSON.stringify(fallback),
+          );
+        } catch (e) {
+          return fallback;
+        }
+      }
+      function daysAgo(n) {
+        const d = new Date();
+        d.setDate(d.getDate() - n);
+        return d;
+      }
+      function fmt(d) {
+        return d.toISOString().slice(0, 10);
+      }
+
+      function synthesizeSeries(days) {
+        const labels = [];
+        const data = [];
+        for (let i = days - 1; i >= 0; i--) {
+          labels.push(fmt(daysAgo(i)));
+          data.push(Math.floor(5 + Math.random() * 20));
+        }
+        return { labels, data };
+      }
+
+      function buildData(days) {
+        const customers = getLS("reminderMe_customers", []);
+        const promos = getLS("reminderMe_promotions", []);
+        const reminders = getLS("reminderMe_reminders", []);
+
+        const series = synthesizeSeries(days);
+        const customersCount =
+          customers.length || 180 + Math.floor(Math.random() * 40);
+        const remindersCount =
+          reminders.length || 1200 + Math.floor(Math.random() * 500);
+        const promosCount = promos.length || 14 + Math.floor(Math.random() * 6);
+
+        // Reminder breakdown (dummy if none)
+        const rDelivered = Math.floor(remindersCount * 0.72);
+        const rRead = Math.floor(remindersCount * 0.58);
+        const rFailed = Math.max(0, remindersCount - rDelivered);
+
+        // Promotions performance
+        const pSent = promosCount * 1000;
+        const pDelivered = Math.floor(pSent * 0.9);
+        const pRead = Math.floor(pSent * 0.65);
+        const pClicked = Math.floor(pSent * 0.22);
+
+        return {
+          series,
+          customersCount,
+          remindersCount,
+          promosCount,
+          rDelivered,
+          rRead,
+          rFailed,
+          pSent,
+          pDelivered,
+          pRead,
+          pClicked,
+        };
+      }
+
+      const ctx = {};
+      let charts = [];
+      function render() {
+        const days = parseInt(document.getElementById("timeframe").value, 10);
+        const d = buildData(days);
+        const rangeLabel = `Last ${days} days`;
+
+        // KPIs
+        const kpis = [
+          { label: "Customers", value: d.customersCount.toLocaleString() },
+          { label: "Reminders Sent", value: d.remindersCount.toLocaleString() },
+          { label: "Promotions", value: d.promosCount.toLocaleString() },
+          { label: "Delivery Rate", value: "98%" },
+        ];
+        document.getElementById("kpis").innerHTML = kpis
+          .map(
+            (k) => `
+          <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+            <p class="text-sm text-gray-600">${k.label}</p>
+            <p class="text-2xl font-bold text-gray-900">${k.value}</p>
+          </div>`,
+          )
+          .join("");
+
+        // Ranges
+        document.getElementById("customers-range").textContent = rangeLabel;
+        document.getElementById("reminders-range").textContent = rangeLabel;
+        document.getElementById("promotions-range").textContent = rangeLabel;
+        document.getElementById("funnel-range").textContent = rangeLabel;
+
+        // Destroy old charts
+        charts.forEach((c) => c.destroy());
+        charts = [];
+
+        // Customers growth (line)
+        charts.push(
+          new Chart(document.getElementById("customersChart"), {
+            type: "line",
+            data: {
+              labels: d.series.labels,
+              datasets: [
+                {
+                  label: "New Customers",
+                  data: d.series.data,
+                  borderColor: "#48B26F",
+                  backgroundColor: "rgba(72,178,111,.15)",
+                  tension: 0.35,
+                  fill: true,
+                },
+              ],
+            },
+            options: {
+              plugins: { legend: { display: false } },
+              scales: { x: { ticks: { maxTicksLimit: 6 } } },
+            },
+          }),
+        );
+
+        // Reminders status (doughnut)
+        charts.push(
+          new Chart(document.getElementById("remindersChart"), {
+            type: "doughnut",
+            data: {
+              labels: ["Delivered", "Read", "Failed"],
+              datasets: [
+                {
+                  data: [d.rDelivered, d.rRead, d.rFailed],
+                  backgroundColor: ["#86efac", "#48B26F", "#fca5a5"],
+                },
+              ],
+            },
+            options: { plugins: { legend: { position: "bottom" } } },
+          }),
+        );
+
+        // Promotions bar
+        charts.push(
+          new Chart(document.getElementById("promotionsChart"), {
+            type: "bar",
+            data: {
+              labels: ["Sent", "Delivered", "Read", "Clicked"],
+              datasets: [
+                {
+                  data: [d.pSent, d.pDelivered, d.pRead, d.pClicked],
+                  backgroundColor: ["#d1fae5", "#86efac", "#48B26F", "#10b981"],
+                },
+              ],
+            },
+            options: {
+              plugins: { legend: { display: false } },
+              scales: {
+                y: {
+                  ticks: { callback: (v) => Intl.NumberFormat().format(v) },
+                },
+              },
+            },
+          }),
+        );
+
+        // Funnel (horizontal bar)
+        charts.push(
+          new Chart(document.getElementById("funnelChart"), {
+            type: "bar",
+            data: {
+              labels: ["Audience", "Delivered", "Read", "Clicked", "Converted"],
+              datasets: [
+                {
+                  data: [
+                    d.pSent,
+                    d.pDelivered,
+                    d.pRead,
+                    d.pClicked,
+                    Math.floor(d.pClicked * 0.35),
+                  ],
+                  backgroundColor: [
+                    "#e5e7eb",
+                    "#d1fae5",
+                    "#86efac",
+                    "#48B26F",
+                    "#15803d",
+                  ],
+                },
+              ],
+            },
+            options: {
+              indexAxis: "y",
+              plugins: { legend: { display: false } },
+              scales: {
+                x: {
+                  ticks: { callback: (v) => Intl.NumberFormat().format(v) },
+                },
+              },
+            },
+          }),
+        );
+      }
+
+      document.getElementById("timeframe").addEventListener("change", render);
+      render();
+    </script>
+  </body>
+</html>

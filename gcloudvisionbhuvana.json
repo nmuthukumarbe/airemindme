@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "symmetric-sylph-468701-i0",
+  "private_key_id": "96f041dfce57027622a118dbd7b7463e3b6aeda5",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDrgfRh9ZLkecY2\nij/189jAOnLzqx1HdyUT+dR3SawKE6FITV3llnmLobn02n3hlvnAoM4pkSPORfaI\n0LgUiC9kJAerLQUMq+nuw+jEOL66Qtp6QUMtLmnknM7LRCwKxXU87QABeyXdyaoO\nlJwiBwT6wrMr/gFK6+9sKYmPryhwv+sxYBOK4+dFAdREj7/ST16kntCuS6RoIJeU\nio4rQnr3aM1FHWFC3rdekHDbLTIdNVk0fnqsiIv632xCfjml0uNPV9YQPmTOHB4P\nlmVAHSyBDHb44IR4OuizdhJ9Yuz3P9yZyto+8ptXY+3CBa0xmisXN8xKVZiN19C1\nXJ8R6z6fAgMBAAECggEAJ51kjlXQr74MKYB34ddyzmMGkxZlhm/0PLf5lVc/KTLE\nHnVlJgl5yJMbxKQ8KIZM3KowA632Z+w83Ca/0DRYRHALGjAoeUkxwIgTz238Jzi3\np3jy49a62UnHP0noXqd4YRc8uQMOC5CwmmNFIDQuEkBOA0hmz0OAsqEKErFUDCLp\nwbUzUsFxHfORUzh3EqIYyUN31S0f2X0AYdSgPYC12th1MwMllSq7QiCrlo/pjMAo\n/6K3RyV77CtiJx87+gRqq/zFz+1IuzlCB/YcayUbg8nGMzTDz45RISYbc6Y1X0cx\ndX+rqXKj/DHENsUwMoH85yBc21+Dj6KYec2IWQU9AQKBgQD2rzdCGuK3xi+2Tsd+\nDtjF5yAAnuJ/SjNKqJWAYd0cSXVv58b/k4YqosvR4sBFoaScA51FvUekLm0Dk0eC\ndtEA1kLxGivNbTtTKMN5sgDV2EXxIm690NDD23my1+GZp92i+IueTufUPTjrw4iD\nv/zSAOS7tEezbR6dNE+9AYmXlwKBgQD0ZrBRcEP5omGNo9AxKFAPvrJu4lZzXGvF\nVP2NLhCT6i5wymFUHbCZEVHdOS4g8vreoqyoQi9fB1qrIlzp3x1FS/NprqmcwRBq\nRQJgkK0W6soBootADSu1BMaTzxSfWd3vZWaXf99dm7TYLpKM116RuSDQCPLL4cm7\nk30KyFsyOQKBgBSHdGPN9PwyRBo56CQ3fBbMKz+h+Vt6g1Y9PWPXwRzviBRuB4OR\ndWLq9WdcJYAl+Zr6OgZpwCKLsorPoO3ckXwuWJfUA70uz/cVt17TT3p8ayWsJecq\nD5WdGD2n9aBh9fHwGT5tdqGVDr2gIiZEvfeEF4T/ddAazqdqiRBDpn21AoGBAK0N\nzUlNCgTIEvVdCfzUw6PybpwPThGPXowyuvptpLVnu4yH8NTD1Rj9Z48SfvQ7uKFO\nZJ0biDlslqnYwhujrTE1L10knNru5bWpuZ4wsy8n/vObaahn6wvZHtboaXzQAFMT\n5MnfdITuzOXKTGDH2yGqCW7k9y6gaNyV+ZNZ/SEZAoGAbuZSL3iIJ4peiBXsT0rK\nqHHryhy5JoKo5JXBJfv++hd5Vt4ZAskGumHLVezyx8ChdtfGWnekwTGnAui46or7\ngnUcWAAr3/nvLO40GZ6WBX4CIjegfgdN1xiM81iiBiAkJplXcYNAvNNNvz5vF40a\n4capiJ3IVeOE/C+gUuWdvAI=\n-----END PRIVATE KEY-----\n",
+  "client_email": "ailawmate@symmetric-sylph-468701-i0.iam.gserviceaccount.com",
+  "client_id": "108933479241659093410",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ailawmate%40symmetric-sylph-468701-i0.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

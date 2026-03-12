@@ -1,0 +1,165 @@
+<!--
+=========================================================
+* Argon Dashboard 2 - v2.0.4
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard
+* Copyright 2022 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://www.creative-tim.com/license)
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/assets/img/apple-icon.png}">
+    <link rel="icon" type="image/png" th:href="@{web-assets/images/32x32-logo.svg}">
+    <title>
+        AiPixture Login
+    </title>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <!-- Nucleo Icons -->
+    <link th:href="@{/assets/css/nucleo-icons.css}" rel="stylesheet" />
+    <link th:href="@{/assets/css/nucleo-svg.css}" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+
+    <link th:href="@{/assets/css/nucleo-svg.css}" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link id="pagestyle" th:href="@{/assets/css/argon-dashboard.css?v=2.0.4}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+
+
+</head>
+
+<body class="">
+
+
+
+<main class="main-content  mt-0">
+    <section>
+        <div class="page-header min-vh-100">
+            <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 left-0 text-center justify-content-center flex-column">
+                <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column
+                justify-content-center overflow-hidden" th:style="'background-image: url(' + @{/assets/img/login_left.jpeg} + '); background-size: cover;'">
+<!--                    <span class="mask bg-gradient-primary opacity-6"></span>-->
+<!--                    <h4 class="mt-5 text-white font-weight-bolder position-relative">"Attention is the new currency"</h4>-->
+<!--                    <p class="text-white position-relative">The more effortless the writing looks, the more effort the writer actually put into the process.</p>-->
+<!--               -->
+                </div>
+            </div>
+            <div class="container">
+                <div class="row justify-content-end">
+                    <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
+                        <div th:if="${param.error}">
+                            <div class="alert alert-danger">Invalid Email or Password</div>
+                        </div>
+                        <div th:if="${param.logout}">
+                            <div class="alert alert-success"> You have been logged out.</div>
+                        </div>
+                        <div class="card card-plain">
+                            <div class="row px-xl-5 px-sm-4 px-3">
+                                <a href="/" class="justify-content-center text-center">
+                                <svg width="162" height="49" viewBox="0 0 162 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_275_10184)">
+                                        <path d="M49.8143 35.7121H43.1169L42.0433 38.8818H37.4676L43.9605 20.9369H49.0219L55.5147 38.8818H50.8879L49.8143 35.7121ZM48.6895 32.3378L46.4656 25.7683L44.2672 32.3378H48.6895ZM60.2005 23.1353C59.4336 23.1353 58.8031 22.9138 58.3089 22.4707C57.8317 22.0106 57.5931 21.4482 57.5931 20.7836C57.5931 20.1019 57.8317 19.5395 58.3089 19.0964C58.8031 18.6363 59.4336 18.4062 60.2005 18.4062C60.9503 18.4062 61.5638 18.6363 62.041 19.0964C62.5352 19.5395 62.7823 20.1019 62.7823 20.7836C62.7823 21.4482 62.5352 22.0106 62.041 22.4707C61.5638 22.9138 60.9503 23.1353 60.2005 23.1353ZM62.3733 24.6179V38.8818H58.0021V24.6179H62.3733Z" fill="#3F0F7D"/>
+                                        <path d="M79.7283 26.7141C79.7283 27.7536 79.4897 28.7079 79.0125 29.5771C78.5353 30.4292 77.8025 31.1193 76.8141 31.6476C75.8257 32.1759 74.5987 32.4401 73.1331 32.4401H70.4235V38.8818H66.0523V20.9369H73.1331C74.5646 20.9369 75.7746 21.184 76.763 21.6782C77.7514 22.1725 78.4927 22.8541 78.9869 23.7233C79.4812 24.5924 79.7283 25.5893 79.7283 26.7141ZM72.8008 28.9636C73.6359 28.9636 74.2579 28.7676 74.6669 28.3756C75.0759 27.9837 75.2804 27.4298 75.2804 26.7141C75.2804 25.9983 75.0759 25.4445 74.6669 25.0525C74.2579 24.6605 73.6359 24.4646 72.8008 24.4646H70.4235V28.9636H72.8008ZM84.7136 23.1353C83.9467 23.1353 83.3161 22.9138 82.8219 22.4707C82.3448 22.0106 82.1062 21.4482 82.1062 20.7836C82.1062 20.1019 82.3448 19.5395 82.8219 19.0964C83.3161 18.6363 83.9467 18.4062 84.7136 18.4062C85.4634 18.4062 86.0769 18.6363 86.5541 19.0964C87.0483 19.5395 87.2954 20.1019 87.2954 20.7836C87.2954 21.4482 87.0483 22.0106 86.5541 22.4707C86.0769 22.9138 85.4634 23.1353 84.7136 23.1353ZM86.8864 24.6179V38.8818H82.5152V24.6179H86.8864ZM99.001 38.8818L96.2658 34.9196L93.9652 38.8818H89.2361L93.9396 31.5965L89.1083 24.6179H94.0163L96.7515 28.5546L99.0521 24.6179H103.781L99.001 31.801L103.909 38.8818H99.001ZM114.055 35.1753V38.8818H111.831C110.246 38.8818 109.01 38.4984 108.124 37.7315C107.238 36.9476 106.795 35.678 106.795 33.9227V28.2478H105.057V24.6179H106.795V21.1414H111.166V24.6179H114.029V28.2478H111.166V33.9738C111.166 34.3999 111.268 34.7066 111.473 34.8941C111.677 35.0815 112.018 35.1753 112.495 35.1753H114.055ZM131.086 24.6179V38.8818H126.714V36.9391C126.271 37.5696 125.666 38.0809 124.899 38.4728C124.15 38.8478 123.315 39.0352 122.394 39.0352C121.304 39.0352 120.341 38.7966 119.506 38.3195C118.671 37.8253 118.023 37.118 117.563 36.1978C117.103 35.2775 116.873 34.1954 116.873 32.9513V24.6179H121.218V32.3634C121.218 33.3177 121.466 34.059 121.96 34.5873C122.454 35.1156 123.119 35.3798 123.954 35.3798C124.806 35.3798 125.479 35.1156 125.973 34.5873C126.467 34.059 126.714 33.3177 126.714 32.3634V24.6179H131.086ZM139.108 26.9953C139.619 26.2113 140.258 25.5978 141.025 25.1548C141.792 24.6946 142.644 24.4646 143.581 24.4646V29.0914H142.38C141.289 29.0914 140.471 29.33 139.926 29.8071C139.381 30.2673 139.108 31.0853 139.108 32.2611V38.8818H134.737V24.6179H139.108V26.9953ZM159.628 31.5198C159.628 31.9288 159.602 32.3549 159.551 32.798H149.658C149.727 33.6841 150.008 34.3658 150.502 34.843C151.013 35.3031 151.635 35.5331 152.368 35.5331C153.459 35.5331 154.217 35.073 154.643 34.1528H159.295C159.057 35.0901 158.622 35.9336 157.992 36.6835C157.378 37.4333 156.603 38.0212 155.666 38.4473C154.728 38.8733 153.68 39.0863 152.521 39.0863C151.124 39.0863 149.88 38.7881 148.789 38.1916C147.699 37.5952 146.846 36.7431 146.233 35.6354C145.619 34.5277 145.313 33.2325 145.313 31.7499C145.313 30.2673 145.611 28.9721 146.207 27.8644C146.821 26.7567 147.673 25.9046 148.764 25.3081C149.854 24.7117 151.107 24.4134 152.521 24.4134C153.902 24.4134 155.129 24.7031 156.202 25.2826C157.276 25.862 158.111 26.6885 158.708 27.7621C159.321 28.8358 159.628 30.0883 159.628 31.5198ZM155.154 30.3695C155.154 29.6197 154.899 29.0232 154.387 28.5801C153.876 28.137 153.237 27.9155 152.47 27.9155C151.737 27.9155 151.115 28.1285 150.604 28.5546C150.11 28.9806 149.803 29.5856 149.684 30.3695H155.154Z" fill="#913DFD"/>
+                                        <path d="M16.9428 20.8467C12.6441 20.8467 9.14648 24.3441 9.14648 28.643C9.14648 32.9419 12.6439 36.4394 16.9428 36.4394C21.2417 36.4394 24.7392 32.9419 24.7392 28.643C24.7392 24.3441 21.2417 20.8467 16.9428 20.8467ZM16.9428 23.8994C14.328 23.8994 12.1994 26.028 12.1994 28.6429C12.1994 29.0859 11.8411 29.4441 11.3981 29.4441C10.9551 29.4441 10.5969 29.0859 10.5969 28.6429C10.5969 25.1437 13.4437 22.297 16.9428 22.297C17.3858 22.297 17.744 22.6552 17.744 23.0982C17.744 23.5413 17.3859 23.8994 16.9428 23.8994Z" fill="#8A41FD"/>
+                                        <path d="M31.3248 18.2132C29.3918 18.362 27.8637 19.9801 27.8637 21.9512C27.8637 22.46 27.4518 22.8719 26.9431 22.8719C26.4343 22.8719 26.0224 22.46 26.0224 21.9512C26.0224 19.8832 24.3403 18.2011 22.2723 18.2011C21.7635 18.2011 21.3516 17.7892 21.3516 17.2805C21.3516 17.2303 21.3568 17.1818 21.3637 17.1351H11.6225V16.8617C11.6225 16.23 11.1103 15.7178 10.4786 15.7178H7.0348C6.40313 15.7178 5.89091 16.23 5.89091 16.8617V17.1351C2.62878 17.1887 0 19.8504 0 23.1248V34.1588C0 37.4677 2.68239 40.1498 5.99103 40.1498H27.8964C31.2053 40.1498 33.8875 37.4674 33.8875 34.1588V23.1248C33.8875 21.0914 32.8751 19.2951 31.3262 18.2116L31.3248 18.2132ZM16.942 38.0404C11.7591 38.0404 7.54324 33.8247 7.54324 28.6416C7.54324 23.4584 11.7589 19.2428 16.942 19.2428C22.125 19.2428 26.3408 23.4584 26.3408 28.6416C26.3408 33.8247 22.1252 38.0404 16.942 38.0404Z" fill="#3F0F7D"/>
+                                        <path d="M27.5592 6.9183C27.5592 5.23617 28.9229 3.87077 30.6068 3.87077C28.9246 3.87077 27.5592 2.50709 27.5592 0.823242C27.5592 2.50537 26.1956 3.87077 24.5117 3.87077C26.1938 3.87077 27.5592 5.23445 27.5592 6.9183Z" fill="#913DFD"/>
+                                        <path d="M38.7399 13.9893C38.7399 15.6714 37.3762 17.0368 35.6924 17.0368C37.3745 17.0368 38.7399 18.4005 38.7399 20.0843C38.7399 18.4022 40.1036 17.0368 41.7874 17.0368C40.1053 17.0368 38.7399 15.6731 38.7399 13.9893Z" fill="#913DFD"/>
+                                        <path d="M26.9433 21.953C26.9433 19.3727 29.0356 17.2821 31.6141 17.2821C29.0338 17.2821 26.9433 15.1899 26.9433 12.6113C26.9433 15.1916 24.851 17.2821 22.2725 17.2821C24.8527 17.2821 26.9433 19.3744 26.9433 21.953Z" fill="#913DFD"/>
+                                        <path d="M33.4656 18.7018C33.4656 13.9411 37.3248 10.0819 42.0856 10.0819C37.3248 10.0819 33.4656 6.22271 33.4656 1.46191C33.4656 6.22266 29.6065 10.0819 24.8457 10.0819C29.6065 10.0819 33.4656 13.941 33.4656 18.7018Z" fill="#913DFD"/>
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_275_10184">
+                                            <rect width="162" height="48.8824" fill="white"/>
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                                </a>
+                            </div>
+                            <div class="card-header pb-0 text-start">
+                                <h4 class="font-weight-bolder">Sign In</h4>
+                                <p class="mb-0">Enter your email and password to sign in</p>
+                            </div>
+                            <div class="card-body">
+                                <form method="post"
+                                      role="form"
+                                      th:action="@{/login}"
+                                      class="form-horizontal"
+                                >
+                                    <div class="mb-3">
+                                        <input id="username" name="username" type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input id="password" name="password" type="password" class="form-control form-control-lg" placeholder="Password" aria-label="Password">
+                                    </div>
+                                    <!--  <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                                    </div> -->
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-center pt-0 px-lg-2 px-1">
+                                <p class="mb-4 text-sm mx-auto">
+                                    Don't have an account?
+                                    <a th:href="@{/register}" class="text-primary text-gradient font-weight-bold">Signup here</a>
+                                </p>
+                                <p class="mb-4 text-sm mx-auto">
+                                    
+                                    <a th:href="@{/terms}" class="text-primary text-gradient font-weight-bold">Terms and condition</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!--   Core JS Files   -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+<script th:src="@{/assets/js/core/popper.min.js}"></script>
+<script th:src="@{./assets/js/core/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/plugins/perfect-scrollbar.min.js}"></script>
+<script th:src="@{/assets/js/plugins/smooth-scrollbar.min.js}"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+</script>
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<script th:src="@{/assets/js/argon-dashboard.min.js?v=2.0.4}"></script>
+
+</body>
+
+</html>
+
+
+

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "fluent-imprint-468700-k1",
+  "private_key_id": "5bb54a38f0781c064edb685ffa4230cc3af0bc99",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC9YAyVsgO64XsI\nspZ8ebnsBEXZoHWmvskzuBI3zPQCZxls5RWnDxkq30IJl6kWAuLHMs89VLnqHD6/\nAp04ropxanKZBRAfhmYnvBTWbvTiC+9qge5yUCrYwXqAbvJ56Obzxrj0MAFrUn9b\nbExQDCBwusd3w9aa21L2J9x9iUvFFGPHWki7qFLFL6QpoVHyZQbZMQIPiuRImnHQ\n/tm4LOF+PJTH/mVzOGOmVfNMucOjF3bNJwTQxKm7ZcwMVW17bFf13gSgpQLIt66E\nXEwgmV6mfo1n+V3zjqZE+tUSQj9j2/jx9RR8doLEQ3Cm9L2pjChaJ4LQGIuSfLsu\n7Whr8OOLAgMBAAECggEAIBffeh0Fgc3Fnoc5dpXges2MkuGdHqmVioTG3ZsHvUKA\nrhIytbGa18enNt3zY04Q5aZINcIekbzAq3lDcMAvqSHbkvAnN9h8hn5a365FJOvV\n4qxrXwcUA9DiNFLZF+zu+uAyJvvdubTs7W7wjd5IPyKAPF09iNfjeuDtfn7ejuLm\n1DmnxbzIFW6kvvWcFKBhaPZ+9F1wgGxRnA0dM0aYew+a5Xh1P3n6BiatPwfQH5Li\nHKGHoCUUH+vOuQmW6SytQlfoEf4vl6gcTx4WXBD1Dn8BxGUPxObS2pVF52rL7azF\npOE/Ijb4bg7S2kNvjEDw5/FQ9436+7sChOgqEX9jlQKBgQD98AgeBoI9iHjamYnK\nY/K6EOoEkMKWuLxccyt+Ay66t05AliuzPUVd22BlbgpDtPNGDivR+vDvlxKNmr6p\naDtXlixOtFL9Znw9NL82gg4tBGXJGkeJg77uTtScslJU/sI5ommM8csAnzi5Mh1l\nJJ6nUnPW5qne6R10/gsr/uuIzQKBgQC+6ci19srtEYCa8VdjLcQXKT++N0MXUWhG\nwNF/N6do+MkDOzUiw2Y5brLc1Tjq7c6XcWqLjIw7kLG7d9b1zF6eOnE4Tiju5woD\nfG+Vy14p6aQhQ8Cxae5+0uReLuUER74JidEdpC7061q/LQ7mSvJjCKRJvDXVVtfl\n+PMhxt59twKBgQC1d/01B823D3neLe7sNXTWRxQVYyXL9ASXxK4GBVw1jp1bRnXA\nRz71DbrbgUHQlNVs8N+b1UqszTcy/qzV/2i49NaBABh2gfCzBKjI2TQsM4JRrngE\n66NcRfVmbYCswMonycrIMFqz/RTaM9gR2ZOPWzrxDjHC3LByVMHDFQ9Y2QKBgBvX\n0LPpGFNW2CDAzfPi+tQ96dP+D0TZVJHtESCypzHCBt73xZoaUVBS+rcGSdTJdfXU\nTqunhdQyGBm1Mp6Kfcopz9VcYM/m1ikH/uYj0MngD1Xiobm+L1BDxZaO1Eu5gte1\nR9BA37BMmuGC2sdvasZSvlMapedFURtzIVJtxIklAoGBAMu+3g2rW6f7Y4Po/1ki\n90zt5zOw5yh25lshHKxFJlWT8qwPzG0LFWueryvlw3Mke9f5JZ8+N2uyTwb17xNt\nU7NAQRdSYXgbeyGk6Z99LqueJT6sKNzuLTOBoE9U4i6oCPGk9ShGvjYi3vYs6G8Q\n84fX87SACaKZ937ZpdXV6uoe\n-----END PRIVATE KEY-----\n",
+  "client_email": "ailawmat@fluent-imprint-468700-k1.iam.gserviceaccount.com",
+  "client_id": "107917831183222667274",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ailawmat%40fluent-imprint-468700-k1.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
