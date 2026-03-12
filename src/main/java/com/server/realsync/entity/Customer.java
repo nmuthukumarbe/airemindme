@@ -13,13 +13,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "customer",
-       uniqueConstraints = {
-           @UniqueConstraint(name = "uk_customer_account_mobile",
-                   columnNames = {"account_id","mobile"}),
-           @UniqueConstraint(name = "uk_customer_email_mobile",
-                   columnNames = {"email","mobile"})
-       })
+@Table(name = "customer", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_customer_account_mobile", columnNames = { "account_id", "mobile" }),
+        @UniqueConstraint(name = "uk_customer_email_mobile", columnNames = { "email", "mobile" })
+})
 public class Customer {
 
     @Id
@@ -74,57 +71,108 @@ public class Customer {
         updatedAt = LocalDateTime.now();
     }
 
-    public Customer() {}
+    public Customer() {
+    }
 
     // Getters & Setters
 
-    public Integer getId() { return id; }
+    public Integer getId() {
+        return id;
+    }
 
-    public Integer getAccountId() { return accountId; }
+    public Integer getAccountId() {
+        return accountId;
+    }
 
-    public void setAccountId(Integer accountId) { this.accountId = accountId; }
+    public void setAccountId(Integer accountId) {
+        this.accountId = accountId;
+    }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
-    public void setEmail(String email) { this.email = email; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getMobile() { return mobile; }
+    public String getMobile() {
+        return mobile;
+    }
 
-    public void setMobile(String mobile) { this.mobile = mobile; }
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
-    public String getAddress() { return address; }
+    public String getAddress() {
+        return address;
+    }
 
-    public void setAddress(String address) { this.address = address; }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-    public String getCity() { return city; }
+    public String getCity() {
+        return city;
+    }
 
-    public void setCity(String city) { this.city = city; }
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-    public String getState() { return state; }
+    public String getState() {
+        return state;
+    }
 
-    public void setState(String state) { this.state = state; }
+    public void setState(String state) {
+        this.state = state;
+    }
 
-    public String getCountry() { return country; }
+    public String getCountry() {
+        return country;
+    }
 
-    public void setCountry(String country) { this.country = country; }
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-    public LocalDate getDob() { return dob; }
+    public LocalDate getDob() {
+        return dob;
+    }
 
-    public void setDob(LocalDate dob) { this.dob = dob; }
+    public void setDob(LocalDate dob) {
+        this.dob = dob;
+    }
 
-    public LocalDate getWeddingDate() { return weddingDate; }
+    public LocalDate getWeddingDate() {
+        return weddingDate;
+    }
 
-    public void setWeddingDate(LocalDate weddingDate) { this.weddingDate = weddingDate; }
+    public void setWeddingDate(LocalDate weddingDate) {
+        this.weddingDate = weddingDate;
+    }
 
-    public Integer getCustomerGroupId() { return customerGroupId; }
+    public Integer getCustomerGroupId() {
+        return customerGroupId;
+    }
 
-    public void setCustomerGroupId(Integer customerGroupId) { this.customerGroupId = customerGroupId; }
+    public void setCustomerGroupId(Integer customerGroupId) {
+        this.customerGroupId = customerGroupId;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }

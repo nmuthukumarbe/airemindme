@@ -53,7 +53,7 @@ public class HomeController {
 		return "remindme/index.html";
 	}
 
-	@GetMapping({"/login.html", "/signin.html"})
+	@GetMapping({ "/login.html", "/signin.html" })
 	public String getLogin(@RequestParam(value = "error", required = false) String error, Model model) {
 		if ("true".equals(error)) {
 			model.addAttribute("errorMessage", "Invalid username or password");
@@ -75,55 +75,68 @@ public class HomeController {
 
 		return "remindmeui/home";
 	}
-	
+
 	@GetMapping("/customers.html")
 	public String getCustomers(Model model) {
+		Account account = SecurityUtil.getCurrentAccountId();
 
+		List<Customer> customers = customerService.getAllByAccount(account.getId());
+
+		model.addAttribute("customers", customers);
 		return "remindmeui/customers";
 	}
-	
+
+	@PostMapping("/api/customers")
+	@ResponseBody
+	public Customer createCustomer(@RequestBody Customer customer) {
+		Account account = SecurityUtil.getCurrentAccountId();
+		customer.setAccountId(account.getId());
+
+		return customerService.save(customer);
+	}
+
 	@GetMapping("/customer-detail.html")
 	public String getCustomerDetail(Model model) {
 
 		return "remindmeui/customer-detail";
 	}
-	
+
 	@GetMapping("/engagement.html")
 	public String getEngagement(Model model) {
 
 		return "remindmeui/engagement";
 	}
-	
+
 	@GetMapping("/promotions.html")
 	public String getPromotions(Model model) {
 
 		return "remindmeui/promotions";
 	}
-	
+
 	@GetMapping("/reminder-detail.html")
 	public String getReminderDetail(Model model) {
 
 		return "remindmeui/reminder-detail";
 	}
-	
+
 	@GetMapping("/greeting-detail.html")
 	public String getGreetingDetail(Model model) {
 
 		return "remindmeui/greeting-detail";
 	}
-	
+
 	@GetMapping("/promo-landing.html")
 	public String getPromoLanding(Model model) {
 
 		return "remindmeui/promo-landing";
 	}
-	
+
 	@GetMapping("/catalog.html")
 	public String getCatalog(Model model) {
 
 		return "remindmeui/catalog.html";
 	}
-	
+
 	@GetMapping("/reports.html")
 	public String getAdminReport(Model model) {
 
@@ -133,9 +146,9 @@ public class HomeController {
 	@GetMapping("/settings.html")
 	public String getSettings(Model model) {
 
-		//User user = SecurityUtil.getLoggedInUser();
-		//model.addAttribute("userRole", user.getRole().getName());
-		//model.addAttribute("user", user);
+		// User user = SecurityUtil.getLoggedInUser();
+		// model.addAttribute("userRole", user.getRole().getName());
+		// model.addAttribute("user", user);
 		return "remindmeui/settings";
 	}
 
