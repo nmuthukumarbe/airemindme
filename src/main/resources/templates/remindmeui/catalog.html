@@ -1,73 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Catalog - Reminder Me</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-   <!-- Prevent flash before CSS loads -->
+  <!-- Prevent flash before CSS loads -->
   <script>(function () { var t = localStorage.getItem('rm_theme') || 'light'; document.documentElement.setAttribute('data-theme', t); })()</script>
 
   <!-- Theme CSS -->
   <link rel="stylesheet" th:href="@{/css/theme.css}">
   <style>
-    body { font-family: 'Inter', sans-serif; background: #f8f9fb; }
-    ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
-    .tab-active { border-bottom: 2px solid #4f46e5; color: #4f46e5; }
-    .billing-btn.sel { background: #eef2ff; border-color: #4f46e5; color: #4f46e5; }
-    .tmpl-card:hover .tmpl-actions { opacity: 1; }
-    .tmpl-actions { opacity: 0; transition: opacity .2s; }
-    .fade-in { animation: fadeIn .25s ease; }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f9fb;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 4px;
+    }
+
+    .tab-active {
+      border-bottom: 2px solid #4f46e5;
+      color: #4f46e5;
+    }
+
+    .billing-btn.sel {
+      background: #eef2ff;
+      border-color: #4f46e5;
+      color: #4f46e5;
+    }
+
+    .tmpl-card:hover .tmpl-actions {
+      opacity: 1;
+    }
+
+    .tmpl-actions {
+      opacity: 0;
+      transition: opacity .2s;
+    }
+
+    .fade-in {
+      animation: fadeIn .25s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
   </style>
 </head>
+
 <body class="bg-gray-50">
 
   <!-- SHARED SIDEBAR COMPONENT -->
   <div class="hidden md:flex fixed left-0 top-0 h-screen w-56 bg-white border-r border-gray-100 flex-col z-30">
     <div class="px-4 pt-5 pb-3">
       <a href="home.html" class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div>
-        <div><p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p><p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p></div>
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg
+            class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg></div>
+        <div>
+          <p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p>
+        </div>
       </a>
     </div>
     <nav class="flex-1 px-3 py-2 overflow-y-auto space-y-0.5">
-      <a href="home.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-sm font-medium">Home</span></a>
-      <a href="customers.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-sm font-medium">Customers</span></a>
-      <a href="engagement.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-sm font-medium">Engage</span></a>
-      <a href="promotions.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg><span class="text-sm font-medium">Promotions</span></a>
-      <a href="settings.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-medium">Settings</span></a>
+      <a href="home.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg><span class="text-sm font-medium">Home</span></a>
+      <a href="customers.html"
+        class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg><span class="text-sm font-medium">Customers</span></a>
+      <a href="engagement.html"
+        class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg><span class="text-sm font-medium">Engage</span></a>
+      <a href="promotions.html"
+        class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+        </svg><span class="text-sm font-medium">Promotions</span></a>
+      <a href="settings.html"
+        class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg><span class="text-sm font-medium">Settings</span></a>
       <div class="mt-6">
         <p class="px-3 text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-3">Quick Actions</p>
-        <button onclick="openModal('createReminderModal')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><span class="text-sm">Create Reminder</span></button>
-        <button onclick="openPlanModal()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></div><span class="text-sm">Create Plan</span></button>
-        <button onclick="openProductModal()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-violet-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></div><span class="text-sm">Create Product</span></button>
+        <button onclick="openModal('createReminderModal')"
+          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1">
+          <div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"><svg
+              class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg></div><span class="text-sm">Create Reminder</span>
+        </button>
+        <button onclick="openPlanModal()"
+          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1">
+          <div class="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0"><svg
+              class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+            </svg></div><span class="text-sm">Create Plan</span>
+        </button>
+        <button onclick="openProductModal()"
+          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1">
+          <div class="w-7 h-7 rounded-full bg-violet-100 flex items-center justify-center flex-shrink-0"><svg
+              class="w-3.5 h-3.5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg></div><span class="text-sm">Create Product</span>
+        </button>
       </div>
     </nav>
     <div class="px-4 py-4 border-t border-gray-100">
-      <div class="flex items-center gap-3 mb-3"><div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span class="text-white text-sm font-bold">A</span></div><div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p><p class="text-xs text-gray-400 truncate mt-0.5">Acme Financial Services</p></div></div>
-      <button onclick="window.location.href='login.html'" class="flex items-center gap-2 px-1 py-1 text-gray-500 hover:text-red-600 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg><span class="text-sm font-medium">Sign Out</span></button>
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span
+            class="text-white text-sm font-bold">A</span></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p>
+          <p class="text-xs text-gray-400 truncate mt-0.5">Acme Financial Services</p>
+        </div>
+      </div>
+      <button onclick="window.location.href='login.html'"
+        class="flex items-center gap-2 px-1 py-1 text-gray-500 hover:text-red-600 transition"><svg class="w-4 h-4"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg><span class="text-sm font-medium">Sign Out</span></button>
     </div>
   </div>
 
   <!-- MOBILE HEADER -->
-  <div class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-100 z-40 h-14 flex items-center justify-between px-4 shadow-sm">
-    <button onclick="openMobileNav()" class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-600 hover:bg-gray-100 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><span class="text-sm font-bold text-gray-900">Reminder Me</span></div>
-    <button onclick="window.location.href='login.html'" class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 hover:bg-red-50 hover:text-red-500 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg></button>
+  <div
+    class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-100 z-40 h-14 flex items-center justify-between px-4 shadow-sm">
+    <button onclick="openMobileNav()"
+      class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-600 hover:bg-gray-100 transition"><svg
+        class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg></button>
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shadow-sm"><svg
+          class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg></div><span class="text-sm font-bold text-gray-900">Reminder Me</span>
+    </div>
+    <button onclick="window.location.href='login.html'"
+      class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 hover:bg-red-50 hover:text-red-500 transition"><svg
+        class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+      </svg></button>
   </div>
-  <div id="mobileNavBg" class="md:hidden hidden fixed inset-0 bg-black/50 z-[45] backdrop-blur-sm" onclick="closeMobileNav()"></div>
-  <div id="mobileNavDrawer" class="md:hidden fixed top-0 left-0 h-screen w-72 bg-white z-[46] shadow-2xl flex flex-col transition-transform duration-300" style="transform:translateX(-100%)">
-    <div class="px-4 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between flex-shrink-0"><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><div><p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p><p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p></div></div><button onclick="closeMobileNav()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button></div>
+  <div id="mobileNavBg" class="md:hidden hidden fixed inset-0 bg-black/50 z-[45] backdrop-blur-sm"
+    onclick="closeMobileNav()"></div>
+  <div id="mobileNavDrawer"
+    class="md:hidden fixed top-0 left-0 h-screen w-72 bg-white z-[46] shadow-2xl flex flex-col transition-transform duration-300"
+    style="transform:translateX(-100%)">
+    <div class="px-4 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg
+            class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg></div>
+        <div>
+          <p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p>
+        </div>
+      </div><button onclick="closeMobileNav()"
+        class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg
+          class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg></button>
+    </div>
     <nav class="flex-1 px-3 py-3 overflow-y-auto space-y-0.5">
-      <a href="home.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-sm font-semibold">Home</span></a>
-      <a href="customers.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-sm font-semibold">Customers</span></a>
-      <a href="engagement.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-sm font-semibold">Engage</span></a>
-      <a href="promotions.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg><span class="text-sm font-semibold">Promotions</span></a>
-      <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-semibold">Settings</span></a>
+      <a href="home.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg><span class="text-sm font-semibold">Home</span></a>
+      <a href="customers.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg><span class="text-sm font-semibold">Customers</span></a>
+      <a href="engagement.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg><span class="text-sm font-semibold">Engage</span></a>
+      <a href="promotions.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+        </svg><span class="text-sm font-semibold">Promotions</span></a>
+      <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg><span class="text-sm font-semibold">Settings</span></a>
     </nav>
-    <div class="px-3 py-3 border-t border-gray-100 flex-shrink-0"><div class="flex items-center gap-2.5 px-2 py-1.5"><div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span class="text-white text-xs font-bold">A</span></div><div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p><p class="text-[10px] text-gray-400 truncate mt-0.5">Acme Financial Services</p></div></div><button onclick="window.location.href='login.html'" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-gray-500 hover:bg-red-50 hover:text-red-600 mt-1 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg><span class="text-sm font-medium">Sign Out</span></button></div>
+    <div class="px-3 py-3 border-t border-gray-100 flex-shrink-0">
+      <div class="flex items-center gap-2.5 px-2 py-1.5">
+        <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span
+            class="text-white text-xs font-bold">A</span></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p>
+          <p class="text-[10px] text-gray-400 truncate mt-0.5">Acme Financial Services</p>
+        </div>
+      </div><button onclick="window.location.href='login.html'"
+        class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-gray-500 hover:bg-red-50 hover:text-red-600 mt-1 transition"><svg
+          class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg><span class="text-sm font-medium">Sign Out</span></button>
+    </div>
   </div>
 
   <!-- MAIN -->
@@ -75,15 +253,19 @@
 
     <!-- Page Header -->
     <div class="bg-white border-b border-gray-100 px-4 md:px-6 py-4 sticky top-14 md:top-0 z-20">
-      <p class="text-xs text-gray-400 mb-1"><a href="home.html" class="hover:text-indigo-600">Home</a> / <span class="text-gray-700 font-medium">My Catalog</span></p>
+      <p class="text-xs text-gray-400 mb-1"><a href="home.html" class="hover:text-indigo-600">Home</a> / <span
+          class="text-gray-700 font-medium">My Catalog</span></p>
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-xl font-bold text-gray-900">My Catalog</h1>
           <p class="text-sm text-gray-400 mt-0.5">Manage plans, products &amp; message templates for your business</p>
         </div>
         <div id="headerBtn" class="flex gap-2">
-          <button onclick="openPlanModal()" class="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <button onclick="openPlanModal()"
+            class="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
             Create Plan
           </button>
         </div>
@@ -93,22 +275,34 @@
     <div class="px-4 md:px-6 py-5">
 
       <!-- Summary Banner -->
-      <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div
+        class="bg-white border border-gray-100 rounded-2xl shadow-sm p-5 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <p class="text-base font-bold text-gray-900">My Catalog</p>
-          <p class="text-sm text-gray-400 mt-0.5">Manage your plans and products — attach them to reminders, greetings, and promotions sent to your customers.</p>
+          <p class="text-sm text-gray-400 mt-0.5">Manage your plans and products — attach them to reminders, greetings,
+            and promotions sent to your customers.</p>
         </div>
         <div class="flex items-center gap-3 flex-wrap">
           <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 border border-indigo-100">
-            <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
             <span class="text-sm font-semibold text-indigo-700"><span id="planCountBadge">3</span> active plans</span>
           </div>
           <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-violet-50 border border-violet-100">
-            <svg class="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-            <span class="text-sm font-semibold text-violet-700"><span id="productCountBadge">3</span> active products</span>
+            <svg class="w-4 h-4 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+            <span class="text-sm font-semibold text-violet-700"><span id="productCountBadge">3</span> active
+              products</span>
           </div>
           <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-100">
-            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
             <span class="text-sm font-semibold text-emerald-700"><span id="tmplCountBadge">2</span> templates</span>
           </div>
         </div>
@@ -116,17 +310,32 @@
 
       <!-- Tabs -->
       <div class="flex items-center gap-1 border-b border-gray-200 mb-6 overflow-x-auto">
-        <button onclick="switchCatalogTab('plans')" id="ct-plans" class="flex items-center gap-2 px-4 py-3 tab-active text-sm font-semibold transition flex-shrink-0">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-          Plans <span class="ml-1 bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full text-xs font-bold" id="planTabCount">3</span>
+        <button onclick="switchCatalogTab('plans')" id="ct-plans"
+          class="flex items-center gap-2 px-4 py-3 tab-active text-sm font-semibold transition flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          Plans <span class="ml-1 bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full text-xs font-bold"
+            id="planTabCount">3</span>
         </button>
-        <button onclick="switchCatalogTab('products')" id="ct-products" class="flex items-center gap-2 px-4 py-3 border-b-2 border-transparent text-gray-500 text-sm font-semibold hover:text-gray-700 transition flex-shrink-0">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-          Products <span class="ml-1 bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full text-xs font-bold" id="prodTabCount">3</span>
+        <button onclick="switchCatalogTab('products')" id="ct-products"
+          class="flex items-center gap-2 px-4 py-3 border-b-2 border-transparent text-gray-500 text-sm font-semibold hover:text-gray-700 transition flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+          Products <span class="ml-1 bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full text-xs font-bold"
+            id="prodTabCount">3</span>
         </button>
-        <button onclick="switchCatalogTab('templates')" id="ct-templates" class="flex items-center gap-2 px-4 py-3 border-b-2 border-transparent text-gray-500 text-sm font-semibold hover:text-gray-700 transition flex-shrink-0">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-          AI Templates <span class="ml-1 bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full text-xs font-bold" id="tmplTabCount">2</span>
+        <button onclick="switchCatalogTab('templates')" id="ct-templates"
+          class="flex items-center gap-2 px-4 py-3 border-b-2 border-transparent text-gray-500 text-sm font-semibold hover:text-gray-700 transition flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          AI Templates <span class="ml-1 bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-full text-xs font-bold"
+            id="tmplTabCount">2</span>
         </button>
       </div>
 
@@ -134,26 +343,42 @@
       <div id="cp-plans" class="fade-in">
         <div class="flex flex-col md:flex-row items-start md:items-center gap-3 mb-5">
           <div class="relative flex-1 w-full">
-            <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" id="planSearch" oninput="renderPlans()" placeholder="Search plans..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" id="planSearch" oninput="renderPlans()" placeholder="Search plans..."
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <div class="flex items-center gap-2">
             <div class="flex rounded-xl border border-gray-200 overflow-hidden">
-              <button onclick="setPlanFilter('all')" id="pf-all" class="px-4 py-2 text-sm font-semibold bg-indigo-600 text-white">All</button>
-              <button onclick="setPlanFilter('active')" id="pf-active" class="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50">Active</button>
-              <button onclick="setPlanFilter('inactive')" id="pf-inactive" class="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50">Inactive</button>
+              <button onclick="setPlanFilter('all')" id="pf-all"
+                class="px-4 py-2 text-sm font-semibold bg-indigo-600 text-white">All</button>
+              <button onclick="setPlanFilter('active')" id="pf-active"
+                class="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50">Active</button>
+              <button onclick="setPlanFilter('inactive')" id="pf-inactive"
+                class="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50">Inactive</button>
             </div>
-            <button onclick="openPlanModal()" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition shadow-sm">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <button onclick="openPlanModal()"
+              class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition shadow-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
               Create Plan
             </button>
           </div>
         </div>
         <div id="plansGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
         <div id="plansEmpty" class="hidden text-center py-16">
-          <div class="w-16 h-16 rounded-2xl bg-indigo-50 mx-auto mb-4 flex items-center justify-center"><svg class="w-8 h-8 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></div>
+          <div class="w-16 h-16 rounded-2xl bg-indigo-50 mx-auto mb-4 flex items-center justify-center"><svg
+              class="w-8 h-8 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg></div>
           <p class="text-gray-600 font-semibold">No plans found</p>
-          <button onclick="openPlanModal()" class="mt-4 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold">+ Create Plan</button>
+          <button onclick="openPlanModal()"
+            class="mt-4 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold">+ Create Plan</button>
         </div>
       </div>
 
@@ -161,26 +386,43 @@
       <div id="cp-products" class="hidden fade-in">
         <div class="flex flex-col md:flex-row items-start md:items-center gap-3 mb-5">
           <div class="relative flex-1 w-full">
-            <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" id="prodSearch" oninput="renderProducts()" placeholder="Search products, SKU, category..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" id="prodSearch" oninput="renderProducts()"
+              placeholder="Search products, SKU, category..."
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <div class="flex items-center gap-2">
             <div class="flex rounded-xl border border-gray-200 overflow-hidden">
-              <button onclick="setProdFilter('all')" id="prf-all" class="px-4 py-2 text-sm font-semibold bg-indigo-600 text-white">All</button>
-              <button onclick="setProdFilter('active')" id="prf-active" class="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50">Active</button>
-              <button onclick="setProdFilter('inactive')" id="prf-inactive" class="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50">Inactive</button>
+              <button onclick="setProdFilter('all')" id="prf-all"
+                class="px-4 py-2 text-sm font-semibold bg-indigo-600 text-white">All</button>
+              <button onclick="setProdFilter('active')" id="prf-active"
+                class="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50">Active</button>
+              <button onclick="setProdFilter('inactive')" id="prf-inactive"
+                class="px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50">Inactive</button>
             </div>
-            <button onclick="openProductModal()" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition shadow-sm">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <button onclick="openProductModal()"
+              class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition shadow-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
               Create Product
             </button>
           </div>
         </div>
         <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
         <div id="productsEmpty" class="hidden text-center py-16">
-          <div class="w-16 h-16 rounded-2xl bg-violet-50 mx-auto mb-4 flex items-center justify-center"><svg class="w-8 h-8 text-violet-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg></div>
+          <div class="w-16 h-16 rounded-2xl bg-violet-50 mx-auto mb-4 flex items-center justify-center"><svg
+              class="w-8 h-8 text-violet-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg></div>
           <p class="text-gray-600 font-semibold">No products found</p>
-          <button onclick="openProductModal()" class="mt-4 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold">+ Create Product</button>
+          <button onclick="openProductModal()"
+            class="mt-4 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold">+ Create Product</button>
         </div>
       </div>
 
@@ -188,11 +430,19 @@
       <div id="cp-templates" class="hidden fade-in">
         <div class="flex flex-col md:flex-row items-start md:items-center gap-3 mb-5">
           <div class="relative flex-1 w-full">
-            <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" placeholder="Search templates..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" placeholder="Search templates..."
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
-          <button onclick="openTemplateModal()" class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition shadow-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <button onclick="openTemplateModal()"
+            class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition shadow-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
             Create AI Template
           </button>
         </div>
@@ -204,64 +454,98 @@
   <!-- ==================== CREATE PLAN MODAL ==================== -->
   <div id="planModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closePlanModal()"></div>
-    <div class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[94vh] flex flex-col">
-      <div class="flex justify-center pt-3 pb-1 md:hidden"><div class="w-10 h-1 rounded-full bg-gray-200"></div></div>
+    <div
+      class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[94vh] flex flex-col">
+      <div class="flex justify-center pt-3 pb-1 md:hidden">
+        <div class="w-10 h-1 rounded-full bg-gray-200"></div>
+      </div>
       <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100 flex-shrink-0">
         <div>
           <h2 class="text-lg font-bold text-gray-900">New Plan</h2>
           <p class="text-xs text-gray-400 mt-0.5">Create a plan for your customers</p>
         </div>
-        <button onclick="closePlanModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        <button onclick="closePlanModal()"
+          class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg
+            class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg></button>
       </div>
       <div class="overflow-y-auto flex-1 px-6 py-5 space-y-5">
         <!-- Plan Name + Billing Cycle -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <label class="block text-sm font-semibold text-gray-800 mb-2">Plan Name <span class="text-red-500">*</span></label>
-            <input type="text" id="pm_name" placeholder="e.g. Premium SIP" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <label class="block text-sm font-semibold text-gray-800 mb-2">Plan Name <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="pm_name" placeholder="e.g. Premium SIP"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <div>
             <label class="block text-sm font-semibold text-gray-800 mb-2">Billing Cycle</label>
             <div class="grid grid-cols-2 gap-2">
-              <button type="button" onclick="selectBilling('monthly')" id="bc-monthly" class="billing-btn sel px-3 py-2.5 rounded-xl border-2 border-indigo-500 bg-indigo-50 text-sm font-semibold text-indigo-600">Monthly</button>
-              <button type="button" onclick="selectBilling('quarterly')" id="bc-quarterly" class="billing-btn px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600">Quarterly</button>
-              <button type="button" onclick="selectBilling('yearly')" id="bc-yearly" class="billing-btn px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600">Yearly</button>
-              <button type="button" onclick="selectBilling('one-time')" id="bc-one-time" class="billing-btn px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600">One-Time</button>
+              <button type="button" onclick="selectBilling('monthly')" id="bc-monthly"
+                class="billing-btn sel px-3 py-2.5 rounded-xl border-2 border-indigo-500 bg-indigo-50 text-sm font-semibold text-indigo-600">Monthly</button>
+              <button type="button" onclick="selectBilling('quarterly')" id="bc-quarterly"
+                class="billing-btn px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600">Quarterly</button>
+              <button type="button" onclick="selectBilling('yearly')" id="bc-yearly"
+                class="billing-btn px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600">Yearly</button>
+              <button type="button" onclick="selectBilling('one-time')" id="bc-one-time"
+                class="billing-btn px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600">One-Time</button>
             </div>
           </div>
         </div>
 
         <!-- Price -->
         <div>
-          <label class="block text-sm font-semibold text-gray-800 mb-2">Price <span class="text-red-500">*</span></label>
+          <label class="block text-sm font-semibold text-gray-800 mb-2">Price <span
+              class="text-red-500">*</span></label>
           <div class="flex gap-2">
             <div class="relative">
-              <select id="pm_currency" class="appearance-none pl-3 pr-8 py-3 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <option>INR</option><option>USD</option><option>EUR</option><option>GBP</option><option>AED</option><option>SGD</option>
+              <select id="pm_currency"
+                class="appearance-none pl-3 pr-8 py-3 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option>INR</option>
+                <option>USD</option>
+                <option>EUR</option>
+                <option>GBP</option>
+                <option>AED</option>
+                <option>SGD</option>
               </select>
-              <svg class="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              <svg class="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
             </div>
-            <input type="number" id="pm_price" placeholder="0" class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <input type="number" id="pm_price" placeholder="0"
+              class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
         </div>
 
         <!-- Description -->
         <div>
-          <label class="block text-sm font-semibold text-gray-800 mb-2">Description <span class="text-xs text-gray-400 font-normal">(optional)</span></label>
-          <input type="text" id="pm_desc" placeholder="Short description shown in messages" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-semibold text-gray-800 mb-2">Description <span
+              class="text-xs text-gray-400 font-normal">(optional)</span></label>
+          <input type="text" id="pm_desc" placeholder="Short description shown in messages"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
         <!-- Key Features -->
         <div>
-          <label class="block text-sm font-semibold text-gray-800 mb-2">Key Features <span class="text-xs text-gray-400 font-normal">(one per line)</span></label>
-          <textarea id="pm_features" rows="4" placeholder="Monthly SIP starting ₹500&#10;Tax benefits&#10;24×7 support" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
+          <label class="block text-sm font-semibold text-gray-800 mb-2">Key Features <span
+              class="text-xs text-gray-400 font-normal">(one per line)</span></label>
+          <textarea id="pm_features" rows="4" placeholder="Monthly SIP starting ₹500&#10;Tax benefits&#10;24×7 support"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
         </div>
 
         <!-- Image Upload -->
         <div>
-          <label class="block text-sm font-semibold text-gray-800 mb-2">Plan Image <span class="text-xs text-gray-400 font-normal">(optional)</span></label>
-          <div id="planImgZone" class="border-2 border-dashed border-gray-200 rounded-2xl p-5 text-center hover:border-indigo-300 hover:bg-indigo-50/20 transition cursor-pointer" onclick="document.getElementById('planImgInput').click()">
-            <svg class="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <label class="block text-sm font-semibold text-gray-800 mb-2">Plan Image <span
+              class="text-xs text-gray-400 font-normal">(optional)</span></label>
+          <div id="planImgZone"
+            class="border-2 border-dashed border-gray-200 rounded-2xl p-5 text-center hover:border-indigo-300 hover:bg-indigo-50/20 transition cursor-pointer"
+            onclick="document.getElementById('planImgInput').click()">
+            <svg class="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
             <p class="text-sm text-gray-500">Click to upload image</p>
             <p class="text-xs text-gray-400 mt-0.5">PNG, JPG up to 5MB</p>
             <input type="file" id="planImgInput" accept="image/*" class="hidden" onchange="previewPlanImg(this)">
@@ -274,8 +558,11 @@
       </div>
 
       <div class="px-6 pb-6 flex-shrink-0">
-        <button onclick="createPlan()" class="w-full py-4 rounded-2xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition flex items-center justify-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+        <button onclick="createPlan()"
+          class="w-full py-4 rounded-2xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+          </svg>
           Create Plan
         </button>
       </div>
@@ -285,55 +572,94 @@
   <!-- ==================== CREATE PRODUCT MODAL ==================== -->
   <div id="productModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeProductModal()"></div>
-    <div class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[94vh] flex flex-col">
-      <div class="flex justify-center pt-3 pb-1 md:hidden"><div class="w-10 h-1 rounded-full bg-gray-200"></div></div>
+    <div
+      class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[94vh] flex flex-col">
+      <div class="flex justify-center pt-3 pb-1 md:hidden">
+        <div class="w-10 h-1 rounded-full bg-gray-200"></div>
+      </div>
       <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100 flex-shrink-0">
         <div>
           <h2 class="text-lg font-bold text-gray-900">New Product</h2>
           <p class="text-xs text-gray-400 mt-0.5">Add a product to your catalog</p>
         </div>
-        <button onclick="closeProductModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        <button onclick="closeProductModal()"
+          class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg
+            class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg></button>
       </div>
       <div class="overflow-y-auto flex-1 px-6 py-5 space-y-4">
         <div class="grid grid-cols-2 gap-4">
           <div class="col-span-2 md:col-span-1">
-            <label class="block text-sm font-semibold text-gray-800 mb-2">Product Name <span class="text-red-500">*</span></label>
-            <input type="text" id="prd_name" placeholder="e.g. Gold ETF Units" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <label class="block text-sm font-semibold text-gray-800 mb-2">Product Name <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="prd_name" placeholder="e.g. Gold ETF Units"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <div class="col-span-2 md:col-span-1">
-            <label class="block text-sm font-semibold text-gray-800 mb-2">Product ID / SKU <span class="text-red-500">*</span></label>
-            <input type="text" id="prd_sku" placeholder="e.g. GOLD-ETF-001" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <label class="block text-sm font-semibold text-gray-800 mb-2">Product ID / SKU <span
+                class="text-red-500">*</span></label>
+            <input type="text" id="prd_sku" placeholder="e.g. GOLD-ETF-001"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <div>
-            <label class="block text-sm font-semibold text-gray-800 mb-2">Price <span class="text-red-500">*</span></label>
+            <label class="block text-sm font-semibold text-gray-800 mb-2">Price <span
+                class="text-red-500">*</span></label>
             <div class="flex gap-2">
               <div class="relative">
-                <select id="prd_currency" class="appearance-none pl-3 pr-7 py-3 rounded-xl border border-gray-200 bg-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <option>INR</option><option>USD</option><option>EUR</option><option>AED</option>
+                <select id="prd_currency"
+                  class="appearance-none pl-3 pr-7 py-3 rounded-xl border border-gray-200 bg-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option>INR</option>
+                  <option>USD</option>
+                  <option>EUR</option>
+                  <option>AED</option>
                 </select>
-                <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
               </div>
-              <input type="number" id="prd_price" placeholder="0" class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <input type="number" id="prd_price" placeholder="0"
+                class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
           </div>
           <div>
             <label class="block text-sm font-semibold text-gray-800 mb-2">Category</label>
             <div class="relative">
-              <select id="prd_category" class="appearance-none w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <option>Investments</option><option>Insurance</option><option>Fixed Income</option><option>Loans</option><option>Credit Cards</option><option>Gold & Jewellery</option><option>Real Estate</option><option>General</option>
+              <select id="prd_category"
+                class="appearance-none w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option>Investments</option>
+                <option>Insurance</option>
+                <option>Fixed Income</option>
+                <option>Loans</option>
+                <option>Credit Cards</option>
+                <option>Gold & Jewellery</option>
+                <option>Real Estate</option>
+                <option>General</option>
               </select>
-              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
             </div>
           </div>
         </div>
         <div>
-          <label class="block text-sm font-semibold text-gray-800 mb-2">Description <span class="text-xs text-gray-400 font-normal">(optional)</span></label>
-          <input type="text" id="prd_desc" placeholder="Short product description" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-semibold text-gray-800 mb-2">Description <span
+              class="text-xs text-gray-400 font-normal">(optional)</span></label>
+          <input type="text" id="prd_desc" placeholder="Short product description"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
         <div>
-          <label class="block text-sm font-semibold text-gray-800 mb-2">Product Image <span class="text-xs text-gray-400 font-normal">(optional)</span></label>
-          <div id="prodImgZone" class="border-2 border-dashed border-indigo-200 rounded-2xl p-6 text-center hover:border-indigo-400 hover:bg-indigo-50/20 transition cursor-pointer" onclick="document.getElementById('prodImgInput').click()">
-            <svg class="w-8 h-8 text-indigo-300 mx-auto mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <label class="block text-sm font-semibold text-gray-800 mb-2">Product Image <span
+              class="text-xs text-gray-400 font-normal">(optional)</span></label>
+          <div id="prodImgZone"
+            class="border-2 border-dashed border-indigo-200 rounded-2xl p-6 text-center hover:border-indigo-400 hover:bg-indigo-50/20 transition cursor-pointer"
+            onclick="document.getElementById('prodImgInput').click()">
+            <svg class="w-8 h-8 text-indigo-300 mx-auto mb-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
             <p class="text-sm font-medium text-gray-500">Click to upload image</p>
             <p class="text-xs text-gray-400 mt-0.5">PNG, JPG up to 5MB</p>
             <input type="file" id="prodImgInput" accept="image/*" class="hidden" onchange="previewProdImg(this)">
@@ -345,8 +671,11 @@
         </div>
       </div>
       <div class="px-6 pb-6 flex-shrink-0">
-        <button onclick="createProduct()" class="w-full py-4 rounded-2xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition flex items-center justify-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+        <button onclick="createProduct()"
+          class="w-full py-4 rounded-2xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+          </svg>
           Create Product
         </button>
       </div>
@@ -356,64 +685,117 @@
   <!-- ==================== CREATE AI TEMPLATE MODAL ==================== -->
   <div id="templateModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeTemplateModal()"></div>
-    <div class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[94vh] flex flex-col">
-      <div class="flex justify-center pt-3 pb-1 md:hidden"><div class="w-10 h-1 rounded-full bg-gray-200"></div></div>
+    <div
+      class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[94vh] flex flex-col">
+      <div class="flex justify-center pt-3 pb-1 md:hidden">
+        <div class="w-10 h-1 rounded-full bg-gray-200"></div>
+      </div>
       <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100 flex-shrink-0">
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center"><svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
-          <div><h2 class="text-lg font-bold text-gray-900">New AI Template</h2><p class="text-xs text-gray-400">Create a reusable message template</p></div>
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center"><svg
+              class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg></div>
+          <div>
+            <h2 class="text-lg font-bold text-gray-900">New AI Template</h2>
+            <p class="text-xs text-gray-400">Create a reusable message template</p>
+          </div>
         </div>
-        <button onclick="closeTemplateModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        <button onclick="closeTemplateModal()"
+          class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg
+            class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg></button>
       </div>
       <div class="overflow-y-auto flex-1 px-6 py-5 space-y-4">
         <div>
-          <label class="block text-sm font-semibold text-gray-800 mb-2">Template Title <span class="text-red-500">*</span></label>
-          <input type="text" id="tm_title" placeholder="e.g. Monthly Payment Reminder" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          <label class="block text-sm font-semibold text-gray-800 mb-2">Template Title <span
+              class="text-red-500">*</span></label>
+          <input type="text" id="tm_title" placeholder="e.g. Monthly Payment Reminder"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
         </div>
         <div>
           <label class="block text-sm font-semibold text-gray-800 mb-2">Category / Use Case</label>
           <div class="relative">
-            <select id="tm_category" class="appearance-none w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-              <option>Payment Reminder</option><option>Festival Greeting</option><option>Promotion Announcement</option><option>Birthday Wish</option><option>Anniversary</option><option>Policy Renewal</option><option>General</option>
+            <select id="tm_category"
+              class="appearance-none w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              <option>Payment Reminder</option>
+              <option>Festival Greeting</option>
+              <option>Promotion Announcement</option>
+              <option>Birthday Wish</option>
+              <option>Anniversary</option>
+              <option>Policy Renewal</option>
+              <option>General</option>
             </select>
-            <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
           </div>
         </div>
         <div>
-          <label class="block text-sm font-semibold text-gray-800 mb-2">Brief Description <span class="text-xs text-gray-400 font-normal">(helps generate better content)</span></label>
-          <textarea id="tm_desc" rows="3" placeholder="Describe the purpose of this template, tone, key info to include..." class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
+          <label class="block text-sm font-semibold text-gray-800 mb-2">Brief Description <span
+              class="text-xs text-gray-400 font-normal">(helps generate better content)</span></label>
+          <textarea id="tm_desc" rows="3"
+            placeholder="Describe the purpose of this template, tone, key info to include..."
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
         </div>
         <div>
-          <label class="block text-sm font-semibold text-gray-800 mb-2">Template Image <span class="text-xs text-gray-400 font-normal">(optional)</span></label>
-          <div class="border-2 border-dashed border-emerald-200 rounded-2xl p-4 text-center hover:border-emerald-400 cursor-pointer" onclick="document.getElementById('tmImgInput').click()">
-            <svg class="w-7 h-7 text-emerald-300 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <label class="block text-sm font-semibold text-gray-800 mb-2">Template Image <span
+              class="text-xs text-gray-400 font-normal">(optional)</span></label>
+          <div
+            class="border-2 border-dashed border-emerald-200 rounded-2xl p-4 text-center hover:border-emerald-400 cursor-pointer"
+            onclick="document.getElementById('tmImgInput').click()">
+            <svg class="w-7 h-7 text-emerald-300 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
             <p class="text-xs text-gray-400">Click to upload (PNG, JPG)</p>
             <input type="file" id="tmImgInput" accept="image/*" class="hidden">
           </div>
         </div>
         <div>
           <div class="flex items-center justify-between mb-2">
-            <label class="text-sm font-semibold text-gray-800">Message Content <span class="text-red-500">*</span></label>
-            <button onclick="generateTemplateContent()" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold hover:bg-emerald-100 transition">
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <label class="text-sm font-semibold text-gray-800">Message Content <span
+                class="text-red-500">*</span></label>
+            <button onclick="generateTemplateContent()"
+              class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold hover:bg-emerald-100 transition">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
               Generate Content
             </button>
           </div>
-          <textarea id="tm_content" rows="6" placeholder="Your template message will appear here..." class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
-          <p class="text-xs text-gray-400 mt-1">Use <code class="bg-gray-100 px-1 rounded">{customer_name}</code>, <code class="bg-gray-100 px-1 rounded">{amount}</code>, <code class="bg-gray-100 px-1 rounded">{due_date}</code> as placeholders</p>
+          <textarea id="tm_content" rows="6" placeholder="Your template message will appear here..."
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
+          <p class="text-xs text-gray-400 mt-1">Use <code class="bg-gray-100 px-1 rounded">{customer_name}</code>, <code
+              class="bg-gray-100 px-1 rounded">{amount}</code>, <code class="bg-gray-100 px-1 rounded">{due_date}</code>
+            as placeholders</p>
         </div>
         <div>
           <label class="block text-sm font-semibold text-gray-800 mb-2">Channels</label>
           <div class="flex gap-2">
-            <label class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50"><input type="checkbox" id="tm_wa" checked class="accent-green-500 w-4 h-4 rounded"><span class="text-sm text-gray-700">WhatsApp</span></label>
-            <label class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50"><input type="checkbox" id="tm_sms" class="accent-blue-500 w-4 h-4 rounded"><span class="text-sm text-gray-700">SMS</span></label>
-            <label class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50"><input type="checkbox" id="tm_email" class="accent-violet-500 w-4 h-4 rounded"><span class="text-sm text-gray-700">Email</span></label>
+            <label
+              class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50"><input
+                type="checkbox" id="tm_wa" checked class="accent-green-500 w-4 h-4 rounded"><span
+                class="text-sm text-gray-700">WhatsApp</span></label>
+            <label
+              class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50"><input
+                type="checkbox" id="tm_sms" class="accent-blue-500 w-4 h-4 rounded"><span
+                class="text-sm text-gray-700">SMS</span></label>
+            <label
+              class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50"><input
+                type="checkbox" id="tm_email" class="accent-violet-500 w-4 h-4 rounded"><span
+                class="text-sm text-gray-700">Email</span></label>
           </div>
         </div>
       </div>
       <div class="px-6 pb-6 flex-shrink-0">
-        <button onclick="createTemplate()" class="w-full py-4 rounded-2xl bg-emerald-600 text-white font-bold text-sm hover:bg-emerald-700 transition flex items-center justify-center gap-2">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+        <button onclick="createTemplate()"
+          class="w-full py-4 rounded-2xl bg-emerald-600 text-white font-bold text-sm hover:bg-emerald-700 transition flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+          </svg>
           Save AI Template
         </button>
       </div>
@@ -421,161 +803,477 @@
   </div>
 
   <!-- Bottom Nav Mobile -->
-  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-1 pb-2 pt-1 flex items-end justify-around z-30">
-    <a href="home.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-[10px] font-medium">Home</span></a>
-    <a href="customers.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-[10px] font-medium">Customers</span></a>
+  <div
+    class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-1 pb-2 pt-1 flex items-end justify-around z-30">
+    <a href="home.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5"
+        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg><span class="text-[10px] font-medium">Home</span></a>
+    <a href="customers.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5"
+        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg><span class="text-[10px] font-medium">Customers</span></a>
     <!-- FAB Center -->
     <div class="relative flex flex-col items-center" style="margin-bottom:8px">
-      <button onclick="openPlanModal()" class="w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-300 -mt-5 transition-transform active:scale-95">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+      <button onclick="openPlanModal()"
+        class="w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-300 -mt-5 transition-transform active:scale-95">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
       </button>
       <span class="text-[10px] font-medium text-indigo-600 mt-0.5">Add</span>
     </div>
-    <a href="engagement.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-[10px] font-medium">Engage</span></a>
-    <a href="settings.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg><span class="text-[10px] font-medium">Settings</span></a>
+    <a href="engagement.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5"
+        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg><span class="text-[10px] font-medium">Engage</span></a>
+    <a href="settings.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5"
+        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+      </svg><span class="text-[10px] font-medium">Settings</span></a>
   </div>
 
 <script>
-// ===== DATA (shared via localStorage) =====
-const billingLabels = { monthly:'Monthly', quarterly:'Quarterly', yearly:'Yearly', 'one-time':'One-Time' };
-const currencySymbols = { INR:'₹', USD:'$', EUR:'€', GBP:'£', AED:'AED ', SGD:'S$' };
+  // =====================================================================
+//  CATALOG.HTML  —  Plans JS patch
+//  Replace the entire <script> block in catalog.html with this content
+// =====================================================================
 
-let plans = JSON.parse(localStorage.getItem('rm_plans') || 'null') || [
-  { id:1, name:'Basic SIP Plan', billing:'monthly', currency:'INR', price:500, desc:'Start your investment journey with a low monthly SIP', features:['Monthly SIP starting ₹500','ELSS tax benefits','Online portfolio tracking','24×7 support'], status:'active', created:'2024-02-01', img:'' },
-  { id:2, name:'Wealth Builder Pro', billing:'monthly', currency:'INR', price:5000, desc:'Premium wealth management with dedicated advisory', features:['Dedicated relationship manager','Quarterly portfolio review','Tax planning','Rebalancing alerts','Priority support'], status:'active', created:'2024-02-15', img:'' },
-  { id:3, name:'Term Life Cover', billing:'yearly', currency:'INR', price:999, desc:'₹1 Crore life cover at just ₹999/year', features:['₹1 Cr life cover','Instant online policy','No medicals needed','Nominee management'], status:'active', created:'2024-03-10', img:'' },
-];
-let products = JSON.parse(localStorage.getItem('rm_products') || 'null') || [
-  { id:1, name:'Gold ETF Units', sku:'GOLD-ETF-001', category:'Investments', currency:'INR', price:4850, desc:'Sovereign Gold Bond – digital gold investment backed by RBI', status:'active', created:'2024-02-26', img:'' },
-  { id:2, name:'ULIP Standard Plan', sku:'ULIP-STD-002', category:'Insurance', currency:'INR', price:12000, desc:'Unit Linked Insurance Plan with market-linked returns', status:'active', created:'2024-03-05', img:'' },
-  { id:3, name:'Corporate FD', sku:'FD-CORP-003', category:'Fixed Income', currency:'INR', price:10000, desc:'Corporate Fixed Deposit – 8.5% p.a. for 12 months', status:'active', created:'2024-03-20', img:'' },
-];
-let templates = JSON.parse(localStorage.getItem('rm_templates') || 'null') || [
-  { id:1, title:'Monthly Payment Reminder', category:'Payment Reminder', desc:'Friendly monthly payment reminder with amount and due date', content:'Hi {customer_name}! 👋\n\nThis is a friendly reminder that your {plan_name} payment of {amount} is due on {due_date}.\n\nPlease make the payment at your earliest convenience to avoid late fees.\n\nFor any queries, contact us at {business_phone}.\n\nThank you! 🙏', channels:['WhatsApp'], created:'2024-03-01' },
-  { id:2, title:'Festival Greeting + Offer', category:'Festival Greeting', desc:'Seasonal festival greetings with a special promotional offer', content:'🎉 Warm {festival} greetings, {customer_name}!\n\nOn this auspicious occasion, we have a special offer just for you:\n✨ {offer_details}\n\nValid till: {offer_expiry}\n\nClick here to explore: {promo_link}\n\nWith best wishes,\n{business_name}', channels:['WhatsApp', 'SMS'], created:'2024-03-05' },
-];
+const billingLabels    = { monthly: 'Monthly', quarterly: 'Quarterly', yearly: 'Yearly', 'one-time': 'One-Time' };
+const currencySymbols  = { INR: '₹', USD: '$', EUR: '€', GBP: '£', AED: 'AED ', SGD: 'S$' };
 
-// Save to localStorage
+// ── local copies (products & templates still use localStorage) ──────
+let plans     = [];
+let products  = JSON.parse(localStorage.getItem('rm_products')  || 'null') || [ /* default products … */ ];
+let templates = JSON.parse(localStorage.getItem('rm_templates') || 'null') || [ /* default templates … */ ];
+
 function saveData() {
-  localStorage.setItem('rm_plans', JSON.stringify(plans));
-  localStorage.setItem('rm_products', JSON.stringify(products));
+  localStorage.setItem('rm_products',  JSON.stringify(products));
   localStorage.setItem('rm_templates', JSON.stringify(templates));
 }
 
-// ===== FILTERING =====
+// ── filter state ─────────────────────────────────────────────────────
 let planFilter = 'all';
 let prodFilter = 'all';
 
 function setPlanFilter(f) {
   planFilter = f;
   ['all','active','inactive'].forEach(x => {
-    const b = document.getElementById('pf-'+x);
-    b.className = x===f ? 'px-4 py-2 text-sm font-semibold bg-indigo-600 text-white' : 'px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50';
+    const b = document.getElementById('pf-' + x);
+    b.className = x === f
+      ? 'px-4 py-2 text-sm font-semibold bg-indigo-600 text-white'
+      : 'px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50';
   });
   renderPlans();
 }
+
 function setProdFilter(f) {
   prodFilter = f;
   ['all','active','inactive'].forEach(x => {
-    const b = document.getElementById('prf-'+x);
-    b.className = x===f ? 'px-4 py-2 text-sm font-semibold bg-indigo-600 text-white' : 'px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50';
+    const b = document.getElementById('prf-' + x);
+    b.className = x === f
+      ? 'px-4 py-2 text-sm font-semibold bg-indigo-600 text-white'
+      : 'px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50';
   });
   renderProducts();
 }
 
-// ===== RENDER PLANS =====
+// =====================================================================
+//  PLANS — API helpers
+// =====================================================================
+
+/** Load all plans from the server and re-render */
+function loadPlans() {
+  fetch('/api/catalog/plans')
+    .then(r => r.json())
+    .then(data => { plans = data; renderPlans(); })
+    .catch(() => showToast('Failed to load plans', 'error'));
+}
+
+/** Render the plans grid */
 function renderPlans() {
-  const q = (document.getElementById('planSearch')?.value || '').toLowerCase();
-  let filtered = plans.filter(p =>
-    (planFilter==='all' || p.status===planFilter) &&
-    (p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))
+  const q        = (document.getElementById('planSearch')?.value || '').toLowerCase();
+  const filtered = plans.filter(p =>
+    (planFilter === 'all' || p.status === planFilter) &&
+    ((p.name  || '').toLowerCase().includes(q) ||
+     (p.description || '').toLowerCase().includes(q))
   );
-  const grid = document.getElementById('plansGrid');
+
+  document.getElementById('planTabCount').textContent   = plans.length;
+  document.getElementById('planCountBadge').textContent = plans.filter(p => p.status === 'active').length;
+
+  const grid  = document.getElementById('plansGrid');
   const empty = document.getElementById('plansEmpty');
-  document.getElementById('planTabCount').textContent = plans.length;
-  document.getElementById('planCountBadge').textContent = plans.filter(p=>p.status==='active').length;
-  if (!filtered.length) { grid.innerHTML=''; empty.classList.remove('hidden'); return; }
+
+  if (!filtered.length) { grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
-  const sym = (p) => currencySymbols[p.currency] || '₹';
+
+  const sym = p => currencySymbols[p.currency] || '₹';
+
   grid.innerHTML = filtered.map(p => `
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition relative group">
       ${p.img ? `<img src="${p.img}" class="w-full h-24 object-cover rounded-xl mb-4 border border-gray-100">` : ''}
       <div class="flex items-start justify-between mb-2">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-indigo-100 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2
+                   M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
           </div>
           <div>
             <p class="text-sm font-bold text-gray-900">${p.name}</p>
             <div class="flex items-center gap-1.5 mt-0.5">
-              <span class="text-sm font-bold text-indigo-600">${sym(p)}${p.price.toLocaleString()}</span>
-              <span class="text-xs text-gray-400">${billingLabels[p.billing]}</span>
+              <span class="text-sm font-bold text-indigo-600">${sym(p)}${Number(p.price || 0).toLocaleString()}</span>
+              <span class="text-xs text-gray-400">${billingLabels[p.billingCycle] || p.billingCycle || ''}</span>
             </div>
           </div>
         </div>
+        <!-- action buttons (visible on hover) -->
         <div class="flex gap-1.5 opacity-0 group-hover:opacity-100 transition">
-          <button onclick="editPlan(${p.id})" class="w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
-          <button onclick="deletePlan(${p.id})" class="w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+          <button onclick="openPlanModal(${p.id})"
+            class="w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center
+                   text-gray-400 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50"
+            title="Edit">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536
+                   L6.5 21.036H3v-3.572L16.732 3.732z"/>
+            </svg>
+          </button>
+          <button onclick="deletePlan(${p.id})"
+            class="w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center
+                   text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50"
+            title="Delete">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858
+                   L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+          </button>
         </div>
       </div>
-      ${p.desc ? `<p class="text-xs text-gray-500 mb-3 leading-relaxed">${p.desc}</p>` : ''}
-      ${p.features?.length ? `<div class="flex flex-wrap gap-1.5 mb-3">${p.features.map(f=>`<span class="text-[11px] text-indigo-600 font-medium flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>${f}</span>`).join('')}</div>` : ''}
+
+      ${p.description ? `<p class="text-xs text-gray-500 mb-3 leading-relaxed">${p.description}</p>` : ''}
+
+      ${buildFeatureTags(p.features)}
+
       <div class="flex items-center justify-between mt-2 pt-3 border-t border-gray-50">
-        <span class="text-[10px] text-gray-300">Created ${p.created}</span>
-        <span class="text-xs font-bold ${p.status==='active'?'text-emerald-500':'text-gray-400'}">${p.status==='active'?'Active':'Inactive'}</span>
+        <span class="text-[10px] text-gray-300">
+          Created ${p.createdAt ? p.createdAt.split('T')[0] : (p.created || '')}
+        </span>
+        <span class="text-xs font-bold ${p.status === 'active' ? 'text-emerald-500' : 'text-gray-400'}">
+          ${p.status === 'active' ? 'Active' : 'Inactive'}
+        </span>
       </div>
     </div>`).join('');
 }
 
-// ===== RENDER PRODUCTS =====
+/**
+ * features can come back as:
+ *   - a real Java List<String>  → JSON array
+ *   - a newline-delimited string (if you store it raw)
+ */
+function buildFeatureTags(features) {
+  let list = [];
+  if (Array.isArray(features))       list = features;
+  else if (typeof features === 'string' && features.trim())
+    list = features.split('\n').map(s => s.trim()).filter(Boolean);
+  if (!list.length) return '';
+  return `<div class="flex flex-wrap gap-1.5 mb-3">
+    ${list.map(f => `
+      <span class="text-[11px] text-indigo-600 font-medium flex items-center gap-1">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+        </svg>${f}
+      </span>`).join('')}
+  </div>`;
+}
+
+// =====================================================================
+//  PLAN MODAL  — create OR edit
+// =====================================================================
+
+let currentBilling = 'monthly';
+let editPlanId     = null;   // null = create mode, number = edit mode
+
+function openPlanModal(id) {
+  editPlanId = id || null;
+
+  // reset image
+  document.getElementById('planImgPreview').classList.add('hidden');
+  document.getElementById('planImgZone').classList.remove('hidden');
+  document.getElementById('planImgInput').value = '';
+
+  if (editPlanId) {
+    // ── EDIT MODE ─────────────────────────────────────────────────
+    const p = plans.find(x => x.id === editPlanId);
+    if (!p) return;
+
+    document.getElementById('pm_name').value     = p.name        || '';
+    document.getElementById('pm_price').value    = p.price       || '';
+    document.getElementById('pm_desc').value     = p.description || '';
+    document.getElementById('pm_currency').value = p.currency    || 'INR';
+
+    // features: array → newline string
+    const feats = Array.isArray(p.features)
+      ? p.features.join('\n')
+      : (p.features || '');
+    document.getElementById('pm_features').value = feats;
+
+    selectBilling(p.billingCycle || 'monthly');
+
+    // update modal title & button
+    document.querySelector('#planModal h2').textContent    = 'Edit Plan';
+    document.querySelector('#planModal button[onclick="createPlan()"]').innerHTML =
+      `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+       </svg> Save Changes`;
+
+  } else {
+    // ── CREATE MODE ───────────────────────────────────────────────
+    document.getElementById('pm_name').value     = '';
+    document.getElementById('pm_price').value    = '';
+    document.getElementById('pm_desc').value     = '';
+    document.getElementById('pm_features').value = '';
+    selectBilling('monthly');
+
+    document.querySelector('#planModal h2').textContent    = 'New Plan';
+    document.querySelector('#planModal button[onclick="createPlan()"]').innerHTML =
+      `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+       </svg> Create Plan`;
+  }
+
+  document.getElementById('planModal').classList.remove('hidden');
+}
+
+function closePlanModal() {
+  document.getElementById('planModal').classList.add('hidden');
+}
+
+/** Called by both Create button and Save Changes button */
+function createPlan() {
+  const name  = document.getElementById('pm_name').value.trim();
+  const price = document.getElementById('pm_price').value;
+  if (!name || !price) { showToast('Plan name and price are required', 'error'); return; }
+
+  // features: newline string → array
+  const featuresRaw = document.getElementById('pm_features').value.trim();
+ const features = featuresRaw;   
+
+  const payload = {
+    name,
+    billingCycle : currentBilling,
+    currency     : document.getElementById('pm_currency').value,
+    price        : parseFloat(price) || 0,
+    description  : document.getElementById('pm_desc').value.trim(),
+    features,
+    status       : 'active'
+  };
+
+  const isEdit  = editPlanId !== null;
+  const url     = isEdit ? `/api/catalog/plans/${editPlanId}` : '/api/catalog/plans';
+  const method  = isEdit ? 'PUT' : 'POST';
+
+  fetch(url, {
+    method,
+    headers: { 'Content-Type': 'application/json' },
+    body   : JSON.stringify(payload)
+  })
+  .then(r => {
+    if (!r.ok) throw new Error('Server error ' + r.status);
+    return r.json();
+  })
+  .then(() => {
+    showToast(isEdit ? 'Plan updated!' : 'Plan created!', 'success');
+    closePlanModal();
+    loadPlans();
+  })
+  .catch(err => showToast('Error: ' + err.message, 'error'));
+}
+
+function deletePlan(id) {
+  if (!confirm('Delete this plan?')) return;
+  fetch(`/api/catalog/plans/${id}`, { method: 'DELETE' })
+    .then(r => {
+      if (!r.ok) throw new Error('Server error ' + r.status);
+      showToast('Plan deleted', 'success');
+      loadPlans();
+    })
+    .catch(err => showToast('Error: ' + err.message, 'error'));
+}
+
+// ── billing cycle selector ────────────────────────────────────────────
+function selectBilling(b) {
+  currentBilling = b;
+  ['monthly','quarterly','yearly','one-time'].forEach(x => {
+    const btn = document.getElementById('bc-' + x);
+    if (!btn) return;
+    if (x === b) {
+      btn.classList.add('sel');
+      btn.classList.remove('border-gray-200','text-gray-600');
+    } else {
+      btn.classList.remove('sel','border-indigo-500','bg-indigo-50','text-indigo-600');
+      btn.classList.add('border-gray-200','text-gray-600');
+    }
+  });
+}
+
+// ── plan image preview ────────────────────────────────────────────────
+function previewPlanImg(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('planImgThumb').src = e.target.result;
+      document.getElementById('planImgPreview').classList.remove('hidden');
+      document.getElementById('planImgZone').classList.add('hidden');
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+function clearPlanImg() {
+  document.getElementById('planImgInput').value = '';
+  document.getElementById('planImgPreview').classList.add('hidden');
+  document.getElementById('planImgZone').classList.remove('hidden');
+}
+
+// =====================================================================
+//  PRODUCTS  (localStorage — no API yet)
+// =====================================================================
+
 function renderProducts() {
-  const q = (document.getElementById('prodSearch')?.value || '').toLowerCase();
-  let filtered = products.filter(p =>
-    (prodFilter==='all' || p.status===prodFilter) &&
-    (p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))
+  const q        = (document.getElementById('prodSearch')?.value || '').toLowerCase();
+  const filtered = products.filter(p =>
+    (prodFilter === 'all' || p.status === prodFilter) &&
+    ((p.name     || '').toLowerCase().includes(q) ||
+     (p.sku      || '').toLowerCase().includes(q) ||
+     (p.category || '').toLowerCase().includes(q))
   );
-  const grid = document.getElementById('productsGrid');
+
+  document.getElementById('prodTabCount').textContent       = products.length;
+  document.getElementById('productCountBadge').textContent  = products.filter(p => p.status === 'active').length;
+
+  const grid  = document.getElementById('productsGrid');
   const empty = document.getElementById('productsEmpty');
-  document.getElementById('prodTabCount').textContent = products.length;
-  document.getElementById('productCountBadge').textContent = products.filter(p=>p.status==='active').length;
-  if (!filtered.length) { grid.innerHTML=''; empty.classList.remove('hidden'); return; }
+  if (!filtered.length) { grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
-  const sym = (p) => currencySymbols[p.currency] || '₹';
-  const catColors = { Investments:'bg-blue-50 text-blue-700', Insurance:'bg-emerald-50 text-emerald-700', 'Fixed Income':'bg-violet-50 text-violet-700', Loans:'bg-orange-50 text-orange-700', 'Gold & Jewellery':'bg-yellow-50 text-yellow-700', General:'bg-gray-100 text-gray-600' };
+
+  const sym = p => currencySymbols[p.currency] || '₹';
+  const catColors = {
+    Investments: 'bg-blue-50 text-blue-700', Insurance: 'bg-emerald-50 text-emerald-700',
+    'Fixed Income': 'bg-violet-50 text-violet-700', Loans: 'bg-orange-50 text-orange-700',
+    'Gold & Jewellery': 'bg-yellow-50 text-yellow-700', General: 'bg-gray-100 text-gray-600'
+  };
+
   grid.innerHTML = filtered.map(p => {
     const catCls = catColors[p.category] || 'bg-gray-100 text-gray-600';
     return `
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition relative group">
       ${p.img ? `<img src="${p.img}" class="w-full h-24 object-cover rounded-xl mb-4 border border-gray-100">` : ''}
       <div class="flex justify-end gap-1.5 absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition">
-        <button onclick="deleteProduct(${p.id})" class="w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+        <button onclick="deleteProduct(${p.id})"
+          class="w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center
+                 text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858
+                 L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+        </button>
       </div>
       <div class="mb-3">
         <div class="w-9 h-9 rounded-xl bg-violet-100 flex items-center justify-center mb-2.5">
-          <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+          </svg>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
           <p class="text-sm font-bold text-gray-900">${p.name}</p>
           <span class="text-[10px] font-mono text-gray-400">${p.sku}</span>
           <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${catCls}">${p.category}</span>
         </div>
-        <p class="text-base font-bold text-indigo-600 mt-1">${sym(p)}${p.price.toLocaleString()}</p>
+        <p class="text-base font-bold text-indigo-600 mt-1">${sym(p)}${Number(p.price||0).toLocaleString()}</p>
         ${p.desc ? `<p class="text-xs text-gray-500 mt-1.5 leading-relaxed">${p.desc}</p>` : ''}
       </div>
       <div class="flex items-center justify-between pt-3 border-t border-gray-50">
         <span class="text-[10px] text-gray-300">Created ${p.created}</span>
-        <span class="text-xs font-bold ${p.status==='active'?'text-emerald-500':'text-gray-400'}">${p.status==='active'?'Active':'Inactive'}</span>
+        <span class="text-xs font-bold ${p.status==='active'?'text-emerald-500':'text-gray-400'}">
+          ${p.status==='active'?'Active':'Inactive'}
+        </span>
       </div>
     </div>`;
   }).join('');
 }
 
-// ===== RENDER TEMPLATES =====
+function openProductModal()  { document.getElementById('productModal').classList.remove('hidden'); }
+function closeProductModal() { document.getElementById('productModal').classList.add('hidden'); }
+
+function previewProdImg(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('prodImgThumb').src = e.target.result;
+      document.getElementById('prodImgPreview').classList.remove('hidden');
+      document.getElementById('prodImgZone').classList.add('hidden');
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+function clearProdImg() {
+  document.getElementById('prodImgInput').value = '';
+  document.getElementById('prodImgPreview').classList.add('hidden');
+  document.getElementById('prodImgZone').classList.remove('hidden');
+}
+
+function createProduct() {
+  const name = document.getElementById('prd_name').value.trim();
+  const sku  = document.getElementById('prd_sku').value.trim();
+  if (!name || !sku) { showToast('Product name and SKU are required', 'error'); return; }
+  const price    = parseFloat(document.getElementById('prd_price').value) || 0;
+  const currency = document.getElementById('prd_currency').value;
+  const category = document.getElementById('prd_category').value;
+  const desc     = document.getElementById('prd_desc').value.trim();
+  const imgThumb = document.getElementById('prodImgThumb');
+  const img      = !document.getElementById('prodImgPreview').classList.contains('hidden') ? imgThumb.src : '';
+  const today    = new Date().toISOString().split('T')[0];
+  products.unshift({ id: Date.now(), name, sku, category, currency, price, desc, status: 'active', created: today, img });
+  saveData(); closeProductModal(); renderProducts();
+  document.getElementById('prd_name').value = '';
+  document.getElementById('prd_sku').value  = '';
+  document.getElementById('prd_price').value = '';
+  document.getElementById('prd_desc').value  = '';
+  clearProdImg();
+}
+function deleteProduct(id) {
+  if (confirm('Delete this product?')) {
+    products = products.filter(p => p.id !== id);
+    saveData(); renderProducts();
+  }
+}
+
+// =====================================================================
+//  TEMPLATES  (localStorage — no API yet)
+// =====================================================================
+
 function renderTemplates() {
   const grid = document.getElementById('templatesGrid');
-  document.getElementById('tmplTabCount').textContent = templates.length;
+  document.getElementById('tmplTabCount').textContent   = templates.length;
   document.getElementById('tmplCountBadge').textContent = templates.length;
-  const catColors = { 'Payment Reminder':'bg-blue-50 text-blue-700', 'Festival Greeting':'bg-orange-50 text-orange-700', 'Promotion Announcement':'bg-violet-50 text-violet-700', 'Birthday Wish':'bg-pink-50 text-pink-700', 'General':'bg-gray-100 text-gray-600' };
+
+  const catColors = {
+    'Payment Reminder': 'bg-blue-50 text-blue-700',
+    'Festival Greeting': 'bg-orange-50 text-orange-700',
+    'Promotion Announcement': 'bg-violet-50 text-violet-700',
+    'Birthday Wish': 'bg-pink-50 text-pink-700',
+    'General': 'bg-gray-100 text-gray-600'
+  };
+
   grid.innerHTML = templates.map(t => {
     const catCls = catColors[t.category] || 'bg-gray-100 text-gray-600';
     return `
@@ -583,180 +1281,145 @@ function renderTemplates() {
       <div class="flex items-start justify-between mb-3">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
-            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586
+                   a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
           </div>
           <div>
             <p class="text-sm font-bold text-gray-900">${t.title}</p>
             <span class="inline-block mt-0.5 px-2 py-0.5 rounded-full text-[10px] font-semibold ${catCls}">${t.category}</span>
           </div>
         </div>
-        <button onclick="deleteTemplate(${t.id})" class="tmpl-actions w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+        <button onclick="deleteTemplate(${t.id})"
+          class="tmpl-actions w-8 h-8 rounded-xl border border-gray-200 flex items-center justify-center
+                 text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858
+                 L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+        </button>
       </div>
       <p class="text-xs text-gray-500 mb-3 line-clamp-2">${t.desc}</p>
       <div class="bg-gray-50 rounded-xl p-3 mb-3">
         <p class="text-xs text-gray-600 font-mono leading-relaxed line-clamp-3">${t.content.replace(/\n/g,'<br>')}</p>
       </div>
       <div class="flex items-center justify-between">
-        <div class="flex gap-1">${t.channels.map(c=>`<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-indigo-50 text-indigo-600">${c}</span>`).join('')}</div>
+        <div class="flex gap-1">${t.channels.map(c => `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-indigo-50 text-indigo-600">${c}</span>`).join('')}</div>
         <button onclick="useTemplate(${t.id})" class="text-xs font-semibold text-indigo-600 hover:text-indigo-700">Use Template →</button>
       </div>
     </div>`;
   }).join('');
 }
 
-// ===== TAB SWITCHING =====
-function switchCatalogTab(t) {
-  ['plans','products','templates'].forEach(x => {
-    document.getElementById('cp-'+x).classList.toggle('hidden', x!==t);
-    const btn = document.getElementById('ct-'+x);
-    if (x===t) { btn.classList.add('tab-active'); btn.classList.remove('text-gray-500'); }
-    else { btn.classList.remove('tab-active'); btn.classList.add('border-b-2','border-transparent','text-gray-500'); }
-  });
-  const btnMap = { plans:'openPlanModal()', products:'openProductModal()', templates:'openTemplateModal()' };
-  // Update header button
-}
-
-// ===== PLAN MODAL =====
-let currentBilling = 'monthly';
-let editPlanId = null;
-
-function openPlanModal(id) {
-  editPlanId = id || null;
-  if (id) {
-    const p = plans.find(x=>x.id===id);
-    if (!p) return;
-    document.getElementById('pm_name').value = p.name;
-    document.getElementById('pm_price').value = p.price;
-    document.getElementById('pm_desc').value = p.desc || '';
-    document.getElementById('pm_features').value = (p.features||[]).join('\n');
-    selectBilling(p.billing);
-  } else {
-    document.getElementById('pm_name').value = '';
-    document.getElementById('pm_price').value = '';
-    document.getElementById('pm_desc').value = '';
-    document.getElementById('pm_features').value = '';
-    selectBilling('monthly');
-    document.getElementById('planImgPreview').classList.add('hidden');
-    document.getElementById('planImgZone').classList.remove('hidden');
-  }
-  document.getElementById('planModal').classList.remove('hidden');
-}
-function closePlanModal() { document.getElementById('planModal').classList.add('hidden'); }
-
-function selectBilling(b) {
-  currentBilling = b;
-  ['monthly','quarterly','yearly','one-time'].forEach(x => {
-    const btn = document.getElementById('bc-'+x);
-    if (x===b) { btn.classList.add('sel'); btn.classList.remove('border-gray-200','text-gray-600'); }
-    else { btn.classList.remove('sel'); btn.classList.add('border-gray-200','text-gray-600'); btn.classList.remove('border-indigo-500','bg-indigo-50','text-indigo-600'); }
-  });
-}
-
-function previewPlanImg(input) {
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = e => { document.getElementById('planImgThumb').src = e.target.result; document.getElementById('planImgPreview').classList.remove('hidden'); document.getElementById('planImgZone').classList.add('hidden'); };
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-function clearPlanImg() { document.getElementById('planImgInput').value=''; document.getElementById('planImgPreview').classList.add('hidden'); document.getElementById('planImgZone').classList.remove('hidden'); }
-
-function createPlan() {
-  const name = document.getElementById('pm_name').value.trim();
-  if (!name) { alert('Plan name is required'); return; }
-  const price = parseFloat(document.getElementById('pm_price').value) || 0;
-  if (!price) { alert('Please enter a price'); return; }
-  const currency = document.getElementById('pm_currency').value;
-  const desc = document.getElementById('pm_desc').value.trim();
-  const features = document.getElementById('pm_features').value.trim().split('\n').filter(Boolean);
-  const imgThumb = document.getElementById('planImgThumb');
-  const img = !document.getElementById('planImgPreview').classList.contains('hidden') ? imgThumb.src : '';
-  const today = new Date().toISOString().split('T')[0];
-  if (editPlanId) {
-    const idx = plans.findIndex(p=>p.id===editPlanId);
-    if (idx>=0) plans[idx] = {...plans[idx], name, billing:currentBilling, currency, price, desc, features, img};
-  } else {
-    plans.unshift({ id: Date.now(), name, billing:currentBilling, currency, price, desc, features, status:'active', created:today, img });
-  }
-  saveData(); closePlanModal(); renderPlans();
-}
-
-function editPlan(id) { openPlanModal(id); }
-function deletePlan(id) { if(confirm('Delete this plan?')) { plans = plans.filter(p=>p.id!==id); saveData(); renderPlans(); } }
-
-// ===== PRODUCT MODAL =====
-function openProductModal() { document.getElementById('productModal').classList.remove('hidden'); }
-function closeProductModal() { document.getElementById('productModal').classList.add('hidden'); }
-
-function previewProdImg(input) {
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = e => { document.getElementById('prodImgThumb').src = e.target.result; document.getElementById('prodImgPreview').classList.remove('hidden'); document.getElementById('prodImgZone').classList.add('hidden'); };
-    reader.readAsDataURL(input.files[0]);
-  }
-}
-function clearProdImg() { document.getElementById('prodImgInput').value=''; document.getElementById('prodImgPreview').classList.add('hidden'); document.getElementById('prodImgZone').classList.remove('hidden'); }
-
-function createProduct() {
-  const name = document.getElementById('prd_name').value.trim();
-  const sku = document.getElementById('prd_sku').value.trim();
-  if (!name || !sku) { alert('Product name and SKU are required'); return; }
-  const price = parseFloat(document.getElementById('prd_price').value) || 0;
-  const currency = document.getElementById('prd_currency').value;
-  const category = document.getElementById('prd_category').value;
-  const desc = document.getElementById('prd_desc').value.trim();
-  const imgThumb = document.getElementById('prodImgThumb');
-  const img = !document.getElementById('prodImgPreview').classList.contains('hidden') ? imgThumb.src : '';
-  const today = new Date().toISOString().split('T')[0];
-  products.unshift({ id: Date.now(), name, sku, category, currency, price, desc, status:'active', created:today, img });
-  saveData(); closeProductModal(); renderProducts();
-  document.getElementById('prd_name').value=''; document.getElementById('prd_sku').value=''; document.getElementById('prd_price').value=''; document.getElementById('prd_desc').value='';
-  clearProdImg();
-}
-function deleteProduct(id) { if(confirm('Delete this product?')) { products = products.filter(p=>p.id!==id); saveData(); renderProducts(); } }
-
-// ===== TEMPLATE MODAL =====
-function openTemplateModal() { document.getElementById('templateModal').classList.remove('hidden'); }
+function openTemplateModal()  { document.getElementById('templateModal').classList.remove('hidden'); }
 function closeTemplateModal() { document.getElementById('templateModal').classList.add('hidden'); }
 
 function generateTemplateContent() {
-  const title = document.getElementById('tm_title').value || 'Reminder';
   const cat = document.getElementById('tm_category').value;
   const desc = document.getElementById('tm_desc').value;
-  const templates_map = {
-    'Payment Reminder': `Hi {customer_name}! 👋\n\nThis is a friendly reminder that your {plan_name} payment of {amount} is due on {due_date}.\n\nPlease pay to avoid disruption to your service.\n\nFor queries: {business_phone}\n\n— {business_name}`,
-    'Festival Greeting': `🎉 {festival} Greetings, {customer_name}!\n\nWishing you and your family joy and prosperity.\n\nAs a special gift, enjoy our exclusive offer:\n✨ {offer_details}\n\nValid till: {offer_expiry}\n\n— {business_name}`,
-    'Promotion Announcement': `🎊 Special Offer for {customer_name}!\n\n{offer_title}\n\n{offer_description}\n\nClick to view: {promo_link}\n\n⏰ Limited time — valid till {offer_expiry}\n\n— {business_name}`,
-    'Birthday Wish': `🎂 Happy Birthday, {customer_name}!\n\nWishing you a wonderful day filled with joy!\n\nAs a birthday treat from us:\n🎁 {offer_details}\n\nWith warm wishes,\n{business_name}`,
-    'Policy Renewal': `⚠️ Renewal Reminder, {customer_name}\n\nYour {plan_name} is due for renewal on {due_date}.\n\nRenew now to continue enjoying uninterrupted coverage:\n👉 {renewal_link}\n\nFor assistance: {business_phone}\n\n— {business_name}`,
-    'General': `Hi {customer_name},\n\n${desc || 'We have an important update for you.'}\n\nFor more information, contact us at {business_phone} or visit {business_website}.\n\n— {business_name}`,
+  const map = {
+    'Payment Reminder'       : `Hi {customer_name}! 👋\n\nThis is a friendly reminder that your {plan_name} payment of {amount} is due on {due_date}.\n\nPlease pay to avoid disruption to your service.\n\nFor queries: {business_phone}\n\n— {business_name}`,
+    'Festival Greeting'      : `🎉 {festival} Greetings, {customer_name}!\n\nWishing you and your family joy and prosperity.\n\nAs a special gift, enjoy our exclusive offer:\n✨ {offer_details}\n\nValid till: {offer_expiry}\n\n— {business_name}`,
+    'Promotion Announcement' : `🎊 Special Offer for {customer_name}!\n\n{offer_title}\n\n{offer_description}\n\nClick to view: {promo_link}\n\n⏰ Limited time — valid till {offer_expiry}\n\n— {business_name}`,
+    'Birthday Wish'          : `🎂 Happy Birthday, {customer_name}!\n\nWishing you a wonderful day filled with joy!\n\nAs a birthday treat from us:\n🎁 {offer_details}\n\nWith warm wishes,\n{business_name}`,
+    'Policy Renewal'         : `⚠️ Renewal Reminder, {customer_name}\n\nYour {plan_name} is due for renewal on {due_date}.\n\nRenew now to continue enjoying uninterrupted coverage:\n👉 {renewal_link}\n\nFor assistance: {business_phone}\n\n— {business_name}`,
+    'General'                : `Hi {customer_name},\n\n${desc || 'We have an important update for you.'}\n\nFor more information, contact us at {business_phone} or visit {business_website}.\n\n— {business_name}`,
   };
-  document.getElementById('tm_content').value = templates_map[cat] || templates_map['General'];
+  document.getElementById('tm_content').value = map[cat] || map['General'];
 }
 
 function createTemplate() {
-  const title = document.getElementById('tm_title').value.trim();
+  const title   = document.getElementById('tm_title').value.trim();
   const content = document.getElementById('tm_content').value.trim();
-  if (!title || !content) { alert('Template title and content are required'); return; }
+  if (!title || !content) { showToast('Template title and content are required', 'error'); return; }
   const channels = [];
-  if (document.getElementById('tm_wa').checked) channels.push('WhatsApp');
-  if (document.getElementById('tm_sms').checked) channels.push('SMS');
+  if (document.getElementById('tm_wa').checked)    channels.push('WhatsApp');
+  if (document.getElementById('tm_sms').checked)   channels.push('SMS');
   if (document.getElementById('tm_email').checked) channels.push('Email');
-  templates.unshift({ id: Date.now(), title, category: document.getElementById('tm_category').value, desc: document.getElementById('tm_desc').value, content, channels, created: new Date().toISOString().split('T')[0] });
+  templates.unshift({
+    id       : Date.now(),
+    title,
+    category : document.getElementById('tm_category').value,
+    desc     : document.getElementById('tm_desc').value,
+    content,
+    channels,
+    created  : new Date().toISOString().split('T')[0]
+  });
   saveData(); closeTemplateModal(); renderTemplates();
-  document.getElementById('tm_title').value=''; document.getElementById('tm_desc').value=''; document.getElementById('tm_content').value='';
+  document.getElementById('tm_title').value   = '';
+  document.getElementById('tm_desc').value    = '';
+  document.getElementById('tm_content').value = '';
 }
-function deleteTemplate(id) { if(confirm('Delete this template?')) { templates = templates.filter(t=>t.id!==id); saveData(); renderTemplates(); } }
-function useTemplate(id) { alert('Template selected! It will be available when creating reminders or promotions.'); }
+function deleteTemplate(id) {
+  if (confirm('Delete this template?')) {
+    templates = templates.filter(t => t.id !== id);
+    saveData(); renderTemplates();
+  }
+}
+function useTemplate(id) { showToast('Template selected! Available when creating reminders.', 'success'); }
 
-// ===== MOBILE NAV =====
-function openMobileNav(){document.getElementById('mobileNavDrawer').style.transform='translateX(0)';document.getElementById('mobileNavBg').classList.remove('hidden');document.body.style.overflow='hidden';}
-function closeMobileNav(){document.getElementById('mobileNavDrawer').style.transform='translateX(-100%)';document.getElementById('mobileNavBg').classList.add('hidden');document.body.style.overflow='';}
+// =====================================================================
+//  TAB SWITCHING
+// =====================================================================
 
-// ===== INIT =====
-renderPlans();
-renderProducts();
-renderTemplates();
+function switchCatalogTab(t) {
+  ['plans','products','templates'].forEach(x => {
+    document.getElementById('cp-' + x).classList.toggle('hidden', x !== t);
+    const btn = document.getElementById('ct-' + x);
+    if (x === t) { btn.classList.add('tab-active'); btn.classList.remove('text-gray-500','border-transparent'); }
+    else          { btn.classList.remove('tab-active'); btn.classList.add('border-b-2','border-transparent','text-gray-500'); }
+  });
+}
+
+// =====================================================================
+//  TOAST  (replaces alert())
+// =====================================================================
+
+function showToast(msg, type = 'success') {
+  let container = document.getElementById('toastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.className = 'fixed bottom-24 md:bottom-6 right-4 z-[100] flex flex-col gap-2';
+    document.body.appendChild(container);
+  }
+  const colors = { success: 'bg-emerald-600', error: 'bg-red-500', info: 'bg-indigo-600' };
+  const toast = document.createElement('div');
+  toast.className = `${colors[type] || colors.success} text-white text-sm font-medium px-4 py-3 rounded-2xl shadow-lg flex items-center gap-2 fade-in`;
+  toast.innerHTML = msg;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+
+// =====================================================================
+//  MOBILE NAV
+// =====================================================================
+
+function openMobileNav()  {
+  document.getElementById('mobileNavDrawer').style.transform = 'translateX(0)';
+  document.getElementById('mobileNavBg').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  document.getElementById('mobileNavDrawer').style.transform = 'translateX(-100%)';
+  document.getElementById('mobileNavBg').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+// =====================================================================
+//  INIT  — load plans from API, render the rest from localStorage
+// =====================================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadPlans();       // plans ← server
+  renderProducts();  // products ← localStorage
+  renderTemplates(); // templates ← localStorage
+});
 </script>
+ 
 </body>
+
 </html>

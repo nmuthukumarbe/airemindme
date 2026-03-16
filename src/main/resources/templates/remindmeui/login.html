@@ -1,160 +1,389 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Reminder Me</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link
-	href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-	rel="stylesheet">
-<style>
-body {
-	font-family: 'Inter', sans-serif;
-}
-</style>
-</head>
-<body
-	class="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/30 to-violet-50/20 flex items-center justify-center px-4">
 
-	<!-- Background decoration -->
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Login - Reminder Me</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<!-- Flash prevention — default DARK -->
+	<script>(function () { var t = localStorage.getItem('rm_theme') || 'dark'; document.documentElement.setAttribute('data-theme', t); })()</script>
+	<link rel="stylesheet" th:href="@{/css/theme.css}">
+	<style>
+		body {
+			font-family: 'Inter', sans-serif;
+		}
+
+		/* ── LOGIN PAGE SPECIFIC DARK MODE ── */
+		[data-theme="dark"] body {
+			background: #0d0d0d !important;
+		}
+
+		/* gradient blobs — dark versions */
+		[data-theme="dark"] .blob-1 {
+			background: #1a1040 !important;
+			opacity: 0.6 !important;
+		}
+
+		[data-theme="dark"] .blob-2 {
+			background: #0f2239 !important;
+			opacity: 0.6 !important;
+		}
+
+		/* card */
+		[data-theme="dark"] .login-card {
+			background: #161616 !important;
+			border-color: #2a2a2a !important;
+			box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8) !important;
+		}
+
+		/* demo hint box */
+		[data-theme="dark"] .demo-box {
+			background: #0f2239 !important;
+			border-color: #1e3a5f !important;
+		}
+
+		[data-theme="dark"] .demo-box p {
+			color: #93c5fd !important;
+		}
+
+		/* logo icon */
+		[data-theme="dark"] .logo-icon {
+			background: #0f2239 !important;
+			border: 1px solid #1e3a5f !important;
+			box-shadow: 0 8px 24px rgba(96, 1, 210, 0.3) !important;
+		}
+
+		[data-theme="dark"] .logo-icon svg {
+			stroke: #93c5fd !important;
+		}
+
+		/* headings */
+		[data-theme="dark"] .login-title {
+			color: #ffffff !important;
+		}
+
+		[data-theme="dark"] .login-subtitle {
+			color: #888 !important;
+		}
+
+		/* labels */
+		[data-theme="dark"] label {
+			color: #d0d0d0 !important;
+		}
+
+		/* inputs */
+		[data-theme="dark"] input[type="email"],
+		[data-theme="dark"] input[type="password"],
+		[data-theme="dark"] input[type="text"] {
+			background: #1a1a1a !important;
+			border-color: #2d2d2d !important;
+			color: #f0f0f0 !important;
+		}
+
+		[data-theme="dark"] input::placeholder {
+			color: #444 !important;
+		}
+
+		[data-theme="dark"] input:focus {
+			border-color: #3b82f6 !important;
+			box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+		}
+
+		/* input icons */
+		[data-theme="dark"] .input-icon {
+			color: #555 !important;
+			stroke: #555 !important;
+		}
+
+		/* remember me text */
+		[data-theme="dark"] .remember-text {
+			color: #888 !important;
+		}
+
+		/* forgot password */
+		[data-theme="dark"] .forgot-link {
+			color: #818cf8 !important;
+		}
+
+		[data-theme="dark"] .forgot-link:hover {
+			color: #a5b4fc !important;
+		}
+
+		/* submit button */
+		[data-theme="dark"] .login-btn {
+			background: #2563eb !important;
+			box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+		}
+
+		[data-theme="dark"] .login-btn:hover {
+			background: #1d4ed8 !important;
+		}
+
+		/* dividers */
+		[data-theme="dark"] .divider {
+			border-color: #222 !important;
+		}
+
+		/* super admin / register links */
+		[data-theme="dark"] .soft-text {
+			color: #666 !important;
+		}
+
+		[data-theme="dark"] .accent-link {
+			color: #818cf8 !important;
+		}
+
+		[data-theme="dark"] .accent-link:hover {
+			color: #a5b4fc !important;
+		}
+
+		/* error box */
+		[data-theme="dark"] #loginError {
+			background: #1a0808 !important;
+			border-color: #7f1d1d !important;
+			color: #fca5a5 !important;
+		}
+
+		/* checkbox */
+		[data-theme="dark"] input[type="checkbox"] {
+			accent-color: #3b82f6;
+		}
+
+		/* toggle button */
+		.theme-toggle-btn {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 38px;
+			height: 38px;
+			border-radius: 12px;
+			border: 1px solid #e5e7eb;
+			background: #f3f4f6;
+			cursor: pointer;
+			transition: all 0.25s ease;
+			color: #6b7280;
+			flex-shrink: 0;
+		}
+
+		.theme-toggle-btn:hover {
+			transform: scale(1.1) rotate(15deg);
+			background: #e5e7eb;
+		}
+
+		[data-theme="dark"] .theme-toggle-btn {
+			background: #1e1e1e !important;
+			border-color: #2d2d2d !important;
+			color: #a0a0a0 !important;
+		}
+
+		[data-theme="dark"] .theme-toggle-btn:hover {
+			background: #252525 !important;
+			border-color: #6001d2 !important;
+			box-shadow: 0 0 12px rgba(96, 1, 210, 0.3) !important;
+		}
+
+		[data-theme="dark"] .theme-toggle-btn svg {
+			stroke: #a0a0a0 !important;
+		}
+
+		[data-theme="dark"] .theme-toggle-btn:hover svg {
+			stroke: #a78bfa !important;
+		}
+
+		/* sun/moon visibility */
+		[data-theme="light"] .icon-sun {
+			display: none;
+		}
+
+		[data-theme="light"] .icon-moon {
+			display: block;
+		}
+
+		[data-theme="dark"] .icon-sun {
+			display: block;
+		}
+
+		[data-theme="dark"] .icon-moon {
+			display: none;
+		}
+
+		/* light mode background gradient */
+		[data-theme="light"] body {
+			background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f5f3ff 100%) !important;
+		}
+
+		/* ── Animations ── */
+		@keyframes fadeSlideUp {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		.login-card {
+			animation: fadeSlideUp 0.4s ease both;
+		}
+
+		.logo-wrap {
+			animation: fadeSlideUp 0.3s ease both;
+		}
+	</style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center px-4 relative">
+
+	<!-- Background blobs -->
 	<div class="fixed inset-0 overflow-hidden pointer-events-none">
-		<div
-			class="absolute -top-40 -right-40 w-80 h-80 bg-indigo-100 rounded-full opacity-40 blur-3xl"></div>
-		<div
-			class="absolute -bottom-40 -left-40 w-80 h-80 bg-violet-100 rounded-full opacity-40 blur-3xl"></div>
+		<div class="blob-1 absolute -top-40 -right-40 w-80 h-80 bg-indigo-100 rounded-full opacity-40 blur-3xl"></div>
+		<div class="blob-2 absolute -bottom-40 -left-40 w-80 h-80 bg-violet-100 rounded-full opacity-40 blur-3xl"></div>
+	</div>
+
+	<!-- Theme toggle — top right corner -->
+	<div class="fixed top-4 right-4 z-50">
+		<button onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle dark/light mode">
+			<!-- Sun icon (shown in dark mode → click to go light) -->
+			<svg class="icon-sun w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round"
+					d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+			</svg>
+			<!-- Moon icon (shown in light mode → click to go dark) -->
+			<svg class="icon-moon w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round"
+					d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+			</svg>
+		</button>
 	</div>
 
 	<div class="w-full max-w-md relative">
+
 		<!-- Logo -->
-		<div class="text-center mb-8">
+		<div class="logo-wrap text-center mb-8">
 			<div
-				class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-200 mb-4">
-				<svg class="w-7 h-7 text-white" fill="none" stroke="currentColor"
-					stroke-width="2" viewBox="0 0 24 24">
+				class="logo-icon inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-200 mb-4">
+				<svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round"
-						d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+						d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+				</svg>
 			</div>
-			<h1 class="text-2xl font-bold text-gray-900">Welcome back</h1>
-			<p class="text-sm text-gray-500 mt-1">Sign in to Reminder Me</p>
+			<h1 class="login-title text-2xl font-bold text-gray-900">Welcome back</h1>
+			<p class="login-subtitle text-sm text-gray-500 mt-1">Sign in to Reminder Me</p>
 		</div>
 
 		<!-- Card -->
-		<div
-			class="bg-white rounded-3xl shadow-xl shadow-gray-200/60 border border-gray-100 p-8">
+		<div class="login-card bg-white rounded-3xl shadow-xl shadow-gray-200/60 border border-gray-100 p-8">
 			<form method="post" role="form" th:action="@{/login}">
+
+				<!-- Email -->
 				<div class="mb-4">
-					<label class="text-sm font-medium text-gray-700 mb-1.5 block">Email
-						Address</label>
+					<label class="text-sm font-medium text-gray-700 mb-1.5 block">Email Address</label>
 					<div class="relative">
-						<svg
-							class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+						<svg class="input-icon w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
 							fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round"
-								stroke-width="2"
-								d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-						<input type="email" id="username" name="username"
-							placeholder="admin@acmefinancial.com" required
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+						</svg>
+						<input type="email" id="username" name="username" placeholder="admin@acmefinancial.com" required
 							class="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400">
 					</div>
 				</div>
+
+				<!-- Password -->
 				<div class="mb-2">
 					<label class="text-sm font-medium text-gray-700 mb-1.5 block">Password</label>
 					<div class="relative">
-						<svg
-							class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
+						<svg class="input-icon w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
 							fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round"
-								stroke-width="2"
-								d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-						<input type="password" id="password" name="password" placeholder="••••••••"
-							required
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+						</svg>
+						<input type="password" id="password" name="password" placeholder="••••••••" required
 							class="w-full pl-10 pr-12 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400">
 						<button type="button" onclick="togglePass()"
-							class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-							<svg class="w-4 h-4" id="eyeIcon" fill="none"
-								stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round"
-									stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-								<path stroke-linecap="round" stroke-linejoin="round"
-									stroke-width="2"
-									d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+							class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
+							<svg class="w-4 h-4" id="eyeIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+									d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+							</svg>
 						</button>
 					</div>
 				</div>
+
+				<!-- Remember + Forgot -->
 				<div class="flex items-center justify-between mb-5">
-					<label class="flex items-center gap-2 cursor-pointer"> <input
-						type="checkbox" id="remember"
-						class="w-4 h-4 rounded accent-indigo-600"> <span
-						class="text-sm text-gray-600">Remember me</span>
-					</label> <a href="#"
-						class="text-sm text-indigo-600 hover:text-indigo-700 font-medium">Forgot
+					<label class="flex items-center gap-2 cursor-pointer">
+						<input type="checkbox" id="remember" class="w-4 h-4 rounded accent-indigo-600">
+						<span class="remember-text text-sm text-gray-600">Remember me</span>
+					</label>
+					<a href="#" class="forgot-link text-sm text-indigo-600 hover:text-indigo-700 font-medium">Forgot
 						password?</a>
 				</div>
 
+				<!-- Error box -->
 				<div id="loginError"
-					class="hidden mb-4 p-3 rounded-xl bg-red-50 border border-red-100 text-sm text-red-600 text-center"></div>
+					class="hidden mb-4 p-3 rounded-xl bg-red-50 border border-red-100 text-sm text-red-600 text-center">
+				</div>
 
+				<!-- Submit -->
 				<button type="submit" id="loginBtn"
-					class="w-full py-3.5 rounded-2xl bg-indigo-600 text-white font-semibold text-sm hover:bg-indigo-700 transition shadow-sm shadow-indigo-200 flex items-center justify-center gap-2">
+					class="login-btn w-full py-3.5 rounded-2xl bg-indigo-600 text-white font-semibold text-sm hover:bg-indigo-700 transition shadow-sm shadow-indigo-200 flex items-center justify-center gap-2">
 					<span id="loginBtnText">Sign In</span>
-					<svg id="loginSpinner" class="hidden w-4 h-4 animate-spin"
-						fill="none" viewBox="0 0 24 24">
-						<circle class="opacity-25" cx="12" cy="12" r="10"
-							stroke="currentColor" stroke-width="4"></circle>
+					<svg id="loginSpinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+						</circle>
 						<path class="opacity-75" fill="currentColor"
-							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+						</path>
+					</svg>
 				</button>
 			</form>
 
-			<div class="mt-6 pt-5 border-t border-gray-100 text-center">
-				<p class="text-sm text-gray-400">Are you a Super Admin?</p>
+			<!-- Super Admin -->
+			<div class="mt-6 pt-5 border-t divider border-gray-100 text-center">
+				<p class="soft-text text-sm text-gray-400">Are you a Super Admin?</p>
 				<a href="super-admin-login.html"
-					class="text-sm text-indigo-600 font-medium hover:text-indigo-700 mt-0.5 inline-block">Access
-					Super Admin Panel →</a>
+					class="accent-link text-sm text-indigo-600 font-medium hover:text-indigo-700 mt-0.5 inline-block">
+					Access Super Admin Panel →
+				</a>
 			</div>
 
-			<!-- Register CTA -->
-			<div class="mt-4 pt-4 border-t border-gray-100 text-center">
-				<p class="text-sm text-gray-500">Don't have an account?</p>
+			<!-- Register -->
+			<div class="mt-4 pt-4 border-t divider border-gray-100 text-center">
+				<p class="soft-text text-sm text-gray-500">Don't have an account?</p>
 				<a href="register.html"
-					class="text-sm text-indigo-600 font-semibold hover:text-indigo-700 mt-0.5 inline-block">Register
-					your business →</a>
+					class="accent-link text-sm text-indigo-600 font-semibold hover:text-indigo-700 mt-0.5 inline-block">
+					Register your business →
+				</a>
 			</div>
 		</div>
 
-		<!-- Demo hint -->
-		<div
-			class="mt-4 p-4 rounded-2xl bg-indigo-50 border border-indigo-100 text-center">
-			<p class="text-xs text-indigo-600 font-medium mb-1">Demo
-				Credentials</p>
-			<p class="text-xs text-indigo-500">Email: admin@acmefinancial.com
-				· Password: any</p>
-		</div>
+		
+
 	</div>
 
 	<script>
-    function handleLogin(e) {
-      e.preventDefault();
-      const btn = document.getElementById('loginBtn');
-      const text = document.getElementById('loginBtnText');
-      const spinner = document.getElementById('loginSpinner');
-      const err = document.getElementById('loginError');
+		// ── THEME TOGGLE ──
+		function toggleTheme() {
+			var cur = document.documentElement.getAttribute('data-theme') || 'dark';
+			var next = cur === 'dark' ? 'light' : 'dark';
+			document.documentElement.setAttribute('data-theme', next);
+			localStorage.setItem('rm_theme', next);
+		}
 
-      btn.disabled = true;
-      text.textContent = 'Signing in...';
-      spinner.classList.remove('hidden');
-      err.classList.add('hidden');
-
-      setTimeout(() => {
-        window.location.href = 'home.html';
-      }, 1200);
-    }
-
-    function togglePass() {
-      const p = document.getElementById('password');
-      p.type = p.type === 'password' ? 'text' : 'password';
-    }
-  </script>
+		// ── PASSWORD TOGGLE ──
+		function togglePass() {
+			var p = document.getElementById('password');
+			p.type = p.type === 'password' ? 'text' : 'password';
+		}
+	</script>
 </body>
+
 </html>

@@ -1,6 +1,7 @@
 package com.server.realsync.mvc.controllers;
 
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.server.realsync.entity.Account;
 import com.server.realsync.entity.Customer;
+import com.server.realsync.entity.CatalogPlan;
 import com.server.realsync.services.AccountService;
 import com.server.realsync.services.CustomerService;
+import com.server.realsync.services.SettingsPlanService;
 
 import com.server.realsync.services.UserService;
 import com.server.realsync.util.CustomerMessageService;
@@ -26,6 +29,10 @@ import com.server.realsync.util.GmailSender;
 import com.server.realsync.util.SecurityUtil;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+
+
+
 
 @Controller
 @RequestMapping("/")
@@ -40,6 +47,8 @@ public class HomeController {
 	private AccountService accountService;
 	@Autowired
 	CustomerMessageService customerMessageService;
+	@Autowired
+	private SettingsPlanService settingsPlanService;
 
 	@Autowired
 	GmailSender gmailSender;
@@ -74,9 +83,6 @@ public class HomeController {
 		return "remindmeui/home";
 	}
 
-	// ===============================
-	// CUSTOMER LIST PAGE
-	// ===============================
 	@GetMapping("/customers.html")
 	public String getCustomers(
 			@RequestParam(defaultValue = "0") int page,
@@ -134,9 +140,6 @@ public class HomeController {
 
 		return "remindmeui/customers";
 	}
-	// ===============================
-	// CUSTOMER DETAIL PAGE
-	// ===============================
 
 	@GetMapping("/customer-detail.html")
 	public String getCustomerDetail(@RequestParam Integer id, Model model) {
@@ -174,10 +177,18 @@ public class HomeController {
 	}
 
 	@GetMapping("/catalog.html")
-	public String getCatalog(Model model) {
+public String getCatalog(Model model) {
 
-		return "remindmeui/catalog.html";
-	}
+    Account account = SecurityUtil.getCurrentAccountId();
+
+    List<CatalogPlan> plans = settingsPlanService.getByAccountId(account.getId());
+
+    model.addAttribute("plans",       plans);
+    model.addAttribute("totalPlans",  plans.size());
+    model.addAttribute("activePlans", settingsPlanService.countActiveByAccountId(account.getId()));
+
+    return "remindmeui/catalog";
+}
 
 	@GetMapping("/reports.html")
 	public String getAdminReport(Model model) {
@@ -185,19 +196,15 @@ public class HomeController {
 		return "remindme/reports";
 	}
 
+	@GetMapping("/settings.html")
+	public String getSettings(Model model) {
+		Account loggedIn = SecurityUtil.getCurrentAccountId();
 
+		Account account = accountService.getById(loggedIn.getId());
+		model.addAttribute("account", account);
+		return "remindmeui/settings";
+	}
 
-	
-@GetMapping("/settings.html")
-public String getSettings(Model model) {
-    Account loggedIn = SecurityUtil.getCurrentAccountId();
-    
-    
-    
-    Account account = accountService.getById(loggedIn.getId());
-    model.addAttribute("account", account);
-    return "remindmeui/settings";
-}
 	@GetMapping("index.html")
 	public String getIndexPage() {
 

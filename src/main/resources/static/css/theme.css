@@ -454,9 +454,21 @@
 /* ── Card text ── */
 [data-theme="light"] p.font-semibold,
 [data-theme="light"] p.font-bold,
-[data-theme="light"] span.font-semibold,
-[data-theme="light"] span.font-bold {
-    color: #111111 !important;
+{
+color: #111111 !important;
+}
+
+/* ── Avatar initials — always white in ALL modes ── */
+.bg-indigo-600 span {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] .bg-indigo-600 span {
+    color: #ffffff !important;
+}
+
+[data-theme="dark"] .bg-indigo-600 span {
+    color: #ffffff !important;
 }
 
 /* ── Sidebar user name ── */
