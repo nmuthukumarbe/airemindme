@@ -9,13 +9,12 @@
     function applyTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('rm_theme', theme);
-        // Update all toggle buttons
+
         document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
-            btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-            const sunIcon = btn.querySelector('.icon-sun');
-            const moonIcon = btn.querySelector('.icon-moon');
-            if (sunIcon) sunIcon.style.display = theme === 'dark' ? 'block' : 'none';
-            if (moonIcon) moonIcon.style.display = theme === 'dark' ? 'none' : 'block';
+            btn.setAttribute(
+                'aria-label',
+                theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+            );
         });
     }
 

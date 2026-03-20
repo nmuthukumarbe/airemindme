@@ -12,8 +12,6 @@
     /* ============================================================
    LIGHT MODE — pure black / near-black text
    ============================================================ */
-
-    /* Base text colors — very dark so everything reads clearly */
     [data-theme="light"] .text-gray-900 {
       color: #0a0a0a !important;
     }
@@ -42,7 +40,6 @@
       color: #888888 !important;
     }
 
-    /* Headings */
     [data-theme="light"] h1,
     [data-theme="light"] h2,
     [data-theme="light"] h3,
@@ -50,7 +47,6 @@
       color: #0a0a0a !important;
     }
 
-    /* Bold / semibold text (card titles, names, labels) */
     [data-theme="light"] p.font-bold,
     [data-theme="light"] p.font-semibold,
     [data-theme="light"] span.font-bold,
@@ -58,18 +54,15 @@
       color: #0a0a0a !important;
     }
 
-    /* Form labels */
     [data-theme="light"] label {
       color: #1a1a1a !important;
     }
 
-    /* Nav link text */
     [data-theme="light"] nav a span,
     [data-theme="light"] nav button span {
       color: #1a1a1a !important;
     }
 
-    /* EXCEPTION: active nav item and buttons with bg-indigo-600 keep WHITE text */
     [data-theme="light"] nav .bg-indigo-600 span,
     [data-theme="light"] nav a.bg-indigo-600 span {
       color: #ffffff !important;
@@ -80,13 +73,11 @@
       color: #ffffff !important;
     }
 
-    /* Input placeholder stays gray in light mode */
     [data-theme="light"] input::placeholder,
     [data-theme="light"] textarea::placeholder {
       color: #aaaaaa !important;
     }
 
-    /* Table text */
     [data-theme="light"] td,
     [data-theme="light"] th {
       color: #111111 !important;
@@ -95,8 +86,6 @@
     /* ============================================================
    DARK MODE — white / bright text
    ============================================================ */
-
-    /* Base text colors — bright so everything is readable on dark bg */
     [data-theme="dark"] .text-gray-900,
     [data-theme="dark"] .text-slate-900 {
       color: #ffffff !important;
@@ -132,14 +121,12 @@
       color: #484848 !important;
     }
 
-    /* Headings */
     [data-theme="dark"] h1,
     [data-theme="dark"] h2,
     [data-theme="dark"] h3 {
       color: #ffffff !important;
     }
 
-    /* Bold / semibold */
     [data-theme="dark"] p.font-bold,
     [data-theme="dark"] p.font-semibold,
     [data-theme="dark"] span.font-bold,
@@ -147,7 +134,6 @@
       color: #ffffff !important;
     }
 
-    /* Input placeholder stays dark in dark mode */
     [data-theme="dark"] input::placeholder,
     [data-theme="dark"] textarea::placeholder {
       color: #4a4a4a !important;
@@ -169,7 +155,6 @@
       background-color: #1e1e1e !important;
     }
 
-    /* Colored light backgrounds → dark equivalents */
     [data-theme="dark"] .bg-indigo-50 {
       background-color: #0f2239 !important;
     }
@@ -234,7 +219,7 @@
     }
 
     /* ============================================================
-   DARK MODE — Accent text colors (stay vibrant)
+   DARK MODE — Accent text colors
    ============================================================ */
     [data-theme="dark"] .text-indigo-600,
     [data-theme="dark"] .text-indigo-700 {
@@ -293,7 +278,6 @@
     /* ============================================================
    DARK MODE — Nav sidebar
    ============================================================ */
-    /* Active item — dark blue background + left border */
     [data-theme="dark"] nav .bg-indigo-600,
     [data-theme="dark"] nav a.bg-indigo-600 {
       background-color: #0f2239 !important;
@@ -401,7 +385,6 @@
       background-color: #2a2a2a !important;
     }
 
-    /* Toggle switches */
     [data-theme="dark"] input.sr-only.peer:checked~div {
       background-color: #2563eb !important;
     }
@@ -499,18 +482,17 @@
       background-color: rgba(0, 0, 0, 0.8) !important;
     }
 
-    /* Tab active underline */
     [data-theme="dark"] #st-general.border-indigo-600,
     [data-theme="dark"] #st-gateways.border-indigo-600,
-    [data-theme="dark"] #st-catalog.border-indigo-600 {
+    [data-theme="dark"] #st-catalog.border-indigo-600,
+    [data-theme="dark"] #st-users.border-indigo-600 {
       border-color: #3b82f6 !important;
       color: #60a5fa !important;
     }
 
     /* ============================================================
-   THEME TOGGLE BUTTON — works in both modes
+   THEME TOGGLE BUTTON
    ============================================================ */
-    /* ── REPLACE your existing .theme-toggle-btn in settings.html <style> ── */
     .theme-toggle-btn {
       display: flex;
       align-items: center;
@@ -555,7 +537,6 @@
       stroke: #60a5fa !important;
     }
 
-    /* Sun/moon icon visibility */
     [data-theme="light"] .icon-sun {
       display: none;
     }
@@ -571,159 +552,29 @@
     [data-theme="dark"] .icon-moon {
       display: none;
     }
+
+    /* Catalog sub-tab pill */
+    .cst-active {
+      background: #ffffff;
+      color: #4f46e5;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    [data-theme="dark"] .cst-active {
+      background: #1e1e1e !important;
+      color: #818cf8 !important;
+    }
   </style>
 </head>
 
 <body class="bg-gray-50">
 
   <!-- Sidebar -->
-  <div class="hidden md:flex fixed left-0 top-0 h-screen w-56 bg-white border-r border-gray-100 flex-col z-30">
-    <div class="px-4 pt-5 pb-3"><a href="home.html" class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-indigo-600 sidebar-avatar flex items-center justify-center shadow-sm"><svg
-            class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-          </svg></div>
-        <div>
-          <p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p>
-          <p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p>
-        </div>
-      </a></div>
-    <nav class="flex-1 px-3 py-2 overflow-y-auto">
-      <a href="home.html" class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg
-          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg><span class="text-sm font-medium">Home</span></a>
-      <a href="customers.html"
-        class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5"
-          fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg><span class="text-sm font-medium">Customers</span></a>
-      <a href="engagement.html"
-        class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5"
-          fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg><span class="text-sm font-medium">Engage</span></a>
-      <a href="promotions.html"
-        class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5"
-          fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-        </svg><span class="text-sm font-medium">Promotions</span></a>
-      <a href="settings.html" class="flex items-center gap-3 px-3 py-3 rounded-xl bg-indigo-600 text-white mb-1"><svg
-          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg><span class="text-sm font-semibold">Settings</span></a>
-      <div class="mt-6">
-        <p class="px-3 text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-3">Quick Actions</p>
-        <a href="engagement.html"
-          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1">
-          <div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0"><svg
-              class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg></div><span class="text-sm">Create Reminder</span>
-        </a>
-        <a href="engagement.html"
-          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1">
-          <div class="w-7 h-7 rounded-full bg-pink-100 flex items-center justify-center flex-shrink-0"><svg
-              class="w-3.5 h-3.5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg></div><span class="text-sm">Send Greeting</span>
-        </a>
-        <a href="promotions.html"
-          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1">
-          <div class="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0"><svg
-              class="w-3.5 h-3.5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-            </svg></div><span class="text-sm">Create Promotion</span>
-        </a>
-        <a href="customers.html"
-          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1">
-          <div class="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0"><svg
-              class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-            </svg></div><span class="text-sm">Add Customer</span>
-        </a>
-      </div>
-    </nav>
-    <div class="px-4 py-4 border-t border-gray-100">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="w-9 h-9 rounded-full bg-indigo-600 sidebar-avatar flex items-center justify-center flex-shrink-0">
-          <span class="text-white text-sm font-bold">A</span>
-        </div>
-        <div class="flex-1 min-w-0">
-          <p class="text-sm font-semibold text-gray-900 truncate leading-none" th:text="${account.name}">Arjun Sharma
-          </p>
-          <p class="text-xs text-gray-400 truncate mt-0.5">Acme Financial Services</p>
-        </div>
-      </div>
-      <!-- THEME TOGGLE + SIGN OUT ROW -->
-      <div class="flex items-center gap-2">
-        <button onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle dark mode">
-          <svg class="icon-moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-          </svg>
-          <svg class="icon-sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-            style="display:none">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-          </svg>
-        </button>
-        <button onclick="window.location.href='login.html'"
-          class="flex items-center gap-2 px-1 py-1 text-gray-500 hover:text-red-600 transition"><svg class="w-4 h-4"
-            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-          </svg><span class="text-sm font-medium">Sign Out</span></button>
-      </div>
-    </div>
-  </div>
+  <div th:replace="~{remindmeui/fragments/layout :: sidebar(activePage='settings')}"></div>
 
-  <!-- MOBILE HEADER -->
-  <div
-    class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-100 z-40 h-14 flex items-center justify-between px-4 shadow-sm">
-    <button onclick="openMobileNav()"
-      class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-600 hover:bg-gray-100 transition"><svg
-        class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg></button>
-    <div class="flex items-center gap-2">
-      <div class="w-7 h-7 rounded-lg bg-indigo-600 sidebar-avatar flex items-center justify-center shadow-sm"><svg
-          class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-        </svg></div><span class="text-sm font-bold text-gray-900">Reminder Me</span>
-    </div>
-    <div class="flex items-center gap-1">
-      <!-- MOBILE THEME TOGGLE -->
-      <button onclick="toggleTheme()" class="theme-toggle-btn" title="Toggle dark mode">
-        <svg class="icon-moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-        <svg class="icon-sun" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-          style="display:none">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-      </button>
-      <button onclick="window.location.href='login.html'"
-        class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 hover:bg-red-50 hover:text-red-500 transition"><svg
-          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-        </svg></button>
-    </div>
-  </div>
+  <!-- Mobile nav -->
+  <div th:replace="~{remindmeui/fragments/layout :: mobileNav(activePage='settings')}"></div>
+
 
   <div id="mobileNavBg" class="md:hidden hidden fixed inset-0 bg-black/50 z-[45] backdrop-blur-sm"
     onclick="closeMobileNav()"></div>
@@ -771,6 +622,23 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
         </svg><span class="text-sm font-semibold">Promotions</span></a>
+      <a href="appointments.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg><span class="text-sm font-semibold">Appointments</span></a>
+      <a href="reports.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg><span class="text-sm font-semibold">Reports</span></a>
+      <a href="user-management.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg><span class="text-sm font-semibold">Users</span></a>
       <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white"><svg
           class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -790,7 +658,7 @@
       </div>
       <div class="flex items-center gap-2 mt-2 px-2">
         <button onclick="toggleTheme()" class="theme-toggle-btn flex-1 justify-center gap-2 text-sm font-medium"
-          style="width:auto; border-radius: 12px; padding: 8px 12px;">
+          style="width:auto;border-radius:12px;padding:8px 12px;">
           <svg class="icon-moon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round"
               d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
@@ -812,7 +680,7 @@
     </div>
   </div>
 
-  <!-- Main -->
+  <!-- ═══════════════════════ MAIN ═══════════════════════ -->
   <div class="md:ml-56 min-h-screen pb-24 md:pb-0 pt-14 md:pt-0">
     <div class="bg-white border-b border-gray-100 px-4 md:px-6 py-4 sticky top-14 md:top-0 z-20">
       <p class="text-xs text-gray-400 mb-1"><a href="home.html" class="hover:text-indigo-600">Home</a> / <span
@@ -821,7 +689,8 @@
     </div>
 
     <div class="px-4 md:px-6 py-5">
-      <!-- Tabs -->
+
+      <!-- ── TABS ── -->
       <div class="flex gap-1 border-b border-gray-200 mb-6 overflow-x-auto">
         <button onclick="switchSettingsTab('general')" id="st-general"
           class="flex items-center gap-2 px-4 py-3 border-b-2 border-indigo-600 text-indigo-600 text-sm font-semibold flex-shrink-0">
@@ -849,9 +718,17 @@
           </svg>
           My Catalog
         </button>
+        <button onclick="switchSettingsTab('users')" id="st-users"
+          class="flex items-center gap-2 px-4 py-3 border-b-2 border-transparent text-gray-500 text-sm font-semibold hover:text-gray-700 flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          User Management
+        </button>
       </div>
 
-      <!-- GENERAL TAB -->
+      <!-- ══════════════════ GENERAL TAB ══════════════════ -->
       <div id="sp-general">
         <p class="text-xs text-gray-400 mb-4">Profile, notifications &amp; preferences</p>
 
@@ -877,13 +754,12 @@
                 <p class="text-xs text-gray-400 mt-0.5">Switch between light and dark interface</p>
               </div>
             </div>
-            <!-- Pretty toggle switch -->
             <button onclick="toggleTheme()" id="appearanceToggle"
               class="relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none"
-              style="background: var(--toggle-track-bg, #e5e7eb);">
+              style="background:var(--toggle-track-bg,#e5e7eb);">
               <span id="appearanceKnob"
                 class="inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-transform"
-                style="transform: translateX(2px);"></span>
+                style="transform:translateX(2px);"></span>
             </button>
           </div>
         </div>
@@ -1160,7 +1036,7 @@
         </div>
       </div>
 
-      <!-- GATEWAYS TAB -->
+      <!-- ══════════════════ GATEWAYS TAB ══════════════════ -->
       <div id="sp-gateways" class="hidden">
         <p class="text-xs text-gray-400 mb-4">Configure your messaging gateways</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1201,16 +1077,19 @@
         </div>
       </div>
 
-      <!-- CATALOG TAB (abbreviated for brevity - same as original) -->
+      <!-- ══════════════════ CATALOG TAB ══════════════════ -->
       <div id="sp-catalog" class="hidden">
         <p class="text-xs text-gray-400 mb-4">Plans &amp; products for your customers</p>
+
+        <!-- Catalog Header -->
         <div
           class="bg-white border border-gray-100 rounded-2xl shadow-sm p-5 mb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <p class="text-sm font-bold text-gray-900">My Catalog</p>
-            <p class="text-xs text-gray-400 mt-0.5">Manage your plans and products.</p>
+            <p class="text-xs text-gray-400 mt-0.5">Manage your plans and products — attach them to reminders,
+              greetings, and campaigns.</p>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
             <span
               class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-50 border border-indigo-100 text-sm font-semibold text-indigo-700">3
               active plans</span>
@@ -1219,14 +1098,561 @@
               active products</span>
           </div>
         </div>
-        <a href="catalog.html"
-          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition">View
-          Full Catalog →</a>
+
+        <!-- Catalog Sub-tabs pill -->
+        <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-2xl w-fit mb-5 overflow-x-auto">
+
+          <button onclick="switchCatSubTab('plans')" id="cst-plans"
+            class="px-4 py-2 rounded-xl text-sm font-semibold cst-active transition-all duration-200 ease-in-out">
+            Plans
+            <span class="ml-1 bg-indigo-100 text-indigo-600 px-1.5 py-0.5 rounded-full text-xs">3</span>
+          </button>
+
+          <button onclick="switchCatSubTab('products')" id="cst-products"
+            class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-500 hover:text-gray-700 transition-all duration-200 ease-in-out">
+            Products
+            <span class="ml-1 bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded-full text-xs">3</span>
+          </button>
+
+          <button onclick="switchCatSubTab('templates')" id="cst-templates"
+            class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-500 hover:text-gray-700 transition-all duration-200 ease-in-out">
+            Msg Templates
+            <span class="ml-1 bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded-full text-xs">2</span>
+          </button>
+
+          <button onclick="switchCatSubTab('rtemplates')" id="cst-rtemplates"
+            class="px-4 py-2 rounded-xl text-sm font-semibold text-gray-500 hover:text-gray-700 transition-all duration-200 ease-in-out">
+            Report Templates
+            <span class="ml-1 bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded-full text-xs" id="rtBadge">6</span>
+          </button>
+
+        </div>
+
+        <!-- ==================== CREATE PLAN MODAL ==================== -->
+        <div id="planModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
+          <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closePlanModal()"></div>
+          <div
+            class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[94vh] flex flex-col">
+            <div class="flex justify-center pt-3 pb-1 md:hidden">
+              <div class="w-10 h-1 rounded-full bg-gray-200"></div>
+            </div>
+            <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100 flex-shrink-0">
+              <div>
+                <h2 class="text-lg font-bold text-gray-900">New Plan</h2>
+                <p class="text-xs text-gray-400 mt-0.5">Create a plan for your customers</p>
+              </div>
+              <button onclick="closePlanModal()"
+                class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg
+                  class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg></button>
+            </div>
+            <div class="overflow-y-auto flex-1 px-6 py-5 space-y-5">
+              <!-- Plan Name + Billing Cycle -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                  <label class="block text-sm font-semibold text-gray-800 mb-2">Plan Name <span
+                      class="text-red-500">*</span></label>
+                  <input type="text" id="pm_name" placeholder="e.g. Premium SIP"
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-800 mb-2">Billing Cycle</label>
+                  <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="selectBilling('monthly')" id="bc-monthly"
+                      class="billing-btn sel px-3 py-2.5 rounded-xl border-2 border-indigo-500 bg-indigo-50 text-sm font-semibold text-indigo-600">Monthly</button>
+                    <button type="button" onclick="selectBilling('quarterly')" id="bc-quarterly"
+                      class="billing-btn px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600">Quarterly</button>
+                    <button type="button" onclick="selectBilling('yearly')" id="bc-yearly"
+                      class="billing-btn px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600">Yearly</button>
+                    <button type="button" onclick="selectBilling('one-time')" id="bc-one-time"
+                      class="billing-btn px-3 py-2.5 rounded-xl border-2 border-gray-200 text-sm font-semibold text-gray-600">One-Time</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Price -->
+              <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-2">Price <span
+                    class="text-red-500">*</span></label>
+                <div class="flex gap-2">
+                  <div class="relative">
+                    <select id="pm_currency"
+                      class="appearance-none pl-3 pr-8 py-3 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                      <option>INR</option>
+                      <option>USD</option>
+                      <option>EUR</option>
+                      <option>GBP</option>
+                      <option>AED</option>
+                      <option>SGD</option>
+                    </select>
+                    <svg
+                      class="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none"
+                      fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                  <input type="number" id="pm_price" placeholder="0"
+                    class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-2">Description <span
+                    class="text-xs text-gray-400 font-normal">(optional)</span></label>
+                <input type="text" id="pm_desc" placeholder="Short description shown in messages"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+
+              <!-- Key Features -->
+              <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-2">Key Features <span
+                    class="text-xs text-gray-400 font-normal">(one per line)</span></label>
+                <textarea id="pm_features" rows="4"
+                  placeholder="Monthly SIP starting ₹500&#10;Tax benefits&#10;24×7 support"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
+              </div>
+
+              <!-- Image Upload -->
+              <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-2">Plan Image <span
+                    class="text-xs text-gray-400 font-normal">(optional)</span></label>
+                <div id="planImgZone"
+                  class="border-2 border-dashed border-gray-200 rounded-2xl p-5 text-center hover:border-indigo-300 hover:bg-indigo-50/20 transition cursor-pointer"
+                  onclick="document.getElementById('planImgInput').click()">
+                  <svg class="w-8 h-8 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <p class="text-sm text-gray-500">Click to upload image</p>
+                  <p class="text-xs text-gray-400 mt-0.5">PNG, JPG up to 5MB</p>
+                  <input type="file" id="planImgInput" accept="image/*" class="hidden" onchange="previewPlanImg(this)">
+                </div>
+                <div id="planImgPreview" class="hidden mt-2">
+                  <img id="planImgThumb" class="w-full h-28 object-cover rounded-xl border border-gray-200">
+                  <button onclick="clearPlanImg()" class="text-xs text-red-500 mt-1 hover:underline">Remove
+                    image</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="px-6 pb-6 flex-shrink-0">
+              <button onclick="createPlan()"
+                class="w-full py-4 rounded-2xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                </svg>
+                Create Plan
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== CREATE PRODUCT MODAL ==================== -->
+        <div id="productModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
+          <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeProductModal()"></div>
+          <div
+            class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[94vh] flex flex-col">
+            <div class="flex justify-center pt-3 pb-1 md:hidden">
+              <div class="w-10 h-1 rounded-full bg-gray-200"></div>
+            </div>
+            <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100 flex-shrink-0">
+              <div>
+                <h2 class="text-lg font-bold text-gray-900">New Product</h2>
+                <p class="text-xs text-gray-400 mt-0.5">Add a product to your catalog</p>
+              </div>
+              <button onclick="closeProductModal()"
+                class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg
+                  class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg></button>
+            </div>
+            <div class="overflow-y-auto flex-1 px-6 py-5 space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-2 md:col-span-1">
+                  <label class="block text-sm font-semibold text-gray-800 mb-2">Product Name <span
+                      class="text-red-500">*</span></label>
+                  <input type="text" id="prd_name" placeholder="e.g. Gold ETF Units"
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div class="col-span-2 md:col-span-1">
+                  <label class="block text-sm font-semibold text-gray-800 mb-2">Product ID / SKU <span
+                      class="text-red-500">*</span></label>
+                  <input type="text" id="prd_sku" placeholder="e.g. GOLD-ETF-001"
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-800 mb-2">Price <span
+                      class="text-red-500">*</span></label>
+                  <div class="flex gap-2">
+                    <div class="relative">
+                      <select id="prd_currency"
+                        class="appearance-none pl-3 pr-7 py-3 rounded-xl border border-gray-200 bg-white text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option>INR</option>
+                        <option>USD</option>
+                        <option>EUR</option>
+                        <option>AED</option>
+                      </select>
+                      <svg class="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-gray-400 pointer-events-none"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                    <input type="number" id="prd_price" placeholder="0"
+                      class="flex-1  py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-gray-800 mb-2">Category</label>
+                  <div class="relative">
+                    <select id="prd_category"
+                      class="appearance-none w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                      <option>Investments</option>
+                      <option>Insurance</option>
+                      <option>Fixed Income</option>
+                      <option>Loans</option>
+                      <option>Credit Cards</option>
+                      <option>Gold & Jewellery</option>
+                      <option>Real Estate</option>
+                      <option>General</option>
+                    </select>
+                    <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+                      fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-2">Description <span
+                    class="text-xs text-gray-400 font-normal">(optional)</span></label>
+                <input type="text" id="prd_desc" placeholder="Short product description"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-2">Product Image <span
+                    class="text-xs text-gray-400 font-normal">(optional)</span></label>
+                <div id="prodImgZone"
+                  class="border-2 border-dashed border-indigo-200 rounded-2xl p-6 text-center hover:border-indigo-400 hover:bg-indigo-50/20 transition cursor-pointer"
+                  onclick="document.getElementById('prodImgInput').click()">
+                  <svg class="w-8 h-8 text-indigo-300 mx-auto mb-1.5" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <p class="text-sm font-medium text-gray-500">Click to upload image</p>
+                  <p class="text-xs text-gray-400 mt-0.5">PNG, JPG up to 5MB</p>
+                  <input type="file" id="prodImgInput" accept="image/*" class="hidden" onchange="previewProdImg(this)">
+                </div>
+                <div id="prodImgPreview" class="hidden mt-2">
+                  <img id="prodImgThumb" class="w-full h-28 object-cover rounded-xl border border-gray-200">
+                  <button onclick="clearProdImg()" class="text-xs text-red-500 mt-1 hover:underline">Remove
+                    image</button>
+                </div>
+              </div>
+            </div>
+            <div class="px-6 pb-6 flex-shrink-0">
+              <button onclick="createProduct()"
+                class="w-full py-4 rounded-2xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                </svg>
+                Create Product
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== CREATE AI TEMPLATE MODAL ==================== -->
+        <div id="templateModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
+          <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeTemplateModal()"></div>
+          <div
+            class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[94vh] flex flex-col">
+            <div class="flex justify-center pt-3 pb-1 md:hidden">
+              <div class="w-10 h-1 rounded-full bg-gray-200"></div>
+            </div>
+            <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100 flex-shrink-0">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center"><svg
+                    class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg></div>
+                <div>
+                  <h2 class="text-lg font-bold text-gray-900">New AI Template</h2>
+                  <p class="text-xs text-gray-400">Create a reusable message template</p>
+                </div>
+              </div>
+              <button onclick="closeTemplateModal()"
+                class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg
+                  class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg></button>
+            </div>
+            <div class="overflow-y-auto flex-1 px-6 py-5 space-y-4">
+              <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-2">Template Title <span
+                    class="text-red-500">*</span></label>
+                <input type="text" id="tm_title" placeholder="e.g. Monthly Payment Reminder"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-2">Category / Use Case</label>
+                <div class="relative">
+                  <select id="tm_category"
+                    class="appearance-none w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <option>Payment Reminder</option>
+                    <option>Festival Greeting</option>
+                    <option>Promotion Announcement</option>
+                    <option>Birthday Wish</option>
+                    <option>Anniversary</option>
+                    <option>Policy Renewal</option>
+                    <option>General</option>
+                  </select>
+                  <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-2">Brief Description <span
+                    class="text-xs text-gray-400 font-normal">(helps generate better content)</span></label>
+                <textarea id="tm_desc" rows="3"
+                  placeholder="Describe the purpose of this template, tone, key info to include..."
+                  class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-2">Template Image <span
+                    class="text-xs text-gray-400 font-normal">(optional)</span></label>
+                <div
+                  class="border-2 border-dashed border-emerald-200 rounded-2xl p-4 text-center hover:border-emerald-400 cursor-pointer"
+                  onclick="document.getElementById('tmImgInput').click()">
+                  <svg class="w-7 h-7 text-emerald-300 mx-auto mb-1" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <p class="text-xs text-gray-400">Click to upload (PNG, JPG)</p>
+                  <input type="file" id="tmImgInput" accept="image/*" class="hidden">
+                </div>
+              </div>
+              <div>
+                <div class="flex items-center justify-between mb-2">
+                  <label class="text-sm font-semibold text-gray-800">Message Content <span
+                      class="text-red-500">*</span></label>
+                  <button onclick="generateTemplateContent()"
+                    class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold hover:bg-emerald-100 transition">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Generate Content
+                  </button>
+                </div>
+                <textarea id="tm_content" rows="6" placeholder="Your template message will appear here..."
+                  class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
+                <p class="text-xs text-gray-400 mt-1">Use <code class="bg-gray-100 px-1 rounded">{customer_name}</code>,
+                  <code class="bg-gray-100 px-1 rounded">{amount}</code>, <code
+                    class="bg-gray-100 px-1 rounded">{due_date}</code>
+                  as placeholders</p>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-800 mb-2">Channels</label>
+                <div class="flex gap-2">
+                  <label
+                    class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50"><input
+                      type="checkbox" id="tm_wa" checked class="accent-green-500 w-4 h-4 rounded"><span
+                      class="text-sm text-gray-700">WhatsApp</span></label>
+                  <label
+                    class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50"><input
+                      type="checkbox" id="tm_sms" class="accent-blue-500 w-4 h-4 rounded"><span
+                      class="text-sm text-gray-700">SMS</span></label>
+                  <label
+                    class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50"><input
+                      type="checkbox" id="tm_email" class="accent-violet-500 w-4 h-4 rounded"><span
+                      class="text-sm text-gray-700">Email</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="px-6 pb-6 flex-shrink-0">
+              <button onclick="createTemplate()"
+                class="w-full py-4 rounded-2xl bg-emerald-600 text-white font-bold text-sm hover:bg-emerald-700 transition flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                </svg>
+                Save AI Template
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- REPORT TEMPLATES sub-panel -->
+        <div id="cst-rtemplates-panel" class="hidden">
+          <div class="flex items-center justify-between mb-5">
+            <p class="text-sm text-gray-500">Define structured report templates. Columns are filled dynamically when
+              generating a report.</p>
+            <button onclick="openRTModal()"
+              class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 shadow-sm"><svg
+                class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>Create Template</button>
+          </div>
+          <div id="rtGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+      </div>
+
+      <!-- ══════════════════ USER MANAGEMENT TAB ══════════════════ -->
+      <div id="sp-users" class="hidden">
+        <div class="flex items-center justify-between mb-5">
+          <p class="text-xs text-gray-400">Manage team members, roles and access permissions</p>
+          <a href="user-management.html"
+            class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700"><svg
+              class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+            </svg>Add User</a>
+        </div>
+        <div class="space-y-3" id="settingsUserList">
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+            <div
+              class="w-11 h-11 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0 text-white text-sm font-bold">
+              AS</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap mb-0.5">
+                <p class="text-sm font-bold text-gray-900">Arjun Sharma</p><span
+                  class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-indigo-100 text-indigo-700">👑
+                  Admin</span><span
+                  class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">Active</span>
+              </div>
+              <p class="text-xs text-gray-500">admin@acmefinancial.com · +91 98765 43210</p>
+            </div><a href="user-management.html"
+              class="text-xs text-indigo-600 font-semibold hover:underline flex-shrink-0">Manage all →</a>
+          </div>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+            <div
+              class="w-11 h-11 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 text-white text-sm font-bold">
+              MI</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap mb-0.5">
+                <p class="text-sm font-bold text-gray-900">Dr. Meena Iyer</p><span
+                  class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700">🩺
+                  Doctor</span><span
+                  class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">Active</span>
+              </div>
+              <p class="text-xs text-gray-500">meena@acmefinancial.com</p>
+            </div>
+          </div>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+            <div
+              class="w-11 h-11 rounded-full bg-pink-500 flex items-center justify-center flex-shrink-0 text-white text-sm font-bold">
+              PN</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap mb-0.5">
+                <p class="text-sm font-bold text-gray-900">Priya Nair</p><span
+                  class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-pink-100 text-pink-700">📋
+                  Receptionist</span><span
+                  class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700">Active</span>
+              </div>
+              <p class="text-xs text-gray-500">priya@acmefinancial.com</p>
+            </div>
+          </div>
+        </div>
+        <a href="user-management.html"
+          class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 hover:text-indigo-700">View
+          all users &amp; permissions <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg></a>
+      </div>
+
+    </div><!-- /px-4 py-5 -->
+  </div><!-- /main -->
+
+  <!-- ═══════════════════════ REPORT TEMPLATE MODAL ═══════════════════════ -->
+  <div id="rtModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeRTModal()"></div>
+    <div class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-lg max-h-[95vh] overflow-y-auto shadow-2xl">
+      <div class="flex justify-center pt-3 pb-1 md:hidden">
+        <div class="w-10 h-1 rounded-full bg-gray-200"></div>
+      </div>
+      <div class="flex items-center justify-between px-5 pt-4 pb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center"><svg
+              class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg></div>
+          <h2 id="rtModalTitle" class="text-base font-bold text-gray-900">Create Report Template</h2>
+        </div>
+        <button onclick="closeRTModal()"
+          class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg
+            class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg></button>
+      </div>
+      <div class="px-5 pb-6 flex flex-col gap-4">
+        <input type="hidden" id="rtEditId">
+        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Template Title *</label><input type="text"
+            id="rtTitle" placeholder="e.g. Complete Blood Count, MRI Brain"
+            class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+        </div>
+        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Category / Type</label>
+          <div class="relative"><select id="rtCategory"
+              class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
+              <option>Blood Test</option>
+              <option>Radiology</option>
+              <option>Cardiology</option>
+              <option>Pathology</option>
+              <option>Urology</option>
+              <option>Prescription</option>
+              <option>General Checkup</option>
+              <option>Custom</option>
+            </select><svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+              fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-2"><label class="text-sm font-medium text-gray-700">Report
+              Columns *</label><button type="button" onclick="addRTColumn()"
+              class="text-xs text-indigo-600 font-semibold hover:underline flex items-center gap-1"><svg
+                class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>Add Column</button></div>
+          <div id="rtColumns" class="space-y-2"></div>
+          <div class="mt-3 p-3 bg-blue-50 rounded-xl border border-blue-100 flex items-start gap-2"><svg
+              class="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-xs text-blue-700">Add a <strong>Price (₹)</strong> column to enable auto-calculated grand
+              total per report.</p>
+          </div>
+        </div>
+        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">MRP / Price (₹) <span
+              class="text-gray-400 text-xs font-normal">— shown on each report</span></label><input type="number"
+            id="rtPrice" placeholder="e.g. 250" min="0"
+            class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div class="flex items-center gap-3 p-3 bg-emerald-50 rounded-2xl border border-emerald-100"><input
+            type="checkbox" id="rtShowTotal" checked class="rounded w-4 h-4"><label for="rtShowTotal"
+            class="text-sm font-medium text-gray-700 cursor-pointer">Show Grand Total row at bottom of report</label>
+        </div>
+        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Description (optional)</label><textarea
+            id="rtDesc" placeholder="Describe what this template is used for..." rows="2"
+            class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none placeholder-gray-400"></textarea>
+        </div>
+        <button onclick="saveRT()"
+          class="w-full py-4 rounded-2xl bg-indigo-600 text-white font-semibold flex items-center justify-center gap-2 hover:bg-indigo-700 transition"><svg
+            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg><span id="rtSaveLabel">Save Template</span></button>
       </div>
     </div>
   </div>
 
-  <!-- Bottom Nav -->
+  <!-- ═══════════════════════ BOTTOM NAV (mobile) ═══════════════════════ -->
   <div
     class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-1 pb-2 pt-1 flex items-end justify-around z-30">
     <a href="home.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5"
@@ -1260,22 +1686,43 @@
       </svg><span class="text-[10px] font-medium">Settings</span></a>
   </div>
 
+  <!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
   <script>
-    // ── Mobile nav ──
+    // ── Mobile nav ──────────────────────────────────────────────
     function openMobileNav() { document.getElementById('mobileNavDrawer').style.transform = 'translateX(0)'; document.getElementById('mobileNavBg').classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
     function closeMobileNav() { document.getElementById('mobileNavDrawer').style.transform = 'translateX(-100%)'; document.getElementById('mobileNavBg').classList.add('hidden'); document.body.style.overflow = ''; }
 
-    // ── Settings tabs ──
+    // ── Settings main tabs (ALL FOUR panels) ────────────────────
     function switchSettingsTab(t) {
-      ['general', 'gateways', 'catalog'].forEach(x => {
+      ['general', 'gateways', 'catalog', 'users'].forEach(x => {
         const p = document.getElementById('sp-' + x);
         const b = document.getElementById('st-' + x);
-        if (x === t) { p.classList.remove('hidden'); b.classList.add('border-indigo-600', 'text-indigo-600'); b.classList.remove('border-transparent', 'text-gray-500'); }
-        else { p.classList.add('hidden'); b.classList.remove('border-indigo-600', 'text-indigo-600'); b.classList.add('border-transparent', 'text-gray-500'); }
+        if (!p || !b) return;
+        if (x === t) {
+          p.classList.remove('hidden');
+          b.classList.add('border-indigo-600', 'text-indigo-600');
+          b.classList.remove('border-transparent', 'text-gray-500');
+        } else {
+          p.classList.add('hidden');
+          b.classList.remove('border-indigo-600', 'text-indigo-600');
+          b.classList.add('border-transparent', 'text-gray-500');
+        }
       });
     }
 
-    // ── Theme Toggle ──
+    // ── Catalog sub-tabs ─────────────────────────────────────────
+    function switchCatSubTab(t) {
+      ['plans', 'products', 'templates', 'rtemplates'].forEach(x => {
+        const panel = document.getElementById('cst-' + x + '-panel');
+        if (panel) panel.classList.toggle('hidden', x !== t);
+        const b = document.getElementById('cst-' + x);
+        if (!b) return;
+        if (x === t) { b.classList.add('cst-active'); b.classList.remove('text-gray-500'); }
+        else { b.classList.remove('cst-active'); b.classList.add('text-gray-500'); }
+      });
+    }
+
+    // ── Theme Toggle ─────────────────────────────────────────────
     function toggleTheme() {
       var cur = document.documentElement.getAttribute('data-theme') || 'light';
       var next = cur === 'dark' ? 'light' : 'dark';
@@ -1286,35 +1733,157 @@
 
     function syncToggleUI(theme) {
       var isDark = theme === 'dark';
-      // Appearance toggle button (the pill toggle)
       var toggle = document.getElementById('appearanceToggle');
       var knob = document.getElementById('appearanceKnob');
       if (toggle && knob) {
-        if (isDark) {
-          toggle.style.background = '#e5e5e5';
-          knob.style.transform = 'translateX(30px)';
-          knob.style.backgroundColor = '#0a0a0a';
-        } else {
-          toggle.style.background = '#e5e7eb';
-          knob.style.transform = 'translateX(2px)';
-          knob.style.backgroundColor = '#fff';
-        }
+        if (isDark) { toggle.style.background = '#2563eb'; knob.style.transform = 'translateX(30px)'; knob.style.backgroundColor = '#fff'; }
+        else { toggle.style.background = '#e5e7eb'; knob.style.transform = 'translateX(2px)'; knob.style.backgroundColor = '#fff'; }
       }
-      // Drawer label
       var lbl = document.getElementById('drawerThemeLabel');
       if (lbl) lbl.textContent = isDark ? 'Light Mode' : 'Dark Mode';
-      // Sun/moon icons on all buttons
-      document.querySelectorAll('.icon-sun').forEach(function (el) { el.style.display = isDark ? 'block' : 'none'; });
-      document.querySelectorAll('.icon-moon').forEach(function (el) { el.style.display = isDark ? 'none' : 'block'; });
+      document.querySelectorAll('.icon-sun').forEach(el => { el.style.display = isDark ? 'block' : 'none'; });
+      document.querySelectorAll('.icon-moon').forEach(el => { el.style.display = isDark ? 'none' : 'block'; });
     }
 
-    // Init on load
+    // Init theme on load
     (function () {
       var t = localStorage.getItem('rm_theme') || 'light';
       document.documentElement.setAttribute('data-theme', t);
       syncToggleUI(t);
     })();
+
+    // ── Report Templates ─────────────────────────────────────────
+    var rtTemplates = [
+      { id: 1, title: 'Complete Blood Count (CBC)', category: 'Blood Test', desc: 'Full haematology panel including RBC, WBC, platelets', columns: ['Test Name', 'Value', 'Reference Range', 'Unit', 'Status/Flag'], price: 250, showTotal: true },
+      { id: 2, title: 'Lipid Profile', category: 'Blood Test', desc: 'Cholesterol, triglycerides and lipoprotein fractions', columns: ['Parameter', 'Result', 'Reference Range', 'Unit', 'Flag'], price: 550, showTotal: true },
+      { id: 3, title: 'MRI Brain Report', category: 'Radiology', desc: 'Magnetic resonance imaging of the brain', columns: ['Region', 'Findings', 'Impression', 'Radiologist'], price: 3500, showTotal: true },
+      { id: 4, title: 'Urine Routine Analysis', category: 'Pathology', desc: 'Complete routine urine examination', columns: ['Test', 'Result', 'Normal Range', 'Remarks'], price: 120, showTotal: true },
+      { id: 5, title: 'ECG / Cardiac Report', category: 'Cardiology', desc: 'Electrocardiogram interpretation', columns: ['Parameter', 'Value', 'Normal', 'Clinical Significance'], price: 400, showTotal: true },
+      { id: 6, title: 'Prescription', category: 'Prescription', desc: 'Medication and dosage prescription', columns: ['Medicine Name', 'Dosage', 'Frequency', 'Duration', 'Instructions'], price: 0, showTotal: false }
+    ];
+    var rtEditId = null, rtCols = [];
+
+    function renderRTGrid() {
+      var grid = document.getElementById('rtGrid');
+      grid.innerHTML = '';
+      document.getElementById('rtBadge').textContent = rtTemplates.length;
+      rtTemplates.forEach(function (t) {
+        grid.innerHTML += '<div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">'
+          + '<div class="flex items-start justify-between mb-3">'
+          + '<div class="flex items-start gap-3">'
+          + '<div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center flex-shrink-0 text-lg">📋</div>'
+          + '<div><p class="text-sm font-bold text-gray-900">' + t.title + '</p><span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 font-semibold">' + t.category + '</span></div>'
+          + '</div>'
+          + '<div class="flex gap-1 flex-shrink-0">'
+          + '<button onclick="editRT(' + t.id + ')" class="w-7 h-7 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>'
+          + '<button onclick="deleteRT(' + t.id + ')" class="w-7 h-7 rounded-lg bg-red-50 flex items-center justify-center text-red-400 hover:bg-red-100"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>'
+          + '</div>'
+          + '</div>'
+          + (t.desc ? '<p class="text-xs text-gray-500 mb-3">' + t.desc + '</p>' : '')
+          + '<div class="flex flex-wrap gap-1.5 mb-2">'
+          + t.columns.map(function (c) { return '<span class="text-[10px] px-2 py-1 rounded-lg bg-gray-100 text-gray-600 font-medium">' + c + '</span>'; }).join('')
+          + (t.showTotal !== false ? '<span class="text-[10px] px-2 py-1 rounded-lg bg-emerald-100 text-emerald-700 font-semibold">∑ Grand Total</span>' : '')
+          + '</div>'
+          + '<div class="flex items-center justify-between">'
+          + '<p class="text-[10px] text-gray-400">' + t.columns.length + ' columns</p>'
+          + (t.price ? '<p class="text-sm font-bold text-emerald-600">₹' + t.price.toLocaleString('en-IN') + '</p>' : '')
+          + '</div>'
+          + '</div>';
+      });
+    }
+
+    function openRTModal() {
+      rtEditId = null; rtCols = ['Test Name', 'Value', 'Reference Range', 'Unit'];
+      document.getElementById('rtTitle').value = '';
+      document.getElementById('rtDesc').value = '';
+      document.getElementById('rtPrice').value = '';
+      document.getElementById('rtShowTotal').checked = true;
+      document.getElementById('rtCategory').value = 'Blood Test';
+      document.getElementById('rtModalTitle').textContent = 'Create Report Template';
+      document.getElementById('rtSaveLabel').textContent = 'Save Template';
+      renderRTCols();
+      document.getElementById('rtModal').classList.remove('hidden');
+    }
+
+    function editRT(id) {
+      var t = rtTemplates.find(function (x) { return x.id === id; });
+      if (!t) return;
+      rtEditId = id; rtCols = t.columns.slice();
+      document.getElementById('rtTitle').value = t.title;
+      document.getElementById('rtDesc').value = t.desc || '';
+      document.getElementById('rtCategory').value = t.category;
+      document.getElementById('rtPrice').value = t.price || '';
+      document.getElementById('rtShowTotal').checked = t.showTotal !== false;
+      document.getElementById('rtModalTitle').textContent = 'Edit Template';
+      document.getElementById('rtSaveLabel').textContent = 'Save Changes';
+      renderRTCols();
+      document.getElementById('rtModal').classList.remove('hidden');
+    }
+
+    function closeRTModal() { document.getElementById('rtModal').classList.add('hidden'); }
+
+    function addRTColumn() {
+      rtCols.push(''); renderRTCols();
+      var inputs = document.querySelectorAll('.rt-col-input');
+      if (inputs.length) inputs[inputs.length - 1].focus();
+    }
+
+    function removeRTCol(i) { rtCols.splice(i, 1); renderRTCols(); }
+
+    function renderRTCols() {
+      var cont = document.getElementById('rtColumns');
+      cont.innerHTML = '';
+      rtCols.forEach(function (c, i) {
+        cont.innerHTML += '<div class="flex items-center gap-2">'
+          + '<div class="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center text-xs text-gray-500 font-bold flex-shrink-0">' + (i + 1) + '</div>'
+          + '<input type="text" value="' + c.replace(/"/g, '&quot;') + '" placeholder="Column name (e.g. Test Name, Value)" oninput="rtCols[' + i + ']=this.value" class="rt-col-input flex-1 px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">'
+          + '<button onclick="removeRTCol(' + i + ')" class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-red-400 hover:bg-red-100 flex-shrink-0"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>'
+          + '</div>';
+      });
+    }
+
+    function saveRT() {
+      var title = document.getElementById('rtTitle').value.trim();
+      if (!title) { alert('Please enter a template title.'); return; }
+      var cols = rtCols.filter(function (c) { return c.trim(); });
+      if (!cols.length) { alert('Please add at least one column.'); return; }
+      var price = parseFloat(document.getElementById('rtPrice').value) || 0;
+      var showTotal = document.getElementById('rtShowTotal').checked;
+      if (rtEditId) {
+        var t = rtTemplates.find(function (x) { return x.id === rtEditId; });
+        if (t) { t.title = title; t.category = document.getElementById('rtCategory').value; t.desc = document.getElementById('rtDesc').value; t.columns = cols; t.price = price; t.showTotal = showTotal; }
+      } else {
+        rtTemplates.push({ id: Date.now(), title: title, category: document.getElementById('rtCategory').value, desc: document.getElementById('rtDesc').value, columns: cols, price: price, showTotal: showTotal });
+      }
+      closeRTModal(); renderRTGrid();
+      showSettingsToast(rtEditId ? 'Template updated' : 'Report template created!');
+    }
+
+    function deleteRT(id) {
+      if (!confirm('Delete this report template?')) return;
+      rtTemplates = rtTemplates.filter(function (t) { return t.id !== id; });
+      renderRTGrid(); showSettingsToast('Template deleted');
+    }
+
+    function showSettingsToast(msg) {
+      var t = document.getElementById('settingsToast');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = 'settingsToast';
+        t.className = 'fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-3 px-5 py-3 bg-gray-900 text-white rounded-2xl shadow-2xl';
+        t.innerHTML = '<svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><p id="settingsToastMsg" class="text-sm font-medium"></p>';
+        document.body.appendChild(t);
+      }
+      document.getElementById('settingsToastMsg').textContent = msg;
+      t.style.display = 'flex';
+      setTimeout(function () { t.style.display = 'none'; }, 3000);
+    }
+
+    // Init report templates grid on page load
+    renderRTGrid();
   </script>
+
+  <!-- Settings JS (profile save, password update) -->
   <script src="/js/settings/settings.js"></script>
 </body>
 
