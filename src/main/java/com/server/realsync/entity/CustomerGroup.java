@@ -2,19 +2,16 @@
  * 
  */
 package com.server.realsync.entity;
+
 import jakarta.persistence.*;
 
 /**
  * 
  */
 @Entity
-@Table(name = "customer_group",
-       uniqueConstraints = {
-           @UniqueConstraint(
-               name = "uk_customer_group_account_name",
-               columnNames = {"account_id", "name"}
-           )
-       })
+@Table(name = "customer_group", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_customer_group_account_name", columnNames = { "account_id", "name" })
+})
 public class CustomerGroup {
 
     @Id
@@ -27,7 +24,8 @@ public class CustomerGroup {
     @Column(name = "account_id", nullable = false)
     private Integer accountId;
 
-    public CustomerGroup() {}
+    public CustomerGroup() {
+    }
 
     public CustomerGroup(String name, Integer accountId) {
         this.name = name;

@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.server.realsync.entity.Account;
 import com.server.realsync.entity.Customer;
 import com.server.realsync.entity.CatalogPlan;
+import com.server.realsync.entity.CustomerGroup;
 import com.server.realsync.services.AccountService;
 import com.server.realsync.services.CustomerService;
+import com.server.realsync.services.CustomerGroupService;
 import com.server.realsync.services.SettingsPlanService;
 
 import com.server.realsync.services.UserService;
@@ -43,6 +45,8 @@ public class HomeController {
 	private AccountService accountService;
 	@Autowired
 	CustomerMessageService customerMessageService;
+	@Autowired
+	CustomerGroupService customerGroupService;
 	@Autowired
 	private SettingsPlanService settingsPlanService;
 
@@ -186,13 +190,12 @@ public class HomeController {
 		return "remindmeui/catalog";
 	}
 
-
 	@GetMapping("/engagement.html")
 	public String engagement(Model model) {
-		
+
 		return "remindmeui/engagement";
 	}
-	
+
 	@GetMapping("/user-management.html")
 	public String users(Model model) {
 		model.addAttribute("activePage", "users");
@@ -216,7 +219,12 @@ public class HomeController {
 		Account loggedIn = SecurityUtil.getCurrentAccountId();
 
 		Account account = accountService.getById(loggedIn.getId());
+
+		List<CustomerGroup> groups = customerGroupService.getByAccountId(account.getId());
+
 		model.addAttribute("account", account);
+		model.addAttribute("groups", groups);
+		model.addAttribute("activePage", "settings");
 		return "remindmeui/settings";
 	}
 

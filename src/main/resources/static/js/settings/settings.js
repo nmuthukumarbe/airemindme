@@ -200,3 +200,105 @@ async function updatePassword() {
         if (btn) setButtonLoading(btn, false, "Update Password");
     }
 }
+
+
+
+
+
+// Update existing switch function to include 'groups'
+function switchSettingsTab(t) {
+    ['general', 'gateways', 'catalog', 'users', 'groups'].forEach(x => {
+        const p = document.getElementById('sp-' + x);
+        const b = document.getElementById('st-' + x);
+        if (!p || !b) return;
+        if (x === t) {
+            p.classList.remove('hidden');
+            b.classList.add('border-indigo-600', 'text-indigo-600');
+            b.classList.remove('border-transparent', 'text-gray-500');
+        } else {
+            p.classList.add('hidden');
+            b.classList.remove('border-indigo-600', 'text-indigo-600');
+            b.classList.add('border-transparent', 'text-gray-500');
+        }
+    });
+}
+
+// Group Management Logic - FETCH FROM DATABASE
+async function renderGroups() {
+    try {
+        // Points to your Controller: @GetMapping("/account/{accountId}")
+        const response = await fetch(`/api/customer-groups/account/${currentAccountId}`);
+        const groups = await response.json();
+
+        const grid = document.getElementById('groupListGrid');
+        grid.innerHTML = '';
+
+        if (groups.length === 0) {
+            grid.innerHTML = `<p class="col-span-full text-center py-10 text-gray-400 text-sm italic">No custom groups created yet.</p>`;
+            return;
+        }
+
+        groups.forEach(g => {
+            grid.innerHTML += `
+                <div class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold">
+                            ${g.name.charAt(0).toUpperCase()}
+                        </div>
+                        <button onclick="deleteGroup(${g.id})" class="text-gray-300 hover:text-red-500 transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="text-sm font-bold text-gray-900">${g.name}</p>
+                    <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">Group ID: #G-${g.id}</p>
+                </div>`;
+        });
+    } catch (error) {
+        console.error("Failed to load groups:", error);
+    }
+}
+
+function openGroupModal() { document.getElementById('groupModal').classList.remove('hidden'); }
+function closeGroupModal() { document.getElementById('groupModal').classList.add('hidden'); }
+
+// SAVE TO DATABASE
+async function saveNewGroup() {
+    const nameInput = document.getElementById('newGroupName');
+    const name = nameInput.value.trim();
+    if (!name) return;
+
+    const response = await fetch('/api/customer-groups/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name }) // Only send the name
+    });
+
+    if (response.ok) {
+        window.location.reload(); // Refresh to see the new group card
+    } else {
+        const msg = await response.text();
+        alert(msg); // "A group with this name already exists."
+    }
+}
+// DELETE FROM DATABASE
+async function deleteGroup(id) {
+    if (!confirm("Are you sure? Customers in this group will be moved to 'Uncategorized'.")) return;
+
+    try {
+        const response = await fetch(`/api/customer-groups/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            renderGroups(); // Refresh
+            if (typeof showSettingsToast === 'function') showSettingsToast('Group deleted');
+        }
+    } catch (error) {
+        console.error("Delete error:", error);
+    }
+}
+
+// Initial call when page loads
+document.addEventListener('DOMContentLoaded', renderGroups);
