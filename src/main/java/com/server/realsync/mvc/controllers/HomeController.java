@@ -39,12 +39,13 @@ public class HomeController {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private CustomerService customerService;
+
 	@Autowired
 	private AccountService accountService;
 	@Autowired
 	CustomerMessageService customerMessageService;
+	@Autowired
+	private CustomerService customerService;
 	@Autowired
 	CustomerGroupService customerGroupService;
 	@Autowired
@@ -86,49 +87,52 @@ public class HomeController {
 	@GetMapping("/customers.html")
 	public String getCustomers(
 			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(required = false) String segment,
+			@RequestParam(required = false) String segment, // Now represents the dynamic Group ID
 			@RequestParam(required = false) String search,
 			Model model) {
 
 		Account account = SecurityUtil.getCurrentAccountId();
 
-		Pageable pageable = PageRequest.of(page, 6, Sort.by("createdAt").descending());
-		long totalCustomers = customerService.getTotalCustomers(account.getId());
+		model.addAttribute("activePage", "customers");
 
+		List<CustomerGroup> accountGroups = customerGroupService.getByAccountId(account.getId());
+		model.addAttribute("customerGroups", accountGroups);
+
+		Pageable pageable = PageRequest.of(page, 6, Sort.unsorted());;
+		long totalCustomers = customerService.getTotalCustomers(account.getId());
 		Page<Customer> customers;
 
 		Integer groupId = null;
+		if (segment != null && !segment.isBlank() && !segment.equalsIgnoreCase("all")) {
+			try {
 
-		if (segment != null && !segment.isBlank()) {
-			groupId = switch (segment) {
-				case "vip" -> 1;
-				case "regular" -> 2;
-				case "new" -> 3;
-				case "inactive" -> 4;
-				default -> null;
-			};
+				groupId = Integer.parseInt(segment);
+			} catch (NumberFormatException e) {
+
+				groupId = null;
+			}
 		}
 
 		if (search != null && !search.isBlank()) {
-
 			if (groupId != null) {
+
 				customers = customerService.searchByAccountAndGroup(
 						account.getId(), groupId, search, pageable);
 			} else {
+
 				customers = customerService.searchByAccount(
 						account.getId(), search, pageable);
 			}
-
 		} else {
-
 			if (groupId != null) {
+
 				customers = customerService.getByAccountAndGroup(
 						account.getId(), groupId, pageable);
 			} else {
+
 				customers = customerService.getByAccount(
 						account.getId(), pageable);
 			}
-
 		}
 
 		model.addAttribute("customers", customers.getContent());

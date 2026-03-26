@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @Table(name = "customer", uniqueConstraints = {
         @UniqueConstraint(name = "uk_customer_account_mobile", columnNames = { "account_id", "mobile" }),
-        
+
 })
 public class Customer {
 
@@ -59,7 +59,7 @@ public class Customer {
     private LocalDate weddingDate;
 
     @Column(name = "customer_group_id")
-    private Integer customerGroupId;
+    private String customerGroupId; // Now supports "1,2,5"
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -166,11 +166,11 @@ public class Customer {
         this.weddingDate = weddingDate;
     }
 
-    public Integer getCustomerGroupId() {
+    public String getCustomerGroupId() {
         return customerGroupId;
     }
 
-    public void setCustomerGroupId(Integer customerGroupId) {
+    public void setCustomerGroupId(String customerGroupId) {
         this.customerGroupId = customerGroupId;
     }
 

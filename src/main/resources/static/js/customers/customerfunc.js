@@ -4,7 +4,9 @@ function saveCustomer(e) {
     e.preventDefault();
 
     const id = document.getElementById("cId").value;
-    const groupMap = { vip: 1, regular: 2, new: 3, inactive: 4 };
+
+    // IMPORTANT: Get the raw string from the hidden input (e.g., "1,5")
+    const groupIdString = document.getElementById("cSegment").value;
 
     const customer = {
         name: document.getElementById("cName").value,
@@ -13,7 +15,8 @@ function saveCustomer(e) {
         dob: document.getElementById("cBirthday").value || null,
         weddingDate: document.getElementById("cAnniversary").value || null,
         channel: selectedChannels.join(","),
-        customerGroupId: groupMap[document.getElementById("cSegment").value]
+        // This must match the field name in your Java Entity exactly
+        customerGroupId: groupIdString
     };
 
     const url = id ? "/api/customers/" + id : "/api/customers";
@@ -24,21 +27,14 @@ function saveCustomer(e) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(customer)
     })
-        .then(async res => {
-            if (!res.ok) {
-                const text = await res.text();
-                throw new Error(text);
-            }
+        .then(res => {
+            if (!res.ok) throw new Error("Save failed");
             return res.json();
         })
         .then(() => {
-            hideAddCustomerModal();
             location.reload();
         })
-        .catch(err => {
-            console.error(err);
-            alert("Error: " + err.message);
-        });
+        .catch(err => alert("Error saving: " + err.message));
 }
 
 

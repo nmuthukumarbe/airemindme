@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import com.server.realsync.entity.Customer;
 import com.server.realsync.repo.CustomerRepository;
 
+import jakarta.transaction.Transactional;
+
 /**
  * 
  */
@@ -59,6 +61,7 @@ public class CustomerService {
         return customerRepository.searchByAccount(accountId, search, pageable);
     }
 
+    
     public Page<Customer> searchByAccountAndGroup(Integer accountId, Integer groupId, String search,
             Pageable pageable) {
         return customerRepository.searchByAccountAndGroup(accountId, groupId, search, pageable);
@@ -67,4 +70,17 @@ public class CustomerService {
     public void delete(Integer id) {
         customerRepository.deleteById(id);
     }
+
+
+
+    //delete the cutomer grouping
+    @Transactional
+    public void cleanupDeletedGroup(Integer groupId) {
+        // 1. Remove the ID from the comma-separated VARCHAR strings
+        customerRepository.removeGroupIdFromAllCustomers(groupId);
+        
+        // 2. Clean up any leftover empty strings by setting them to NULL
+        customerRepository.setEmptyGroupsToNull();
+    }
+
 }

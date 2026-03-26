@@ -3,27 +3,31 @@ package com.server.realsync.mvc.controllers;
 import com.server.realsync.entity.Account;
 import com.server.realsync.entity.CustomerGroup;
 import com.server.realsync.services.CustomerGroupService;
+import com.server.realsync.services.CustomerService;
 import com.server.realsync.util.SecurityUtil;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/customer-groups")
 public class CustomerGroupController {
 
     private final CustomerGroupService groupService;
+    private final CustomerService customerService;
 
-    public CustomerGroupController(CustomerGroupService groupService) {
+    // Standard constructor injection (Cleaner than multiple @Autowired)
+    public CustomerGroupController(CustomerGroupService groupService, CustomerService customerService) {
         this.groupService = groupService;
+        this.customerService = customerService;
     }
 
     /**
      * GET all groups for the currently logged-in account.
-     * Note: We no longer need accountId in the URL because we find it via
-     * SecurityUtil.
      */
     @GetMapping("/my-groups")
     public ResponseEntity<List<CustomerGroup>> getMyGroups() {
@@ -36,22 +40,17 @@ public class CustomerGroupController {
 
     /**
      * POST to save a group.
-     * The accountId is set automatically from the session.
      */
     @PostMapping("/save")
     public ResponseEntity<?> saveGroup(@RequestBody CustomerGroup group) {
-        // 1. Get the logged-in account from the backend session
         Account account = SecurityUtil.getCurrentAccountId();
-
         if (account == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User session not found.");
         }
 
-        // 2. Force the accountId into the group entity
         group.setAccountId(account.getId());
 
-        // 3. Logic to check if the name already exists for THIS specific account
-        // This prevents a 500 Internal Server Error from the SQL unique constraint
+        // Check for duplicate names for this account
         List<CustomerGroup> existingGroups = groupService.getByAccountId(account.getId());
         boolean exists = existingGroups.stream()
                 .anyMatch(g -> g.getName().equalsIgnoreCase(group.getName()));
@@ -60,16 +59,32 @@ public class CustomerGroupController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("A group with this name already exists.");
         }
 
-        // 4. Save and return
         return ResponseEntity.ok(groupService.save(group));
     }
 
-    // DELETE a group
+    /**
+     * DELETE a group.
+     * Includes cleanup to remove the ID from customers without deleting them.
+     */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteGroup(@PathVariable Integer id) {
-        // Optional: Add a check here to ensure the group being deleted
-        // actually belongs to the current accountId for better security.
+    public ResponseEntity<?> deleteGroup(@PathVariable Integer id) {
+        Account account = SecurityUtil.getCurrentAccountId();
+        if (account == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        // SECURITY CHECK: Verify the group belongs to the logged-in account
+        Optional<CustomerGroup> groupOpt = groupService.getById(id);
+        if (groupOpt.isEmpty() || !groupOpt.get().getAccountId().equals(account.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You do not have permission to delete this group.");
+        }
+
+        // 1. Clean up the customer table (Remove the 'label' from Tamil and others)
+        customerService.cleanupDeletedGroup(id);
+
+        // 2. Delete the actual group definition
         groupService.delete(id);
+
         return ResponseEntity.ok().build();
     }
 }

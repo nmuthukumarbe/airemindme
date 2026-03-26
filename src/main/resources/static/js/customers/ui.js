@@ -1,5 +1,46 @@
 /* ================= CUSTOMER MODAL ================= */
 
+
+function toggleGroupSelection(groupId) {
+    if (!groupId) return;
+    groupId = groupId.toString();
+    
+    const index = selectedGroupIds.indexOf(groupId);
+    const btn = document.getElementById('sb-' + groupId);
+
+    if (index > -1) {
+        // Deselecting
+        selectedGroupIds.splice(index, 1);
+        if (btn) {
+            btn.classList.remove('border-indigo-500', 'bg-indigo-50');
+            btn.classList.add('border-gray-200', 'bg-white');
+            const label = btn.querySelector('.sbl');
+            if (label) label.classList.replace('text-indigo-700', 'text-gray-800');
+        }
+    } else {
+        // Selecting
+        selectedGroupIds.push(groupId);
+        if (btn) {
+            btn.classList.add('border-indigo-500', 'bg-indigo-50');
+            btn.classList.remove('border-gray-200', 'bg-white');
+            const label = btn.querySelector('.sbl');
+            if (label) label.classList.replace('text-gray-800', 'text-indigo-700');
+        }
+    }
+    // Sync the hidden field that goes to Spring Boot
+    document.getElementById('cSegment').value = selectedGroupIds.join(',');
+}
+
+function resetGroupUI() {
+    selectedGroupIds = [];
+    document.getElementById('cSegment').value = "";
+    document.querySelectorAll('.group-btn').forEach(btn => {
+        btn.classList.remove('border-indigo-500', 'bg-indigo-50');
+        btn.classList.add('border-gray-200', 'bg-white');
+        const label = btn.querySelector('.sbl');
+        if (label) label.classList.replace('text-indigo-700', 'text-gray-800');
+    });
+}
 function showAddCustomerModal() {
     document.getElementById("cId").value = "";
     document.getElementById("cName").value = "";
@@ -8,7 +49,7 @@ function showAddCustomerModal() {
     document.getElementById("cBirthday").value = "";
     document.getElementById("cAnniversary").value = "";
 
-    selectSeg("regular");
+    resetGroupUI(); // Clear any previous selections
 
     document.getElementById("modalTitle").innerText = "Add Customer";
     document.getElementById("saveCustomerBtn").innerText = "Add Customer";
@@ -19,28 +60,32 @@ function hideAddCustomerModal() {
     document.getElementById("addCustomerModal").classList.add("hidden");
 }
 
-function openEditCustomer(id, name, phone, email, groupId, channel) {
+
+function openEditCustomer(id, name, phone, email, groupIds, channel) {
+    resetGroupUI(); // Clear previous highlights
+
     document.getElementById("cId").value = id;
     document.getElementById("cName").value = name;
     document.getElementById("cPhone").value = phone;
     document.getElementById("cEmail").value = email;
 
-    const groupMap = { 1: "vip", 2: "regular", 3: "new", 4: "inactive" };
-    selectSeg(groupMap[groupId] || "regular");
-
-    // Reset and set channels
-    selectedChannels = [];
-    if (channel) {
-        selectedChannels = channel.split(",").map(Number);
+    // FIX: Handle the comma-separated group string
+    if (groupIds) {
+        const ids = groupIds.toString().split(',');
+        ids.forEach(gid => {
+            // Use toggleGroupSelection to highlight each button
+            toggleGroupSelection(gid); 
+        });
     }
 
+    // Handle Channels
+    selectedChannels = channel ? channel.toString().split(",").map(Number) : [];
     updateChannelButtons();
 
     document.getElementById("modalTitle").innerText = "Edit Customer";
     document.getElementById("saveCustomerBtn").innerText = "Update Customer";
     document.getElementById("addCustomerModal").classList.remove("hidden");
 }
-
 /* ================= CHANNEL BUTTONS ================= */
 
 function updateChannelButtons() {
@@ -80,21 +125,31 @@ function toggleCh(channelId) {
 
 /* ================= SEGMENT ================= */
 
-function selectSeg(s) {
-    document.getElementById('cSegment').value = s;
+function selectSeg(groupId) {
+    if (!groupId) return;
 
-    ['vip', 'regular', 'new', 'inactive'].forEach(x => {
-        const b = document.getElementById('sb-' + x);
-        if (x === s) {
-            b.classList.add('border-indigo-500', 'bg-indigo-50');
-            b.classList.remove('border-gray-200');
-            b.querySelector('.sbl').className = 'text-sm font-semibold text-indigo-700 sbl';
-        } else {
-            b.classList.remove('border-indigo-500', 'bg-indigo-50');
-            b.classList.add('border-gray-200');
-            b.querySelector('.sbl').className = 'text-sm font-semibold text-gray-800 sbl';
-        }
+    // 1. Update Hidden Input
+    const input = document.getElementById('cSegment');
+    if (input) input.value = groupId;
+
+    // 2. Clear all "active" states
+    document.querySelectorAll('.group-btn').forEach(btn => {
+        btn.classList.remove('border-indigo-500', 'bg-indigo-50');
+        btn.classList.add('border-gray-200', 'bg-white');
+
+        const label = btn.querySelector('.sbl');
+        if (label) label.classList.replace('text-indigo-700', 'text-gray-800');
     });
+
+    // 3. Apply "active" state to chosen group
+    const activeBtn = document.getElementById('sb-' + groupId);
+    if (activeBtn) {
+        activeBtn.classList.add('border-indigo-500', 'bg-indigo-50');
+        activeBtn.classList.remove('border-gray-200', 'bg-white');
+
+        const label = activeBtn.querySelector('.sbl');
+        if (label) label.classList.replace('text-gray-800', 'text-indigo-700');
+    }
 }
 
 /* ================= VIEW SWITCH ================= */
