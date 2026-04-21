@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment Detail - Reminder Me</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f9fb;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50">
+
+  <!-- Mobile Header -->
+  <div
+    class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-100 z-40 h-14 flex items-center justify-between px-4 shadow-sm">
+    <button onclick="window.location.href='appointments.html'"
+      class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-600 hover:bg-gray-100 transition"><svg
+        class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg></button>
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shadow-sm"><svg
+          class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg></div><span class="text-sm font-bold text-gray-900">Reminder Me</span>
+    </div>
+    <div class="w-9"></div>
+  </div>
+
+  <!-- Page Content -->
+  <div class="min-h-screen pb-10 pt-14 md:pt-0">
+    <!-- Top Bar -->
+    <div
+      class="bg-white border-b border-gray-100 px-4 md:px-8 py-4 flex items-center justify-between sticky top-14 md:top-0 z-20">
+      <div class="flex items-center gap-3">
+        <a href="appointments.html"
+          class="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition hidden md:flex">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </a>
+        <div>
+          <p class="text-xs text-gray-400"><a href="appointments.html" class="hover:text-indigo-600">Appointments</a> /
+            <span class="text-gray-700">Detail</span>
+          </p>
+          <h1 id="apptTitle" class="text-xl font-bold text-gray-900">General Consultation</h1>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="openModal('rescheduleModal')"
+          class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Reschedule
+        </button>
+        <button onclick="sendReminder()"
+          class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+          </svg>
+          Send Reminder
+        </button>
+      </div>
+    </div>
+
+    <div class="px-4 md:px-8 py-6 max-w-4xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Left: Main Details -->
+        <div class="lg:col-span-2 space-y-5">
+
+          <!-- Status Card -->
+          <div id="statusCard" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-4">
+
+              <div class="flex items-center gap-3">
+
+                <!-- ICON -->
+                <div id="apptTypeIcon"
+                  class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-2xl" th:text="${appointment.serviceType == 'clinic'} ? '🏥' :
+                    (${appointment.serviceType == 'salon'} ? '💇' :
+                    (${appointment.serviceType == 'lab'} ? '🧪' : '📅'))">
+                  🏥
+                </div>
+
+                <div>
+                  <!-- SERVICE NAME -->
+                  <h2 id="apptService" class="text-base font-bold text-gray-900" th:text="${appointment.serviceName}">
+                    Service Name
+                  </h2>
+
+                  <!-- TYPE -->
+                  <p id="apptTypeBadge" class="text-xs text-gray-500 mt-0.5"
+                    th:text="${#strings.capitalize(appointment.serviceType)}">
+                    Type
+                  </p>
+                </div>
+
+              </div>
+
+              <!-- STATUS -->
+              <span id="statusBadge" class="px-3 py-1 rounded-full text-sm font-semibold"
+                th:text="${appointment.status}" th:classappend="${appointment.status == 'Upcoming'} ? 'bg-blue-100 text-blue-700' :
+                          (${appointment.status == 'Completed'} ? 'bg-emerald-100 text-emerald-700' :
+                          'bg-red-100 text-red-700')">
+                Status
+              </span>
+
+            </div>
+
+            <!-- DETAILS -->
+            <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-50">
+
+              <!-- DATE -->
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center">
+                  📅
+                </div>
+                <div>
+                  <p class="text-[10px] text-gray-400">Date</p>
+                  <p id="apptDate" class="text-sm font-semibold text-gray-800" th:text="${appointment.appointmentDate}">
+                    Date
+                  </p>
+                </div>
+              </div>
+
+              <!-- TIME -->
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center">
+                  ⏰
+                </div>
+                <div>
+                  <p class="text-[10px] text-gray-400">Time</p>
+                  <p id="apptTime" class="text-sm font-semibold text-gray-800" th:text="${appointment.appointmentTime}">
+                    Time
+                  </p>
+                </div>
+              </div>
+
+              <!-- DURATION -->
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center">
+                  ⏱️
+                </div>
+                <div>
+                  <p class="text-[10px] text-gray-400">Duration</p>
+                  <p id="apptDuration" class="text-sm font-semibold text-gray-800"
+                    th:text="${appointment.durationMinutes + ' min'}">
+                    Duration
+                  </p>
+                </div>
+              </div>
+
+              <!-- REMINDER -->
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center">
+                  🔔
+                </div>
+                <div>
+                  <p class="text-[10px] text-gray-400">Reminder</p>
+                  <p id="apptReminder" class="text-sm font-semibold text-gray-800"
+                    th:text="${appointment.reminderType}">
+                    Reminder
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Assignee + Channel -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">
+              Assignment
+            </p>
+
+            <div class="flex items-center gap-4 flex-wrap">
+
+              <!-- ASSIGNEE -->
+              <div class="flex items-center gap-3">
+
+                <!-- Avatar -->
+                <div id="assigneeAvatar"
+                  class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0">
+
+                  <span class="text-white text-sm font-bold"
+                    th:text="${#strings.isEmpty(appointment.assignee) ? 'U' : appointment.assignee.substring(0,1)}">A</span>
+
+                </div>
+
+                <!-- Name -->
+                <div>
+                  <p id="assigneeName" class="text-sm font-bold text-gray-900"
+                    th:text="${#strings.isEmpty(appointment.assignee) ? 'Unassigned' : appointment.assignee}">
+                    Unassigned
+                  </p>
+
+                  <p class="text-xs text-gray-400">
+                    Assigned staff
+                  </p>
+                </div>
+
+              </div>
+              <!-- CHANNEL -->
+              <div id="channelPill" class="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-semibold"
+                th:classappend="${appointment.channel == 'wa'} ? 'bg-green-50 text-green-700' : (${appointment.channel == 'sms'} ? 'bg-blue-50 text-blue-700' : (${appointment.channel == 'em'} ? 'bg-violet-50 text-violet-700' : 'bg-gray-50 text-gray-700'))">
+
+                <!-- ICON -->
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  th:if="${appointment.channel == 'wa'}">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  th:if="${appointment.channel == 'sms'}">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  th:if="${appointment.channel == 'em'}">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+
+                <!-- TEXT -->
+                <span
+                  th:text="${appointment.channel == 'wa'} ? 'WhatsApp' : (${appointment.channel == 'sms'} ? 'SMS' : (${appointment.channel == 'em'} ? 'Email' : 'Not set'))">
+                  Channel
+                </span>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Notes</p>
+              <button onclick="editNotes()" class="text-xs text-indigo-600 font-medium hover:underline">Edit</button>
+            </div>
+            <p id="apptNotes" class="text-sm text-gray-700 leading-relaxed">Follow-up on blood pressure medication.
+              Bring previous prescription.</p>
+          </div>
+
+          <!-- Update Status -->
+          <div id="statusActions" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Update Status</p>
+            <div class="grid grid-cols-3 gap-3">
+              <button onclick="updateStatus('Completed')"
+                class="py-3 rounded-2xl bg-emerald-50 text-emerald-700 text-sm font-semibold hover:bg-emerald-100 transition flex flex-col items-center gap-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Complete
+              </button>
+              <button onclick="openModal('rescheduleModal')"
+                class="py-3 rounded-2xl bg-blue-50 text-blue-700 text-sm font-semibold hover:bg-blue-100 transition flex flex-col items-center gap-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Reschedule
+              </button>
+              <button onclick="updateStatus('Cancelled')"
+                class="py-3 rounded-2xl bg-red-50 text-red-600 text-sm font-semibold hover:bg-red-100 transition flex flex-col items-center gap-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Customer + Activity -->
+        <div class="space-y-5">
+          <!-- Customer Card -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">
+              Customer
+            </p>
+
+            <div class="flex items-center gap-3 mb-3">
+
+              <!-- Avatar -->
+              <div
+                class="w-11 h-11 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+
+                <span id="custInitial" class="text-white text-sm font-bold"
+                  th:text="${customer != null && !#strings.isEmpty(customer.name) ? customer.name.substring(0,1) : 'U'}">
+                  R
+                </span>
+
+              </div>
+
+              <!-- Name + Phone -->
+              <div>
+                <p id="custName" class="text-sm font-bold text-gray-900"
+                  th:text="${customer != null ? customer.name : 'Unknown'}">
+                  Name
+                </p>
+
+                <p id="custPhone" class="text-xs text-gray-400"
+                  th:text="${customer != null ? customer.mobile : 'No phone'}">
+                  Phone
+                </p>
+              </div>
+
+            </div>
+
+            <!-- Email -->
+            <a id="custEmail" th:href="${customer != null && customer.email != null ? 'mailto:' + customer.email : '#'}"
+              class="flex items-center gap-2 text-xs text-gray-500 hover:text-indigo-600 mb-3 transition">
+
+              <svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+
+              <span th:text="${customer != null && customer.email != null ? customer.email : 'No email'}">
+                Email
+              </span>
+
+            </a>
+
+            <!-- View Profile -->
+            <a th:href="@{'/customer-detail.html?id=' + ${customer.id}}"
+              class="flex items-center gap-2 text-xs text-indigo-600 font-semibold hover:underline">
+              View full profile →
+            </a>
+
+          </div>
+
+          <!-- Notification Log -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Notification Log</p>
+            <div class="space-y-3" id="notifLog">
+              <div class="flex items-start gap-2.5">
+                <div class="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold text-gray-700">Confirmation sent</p>
+                  <p class="text-[10px] text-gray-400">WhatsApp · 17 Mar 2026, 09:00 AM</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-2.5">
+                <div class="w-7 h-7 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold text-gray-700">Reminder scheduled</p>
+                  <p class="text-[10px] text-gray-400">WhatsApp · 1 hr before appt</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Related Reports -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Related Reports</p>
+              <a href="reports.html" class="text-xs text-indigo-600 font-medium hover:underline">View all</a>
+            </div>
+            <div class="space-y-2">
+              <a href="report-detail.html"
+                class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-indigo-50 transition">
+                <span class="text-lg">🩸</span>
+                <div class="flex-1 min-w-0">
+                  <p class="text-xs font-semibold text-gray-800 truncate">Blood Report</p>
+                  <p class="text-[10px] text-gray-400">15 Mar 2026 · Completed</p>
+                </div>
+                <svg class="w-4 h-4 text-gray-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+              <button onclick="window.location.href='reports.html'"
+                class="w-full text-xs text-indigo-600 font-medium text-center py-1.5 hover:underline">+ Create new
+                report</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reschedule Modal -->
+  <div id="rescheduleModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeModal('rescheduleModal')"></div>
+    <div class="relative bg-white rounded-t-3xl md:rounded-3xl w-full max-w-md shadow-2xl p-6">
+      <div class="flex justify-center mb-3 md:hidden">
+        <div class="w-10 h-1 rounded-full bg-gray-200"></div>
+      </div>
+      <h2 class="text-base font-bold text-gray-900 mb-4">Reschedule Appointment</h2>
+      <div class="space-y-4 mb-5">
+        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">New Date</label><input type="date"
+            id="newDate"
+            class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">New Time</label><input type="time"
+            id="newTime"
+            class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Reason (optional)</label><input type="text"
+            placeholder="e.g. Doctor unavailable"
+            class="w-full px-4 py-3 rounded-2xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <button onclick="closeModal('rescheduleModal')"
+          class="flex-1 py-3 rounded-2xl border border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition">Cancel</button>
+        <button onclick="reschedule()"
+          class="flex-1 py-3 rounded-2xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">Confirm
+          Reschedule</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"
+    class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] flex items-center gap-3 px-5 py-3 bg-gray-900 text-white rounded-2xl shadow-2xl">
+    <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <p id="toastMsg" class="text-sm font-medium">Done!</p>
+  </div>
+
+  <script>
+    const statusColors = {
+      Upcoming: 'bg-blue-100 text-blue-700',
+      Completed: 'bg-emerald-100 text-emerald-700',
+      Cancelled: 'bg-red-100 text-red-700'
+    };
+
+    function updateStatus(status) {
+      const badge = document.getElementById('statusBadge');
+
+      badge.className =
+        'px-3 py-1 rounded-full text-sm font-semibold ' +
+        (statusColors[status] || statusColors.Upcoming);
+
+      badge.textContent = status;
+
+      if (status !== 'Upcoming') {
+        document.getElementById('statusActions').style.display = 'none';
+      }
+
+      showToast('Appointment marked as ' + status);
+    }
+
+    function sendReminder() {
+      const logEl = document.getElementById('notifLog');
+
+      const time = new Date().toLocaleTimeString('en-IN', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      const today = new Date().toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
+
+      logEl.insertAdjacentHTML(
+        'afterbegin',
+        `<div class="flex items-start gap-2.5">
+        <div class="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center">
+          ✔
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-gray-700">
+            Reminder sent
+          </p>
+          <p class="text-[10px] text-gray-400">
+            ${today}, ${time}
+          </p>
+        </div>
+      </div>`
+      );
+
+      showToast('Reminder sent');
+    }
+
+    function editNotes() {
+      const el = document.getElementById('apptNotes');
+      const current = el.textContent;
+
+      const val = prompt('Edit notes:', current);
+
+      if (val !== null) {
+        el.textContent = val;
+        showToast('Notes updated');
+      }
+    }
+
+    function reschedule() {
+      const nd = document.getElementById('newDate').value;
+      const nt = document.getElementById('newTime').value;
+
+      if (!nd || !nt) {
+        alert('Select date & time');
+        return;
+      }
+
+      const fDate = new Date(nd).toLocaleDateString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      });
+
+      const [h, m] = nt.split(':');
+      const hr = parseInt(h);
+
+      const fTime =
+        `${hr > 12 ? hr - 12 : hr || 12}:${m} ` +
+        `${hr >= 12 ? 'PM' : 'AM'}`;
+
+      document.getElementById('apptDate').textContent = fDate;
+      document.getElementById('apptTime').textContent = fTime;
+
+      closeModal('rescheduleModal');
+      showToast('Rescheduled successfully');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+
+      document.getElementById('toastMsg').textContent = msg;
+
+      t.classList.remove('hidden');
+
+      setTimeout(() => t.classList.add('hidden'), 3000);
+    }
+  </script>
+</body>
+
+</html>

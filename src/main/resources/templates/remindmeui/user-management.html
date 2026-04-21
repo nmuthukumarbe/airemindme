@@ -22,97 +22,7 @@
 
     <!-- Mobile nav -->
     <div th:replace="~{remindmeui/fragments/layout :: mobileNav(activePage='users')}"></div>
-    <div id="mobileNavBg" class="md:hidden hidden fixed inset-0 bg-black/50 z-[45] backdrop-blur-sm"
-        onclick="closeMobileNav()"></div>
-    <div id="mobileNavDrawer"
-        class="md:hidden fixed top-0 left-0 h-screen w-72 bg-white z-[46] shadow-2xl flex flex-col transition-transform duration-300"
-        style="transform:translateX(-100%)">
-        <div class="px-4 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
-            <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg
-                        class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg></div>
-                <div>
-                    <p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p>
-                    <p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p>
-                </div>
-            </div><button onclick="closeMobileNav()"
-                class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg
-                    class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg></button>
-        </div>
-        <nav class="flex-1 px-3 py-3 overflow-y-auto space-y-0.5">
-            <a href="home.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg><span class="text-sm font-semibold">Home</span></a>
-            <a href="customers.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg><span class="text-sm font-semibold">Customers</span></a>
-            <a href="engagement.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg><span class="text-sm font-semibold">Engage</span></a>
-            <a href="promotions.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                </svg><span class="text-sm font-semibold">Promotions</span></a>
-            <a href="appointments.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg><span class="text-sm font-semibold">Appointments</span></a>
-            <a href="reports.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg><span class="text-sm font-semibold">Reports</span></a>
-            <a href="user-management.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white"><svg class="w-5 h-5"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg><span class="text-sm font-semibold">Users</span></a>
-            <a href="settings.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg><span class="text-sm font-semibold">Settings</span></a>
-        </nav>
-        <div class="px-3 py-3 border-t border-gray-100 flex-shrink-0">
-            <div class="flex items-center gap-2.5 px-2 py-1.5">
-                <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span
-                        class="text-white text-xs font-bold">A</span></div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p>
-                    <p class="text-[10px] text-gray-400 truncate mt-0.5">Acme Financial Services</p>
-                </div>
-            </div><button onclick="window.location.href='login.html'"
-                class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-gray-500 hover:bg-red-50 hover:text-red-600 mt-1 transition"><svg
-                    class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg><span class="text-sm font-medium">Sign Out</span></button>
-        </div>
-    </div>
+
 
     <!-- Main Content -->
     <div class="md:ml-56 min-h-screen pb-24 md:pb-0 pt-14 md:pt-0">
@@ -205,11 +115,15 @@
                     class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg></button><span class="text-[10px] font-medium text-indigo-600 mt-0.5">Add</span></div>
-        <a href="user-management.html" class="flex flex-col items-center gap-0.5 text-indigo-600 px-2 py-1"><svg
-                class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Catalog -->
+        <a href="/catalog.html" th:classappend="${activePage == 'catalog'} ? 'text-indigo-600' : 'text-gray-400'"
+            class="flex flex-col items-center gap-0.5 px-2 py-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg><span class="text-[10px] font-medium">Users</span></a>
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            <span class="text-[10px] font-medium">Catalog</span>
+        </a>
         <a href="settings.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -359,6 +273,7 @@
     </div>
 
     <script>
+        const API_BASE = "/admin-users";
         const roleColors = { Admin: 'bg-indigo-100 text-indigo-700', Doctor: 'bg-blue-100 text-blue-700', Receptionist: 'bg-pink-100 text-pink-700', 'Lab Technician': 'bg-purple-100 text-purple-700', Barber: 'bg-orange-100 text-orange-700', Consultant: 'bg-teal-100 text-teal-700', Staff: 'bg-gray-100 text-gray-700', Nurse: 'bg-rose-100 text-rose-700' };
         const roleIcons = { Admin: '👑', Doctor: '🩺', Receptionist: '📋', 'Lab Technician': '🧪', Barber: '💇', Consultant: '💼', Staff: '👤', Nurse: '🏥' };
         const rolePerms = {
@@ -372,46 +287,148 @@
             Nurse: ['appointments', 'reports']
         };
 
-        let users = [
-            { id: 1, name: 'Arjun Sharma', email: 'admin@acmefinancial.com', phone: '+91 98765 43210', role: 'Admin', status: 'Active', joined: 'Jan 2024', perms: ['appointments', 'reports', 'customers', 'engage', 'promotions', 'settings'] },
-            { id: 2, name: 'Dr. Meena Iyer', email: 'meena@acmefinancial.com', phone: '+91 99887 12345', role: 'Doctor', status: 'Active', joined: 'Feb 2024', perms: ['appointments', 'reports'] },
-            { id: 3, name: 'Priya Nair', email: 'priya@acmefinancial.com', phone: '+91 88776 65432', role: 'Receptionist', status: 'Active', joined: 'Mar 2024', perms: ['appointments', 'customers'] },
-            { id: 4, name: 'Rajan Das', email: 'rajan@acmefinancial.com', phone: '+91 77665 54321', role: 'Lab Technician', status: 'Active', joined: 'Mar 2024', perms: ['appointments', 'reports'] },
-            { id: 5, name: 'Sunita Patil', email: 'sunita@acmefinancial.com', phone: '+91 66554 43210', role: 'Staff', status: 'Inactive', joined: 'Apr 2024', perms: ['appointments'] }
-        ];
+        let users = [];
         let deleteId = null, editId = null, selRoleVal = 'Admin', selStatusVal = 'Active';
+
+        async function fetchUsers() {
+            try {
+                const res = await fetch(API_BASE);
+                const data = await res.json();
+
+                users = data.content.map(u => ({
+                    id: u.id,
+                    name: u.firstName + " " + (u.lastName || ""),
+                    email: u.email,
+                    phone: u.phone,
+                    role: u.role,
+                    status: u.status,
+                    perms: u.permissions ? u.permissions.split(",") : []
+                }));
+
+                renderUsers();
+
+            } catch (err) {
+                console.error("Fetch error:", err);
+            }
+        }
+
 
         function renderUsers() {
             const search = (document.getElementById('userSearch').value || '').toLowerCase();
-            const rFilter = document.getElementById('roleFilter').value;
-            const filtered = users.filter(u =>
-                (!search || u.name.toLowerCase().includes(search) || u.email.toLowerCase().includes(search) || u.role.toLowerCase().includes(search)) &&
-                (!rFilter || u.role === rFilter)
-            );
+            const roleFilter = document.getElementById('roleFilter').value;
+
+            const filtered = users.filter(u => {
+                const matchesSearch =
+                    !search ||
+                    u.name.toLowerCase().includes(search) ||
+                    u.email.toLowerCase().includes(search) ||
+                    u.role.toLowerCase().includes(search);
+
+                const matchesRole = !roleFilter || u.role === roleFilter;
+
+                return matchesSearch && matchesRole;
+            });
+
             const list = document.getElementById('userList');
             list.innerHTML = '';
-            if (!filtered.length) { list.innerHTML = `<div class="text-center py-16 bg-white rounded-2xl border border-gray-100"><p class="text-sm text-gray-500">No users found</p></div>`; return; }
+
+            if (!filtered.length) {
+                list.innerHTML = `
+        <div class="text-center py-16 bg-white rounded-2xl border border-gray-100">
+            <p class="text-sm text-gray-500">No users found</p>
+        </div>`;
+                return;
+            }
+
             filtered.forEach(u => {
-                const initials = u.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                const initials = u.name
+                    .split(' ')
+                    .map(n => n[0])
+                    .join('')
+                    .slice(0, 2)
+                    .toUpperCase();
+
+                const roleColor = roleColors?.[u.role] || 'bg-gray-100 text-gray-700';
+                const roleIcon = roleIcons?.[u.role] || '';
                 list.innerHTML += `
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
-            <div class="w-11 h-11 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0 text-white text-sm font-bold">${initials}</div>
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-2 flex-wrap mb-0.5">
-                <p class="text-sm font-bold text-gray-900">${u.name}</p>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${roleColors[u.role] || 'bg-gray-100 text-gray-700'}">${roleIcons[u.role] || ''} ${u.role}</span>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${u.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}">${u.status}</span>
-              </div>
-              <p class="text-xs text-gray-500">${u.email} · ${u.phone}</p>
-              <p class="text-[10px] text-gray-400 mt-0.5">Permissions: ${u.perms.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(', ')}</p>
-            </div>
-            <div class="flex items-center gap-1 flex-shrink-0">
-              <a href="user-detail.html?id=${u.id}" class="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 hover:bg-indigo-100 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></a>
-              <button onclick="editUser(${u.id})" class="w-8 h-8 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
-              ${u.id !== 1 ? `<button onclick="promptDelete(${u.id})" class="w-8 h-8 rounded-xl bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>` : ''}
-            </div>
-          </div>`;
+<div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+    
+    <!-- Avatar -->
+    <div class="w-11 h-11 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold">
+        ${initials}
+    </div>
+
+    <!-- User Info -->
+    <div class="flex-1">
+        <div class="flex items-center gap-2 flex-wrap">
+            <p class="text-sm font-bold text-gray-900">${u.name}</p>
+
+            <span class="px-2 py-0.5 text-xs font-semibold rounded-full ${roleColor}">
+                ${roleIcon} ${u.role}
+            </span>
+
+            <span class="px-2 py-0.5 text-xs font-semibold rounded-full ${u.status === 'Active'
+                        ? 'bg-emerald-100 text-emerald-700'
+                        : 'bg-gray-100 text-gray-500'
+                    }">
+                ${u.status}
+            </span>
+        </div>
+
+        <p class="text-xs text-gray-500">${u.email} · ${u.phone}</p>
+
+        <p class="text-[10px] text-gray-400 mt-1">
+            Permissions: ${u.perms.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(', ')}
+        </p>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-1 flex-shrink-0">
+
+        <!-- VIEW -->
+        <a href="user-detail.html?id=${u.id}"
+            title="View"
+            class="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 hover:bg-indigo-100 transition">
+
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+            </svg>
+
+        </a>
+
+        <!-- EDIT -->
+        <button onclick="editUser(${u.id})"
+            title="Edit"
+            class="w-8 h-8 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition">
+
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+            </svg>
+
+        </button>
+
+        <!-- DELETE -->
+        ${u.role !== 'Admin' ? `
+        <button onclick="promptDelete(${u.id})"
+            title="Delete"
+            class="w-8 h-8 rounded-xl bg-red-50 flex items-center justify-center text-red-500 hover:bg-red-100 transition">
+
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+            </svg>
+
+        </button>` : ''}
+
+    </div>
+
+</div>`;
             });
+
             updateStats();
         }
 
@@ -473,21 +490,49 @@
             openModal('addUserModal');
         }
 
-        function saveUser() {
+        async function saveUser() {
             const fn = document.getElementById('uFirstName').value.trim();
             const ln = document.getElementById('uLastName').value.trim();
             const em = document.getElementById('uEmail').value.trim();
-            if (!fn || !em) { alert('Name and email are required.'); return; }
-            const perms = ['appointments', 'reports', 'customers', 'engage', 'promotions', 'settings'].filter(p => document.getElementById('perm-' + p)?.checked);
-            if (editId) {
-                const u = users.find(x => x.id === editId);
-                if (u) { Object.assign(u, { name: fn + ' ' + ln, email: em, phone: document.getElementById('uPhone').value, role: selRoleVal, status: selStatusVal, perms }); }
-                showToast('User updated successfully');
-            } else {
-                users.push({ id: Date.now(), name: fn + ' ' + ln, email: em, phone: document.getElementById('uPhone').value, role: selRoleVal, status: selStatusVal, joined: 'Mar 2026', perms });
-                showToast('User added & invite sent');
+            const phone = document.getElementById('uPhone').value;
+
+            const perms = ['appointments', 'reports', 'customers', 'engage', 'promotions', 'settings']
+                .filter(p => document.getElementById('perm-' + p)?.checked)
+                .join(",");
+
+            const payload = {
+                firstName: fn,
+                lastName: ln,
+                email: em,
+                phone: phone,
+                role: selRoleVal,
+                status: selStatusVal,
+                permissions: perms
+            };
+
+            try {
+                if (editId) {
+                    await fetch(`${API_BASE}/${editId}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+                    showToast("User updated");
+                } else {
+                    await fetch(API_BASE, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+                    showToast("User created");
+                }
+
+                closeModal('addUserModal');
+                fetchUsers();
+
+            } catch (err) {
+                console.error(err);
             }
-            closeModal('addUserModal'); renderUsers();
         }
 
         function promptDelete(id) {
@@ -496,12 +541,23 @@
             document.getElementById('delUserName').textContent = u ? u.name : 'this user';
             openModal('delModal');
         }
-        function doDelete() {
-            users = users.filter(u => u.id !== deleteId);
-            closeModal('delModal'); renderUsers();
-            showToast('User removed');
-        }
 
+
+        async function doDelete() {
+            try {
+                await fetch(`${API_BASE}/${deleteId}`, {
+                    method: "DELETE"
+                });
+
+                showToast("User deleted");
+                closeModal('delModal');
+
+                fetchUsers();
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
         function showToast(msg) { const t = document.getElementById('toast'); document.getElementById('toastMsg').textContent = msg; t.classList.remove('hidden'); setTimeout(() => t.classList.add('hidden'), 3000); }
@@ -511,7 +567,7 @@
         // override Add button
         document.querySelector('[onclick="openModal(\'addUserModal\')"]') && (document.querySelectorAll('[onclick="openModal(\'addUserModal\')"]').forEach(b => b.onclick = openAddUser));
 
-        renderUsers();
+        fetchUsers();
     </script>
 </body>
 

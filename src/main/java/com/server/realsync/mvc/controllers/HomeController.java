@@ -1,6 +1,7 @@
 package com.server.realsync.mvc.controllers;
 
 import java.util.Optional;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,17 +12,27 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.server.realsync.entity.Account;
+import com.server.realsync.entity.AdminUser;
+import com.server.realsync.entity.Appointment;
 import com.server.realsync.entity.Customer;
 import com.server.realsync.entity.CatalogPlan;
+import com.server.realsync.entity.CatalogProduct;
 import com.server.realsync.entity.CustomerGroup;
+import com.server.realsync.entity.Greeting;
+import com.server.realsync.entity.Reminder;
 import com.server.realsync.services.AccountService;
 import com.server.realsync.services.CustomerService;
+import com.server.realsync.services.ReminderService;
+import com.server.realsync.services.GreetingService;
 import com.server.realsync.services.CustomerGroupService;
+import com.server.realsync.services.CatalogProductService;
+import com.server.realsync.services.AdminUserService;
+import com.server.realsync.services.AppointmentService;
 import com.server.realsync.services.SettingsPlanService;
 
 import com.server.realsync.services.UserService;
@@ -51,7 +62,17 @@ public class HomeController {
 	CustomerGroupService customerGroupService;
 	@Autowired
 	private SettingsPlanService settingsPlanService;
+	@Autowired
+	private CatalogProductService catalogProductService;
+	@Autowired
+	private AdminUserService adminUserService;
+	@Autowired
+	private AppointmentService appointmentService;
+	@Autowired
 
+	private ReminderService reminderService;
+	@Autowired
+	private GreetingService greetingService;
 	@Autowired
 	GmailSender gmailSender;
 
@@ -179,22 +200,125 @@ public class HomeController {
 	}
 
 	@GetMapping("/reminder-detail.html")
-	public String getReminderDetail(Model model) {
-		Account loggedIn = SecurityUtil.getCurrentAccountId();
+	public String getReminderDetail(@RequestParam("id") Integer id, Model model) {
 
+		Account loggedIn = SecurityUtil.getCurrentAccountId();
 		Account account = accountService.getById(loggedIn.getId());
 
+		Optional<Reminder> reminderOpt = reminderService.getById(id, account.getId());
+		if (reminderOpt.isEmpty()) {
+			return "redirect:/engagement.html";
+		}
+
+		Reminder reminder = reminderOpt.get();
+
+		// ✅ Basic
 		model.addAttribute("account", account);
+		model.addAttribute("reminder", reminder);
+
+		// ✅ Customer
+		Optional<Customer> customer = customerService.getById(account.getId(), reminder.getCustomerId());
+		model.addAttribute("customer", customer.orElse(new Customer()));
+
+		// ✅ Prevent Thymeleaf crash
+		model.addAttribute("attachedPlan", null);
+		model.addAttribute("attachedProduct", null);
+
+		// ✅ Plan / Product logic
+		if (reminder.getAttachedItemId() != null && reminder.getAttachedItemType() != null) {
+
+			if ("plan".equalsIgnoreCase(reminder.getAttachedItemType())) {
+				settingsPlanService.getById(reminder.getAttachedItemId())
+						.ifPresent(plan -> model.addAttribute("attachedPlan", plan));
+			}
+
+			else if ("product".equalsIgnoreCase(reminder.getAttachedItemType())) {
+				catalogProductService
+						.getById(reminder.getAttachedItemId(), account.getId())
+						.ifPresent(product -> model.addAttribute("attachedProduct", product));
+			}
+		}
+
+		// ✅ Date formatting
+		if (reminder.getCreatedAt() != null) {
+			model.addAttribute("createdAtFormatted",
+					reminder.getCreatedAt().format(DateTimeFormatter.ofPattern("MMM dd, yyyy")));
+		} else {
+			model.addAttribute("createdAtFormatted", "N/A");
+		}
+
 		return "remindmeui/reminder-detail";
 	}
 
-	@GetMapping("/greeting-detail.html")
-	public String getGreetingDetail(Model model) {
+	@GetMapping("/reminder-detail-onetime.html")
+	public String getReminderDetailOneTime(@RequestParam("id") Integer id, Model model) {
 		Account loggedIn = SecurityUtil.getCurrentAccountId();
-
 		Account account = accountService.getById(loggedIn.getId());
 
+		Optional<Reminder> reminderOpt = reminderService.getById(id, account.getId());
+		if (reminderOpt.isEmpty()) {
+			return "redirect:/engagement.html";
+		}
+
+		Reminder reminder = reminderOpt.get();
+
+		// 1. Always add basic attributes first
 		model.addAttribute("account", account);
+		model.addAttribute("reminder", reminder);
+
+		// 2. Safely handle Customer
+		Optional<Customer> customer = customerService.getById(account.getId(), reminder.getCustomerId());
+		model.addAttribute("customer", customer.orElse(new Customer()));
+
+		// Initialize both to avoid Thymeleaf crash
+		model.addAttribute("attachedPlan", null);
+		model.addAttribute("attachedProduct", null);
+
+		// Then conditionally set
+		if (reminder.getAttachedItemId() != null && reminder.getAttachedItemType() != null) {
+
+			if ("plan".equalsIgnoreCase(reminder.getAttachedItemType())) {
+				settingsPlanService.getById(reminder.getAttachedItemId())
+						.ifPresent(plan -> model.addAttribute("attachedPlan", plan));
+			}
+
+			else if ("product".equalsIgnoreCase(reminder.getAttachedItemType())) {
+				catalogProductService.getById(reminder.getAttachedItemId(), account.getId())
+						.ifPresent(product -> model.addAttribute("attachedProduct", product));
+			}
+		}
+
+		// 4. Safely handle Date Formatting to prevent crash if null
+		if (reminder.getCreatedAt() != null) {
+			model.addAttribute("createdAtFormatted",
+					reminder.getCreatedAt().format(DateTimeFormatter.ofPattern("MMM dd, yyyy")));
+		} else {
+			model.addAttribute("createdAtFormatted", "N/A");
+		}
+
+		return "remindmeui/reminder-detail-onetime";
+	}
+
+	@GetMapping("/greeting-detail.html")
+	public String getGreetingDetail(@RequestParam("id") Integer id, Model model) {
+
+		Account loggedIn = SecurityUtil.getCurrentAccountId();
+		Account account = accountService.getById(loggedIn.getId());
+
+		Optional<Greeting> greetingOpt = greetingService.getById(id, account.getId());
+
+		if (greetingOpt.isEmpty()) {
+			return "redirect:/engagement.html";
+		}
+
+		Greeting greeting = greetingOpt.get();
+
+		Optional<Customer> customerOpt = customerService.getById(account.getId(), greeting.getCustomerId());
+
+		model.addAttribute("account", account);
+		model.addAttribute("greeting", greeting);
+		model.addAttribute("customer", customerOpt.orElse(new Customer()));
+
 		return "remindmeui/greeting-detail";
 	}
 
@@ -228,7 +352,7 @@ public class HomeController {
 
 	@GetMapping("/engagement.html")
 	public String engagement(Model model) {
-Account loggedIn = SecurityUtil.getCurrentAccountId();
+		Account loggedIn = SecurityUtil.getCurrentAccountId();
 
 		Account account = accountService.getById(loggedIn.getId());
 
@@ -247,9 +371,61 @@ Account loggedIn = SecurityUtil.getCurrentAccountId();
 		return "remindmeui/user-management";
 	}
 
+	@GetMapping("/user-detail.html")
+	public String userDetail(@RequestParam Integer id, Model model) {
+
+		Integer accountId = SecurityUtil.getCurrentAccountId().getId();
+
+		AdminUser user = adminUserService.getById(accountId, id)
+				.orElseThrow(() -> new RuntimeException("User not found"));
+
+		model.addAttribute("user", user);
+		model.addAttribute("activePage", "users");
+
+		return "remindmeui/user-detail";
+	}
+
+	@GetMapping("/appointments.html")
+	public String getAppointmentsPage(Model model) {
+
+		Account loggedIn = SecurityUtil.getCurrentAccountId();
+		Account account = accountService.getById(loggedIn.getId());
+		List<Customer> customers = customerService.getByAccountId(account.getId());
+
+		Page<AdminUser> page = adminUserService.getByAccount(account.getId(), Pageable.unpaged());
+		List<AdminUser> users = page.getContent();
+
+		model.addAttribute("customers", customers);
+		model.addAttribute("users", users);
+		model.addAttribute("account", account);
+
+		return "remindmeui/appointments";
+	}
+
+	@GetMapping("/appointment-detail.html")
+	public String getAppointmentDetail(@RequestParam Long id, Model model) {
+
+		Integer accountId = SecurityUtil.getCurrentAccountId().getId();
+
+		Optional<Appointment> apptOpt = appointmentService.getById(id, accountId);
+
+		if (apptOpt.isEmpty()) {
+			return "redirect:/appointments.html";
+		}
+
+		Appointment appt = apptOpt.get();
+
+		model.addAttribute("appointment", appt);
+
+		
+		model.addAttribute("customer",appt.getCustomer() != null ? appt.getCustomer() : new Customer());
+
+		return "remindmeui/appointment-detail";
+	}
+
 	@GetMapping("/reports.html")
 	public String getAdminReport(Model model) {
-Account loggedIn = SecurityUtil.getCurrentAccountId();
+		Account loggedIn = SecurityUtil.getCurrentAccountId();
 
 		Account account = accountService.getById(loggedIn.getId());
 

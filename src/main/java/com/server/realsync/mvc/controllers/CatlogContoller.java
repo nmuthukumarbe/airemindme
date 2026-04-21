@@ -15,7 +15,6 @@ import com.server.realsync.entity.CatalogRTemplate;
 import com.server.realsync.services.CatalogProductService;
 import com.server.realsync.services.CatalogRTemplateService;
 import com.server.realsync.services.CatalogTemplateService;
-import com.server.realsync.services.CatalogRTemplateService;
 import com.server.realsync.services.SettingsPlanService;
 import com.server.realsync.util.SecurityUtil;
 

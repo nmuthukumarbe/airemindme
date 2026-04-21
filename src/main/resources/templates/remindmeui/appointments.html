@@ -13,207 +13,17 @@
             background: #f8f9fb;
         }
     </style>
+    <script src="/js/layout.js"></script>
 </head>
 
 <body class="bg-gray-50">
 
-    <!-- Sidebar Desktop -->
-    <div class="hidden md:flex fixed left-0 top-0 h-screen w-56 bg-white border-r border-gray-100 flex-col z-30">
-        <div class="px-4 pt-5 pb-3"><a href="home.html" class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg
-                        class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg></div>
-                <div>
-                    <p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p>
-                    <p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p>
-                </div>
-            </a></div>
-        <nav class="flex-1 px-3 py-2 overflow-y-auto">
-            <a href="home.html"
-                class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg><span class="text-sm font-medium">Home</span></a>
-            <a href="customers.html"
-                class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg><span class="text-sm font-medium">Customers</span></a>
-            <a href="engagement.html"
-                class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg><span class="text-sm font-medium">Engage</span></a>
-            <a href="promotions.html"
-                class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                </svg><span class="text-sm font-medium">Promotions</span></a>
-            <a href="appointments.html"
-                class="flex items-center gap-3 px-3 py-3 rounded-xl bg-indigo-600 text-white mb-1"><svg class="w-5 h-5"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg><span class="text-sm font-semibold">Appointments</span></a>
-            <a href="reports.html"
-                class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg><span class="text-sm font-medium">Reports</span></a>
-            <a href="user-management.html"
-                class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg><span class="text-sm font-medium">Users</span></a>
-            <a href="settings.html"
-                class="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg><span class="text-sm font-medium">Settings</span></a>
-        </nav>
-        <div class="px-4 py-4 border-t border-gray-100">
-            <div class="flex items-center gap-3 mb-3">
-                <div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span
-                        class="text-white text-sm font-bold">A</span></div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p>
-                    <p class="text-xs text-gray-400 truncate mt-0.5">Acme Financial Services</p>
-                </div>
-            </div>
-            <button onclick="window.location.href='login.html'"
-                class="flex items-center gap-2 px-1 py-1 text-gray-500 hover:text-red-600 transition"><svg
-                    class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg><span class="text-sm font-medium">Sign Out</span></button>
-        </div>
-    </div>
+    <!-- Sidebar -->
+    <div th:replace="~{remindmeui/fragments/layout :: sidebar(activePage='appointments')}"></div>
 
-    <!-- Mobile Header -->
-    <div
-        class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-100 z-40 h-14 flex items-center justify-between px-4 shadow-sm">
-        <button onclick="openMobileNav()"
-            class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-600 hover:bg-gray-100 transition"><svg
-                class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg></button>
-        <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center shadow-sm"><svg
-                    class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                </svg></div><span class="text-sm font-bold text-gray-900">Reminder Me</span>
-        </div>
-        <button onclick="window.location.href='login.html'"
-            class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 hover:bg-red-50 hover:text-red-500 transition"><svg
-                class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg></button>
-    </div>
-    <div id="mobileNavBg" class="md:hidden hidden fixed inset-0 bg-black/50 z-[45] backdrop-blur-sm"
-        onclick="closeMobileNav()"></div>
-    <div id="mobileNavDrawer"
-        class="md:hidden fixed top-0 left-0 h-screen w-72 bg-white z-[46] shadow-2xl flex flex-col transition-transform duration-300"
-        style="transform:translateX(-100%)">
-        <div class="px-4 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
-            <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg
-                        class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg></div>
-                <div>
-                    <p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p>
-                    <p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p>
-                </div>
-            </div><button onclick="closeMobileNav()"
-                class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><svg
-                    class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg></button>
-        </div>
-        <nav class="flex-1 px-3 py-3 overflow-y-auto space-y-0.5">
-            <a href="home.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg><span class="text-sm font-semibold">Home</span></a>
-            <a href="customers.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg><span class="text-sm font-semibold">Customers</span></a>
-            <a href="engagement.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg><span class="text-sm font-semibold">Engage</span></a>
-            <a href="promotions.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                </svg><span class="text-sm font-semibold">Promotions</span></a>
-            <a href="appointments.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white"><svg class="w-5 h-5"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg><span class="text-sm font-semibold">Appointments</span></a>
-            <a href="reports.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg><span class="text-sm font-semibold">Reports</span></a>
-            <a href="user-management.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg><span class="text-sm font-semibold">Users</span></a>
-            <a href="settings.html"
-                class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
-                    class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg><span class="text-sm font-semibold">Settings</span></a>
-        </nav>
-        <div class="px-3 py-3 border-t border-gray-100 flex-shrink-0">
-            <div class="flex items-center gap-2.5 px-2 py-1.5">
-                <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span
-                        class="text-white text-xs font-bold">A</span></div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p>
-                    <p class="text-[10px] text-gray-400 truncate mt-0.5">Acme Financial Services</p>
-                </div>
-            </div><button onclick="window.location.href='login.html'"
-                class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-gray-500 hover:bg-red-50 hover:text-red-600 mt-1 transition"><svg
-                    class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg><span class="text-sm font-medium">Sign Out</span></button>
-        </div>
-    </div>
+    <!-- Mobile nav -->
+    <div th:replace="~{remindmeui/fragments/layout :: mobileNav(activePage='appointments')}"></div>
+
 
     <!-- Main Content -->
     <div class="md:ml-56 min-h-screen pb-24 md:pb-0 pt-14 md:pt-0">
@@ -349,11 +159,16 @@
             </button>
             <span class="text-[10px] font-medium text-indigo-600 mt-0.5">Add</span>
         </div>
-        <a href="appointments.html" class="flex flex-col items-center gap-0.5 text-indigo-600 px-2 py-1"><svg
-                class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+        <!-- Catalog -->
+        <a href="/catalog.html" th:classappend="${activePage == 'catalog'} ? 'text-indigo-600' : 'text-gray-400'"
+            class="flex flex-col items-center gap-0.5 px-2 py-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg><span class="text-[10px] font-medium">Appts</span></a>
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            <span class="text-[10px] font-medium">Catalog</span>
+        </a>
         <a href="settings.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5"
                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -393,19 +208,9 @@
                     <div class="relative"><select id="apptCustomer" required
                             class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
                             <option value="">Select customer...</option>
-                            <option>Rajesh Kumar</option>
-                            <option>Anjali Singh</option>
-                            <option>Mohammed Ibrahim</option>
-                            <option>Sunita Patel</option>
-                            <option>Vikram Nair</option>
-                            <option>Priya Mehta</option>
-                            <option>Amit Gupta</option>
-                            <option>Kiran Bose</option>
-                        </select><svg
-                            class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg></div>
+                            <option th:each="c : ${customers}" th:value="${c.id}" th:text="${c.name}">
+                            </option>
+                        </select></div>
                 </div>
                 <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Service Name <span
                             class="text-red-500">*</span></label><input type="text" id="apptService"
@@ -424,43 +229,29 @@
                             class="px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-medium hover:bg-indigo-100">Follow-up</button>
                     </div>
                 </div>
-                <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Service Type</label>
-                    <div class="relative"><select id="apptType"
-                            onchange="document.getElementById('apptTypeHidden').value=this.value"
+                <div>
+                    <label class="text-sm font-medium text-gray-700 mb-1.5 block">
+                        Assignee / Service Provider
+                        <span class="text-gray-400 text-xs font-normal">(optional)</span>
+                    </label>
+
+                    <div class="relative">
+                        <select id="apptAssignee"
                             class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
-                            <option value="clinic">🏥 Clinic / Medical</option>
-                            <option value="lab">🧪 Laboratory / Diagnostics</option>
-                            <option value="salon">💇 Salon / Beauty</option>
-                            <option value="consultant">💼 Consultant / Advisory</option>
-                            <option value="dental">🦷 Dental</option>
-                            <option value="physiotherapy">🏋️ Physiotherapy</option>
-                            <option value="optical">👁️ Optical / Eye Care</option>
-                            <option value="veterinary">🐾 Veterinary</option>
-                            <option value="general">👤 General</option>
-                        </select><svg
-                            class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg></div><input type="hidden" id="apptTypeHidden" value="clinic">
-                </div>
-                <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Assignee / Service Provider <span
-                            class="text-gray-400 text-xs font-normal">(optional)</span></label>
-                    <div class="relative"><select id="apptAssignee"
-                            class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
+
                             <option value="">-- Unassigned --</option>
-                            <option>Dr. Meena Iyer</option>
-                            <option>Dr. Rajiv Kapoor</option>
-                            <option>Dr. Suresh Nair</option>
-                            <option>Priya Nair (Receptionist)</option>
-                            <option>Rajan Das (Lab Tech)</option>
-                            <option>Mohammed (Barber)</option>
-                            <option>Ananya (Stylist)</option>
-                            <option>General Staff</option>
-                        </select><svg
-                            class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+
+                            <option th:each="u : ${users}" th:value="${u.firstName + ' ' + u.lastName}"
+                                th:text="${u.firstName + ' ' + u.lastName + ' (' + u.role + ')'}">
+                            </option>
+
+                        </select>
+
+                        <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg></div>
+                        </svg>
+                    </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Date <span
@@ -527,7 +318,32 @@
         </svg>
         <p id="toastMsg" class="text-sm font-medium">Appointment booked!</p>
     </div>
+    <script th:src="@{/js/theme.js}"></script>
+    <script>
+        function toggleSub(menuId) {
+            const subMenu = document.getElementById('sub-' + menuId);
+            const chevron = document.getElementById('ch-' + menuId);
 
+            if (subMenu) {
+                // Toggle the hidden class
+                const isCollapsed = subMenu.classList.toggle('hidden');
+
+                // Rotate chevron
+                if (chevron) {
+                    chevron.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)';
+                }
+            }
+        }
+
+        // Logic to keep it open if on the reports page
+        window.addEventListener('DOMContentLoaded', () => {
+            // You can set this logic based on your activePage variable
+            const activePage = "[[${activePage}]]";
+            if (activePage === 'reports') {
+                toggleSub('reports');
+            }
+        });
+    </script>
     <script>
         // ===================== DATA =====================
         const today = new Date();
@@ -536,20 +352,7 @@
         const nextWeek = new Date(today); nextWeek.setDate(nextWeek.getDate() + 7);
         const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
 
-        const appointments = [
-            { id: 1, customer: 'Rajesh Kumar', service: 'General Consultation', type: 'clinic', date: fmt(today), time: '09:30 AM', duration: '30 min', channel: 'wa', status: 'Upcoming', reminder: '1hr before', notes: 'Follow-up on blood pressure medication.' },
-            { id: 2, customer: 'Anjali Singh', service: 'Blood Test', type: 'clinic', date: fmt(today), time: '11:00 AM', duration: '15 min', channel: 'wa', status: 'Completed', reminder: '1hr before', notes: 'CBC and lipid profile.' },
-            { id: 3, customer: 'Mohammed Ibrahim', service: 'Hair Cut & Style', type: 'salon', date: fmt(today), time: '02:00 PM', duration: '45 min', channel: 'sms', status: 'Upcoming', reminder: '2hr before', notes: 'Prefers fade cut style.' },
-            { id: 4, customer: 'Sunita Patel', service: 'Tax Consultation', type: 'consultant', date: fmt(tomorrow), time: '10:00 AM', duration: '60 min', channel: 'em', status: 'Upcoming', reminder: '1day before', notes: 'Bring last 2 years ITR.' },
-            { id: 5, customer: 'Vikram Nair', service: 'Dental Checkup', type: 'clinic', date: fmt(tomorrow), time: '03:30 PM', duration: '30 min', channel: 'wa', status: 'Upcoming', reminder: '1hr before', notes: 'Routine checkup and cleaning.' },
-            { id: 6, customer: 'Priya Mehta', service: 'Physiotherapy Session', type: 'clinic', date: fmt(nextWeek), time: '09:00 AM', duration: '45 min', channel: 'wa', status: 'Upcoming', reminder: '2hr before', notes: 'Lower back pain treatment.' },
-            { id: 7, customer: 'Amit Gupta', service: 'Investment Review', type: 'consultant', date: fmt(nextWeek), time: '11:30 AM', duration: '60 min', channel: 'em', status: 'Upcoming', reminder: '1day before', notes: 'Q1 portfolio review.' },
-            { id: 8, customer: 'Kiran Bose', service: 'Haircut', type: 'salon', date: fmt(yesterday), time: '04:00 PM', duration: '30 min', channel: 'sms', status: 'Completed', reminder: '1hr before', notes: '' },
-            { id: 9, customer: 'Deepa Krishnan', service: 'Routine Checkup', type: 'clinic', date: fmt(yesterday), time: '10:30 AM', duration: '30 min', channel: 'wa', status: 'Completed', reminder: '1hr before', notes: '' },
-            { id: 10, customer: 'Suresh Reddy', service: 'Eye Exam', type: 'clinic', date: fmt(yesterday), time: '02:30 PM', duration: '30 min', channel: 'wa', status: 'Cancelled', reminder: '2hr before', notes: 'Customer cancelled due to travel.' },
-            { id: 11, customer: 'Kavita Sharma', service: 'Skin Consultation', type: 'clinic', date: fmt(nextWeek), time: '01:00 PM', duration: '30 min', channel: 'wa', status: 'Upcoming', reminder: '1hr before', notes: '' },
-            { id: 12, customer: 'Rohit Joshi', service: 'Legal Advice', type: 'consultant', date: fmt(nextWeek), time: '05:00 PM', duration: '60 min', channel: 'em', status: 'Upcoming', reminder: '1day before', notes: 'Property documentation review.' },
-        ];
+        let appointments = [];
 
         const statusColors = { Upcoming: 'bg-blue-100 text-blue-700', Completed: 'bg-emerald-100 text-emerald-700', Cancelled: 'bg-red-100 text-red-700' };
         const typeIcons = { clinic: '🏥', salon: '💇', consultant: '💼', lab: '🧪' };
@@ -557,6 +360,57 @@
 
         let apptFilter = 'all', apptSearchTerm = '', apptPage = 1;
         const APPT_PER_PAGE = 6;
+
+        async function loadAppointments() {
+            try {
+                const res = await fetch('/appointments');
+                const data = await res.json();
+
+                appointments = data.map(a => ({
+                    id: a.id,
+                    customer: a.customer?.name || 'Unknown',
+                    service: a.serviceName,
+                    type: a.serviceType,
+                    date: formatDate(a.appointmentDate),
+                    time: formatTime(a.appointmentTime),
+                    duration: a.durationMinutes + ' min',
+                    channel: a.channel,
+                    status: formatStatus(a.status),
+                    notes: a.notes,
+                    assignee: a.assignee
+                }));
+
+                renderAppts();
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function formatDate(date) {
+            return new Date(date).toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+
+        function formatTime(time) {
+            return time ? time.substring(0, 5) : '';
+        }
+
+        function formatStatus(status) {
+            return status === 'UPCOMING' ? 'Upcoming'
+                : status === 'COMPLETED' ? 'Completed'
+                    : 'Cancelled';
+        }
+
+
+        window.onload = () => {
+            loadAppointments();
+        };
+
+
 
         // ===================== FILTER + SEARCH =====================
         function filterAppts() {
@@ -661,13 +515,18 @@
             renderPagination('appt-pagination', apptPage, total, APPT_PER_PAGE, 'goApptPage');
         }
 
-        function completeAppt(id) {
-            const a = appointments.find(x => x.id === id);
-            if (a) { a.status = 'Completed'; renderAppts(); showToast('Appointment marked as completed'); }
+        async function completeAppt(id) {
+            await fetch(`/appointments/${id}/status?status=COMPLETED`, {
+                method: "PUT"
+            });
+            loadAppointments();
         }
-        function cancelAppt(id) {
-            const a = appointments.find(x => x.id === id);
-            if (a) { a.status = 'Cancelled'; renderAppts(); showToast('Appointment cancelled'); }
+
+        async function cancelAppt(id) {
+            await fetch(`/appointments/${id}/status?status=CANCELLED`, {
+                method: "PUT"
+            });
+            loadAppointments();
         }
 
         // ===================== FORM =====================
@@ -706,36 +565,45 @@
             });
         }
 
-        function submitAppt(e) {
+        async function submitAppt(e) {
             e.preventDefault();
-            const dateVal = document.getElementById('apptDate').value;
-            const timeVal = document.getElementById('apptTime').value;
-            const fmtDate = dateVal ? new Date(dateVal).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : fmt(today);
-            const timeStr = timeVal ? (() => { const [h, m] = timeVal.split(':'); const hr = parseInt(h); return `${hr > 12 ? hr - 12 : hr || 12}:${m} ${hr >= 12 ? 'PM' : 'AM'}`; })() : '09:00 AM';
-            const remMap = { '1hr': '1 hr before', '2hr': '2 hrs before', '1day': '1 day before' };
-            const newA = {
-                id: Date.now(),
-                customer: document.getElementById('apptCustomer').value,
-                service: document.getElementById('apptService').value,
-                type: document.getElementById('apptTypeHidden').value || 'clinic',
-                date: fmtDate,
-                time: timeStr,
-                duration: apptDuration,
-                channel: apptChannel,
-                status: 'Upcoming',
-                reminder: remMap[apptRemind] || '1 hr before',
-                notes: document.getElementById('apptNotes').value,
-                assignee: document.getElementById('apptAssignee').value
-            };
-            appointments.unshift(newA);
-            closeModal('createApptModal');
-            e.target.reset();
-            apptPage = 1;
-            apptFilter = 'all';
-            setApptFilter('all');
-            showToast(`Appointment booked for ${newA.customer} · Confirmation sent via ${newA.channel === 'wa' ? 'WhatsApp' : newA.channel === 'sms' ? 'SMS' : 'Email'}`);
-        }
 
+            const payload = {
+                serviceName: document.getElementById('apptService').value,
+                serviceType: apptServiceType,
+                assignee: document.getElementById('apptAssignee').value,
+                appointmentDate: document.getElementById('apptDate').value,
+                appointmentTime: document.getElementById('apptTime').value,
+                durationMinutes: parseInt(apptDuration),
+                reminderType: apptRemind,
+                channel: apptChannel,
+                notes: document.getElementById('apptNotes').value
+            };
+
+            const customerId = document.getElementById('apptCustomer').value;
+
+            try {
+                const res = await fetch(`/appointments?customerId=${customerId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) throw new Error("Create failed");
+
+                closeModal('createApptModal');
+
+                await loadAppointments(); // reload from DB
+
+                showToast("Appointment created ✅");
+
+            } catch (err) {
+                console.error(err);
+                alert("Error creating appointment");
+            }
+        }
         // ===================== HELPERS =====================
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }

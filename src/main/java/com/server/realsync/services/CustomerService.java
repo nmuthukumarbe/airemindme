@@ -40,7 +40,6 @@ public class CustomerService {
     public Optional<Customer> getById(Integer accountId, Integer id) {
         return customerRepository.findByIdAndAccountId(id, accountId);
     }
-
     public Optional<Customer> findByMobile(Integer accountId, String mobile) {
         return customerRepository.findByAccountIdAndMobile(accountId, mobile);
     }
