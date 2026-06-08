@@ -79,7 +79,7 @@
 
           <!-- Segment Badge -->
           <span class="text-[11px] px-2 py-0.5 rounded-full font-semibold"
-            th:text="${groupMap[T(java.lang.Integer).valueOf(customer.customerGroupId)]}"
+            th:text="${customer.customerGroupId}"
             th:classappend="'bg-gray-100 text-gray-700'">
           </span>
 
@@ -132,7 +132,7 @@
             <h2 class="text-sm font-bold text-slate-900" th:text="${customer.name}">Customer Name</h2>
 
             <span class="text-[11px] px-2 py-0.5 rounded-full font-semibold"
-              th:text="${groupMap[T(java.lang.Integer).valueOf(customer.customerGroupId)]}"
+              th:text="${customer.customerGroupId}"
               th:classappend="'bg-gray-100 text-gray-700'">
             </span>
 

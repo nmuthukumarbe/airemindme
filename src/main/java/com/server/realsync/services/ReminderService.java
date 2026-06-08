@@ -9,12 +9,14 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.server.realsync.entity.Schedule;
+import com.server.realsync.entity.ScheduleType;
 import com.server.realsync.entity.Reminder;
 import com.server.realsync.repo.ReminderRepository;
 import com.server.realsync.entity.ScheduleEntry;
 import com.server.realsync.entity.ScheduleEntryStatus;
 import com.server.realsync.repo.ScheduleEntryRepository;
+import com.server.realsync.repo.ScheduleRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,8 @@ public class ReminderService {
 
     @Autowired
     private ScheduleEntryRepository scheduleEntryRepository;
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     /** All reminders for an account, newest first */
     public List<Reminder> getByAccountId(Integer accountId) {
@@ -98,14 +102,48 @@ public class ReminderService {
 
     private void createSchedule(Reminder r, LocalDateTime time) {
 
+        // Create Schedule
+        Schedule schedule = new Schedule();
+
+        schedule.setAccountId(r.getAccountId());
+        schedule.setCustomerId(r.getCustomerId());
+
+        schedule.setTitle(r.getTitle());
+        schedule.setRemarks(r.getMessage());
+
+        schedule.setSourceType("REMINDER");
+        schedule.setSourceId(r.getId().longValue());
+
+        schedule.setType(ScheduleType.ONE_TIME);
+
+        schedule.setStartDatetime(time);
+
+        Schedule savedSchedule = scheduleRepository.save(schedule);
+
+        // Create Schedule Entry
         ScheduleEntry e = new ScheduleEntry();
 
+        e.setScheduleId(savedSchedule.getId());
+
         e.setReminderId(r.getId().longValue());
+
+        if (r.getCustomerId() != null) {
+            e.setCustomerId(r.getCustomerId().longValue());
+        }
+
         e.setOccurrenceDate(time);
+
         e.setStatus(ScheduleEntryStatus.PENDING);
-        e.setAmount(r.getAmount() != null ? BigDecimal.valueOf(r.getAmount()) : null);
+
+        e.setAmount(
+                r.getAmount() != null
+                        ? BigDecimal.valueOf(r.getAmount())
+                        : null);
+
         e.setRemarks(r.getMessage());
-        
+
+        e.setSourceType("REMINDER");
+        e.setSourceId(r.getId().longValue());
 
         scheduleEntryRepository.save(e);
     }

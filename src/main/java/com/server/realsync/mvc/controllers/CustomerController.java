@@ -54,8 +54,7 @@ public class CustomerController {
     // ===============================
 
     @PutMapping("/api/customers/{id}")
-    @ResponseBody
-    public Customer updateCustomer(
+    public ResponseEntity<?> updateCustomer(
             @PathVariable Integer id,
             @RequestBody Customer customer) {
 
@@ -64,13 +63,30 @@ public class CustomerController {
         Optional<Customer> optionalCustomer = customerService.getById(id);
 
         if (optionalCustomer.isEmpty()) {
-            throw new RuntimeException("Customer not found");
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message",
+                            "Customer not found"));
         }
 
         Customer existing = optionalCustomer.get();
 
         if (!existing.getAccountId().equals(account.getId())) {
-            throw new RuntimeException("Unauthorized access");
+            return ResponseEntity.status(403)
+                    .body(Map.of("message",
+                            "Unauthorized"));
+        }
+
+        Optional<Customer> duplicate = customerService.findByMobile(
+                account.getId(),
+                customer.getMobile());
+
+        if (duplicate.isPresent()
+                && !duplicate.get().getId().equals(id)) {
+
+            return ResponseEntity.badRequest()
+                    .body(Map.of(
+                            "message",
+                            "Customer with this mobile already exists"));
         }
 
         existing.setName(customer.getName());
@@ -81,7 +97,9 @@ public class CustomerController {
         existing.setChannel(customer.getChannel());
         existing.setCustomerGroupId(customer.getCustomerGroupId());
 
-        return customerService.save(existing);
+        Customer saved = customerService.save(existing);
+
+        return ResponseEntity.ok(saved);
     }
 
     // ===============================

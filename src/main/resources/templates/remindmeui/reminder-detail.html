@@ -80,7 +80,7 @@
     <div class="max-w-4xl mx-auto space-y-6">
 
       <!-- Payment Status Banner (if not paid) -->
-      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
+      <div id="paymentPendingBanner" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
         <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -90,7 +90,7 @@
           <p class="text-amber-700 text-xs mt-0.5">This reminder is waiting for payment confirmation. Mark as paid when
             payment is received.</p>
         </div>
-        <button onclick="markPaid(${p.id})"
+        <button onclick="markLatestPaid()"
           class="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 text-sm font-semibold whitespace-nowrap">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -531,12 +531,20 @@
 
         updateSummary();
         renderPaymentTable();
+        updatePendingBanner();
 
       } catch (err) {
         console.error(err);
         alert("Something went wrong");
       }
     }
+
+    function updatePendingBanner() {
+      const banner = document.getElementById("paymentPendingBanner");
+      const hasPending = payments.some(p => p.status === "pending" || p.status === "overdue");
+      banner.classList.toggle("hidden", !hasPending);
+    }
+
     async function loadHistory() {
       const reminderId = window.location.search.split("=")[1];
 
@@ -690,11 +698,9 @@
     }
     async function markLatestPaid() {
       try {
-        // get all entries
         const res = await fetch(`/api/engagements/reminders/${reminderId}/tracker`);
         const data = await res.json();
 
-        // find latest pending
         const pending = data
           .filter(e => e.status === "PENDING")
           .sort((a, b) => new Date(b.occurrenceDate) - new Date(a.occurrenceDate));
@@ -712,8 +718,8 @@
           method: "POST"
         });
 
-        alert("Marked as paid ✔");
-        loadTracker(); // refresh UI
+        await loadTracker();
+        await loadHistory();
 
       } catch (err) {
         console.error(err);

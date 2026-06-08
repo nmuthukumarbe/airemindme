@@ -4,13 +4,26 @@ function formatCountry(option) {
     const flag = $(option.element).data("flag");
 
     return $(`
-        <span style="display:flex; align-items:center; gap:8px; white-space:nowrap;">
+        <span style="display:flex;align-items:center;gap:8px;white-space:nowrap;">
             <img src="https://flagcdn.com/w20/${flag}.png"
                  style="width:18px;height:12px;border-radius:2px;" />
-           
+            <span>${option.text}</span>
         </span>
     `);
 }
+$(document).ready(function () {
+
+    $('#countryCode').select2({
+        templateResult: formatCountry,
+        templateSelection: formatCountry,
+        minimumResultsForSearch: 0,
+        width: '100%',
+        escapeMarkup: function (markup) {
+            return markup;
+        }
+    });
+
+});
 
 /* ================= CUSTOMER MODAL ================= */
 
@@ -72,19 +85,19 @@ function showAddCustomerModal() {
     document.getElementById("addCustomerModal").classList.remove("hidden");
 
     // 🔥 THEN initialize Select2 (important)
-    setTimeout(() => {
+    // setTimeout(() => {
 
-        $('#countryCode').select2({
-            templateResult: formatCountry,
-            templateSelection: formatCountry,
-            minimumResultsForSearch: 0,
-            width: '100%',
-            escapeMarkup: function (markup) {
-                return markup;
-            }
-        });
+    //     $('#countryCode').select2({
+    //         templateResult: formatCountry,
+    //         templateSelection: formatCountry,
+    //         minimumResultsForSearch: 0,
+    //         width: '100%',
+    //         escapeMarkup: function (markup) {
+    //             return markup;
+    //         }
+    //     });
 
-    }, 100);
+    // }, 100);
 }
 
 function hideAddCustomerModal() {
@@ -92,7 +105,7 @@ function hideAddCustomerModal() {
 }
 
 
-function openEditCustomer(id, name, phone, email, groupIds, channel) {
+function openEditCustomer(id, name, phone, email, dob, weddingDate, groupIds, channel) {
     resetGroupUI(); // Clear previous highlights
 
     document.getElementById("cId").value = id;
@@ -100,23 +113,25 @@ function openEditCustomer(id, name, phone, email, groupIds, channel) {
     let fullPhone = phone || "";
 
     // default
-    let countryCode = "+91";
     let localPhone = fullPhone;
 
-    // split logic
-    if (fullPhone.startsWith("+91")) {
-        countryCode = "+91";
-        localPhone = fullPhone.substring(3);
-    } else if (fullPhone.startsWith("+1")) {
-        countryCode = "+1";
-        localPhone = fullPhone.substring(2);
+    const select = document.getElementById("countryCode");
+
+    for (const option of select.options) {
+        if (fullPhone.startsWith(option.value)) {
+            select.value = option.value;
+            $('#countryCode').trigger('change');
+            localPhone = fullPhone.substring(option.value.length);
+            break;
+        }
     }
 
-    // set values
-    document.getElementById("countryCode").value = countryCode;
     document.getElementById("cPhone").value = localPhone;
     document.getElementById("cEmail").value = email;
-
+    document.getElementById("cBirthday").value = dob ? dob.substring(0, 10) : "";
+    document.getElementById("cAnniversary").value = weddingDate ? weddingDate.substring(0, 10) : "";
+    console.log("DOB:", dob);
+    console.log("Wedding:", weddingDate);
     // FIX: Handle the comma-separated group string
     if (groupIds) {
         const ids = groupIds.toString().split(',');

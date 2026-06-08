@@ -21,11 +21,10 @@
       background: #e2e8f0;
       border-radius: 4px;
     }
-    
   </style>
 </head>
 
-<body class="text-slate-100">
+<body class="bg-gray-50 text-gray-900">
 
   <!-- Sidebar -->
   <div th:replace="~{remindmeui/fragments/layout :: sidebar(activePage='engagement')}"></div>
@@ -707,32 +706,39 @@
     let remSearchTerm = '';
     let greetSearchTerm = '';
     let greetingImgDataUrl = null;
+    const queryReminderId = new URLSearchParams(window.location.search).get("id");
 
 
     // ============================================================
     // roINIT  (single window.onload)
 
-    window.onload = async () => {
+    window.addEventListener("DOMContentLoaded", async () => {
       console.log("Initializing Dashboard...");
 
       try {
         await loadCustomers();
         await loadCustomerGroups();
         await loadGreetings();
-        loadReminders();
+        await loadReminders();
         updateTopStats();
 
         if (typeof loadPlans === "function") loadPlans();
         if (typeof loadProducts === "function") loadProducts();
 
+        if (queryReminderId) {
+          const reminderId = parseInt(queryReminderId, 10);
+          if (!Number.isNaN(reminderId)) {
+            openEditReminder(reminderId);
+          }
+        }
 
         const savedTab = localStorage.getItem("eng_active_tab") || "reminders";
-        switchTab(savedTab);
+        switchTab(queryReminderId ? "reminders" : savedTab);
 
       } catch (err) {
         console.error("Initialization failed:", err);
       }
-    };
+    });
 
     // ============================================================
     // roDATA LOADERS
@@ -1138,6 +1144,7 @@
 
       window.editReminderId = null;
       document.getElementById("reminderModalTitle").textContent = "Create Reminder";
+
       document.querySelector("#createReminderModal button[type='submit']")
         .textContent = "Create Reminder";
       document.querySelector("#createReminderModal form").reset();
@@ -1149,6 +1156,10 @@
     function openEditReminder(id) {
       const r = reminders.find(x => x.id === id);
       if (!r) return;
+      document.getElementById("reminderModalTitle").textContent = "Edit Reminder";
+
+      document.querySelector("#createReminderModal button[type='submit']")
+        .textContent = "Update Reminder";
 
       openModal('createReminderModal');
 

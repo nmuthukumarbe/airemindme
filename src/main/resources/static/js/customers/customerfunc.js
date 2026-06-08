@@ -1,3 +1,25 @@
+function showToast(message, type = "success") {
+
+    let bgColor = "#10b981"; // green
+
+    if (type === "error") {
+        bgColor = "#ef4444";
+    }
+
+    Toastify({
+        text: message,
+        duration: 3000,
+        gravity: "top",
+        position: "right",
+        close: true,
+        stopOnFocus: true,
+        style: {
+            background: bgColor,
+            borderRadius: "12px"
+        }
+    }).showToast();
+}
+
 
 /* =================  ================= */
 const phoneInput = document.getElementById("cPhone");
@@ -56,11 +78,27 @@ function saveCustomer(e) {
             return res.json();
         })
         .then(() => {
-            location.reload();
+
+            showToast(
+                id
+                    ? "Customer updated successfully"
+                    : "Customer added successfully"
+            );
+
+            setTimeout(() => {
+
+                const url = new URL(window.location.href);
+
+                url.searchParams.delete("editId");
+
+                window.location.href = url.pathname + url.search;
+
+            }, 1200);
         })
         .catch(err => {
-            // Display ONLY the exact error message in the popup
-            alert(err.message);
+
+            showToast(err.message, "error");
+
         });
 }
 
@@ -226,6 +264,9 @@ function confirmImport() {
     })
         .then(res => res.json())
         .then(data => {
+            showToast(
+                `${data.imported} customers imported successfully`
+            );
             document.getElementById('importStep2').classList.add('hidden');
             document.getElementById('importStep3').classList.remove('hidden');
             document.getElementById('importSuccessMsg').innerText =
