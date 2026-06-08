@@ -176,6 +176,22 @@ public class Schedule {
     public void setSentWhatsapp(boolean sentWhatsapp) {
         this.sentWhatsapp = sentWhatsapp;
     }
+
+    public RepeatEvery getRepeatEvery() {
+        return repeatEvery;
+    }
+
+    public void setRepeatEvery(RepeatEvery repeatEvery) {
+        this.repeatEvery = repeatEvery;
+    }
+
+    public Integer getRepeatCount() {
+        return repeatCount;
+    }
+
+    public void setRepeatCount(Integer repeatCount) {
+        this.repeatCount = repeatCount;
+    }
     // ===================== BASIC FIELDS =====================
 
     public Integer getAccountId() {

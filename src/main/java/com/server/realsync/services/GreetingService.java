@@ -11,15 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.server.realsync.entity.Greeting;
-import com.server.realsync.entity.Schedule;
-import com.server.realsync.entity.ScheduleEntry;
-import com.server.realsync.entity.ScheduleEntryStatus;
-import com.server.realsync.entity.Customer;
-import com.server.realsync.repo.GreetingRepository;
-import com.server.realsync.repo.ScheduleEntryRepository;
-import com.server.realsync.repo.ScheduleRepository;
-import com.server.realsync.repo.CustomerRepository;
+import com.server.realsync.entity.*;
+import com.server.realsync.repo.*;
 
 @Service
 public class GreetingService {
@@ -30,165 +23,95 @@ public class GreetingService {
     private CustomerRepository customerRepo;
     @Autowired
     private ScheduleEntryRepository scheduleEntryRepository;
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
-    /** All greetings for an account, newest first */
     public List<Greeting> getByAccountId(Integer accountId) {
         return repo.findByAccountIdOrderByCreatedAtDesc(accountId);
     }
 
-    public List<Greeting> getByCustomerId(Integer customerId, Integer accountId) {
-        return repo.findByCustomerIdAndAccountId(customerId, accountId);
-    }
-
-    /** Single greeting scoped to account */
     public Optional<Greeting> getById(Integer id, Integer accountId) {
         return repo.findByIdAndAccountId(id, accountId);
     }
 
-    /** Create or update */
+    @Transactional
     public Greeting save(Greeting greeting) {
-
         if (greeting.getStatus() == null) {
             greeting.setStatus("Scheduled");
         }
 
         Greeting saved = repo.save(greeting);
+        Long greetingId = saved.getId().longValue();
 
-        // ❗ remove old schedules (important for edit)
         scheduleEntryRepository.deleteBySourceIdAndSourceTypeAndStatusNot(
-                saved.getId().longValue(),
-                "GREETING",
-                ScheduleEntryStatus.COMPLETED);
+                greetingId, "GREETING", ScheduleEntryStatus.COMPLETED);
 
-        // create execution entries
+        scheduleRepository.deleteBySourceTypeAndSourceId("GREETING", greetingId);
+
         createGreetingSchedules(saved);
 
         return saved;
     }
 
-    /** CREATE SCHEDULE ENTRIES */
     private void createGreetingSchedules(Greeting g) {
+        LocalTime time = g.getGreetingTime() != null ? g.getGreetingTime() : LocalTime.of(9, 0);
+        LocalDateTime dateTime = LocalDateTime.of(g.getGreetingDate(), time);
 
-        System.out.println("🔥 createGreetingSchedules called");
-        System.out.println("🔥 Greeting ID: " + g.getId());
-        System.out.println("👤 Customer ID: " + g.getCustomerId());
-        System.out.println("👥 Group ID: " + g.getCustomerGroupId());
-
-        LocalTime time = g.getGreetingTime() != null
-                ? g.getGreetingTime()
-                : LocalTime.of(9, 0);
-
-        LocalDateTime dateTime = LocalDateTime.of(
-                g.getGreetingDate(),
-                time);
-
-        System.out.println("📅 DateTime: " + dateTime);
-
-        // Single customer
         // Group customers
         if (g.getCustomerGroupId() != null) {
+            List<Customer> customers = customerRepo.findByAccountIdAndCustomerGroupId(
+                    g.getAccountId(), g.getCustomerGroupId(), Pageable.unpaged()).getContent();
 
-            System.out.println("👥 Group ID: " + g.getCustomerGroupId());
-
-            Page<Customer> customerPage = customerRepo.findByAccountIdAndCustomerGroupId(
-                    g.getAccountId(),
-                    g.getCustomerGroupId(),
-                    Pageable.unpaged());
-
-            System.out.println("🔥 Query executed");
-
-            List<Customer> customers = customerPage.getContent();
-
-            System.out.println("✅ Customers found: " + customers.size());
-
+            Schedule schedule = createGreetingSchedule(g, dateTime);
             for (Customer c : customers) {
-
-                System.out.println("➡️ Creating entry for customer: " + c.getId());
-
-                createEntry(g, c.getId(), dateTime);
+                createEntry(schedule, g, c.getId(), dateTime);
             }
         }
-        // Group customers
-        if (g.getCustomerId() != null) {
-
-            System.out.println("👤 Single customer: " + g.getCustomerId());
-
-            try {
-
-                createEntry(g, g.getCustomerId(), dateTime);
-
-                System.out.println("✅ Single customer schedule created");
-
-            } catch (Exception ex) {
-
-                System.out.println("❌ ERROR INSIDE createEntry");
-                ex.printStackTrace();
-            }
-
-            return;
+        // Single customer
+        else if (g.getCustomerId() != null) {
+            Schedule schedule = createGreetingSchedule(g, dateTime);
+            createEntry(schedule, g, g.getCustomerId(), dateTime);
         }
     }
 
-    private void createEntry(Greeting g, Integer customerId, LocalDateTime time) {
+    private Schedule createGreetingSchedule(Greeting g, LocalDateTime dateTime) {
+        Schedule schedule = new Schedule();
+        schedule.setAccountId(g.getAccountId());
+        schedule.setTitle(g.getGreetingType() + " Greeting");
+        schedule.setRemarks(g.getMessage());
+        schedule.setSourceType("GREETING");
+        schedule.setSourceId(g.getId().longValue());
+        schedule.setType(ScheduleType.ONE_TIME);
+        schedule.setStartDatetime(dateTime);
 
-        try {
-
-            System.out.println("🚀 createEntry called");
-
-            System.out.println("Customer ID = " + customerId);
-            System.out.println("Greeting ID = " + g.getId());
-            System.out.println("Time = " + time);
-
-            ScheduleEntry e = new ScheduleEntry();
-
-            e.setSourceType("GREETING");
-            e.setSourceId(g.getId().longValue());
-
-            e.setCustomerId(customerId.longValue());
-
-            e.setOccurrenceDate(time);
-
-            e.setStatus(ScheduleEntryStatus.PENDING);
-
-            e.setRemarks(g.getMessage());
-
-            System.out.println("🔥 BEFORE SAVE");
-
-            ScheduleEntry saved = scheduleEntryRepository.save(e);
-
-            System.out.println("✅ Saved schedule entry ID: " + saved.getId());
-
-        } catch (Exception ex) {
-
-            System.out.println("❌ ERROR INSIDE createEntry");
-
-            ex.printStackTrace();
-        }
+        return scheduleRepository.save(schedule);
     }
 
-    public List<ScheduleEntry> getGreetingEntries(Integer greetingId) {
+    private void createEntry(Schedule schedule, Greeting g, Integer customerId, LocalDateTime time) {
+        ScheduleEntry e = new ScheduleEntry();
+        e.setScheduleId(schedule.getId());
+        e.setSourceType("GREETING");
+        e.setSourceId(g.getId().longValue());
+        e.setCustomerId(customerId.longValue());
+        e.setOccurrenceDate(time);
+        e.setStatus(ScheduleEntryStatus.PENDING);
+        e.setRemarks(g.getMessage());
 
-        return scheduleEntryRepository
-                .findBySourceTypeAndSourceId(
-                        "GREETING",
-                        greetingId.longValue());
+        scheduleEntryRepository.save(e);
     }
 
     @Transactional
     public void delete(Integer id, Integer accountId) {
-
-        // delete all schedule entries
-        scheduleEntryRepository.deleteBySourceIdAndSourceType(
-                id.longValue(),
-                "GREETING");
-
-        // delete greeting
+        Long greetingId = id.longValue();
+        scheduleEntryRepository.deleteBySourceIdAndSourceType(greetingId, "GREETING");
+        scheduleRepository.deleteBySourceTypeAndSourceId("GREETING", greetingId);
         repo.deleteByIdAndAccountId(id, accountId);
-
-        System.out.println("✅ Greeting and schedule entries deleted");
     }
 
-    /** Count total greetings for the dashboard */
+    public List<ScheduleEntry> getGreetingEntries(Integer greetingId) {
+        return scheduleEntryRepository.findBySourceTypeAndSourceId("GREETING", greetingId.longValue());
+    }
+
     public long countByAccountId(Integer accountId) {
         return repo.countByAccountId(accountId);
     }

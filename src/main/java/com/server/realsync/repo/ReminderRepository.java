@@ -16,6 +16,7 @@ public interface ReminderRepository extends JpaRepository<Reminder, Integer> {
 
         Optional<Reminder> findByIdAndAccountId(Integer id, Integer accountId);
 
+
         long countByAccountId(Integer accountId);
 
         long countByAccountIdAndStatus(Integer accountId, String status);

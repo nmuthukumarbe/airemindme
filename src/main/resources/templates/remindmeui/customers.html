@@ -95,10 +95,12 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <input id="searchInput" type="text" placeholder="Search customers..."
-          class="w-full pl-10 pr-10 py-2 border rounded-lg" onkeypress="if(event.key==='Enter') searchCustomers()">
+
+        <input id="searchInput" type="text" th:value="${search}" placeholder="Search customers..."
+          autocomplete="off" class="w-full pl-10 pr-10 py-2 border rounded-lg">
         <!-- CLEAR BUTTON -->
-        <button onclick="clearSearch()"
+        <button id="clearSearchBtn" type="button" onclick="clearSearch()"
+          th:classappend="${#strings.isEmpty(search) ? 'hidden' : ''}"
           class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500">
           ✕
         </button>

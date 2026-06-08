@@ -294,30 +294,25 @@ function setFilter(filter) {
 
 /* ================= SEARCH ================= */
 
-const searchInput = document.getElementById("searchInput");
+let searchTimer;
 
-if (searchInput) {
-    let timer;
+function updateClearSearchButton() {
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
 
-    searchInput.addEventListener("input", function () {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            searchCustomers();
-        }, 400);
-    });
+    if (!searchInput || !clearSearchBtn) return;
 
-    searchInput.addEventListener("keypress", function (e) {
-        if (e.key === "Enter") {
-            searchCustomers();
-        }
-    });
+    clearSearchBtn.classList.toggle("hidden", searchInput.value.trim() === "");
 }
 
 function searchCustomers() {
-    const search = document.getElementById("searchInput").value;
+    const searchInput = document.getElementById("searchInput");
+    if (!searchInput) return;
+
+    const search = searchInput.value.trim();
     const url = new URL(window.location.href);
 
-    if (search && search.trim() !== "") {
+    if (search !== "") {
         url.searchParams.set("search", search);
     } else {
         url.searchParams.delete("search");
@@ -328,18 +323,44 @@ function searchCustomers() {
 }
 
 function clearSearch() {
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
+
+    if (searchInput) {
+        searchInput.value = "";
+    }
+
+    if (clearSearchBtn) {
+        clearSearchBtn.classList.add("hidden");
+    }
+
+    clearTimeout(searchTimer);
+
     const url = new URL(window.location.href);
     url.searchParams.delete("search");
     url.searchParams.set("page", "0");
+
     window.location.href = url.toString();
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const phoneInput = document.getElementById("cPhone");
+window.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
 
-    if (phoneInput) {
-        phoneInput.addEventListener("input", function () {
-            this.value = this.value.replace(/\D/g, "").slice(0, 11);
+    updateClearSearchButton();
+
+    if (searchInput) {
+        searchInput.addEventListener("input", function () {
+            updateClearSearchButton();
+
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function () {
+                searchCustomers();
+            }, 1000);
         });
+    }
+
+    if (clearSearchBtn) {
+        clearSearchBtn.classList.toggle("hidden", !searchInput || searchInput.value.trim() === "");
     }
 });

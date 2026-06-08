@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.server.realsync.entity.Schedule;
 
+import jakarta.transaction.Transactional;
+
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     List<Schedule> findByAccountId(Integer accountId);
@@ -14,10 +16,13 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
     List<Schedule> findByStartDatetimeBefore(LocalDateTime time);
 
-    void deleteBySourceTypeAndSourceId(String sourceType, Long sourceId);
+    
 
     List<Schedule> findTop100ByExecutionStatusAndStartDatetimeBefore(
             String status,
             LocalDateTime time);
+
+    @Transactional
+    void deleteBySourceTypeAndSourceId(String sourceType,Long sourceId);
 
 }
