@@ -36,6 +36,14 @@ let editPlanId = null;   // null = create, number = edit
 let editProductId = null;
 let editTemplateId = null;
 let editRTId = null;
+let planPage = 0;
+let productPage = 0;
+
+let planTotalPages = 0;
+let productTotalPages = 0;
+
+let planTotalElements = 0;
+let productTotalElements = 0;
 
 let currentBilling = 'monthly';
 let rtCols = [];     // [{ uid, value }]
@@ -164,10 +172,22 @@ function setTmplFilter(f) {
 // ║                         PLANS                           ║
 // ╚══════════════════════════════════════════════════════════╝
 // ─────────────────────────────────────────────────────────────────────────────
-function loadPlans() {
-    api(API.plans)
-        .then(data => { plans = data; renderPlans(); })
-        .catch(err => showToast('Failed to load plans: ' + err.message, 'error'));
+function loadPlans(page = 0) {
+    api(`${API.plans}?page=${page}&size=6`)
+        .then(data => {
+
+            plans = data.content || [];
+
+            planPage = data.number;
+            planTotalPages = data.totalPages;
+            planTotalElements = data.totalElements || 0;
+
+            renderPlans();
+            renderPlanPagination();
+        })
+        .catch(err =>
+            showToast('Failed to load plans: ' + err.message, 'error')
+        );
 }
 
 function renderPlans() {
@@ -179,7 +199,7 @@ function renderPlans() {
 
     const countEl = document.getElementById('planTabCount');
     const badgeEl = document.getElementById('planCountBadge');
-    if (countEl) countEl.textContent = plans.length;
+    if (countEl) countEl.textContent = planTotalElements;
     if (badgeEl) badgeEl.textContent = plans.filter(p => p.status === 'active').length;
 
     const grid = document.getElementById('plansGrid');
@@ -236,6 +256,49 @@ function renderPlans() {
     </div>`).join('');
 }
 
+
+function renderProductPagination() {
+    const el = document.getElementById('productPagination');
+    if (!el) return;
+
+    el.innerHTML = `
+        <button ${productPage === 0 ? 'disabled' : ''}
+            onclick="loadProducts(${productPage - 1})">
+            Prev
+        </button>
+
+        <span>Page ${productPage + 1} of ${productTotalPages}</span>
+
+        <button ${productPage >= productTotalPages - 1 ? 'disabled' : ''}
+            onclick="loadProducts(${productPage + 1})">
+            Next
+        </button>
+    `;
+}
+function renderPlanPagination() {
+    const el = document.getElementById('planPagination');
+    if (!el) return;
+
+    el.innerHTML = `
+        <button
+            ${planPage === 0 ? 'disabled' : ''}
+            onclick="loadPlans(${planPage - 1})"
+            class="px-3 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
+            Prev
+        </button>
+
+        <span class="px-4 text-sm text-gray-600">
+            Page ${planPage + 1} of ${planTotalPages}
+        </span>
+
+        <button
+            ${planPage >= planTotalPages - 1 ? 'disabled' : ''}
+            onclick="loadPlans(${planPage + 1})"
+            class="px-3 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
+            Next
+        </button>
+    `;
+}
 function buildFeatureTags(features) {
     let list = [];
     if (Array.isArray(features)) list = features;
@@ -534,10 +597,22 @@ function deletePlan(id) {
 // ║                       PRODUCTS                          ║
 // ╚══════════════════════════════════════════════════════════╝
 // ─────────────────────────────────────────────────────────────────────────────
-function loadProducts() {
-    api(API.products)
-        .then(data => { products = data; renderProducts(); })
-        .catch(err => showToast('Failed to load products: ' + err.message, 'error'));
+function loadProducts(page = 0) {
+    api(`${API.products}?page=${page}&size=6`)
+        .then(data => {
+
+            products = data.content || [];
+
+            productPage = data.number;
+            productTotalPages = data.totalPages;
+            productTotalElements = data.totalElements || 0;
+
+            renderProducts();
+            renderProductPagination();
+        })
+        .catch(err =>
+            showToast('Failed to load products: ' + err.message, 'error')
+        );
 }
 
 function renderProducts() {
@@ -551,7 +626,7 @@ function renderProducts() {
 
     const countEl = document.getElementById('prodTabCount');
     const badgeEl = document.getElementById('productCountBadge');
-    if (countEl) countEl.textContent = products.length;
+    if (countEl) countEl.textContent = productTotalElements;
     if (badgeEl) badgeEl.textContent = products.filter(p => p.status === 'active').length;
 
     const grid = document.getElementById('productsGrid');

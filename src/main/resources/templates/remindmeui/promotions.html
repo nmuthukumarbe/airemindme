@@ -131,11 +131,13 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
               </svg></div>
-            <h3 class="text-sm font-bold text-gray-900">Plans <span
-                class="text-gray-400 font-normal text-xs ml-1">3</span></h3>
-            <span class="text-xs text-gray-400 ml-1">from Super Admin</span>
+            <h3 class="text-sm font-bold text-gray-900">
+              Plans
+              <span id="plansCount" class="text-gray-400 font-normal text-xs ml-1">0</span>
+            </h3>
           </div>
           <div id="plansGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+          <div id="planPagination" class="flex justify-center items-center gap-2 mt-4"></div>
         </div>
 
         <!-- Products Section -->
@@ -146,9 +148,10 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
               </svg></div>
-            <h3 class="text-sm font-bold text-gray-900">Products <span
-                class="text-gray-400 font-normal text-xs ml-1">3</span></h3>
-            <span class="text-xs text-gray-400 ml-1">from Super Admin</span>
+            <h3 class="text-sm font-bold text-gray-900">
+              Products
+              <span id="productsCount" class="text-gray-400 font-normal text-xs ml-1">0</span>
+            </h3>
           </div>
           <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
         </div>
@@ -661,6 +664,11 @@
     let currentRecipients = 0;
     let selectedItems = [];
 
+    let planPage = 0;
+    let productPage = 0;
+
+    let planTotalPages = 0;
+    let productTotalPages = 0;
     // State for backend sync
     let state = {
       selectedGroupId: null,
@@ -676,12 +684,18 @@
     async function loadCatalog() {
       try {
         const [planRes, productRes] = await Promise.all([
-          fetch('/api/catalog/plans'),
-          fetch('/api/catalog/products')
+          fetch('/api/catalog/plans?page=0&size=6'),
+          fetch('/api/catalog/products?page=0&size=6')
         ]);
 
-        const rawPlans = await planRes.json();
-        const rawProducts = await productRes.json();
+        const planPage = await planRes.json();
+        const productPage = await productRes.json();
+
+        const rawPlans = planPage.content || [];
+        const rawProducts = productPage.content || [];
+
+        document.getElementById("plansCount").textContent = rawPlans.length;
+        document.getElementById("productsCount").textContent = rawProducts.length;
 
         // Normalizing Plans: mapping DB fields like billing_cycle and features
         plans = rawPlans.map(p => ({
@@ -713,6 +727,7 @@
         }));
 
         renderCards();
+         renderPagination();
       } catch (err) {
         console.error("Error loading catalog:", err);
       }
@@ -907,6 +922,10 @@ class="group-item flex items-center justify-between px-4 py-3 rounded-xl border 
 
       const fPlans = (catFilter === 'products') ? [] : (plans || []).filter(matchesSearch);
       const fProds = (catFilter === 'plans') ? [] : (products || []).filter(matchesSearch);
+
+      document.getElementById("plansCount").textContent = `(${fPlans.length})`;
+
+      document.getElementById("productsCount").textContent = `(${fProds.length})`;
 
       // Fallback images if DB doesn't provide them
       const planPlaceholder = 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=80';
@@ -1252,7 +1271,68 @@ class="group-item flex items-center justify-between px-4 py-3 rounded-xl border 
       navigator.clipboard.writeText(url).then(() => { alert('Link copied!'); });
     }
 
+// PAGINATION FOR PRODUCTS AND PLANS
 
+function renderPagination() {
+
+  const planPg = document.getElementById("planPagination");
+  const productPg = document.getElementById("productPagination");
+
+  if (planPg) {
+    planPg.innerHTML = "";
+
+    if (planTotalPages > 1) {
+
+      for (let i = 0; i < planTotalPages; i++) {
+
+        const btn = document.createElement("button");
+
+        btn.innerText = i + 1;
+
+        btn.className =
+          "px-3 py-1 rounded border text-sm " +
+          (i === planPage
+            ? "bg-indigo-600 text-white"
+            : "bg-white text-gray-700 hover:bg-gray-50");
+
+        btn.onclick = () => {
+          planPage = i;
+          loadCatalog();
+        };
+
+        planPg.appendChild(btn);
+      }
+    }
+  }
+
+  if (productPg) {
+
+    productPg.innerHTML = "";
+
+    if (productTotalPages > 1) {
+
+      for (let i = 0; i < productTotalPages; i++) {
+
+        const btn = document.createElement("button");
+
+        btn.innerText = i + 1;
+
+        btn.className =
+          "px-3 py-1 rounded border text-sm " +
+          (i === productPage
+            ? "bg-indigo-600 text-white"
+            : "bg-white text-gray-700 hover:bg-gray-50");
+
+        btn.onclick = () => {
+          productPage = i;
+          loadCatalog();
+        };
+
+        productPg.appendChild(btn);
+      }
+    }
+  }
+}
     // =============================================================================
     // TEMPLATES
     // =============================================================================

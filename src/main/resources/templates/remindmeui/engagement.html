@@ -855,44 +855,64 @@
         const res = await fetch(`${API_BASE}/catalog/plans`);
         if (!res.ok) return;
 
-        const plans = await res.json();
+        const data = await res.json();
+        const plans = data.content || [];
+
         const container = document.getElementById("attachPlansPanel");
 
         container.innerHTML = plans.map((p, idx) => `
       <label class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-gray-200 bg-white cursor-pointer hover:border-indigo-200">
-        <input type="radio" name="attachedItem" value="plan-${p.id}" ${idx === 0 ? 'checked' : ''} class="accent-indigo-600 w-4 h-4">
+        <input type="radio" name="attachedItem"
+          value="plan-${p.id}"
+          ${idx === 0 ? 'checked' : ''}
+          class="accent-indigo-600 w-4 h-4">
         <div class="flex-1 min-w-0">
           <p class="text-xs font-bold text-gray-900">${p.name}</p>
           <p class="text-[10px] text-gray-400">₹${p.price} · ${p.billingCycle || 'Plan'}</p>
         </div>
       </label>
     `).join('');
+
       } catch (e) {
         console.error("Plan Load Error:", e);
       }
     }
-
     async function loadProducts() {
       try {
         const res = await fetch(`${API_BASE}/catalog/products`);
         if (!res.ok) return;
 
-        const products = await res.json();
+        const data = await res.json();
+
+        // Supports both paginated and non-paginated responses
+        const products = Array.isArray(data) ? data : (data.content || []);
+
         const container = document.getElementById("attachProductsPanel");
 
-        container.innerHTML = products.map(p => `
+        container.innerHTML = products.map((p, idx) => `
       <label class="flex items-center gap-3 px-3 py-2.5 rounded-xl border border-gray-200 bg-white cursor-pointer hover:border-indigo-200">
-        <input type="radio" name="attachedItem" value="product-${p.id}" class="accent-indigo-600 w-4 h-4">
+        <input
+          type="radio"
+          name="attachedItem"
+          value="product-${p.id}"
+          ${idx === 0 ? 'checked' : ''}
+          class="accent-indigo-600 w-4 h-4">
+
         <div class="flex-1 min-w-0">
           <p class="text-xs font-bold text-gray-900">${p.name}</p>
-          <p class="text-[10px] text-gray-400">₹${p.price} · ${p.category || 'Product'}</p>
+          <p class="text-[10px] text-gray-400">
+            ₹${p.price || 0} · ${p.category || 'Product'}
+          </p>
         </div>
       </label>
     `).join('');
+
       } catch (e) {
         console.error("Product Load Error:", e);
       }
     }
+
+
     async function updateTopStats() {
       try {
 
