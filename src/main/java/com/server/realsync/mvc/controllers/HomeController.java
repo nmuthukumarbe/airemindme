@@ -31,6 +31,8 @@ import com.server.realsync.entity.CatalogRTemplate;
 import com.server.realsync.entity.CustomerGroup;
 import com.server.realsync.entity.Greeting;
 import com.server.realsync.entity.Reminder;
+import com.server.realsync.entity.ScheduleEntry;
+import com.server.realsync.repo.ScheduleEntryRepository;
 import com.server.realsync.services.AccountService;
 import com.server.realsync.services.CustomerService;
 import com.server.realsync.services.ReminderService;
@@ -42,7 +44,7 @@ import com.server.realsync.services.CatalogRTemplateService;
 import com.server.realsync.services.ReportService;
 import com.server.realsync.services.AdminUserService;
 import com.server.realsync.services.AppointmentService;
-import com.server.realsync.services.SettingsPlanService;
+import com.server.realsync.services.CatlogPlanService;
 
 import com.server.realsync.services.UserService;
 import com.server.realsync.util.CustomerMessageService;
@@ -71,7 +73,7 @@ public class HomeController {
 	@Autowired
 	CustomerGroupService customerGroupService;
 	@Autowired
-	private SettingsPlanService settingsPlanService;
+	private CatlogPlanService settingsPlanService;
 	@Autowired
 	private CatalogProductService catalogProductService;
 	@Autowired
@@ -90,6 +92,8 @@ public class HomeController {
 	private PromotionService promotionService;
 	@Autowired
 	GmailSender gmailSender;
+	@Autowired
+	private ScheduleEntryRepository scheduleEntryRepository;
 
 	@GetMapping
 	public String getWebHomePage(Model model) {
@@ -241,7 +245,8 @@ public class HomeController {
 
 		List<CustomerGroup> groups = customerGroupService.getByAccountId(account.getId());
 		List<Reminder> reminders = reminderService.getByCustomerId(id, account.getId());
-		List<Greeting> greetings = greetingService.getByCustomerId(id, account.getId());
+		// List<Greeting> greetings = greetingService.getByCustomerId(id,
+		// account.getId());
 
 		Map<Integer, String> groupMap = groups.stream()
 				.collect(Collectors.toMap(
@@ -250,7 +255,6 @@ public class HomeController {
 
 		model.addAttribute("groupMap", groupMap);
 		model.addAttribute("reminders", reminders);
-		model.addAttribute("greetings", greetings);
 
 		return "remindmeui/customer-detail";
 	}
@@ -362,6 +366,13 @@ public class HomeController {
 			model.addAttribute("createdAtFormatted", "N/A");
 		}
 
+		model.addAttribute("customer", customer.orElse(new Customer()));
+		List<ScheduleEntry> entries = scheduleEntryRepository.findByReminderIdOrderByOccurrenceDateAsc(
+				reminder.getId().longValue());
+
+		model.addAttribute("entries", entries);
+		ScheduleEntry entry = entries.isEmpty() ? null : entries.get(0);
+		model.addAttribute("entry", entry);
 		return "remindmeui/reminder-detail-onetime";
 	}
 
@@ -372,6 +383,8 @@ public class HomeController {
 		Account account = accountService.getById(loggedIn.getId());
 
 		Optional<Greeting> greetingOpt = greetingService.getById(id, account.getId());
+		long memberCount = customerService.countByGroupId(String.valueOf(greetingOpt.get().getCustomerGroupId()));
+		model.addAttribute("memberCount", memberCount);
 
 		if (greetingOpt.isEmpty()) {
 			return "redirect:/engagement.html";
@@ -395,15 +408,19 @@ public class HomeController {
 
 				CustomerGroup group = groupOpt.get();
 
+				// long memberCount = customerService.countByGroupId(
+				// 		String.valueOf(greeting.getCustomerGroupId()));
+
 				model.addAttribute(
 						"customerGroupName",
 						group.getName());
 
 				model.addAttribute(
 						"memberCount",
-						0);
+						memberCount);
 			}
 		}
+
 		return "remindmeui/greeting-detail";
 	}
 

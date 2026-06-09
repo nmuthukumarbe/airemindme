@@ -401,6 +401,30 @@
     </div>
   </div>
 
+  <div id="reminderLoaderOverlay"
+    class="hidden fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="absolute inset-0"></div>
+    <div class="relative mx-4 max-w-lg w-full">
+      <div
+        class="rounded-[2rem] bg-white/95 border border-slate-200 shadow-2xl shadow-indigo-500/10 backdrop-blur-xl p-7 sm:p-10">
+        <div class="flex flex-col items-center text-center gap-5">
+          <div class="relative flex h-20 w-20 items-center justify-center rounded-full bg-indigo-50">
+            <div
+              class="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500/20 to-indigo-600/10 animate-pulse">
+            </div>
+            <div class="relative h-12 w-12 rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-spin">
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p id="reminderLoaderTitle" class="text-xl font-semibold text-slate-900">Creating Reminder...</p>
+            <p id="reminderLoaderSubtitle" class="text-sm text-slate-500 max-w-xs mx-auto">Please wait while we schedule
+              your reminder.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Send Greeting Modal -->
   <div id="sendGreetingModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeModal('sendGreetingModal')"></div>
@@ -937,6 +961,35 @@
 
       document.getElementById("gtCustomerDropdown").classList.add("hidden");
     }
+
+    function showReminderLoader(type) {
+      const overlay = document.getElementById("reminderLoaderOverlay");
+      const title = document.getElementById("reminderLoaderTitle");
+      const subtitle = document.getElementById("reminderLoaderSubtitle");
+
+      if (!overlay || !title || !subtitle) return;
+
+      const isRecurring = type === 'recurring';
+      title.textContent = isRecurring ? "Creating Recurring Reminder..." : "Creating Reminder...";
+      subtitle.textContent = isRecurring ? "Generating future reminder schedules and saving data." : "Please wait while we schedule your reminder.";
+
+      overlay.classList.remove("hidden");
+      requestAnimationFrame(() => {
+        overlay.classList.remove("opacity-0");
+        overlay.classList.add("opacity-100");
+        overlay.classList.remove("pointer-events-none");
+      });
+    }
+
+    function hideReminderLoader() {
+      const overlay = document.getElementById("reminderLoaderOverlay");
+      if (!overlay) return;
+
+      overlay.classList.add("opacity-0");
+      overlay.classList.remove("opacity-100");
+      overlay.classList.add("pointer-events-none");
+      setTimeout(() => overlay.classList.add("hidden"), 300);
+    }
     // ============================================================
     // roCREATE  (submit handlers)
     // ============================================================
@@ -945,11 +998,11 @@
       event.preventDefault();
 
       const selectedItem = document.querySelector('input[name="attachedItem"]:checked');
-      if (!selectedItem) return alert("Please select a Plan or Product to attach.");
+      if (!selectedItem) return showToast("Please select a Plan or Product to attach.");
       const [itemType, itemId] = selectedItem.value.split('-');
       const customerId = document.getElementById("remCustomer").value;
       if (!customerId) {
-        alert("Please select a customer");
+        showToast("Please select a customer");
         return;
       }
       const reminderPayload = {
@@ -970,6 +1023,7 @@
       };
 
       try {
+        showReminderLoader(remType);
 
         const isEdit = window.editReminderId != null;
 
@@ -987,6 +1041,7 @@
 
         if (res.ok) {
 
+          hideReminderLoader();
           closeModal('createReminderModal');
           event.target.reset();
 
@@ -994,13 +1049,16 @@
           window.editReminderId = null;
 
           loadReminders();
+          showToast("Reminder created successfully");
 
         } else {
+          hideReminderLoader();
           const errorText = await res.text();
           console.error("Submission failed:", errorText);
         }
 
       } catch (e) {
+        hideReminderLoader();
         console.error("Submission error", e);
       }
     }
@@ -1011,7 +1069,7 @@
       // 1️⃣ Validate attached item
       const selectedItem = document.querySelector('input[name="attachedItem"]:checked');
       if (!selectedItem) {
-        alert("Please select a Plan or Product to attach.");
+        showToast("Please select a Plan or Product to attach.");
         return;
       }
 
@@ -1035,14 +1093,14 @@
         groupId = groupSelect.value;
 
         if (!groupId) {
-          alert("Please select a group");
+          showToast("Please select a group");
           return;
         }
       } else {
         customerId = document.getElementById("gtCustomer")?.value;
 
         if (!customerId) {
-          alert("Please select a customer");
+          showToast("Please select a customer");
           return;
         }
       }
@@ -1136,7 +1194,7 @@
 
       } catch (err) {
         console.error("❌ Error:", err);
-        alert("Something went wrong. Please try again.");
+        showToast("Something went wrong. Please try again.");
       }
     }
 
@@ -1202,24 +1260,79 @@
     // roDELETE
     // ============================================================
 
-    async function deleteReminder(id) {
-      if (!confirm("Are you sure you want to delete this reminder?")) return;
+    async function deleteReminder(reminderId) {
 
       try {
-        const res = await fetch(`${API_BASE}/engagements/reminders/${id}?accountId=${ACCOUNT_ID}`, {
-          method: "DELETE"
-        });
 
-        if (res.ok) {
-          loadReminders();
-        } else {
-          const errorText = await res.text();
-          console.error("Delete failed:", errorText);
+        const check = await fetch(
+          `/api/engagements/reminders/${reminderId}/can-delete`
+        );
+
+        const result = await check.json();
+
+        if (result.hasPayments) {
+
+          const cancelPlan = confirm(
+            "Payments already received.\n\nPress OK to cancel remaining installments."
+          );
+
+          if (!cancelPlan) return;
+
+          const cancelResponse = await fetch(
+            `/api/engagements/reminders/${reminderId}/cancel`,
+            {
+              method: "POST"
+            }
+          );
+
+          if (!cancelResponse.ok) {
+            showToast("Failed to cancel installments", "error");
+            return;
+          }
+
+          showToast(
+            "Remaining installments cancelled",
+            "warning"
+          );
+
+          await loadReminders();
+
+          return;
         }
-      } catch (e) {
-        console.error("Network error during delete:", e);
+
+        if (!confirm("Delete reminder permanently?")) {
+          return;
+        }
+
+        const response = await fetch(
+          `/api/engagements/reminders/${reminderId}`,
+          {
+            method: "DELETE"
+          }
+        );
+
+        if (!response.ok) {
+          showToast("Delete failed", "error");
+          return;
+        }
+
+        showToast(
+          "Reminder deleted successfully"
+        );
+
+        await loadReminders();
+
+      } catch (err) {
+
+        console.error(err);
+
+        showToast(
+          "Something went wrong",
+          "error"
+        );
       }
     }
+
 
     async function deleteGreeting(id) {
       if (!id) return;
@@ -1235,7 +1348,7 @@
           loadGreetings();
         } else {
           const errorData = await res.json();
-          alert("Error: " + (errorData.error || "Server failed to delete"));
+          showToast("Error: " + (errorData.error || "Server failed to delete"));
         }
       } catch (e) {
         console.error("Network Error during delete:", e);
@@ -1256,12 +1369,31 @@
       renderReminders();
     }
     function getFilteredReminders() {
+
       if (!remSearchTerm) return reminders;
 
-      return reminders.filter(r =>
-        (r.title && r.title.toLowerCase().includes(remSearchTerm)) ||
-        (r.message && r.message.toLowerCase().includes(remSearchTerm))
-      );
+      return reminders.filter(r => {
+
+        const customer = allCustomers.find(
+          c => c.id === r.customerId
+        );
+
+        const customerName =
+          customer?.name?.toLowerCase() || "";
+
+        const customerMobile =
+          customer?.mobile?.toString() || "";
+
+        return (
+          (r.title || "").toLowerCase().includes(remSearchTerm) ||
+          (r.message || "").toLowerCase().includes(remSearchTerm) ||
+          customerName.includes(remSearchTerm) ||
+          customerMobile.includes(remSearchTerm) ||
+          (r.reminderDate || "").toLowerCase().includes(remSearchTerm) ||
+          (r.status || "").toLowerCase().includes(remSearchTerm) ||
+          (r.frequency || "").toLowerCase().includes(remSearchTerm)
+        );
+      });
     }
     function filterGreetings() {
       const searchInput = document.getElementById('greetSearch');
@@ -1831,12 +1963,12 @@
       if (!file) return;
 
       if (file.size > 5 * 1024 * 1024) {
-        alert('Image must be less than 5MB. Please choose a smaller file.');
+        showToast('Image must be less than 5MB. Please choose a smaller file.');
         input.value = '';
         return;
       }
       if (!file.type.startsWith('image/')) {
-        alert('Please select a valid image file (PNG, JPG, etc.)');
+        showToast('Please select a valid image file (PNG, JPG, etc.)');
         input.value = '';
         return;
       }

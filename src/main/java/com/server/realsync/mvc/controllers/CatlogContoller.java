@@ -6,6 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import com.server.realsync.entity.Account;
 import com.server.realsync.entity.CatalogPlan;
@@ -15,7 +18,7 @@ import com.server.realsync.entity.CatalogRTemplate;
 import com.server.realsync.services.CatalogProductService;
 import com.server.realsync.services.CatalogRTemplateService;
 import com.server.realsync.services.CatalogTemplateService;
-import com.server.realsync.services.SettingsPlanService;
+import com.server.realsync.services.CatlogPlanService;
 import com.server.realsync.util.SecurityUtil;
 
 //used for report templates
@@ -25,7 +28,7 @@ import com.server.realsync.util.SecurityUtil;
 public class CatlogContoller {
 
     @Autowired
-    private SettingsPlanService settingsPlanService;
+    private CatlogPlanService settingsPlanService;
 
     @Autowired
     private CatalogProductService productService;
@@ -38,9 +41,13 @@ public class CatlogContoller {
 
     // GET /api/catalog/plans
     @GetMapping("/plans")
-    public List<CatalogPlan> getPlans() {
+    public Page<CatalogPlan> getPlans(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size) {
         Account account = SecurityUtil.getCurrentAccountId();
-        return settingsPlanService.getByAccountId(account.getId());
+        return settingsPlanService.getByAccountId(
+                account.getId(),
+                PageRequest.of(page, size,
+                        Sort.by("id").descending()));
     }
 
     // POST /api/catalog/plans
@@ -107,9 +114,11 @@ public class CatlogContoller {
     }
 
     @GetMapping("/products")
-    public List<CatalogProduct> getProducts() {
+    public Page<CatalogProduct> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size) {
         Account account = SecurityUtil.getCurrentAccountId();
-        return productService.getByAccountId(account.getId());
+        return productService.getByAccountId(account.getId(), PageRequest.of(page, size, Sort.by("id").descending()));
     }
 
     @PostMapping("/products")

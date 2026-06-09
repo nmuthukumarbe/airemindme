@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.server.realsync.entity.CatalogProduct;
 
@@ -12,6 +14,7 @@ import com.server.realsync.entity.CatalogProduct;
 public interface CatalogProductRepository extends JpaRepository<CatalogProduct, Integer> {
 
     List<CatalogProduct> findByAccountIdOrderByCreatedAtDesc(Integer accountId);
+    Page<CatalogProduct> findByAccountId(Integer accountId,Pageable pageable);
 
     Optional<CatalogProduct> findByIdAndAccountId(Integer id, Integer accountId);
 

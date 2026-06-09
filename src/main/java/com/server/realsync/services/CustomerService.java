@@ -66,8 +66,9 @@ public class CustomerService {
     }
 
     public long countByGroupId(String groupId) {
-    return customerRepository.countByCustomerGroupId(groupId);
-}
+        return customerRepository.countByCustomerGroupId(groupId);
+    }
+
     public Page<Customer> searchByAccountAndGroup(Integer accountId, Integer groupId, String search,
             Pageable pageable) {
         return customerRepository.searchByAccountAndGroup(accountId, groupId, search, pageable);

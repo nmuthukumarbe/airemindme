@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reminder Detail - Numen</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -80,7 +82,8 @@
     <div class="max-w-4xl mx-auto space-y-6">
 
       <!-- Payment Status Banner (if not paid) -->
-      <div id="paymentPendingBanner" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
+      <div id="paymentPendingBanner"
+        class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
         <svg class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -100,11 +103,24 @@
         </button>
       </div>
 
-      <!-- Numenssage Card -->
+      <!-- Message Card -->
       <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-        <h3 class="text-slate-900 font-bold text-sm mb-3">Numenssage</h3>
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-slate-900 font-bold text-sm">Message</h3>
+
+          <a th:href="@{/engagement.html(id=${reminder.id})}"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-semibold hover:bg-slate-50 transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+            Edit Message
+          </a>
+        </div>
+
         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
           <p class="text-slate-800 text-sm leading-relaxed" th:text="${reminder.message}">
+            Your message content will appear here.
           </p>
         </div>
       </div>
@@ -223,7 +239,7 @@
             </svg>
             Edit Reminder
           </button>
-          <button onclick="alert('Reminder sent now!')"
+          <button onclick="showToast('Reminder sent now!')"
             class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 text-sm font-semibold">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -231,7 +247,7 @@
             </svg>
             Send Now
           </button>
-          <button onclick="reschedule()"
+          <button onclick="goToEdit()"
             class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-semibold">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -515,7 +531,7 @@
         const res = await fetch(`/api/engagements/reminders/${currentReminderId}/tracker`);
 
         if (!res.ok) {
-          alert("Failed to load tracker");
+          showToast("Failed to load tracker");
           return;
         }
 
@@ -535,7 +551,7 @@
 
       } catch (err) {
         console.error(err);
-        alert("Something went wrong");
+        showToast("Something went wrong");
       }
     }
 
@@ -684,7 +700,7 @@
         });
 
         if (!res.ok) {
-          alert("Failed to update");
+          showToast("Failed to update");
           return;
         }
 
@@ -693,7 +709,7 @@
 
       } catch (err) {
         console.error(err);
-        alert("Error updating payment");
+        showToast("Error updating payment");
       }
     }
     async function markLatestPaid() {
@@ -703,18 +719,18 @@
 
         const pending = data
           .filter(e => e.status === "PENDING")
-          .sort((a, b) => new Date(b.occurrenceDate) - new Date(a.occurrenceDate));
+          .sort((a, b) => new Date(a.occurrenceDate) - new Date(b.occurrenceDate));
 
         if (pending.length === 0) {
-          alert("No pending payments");
+          showToast("No pending payments");
           return;
         }
 
-        const latest = pending[0];
+        const oldest = pending[0];
 
-        if (!confirm("Mark latest pending as paid?")) return;
+        if (!confirm("Mark pending payment as paid?")) return;
 
-        await fetch(`/api/engagements/schedule-entry/${latest.id}/mark-paid`, {
+        await fetch(`/api/engagements/schedule-entry/${oldest.id}/mark-paid`, {
           method: "POST"
         });
 
@@ -723,9 +739,72 @@
 
       } catch (err) {
         console.error(err);
-        alert("Error marking paid");
+        showToast("Error marking paid");
       }
     }
+
+    async function deleteReminder() {
+
+      try {
+
+        const check = await fetch(
+          `/api/engagements/reminders/${reminderId}/can-delete`
+        );
+
+        const result = await check.json();
+
+        if (result.hasPayments) {
+
+          const cancelPlan = confirm(
+            "Payments already received. Reminder cannot be deleted.\n\nPress OK to cancel remaining installments."
+          );
+
+          if (!cancelPlan) return;
+
+          await fetch(
+            `/api/engagements/reminders/${reminderId}/cancel`,
+            {
+              method: "POST"
+            }
+          );
+
+          showToast("Remaining installments cancelled");
+
+          loadTracker();
+          loadHistory();
+
+          return;
+        }
+
+        if (!confirm("Delete reminder permanently?")) {
+          return;
+        }
+
+        const response = await fetch(
+          `/api/engagements/reminders/${reminderId}`,
+          {
+            method: "DELETE"
+          }
+        );
+
+        if (!response.ok) {
+          showToast("Delete failed");
+          return;
+        }
+
+        showToast("✅ Reminder deleted successfully");
+
+        window.location.href = "engagement.html";
+
+      } catch (err) {
+
+        console.error(err);
+
+        showToast("Something went wrong");
+      }
+    }
+
+
     function goToEdit() {
       window.location.href = `/engagement.html?id=${reminderId}`;
     }
@@ -742,7 +821,7 @@
     }
     function confirmMarkPaid() {
       const note = document.getElementById('paymentNote').value;
-      alert('Payment marked as received!' + (note ? '\nNote: ' + note : ''));
+      showToast('Payment marked as received!' + (note ? '\nNote: ' + note : ''));
       hideMarkPaidModal();
     }
 
@@ -816,6 +895,34 @@
     }
 
     loadTracker(); 
+
+
+    function showToast(message, type = "success") {
+
+  let bgColor = "#10b981";
+
+  if (type === "error") {
+    bgColor = "#ef4444";
+  }
+
+  if (type === "warning") {
+    bgColor = "#f59e0b";
+  }
+
+  Toastify({
+    text: message,
+    duration: 3000,
+    gravity: "top",
+    position: "right",
+    close: true,
+    style: {
+      background: bgColor,
+      borderRadius: "12px"
+    }
+  }).showToast();
+}
+  
+  
   </script>
 
 </body>

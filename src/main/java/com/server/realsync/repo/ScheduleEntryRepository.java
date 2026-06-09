@@ -27,6 +27,8 @@ public interface ScheduleEntryRepository extends JpaRepository<ScheduleEntry, Lo
 
     List<ScheduleEntry> findBySourceTypeAndSourceId(String sourceType,Long sourceId);
 
+    boolean existsByReminderIdAndStatus(Long reminderId,ScheduleEntryStatus status);
+
     @Modifying
     void deleteByReminderIdAndStatusNot(Long reminderId, ScheduleEntryStatus status);
 

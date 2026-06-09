@@ -125,18 +125,28 @@ public class ReminderService {
         e.setSourceId(r.getId().longValue());
         scheduleEntryRepository.save(e);
     }
-public List<Reminder> getByAccountId(Integer accountId) {
-    return repo.findByAccountIdOrderByCreatedAtDesc(accountId);
-}
 
-public List<Reminder> getByCustomerId(Integer customerId, Integer accountId) {
-    return repo.findByCustomerIdAndAccountId(customerId, accountId);
-}
+    public List<Reminder> getByAccountId(Integer accountId) {
+        return repo.findByAccountIdOrderByCreatedAtDesc(accountId);
+    }
 
-public Optional<Reminder> getById(Integer id, Integer accountId) {
-    return repo.findByIdAndAccountId(id, accountId);
-}
+    public List<Reminder> getByCustomerId(Integer customerId, Integer accountId) {
+        return repo.findByCustomerIdAndAccountId(customerId, accountId);
+    }
+
+    public Optional<Reminder> getById(Integer id, Integer accountId) {
+        return repo.findByIdAndAccountId(id, accountId);
+    }
+
     /** Hard delete */
+
+    @Transactional
+    public void cancelRemainingInstallments(Integer reminderId,Integer accountId) {
+
+        Reminder reminder = getById(reminderId, accountId).orElseThrow(() -> new RuntimeException("Reminder not found"));
+
+        scheduleEntryRepository.deleteByReminderIdAndStatusNot(reminder.getId().longValue(),ScheduleEntryStatus.COMPLETED);
+    }
 
     @Transactional
 
@@ -166,6 +176,13 @@ public Optional<Reminder> getById(Integer id, Integer accountId) {
 
         repo.deleteByIdAndAccountId(id, accountId);
 
+    }
+
+    public boolean hasPaidEntries(Long reminderId) {
+
+        return scheduleEntryRepository.existsByReminderIdAndStatus(
+                reminderId,
+                ScheduleEntryStatus.COMPLETED);
     }
 
     /** Count reminders currently scheduled */

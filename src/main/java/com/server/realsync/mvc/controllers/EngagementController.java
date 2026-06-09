@@ -109,6 +109,19 @@ public class EngagementController {
         return ResponseEntity.ok(Map.of("message", "Reminder deleted successfully"));
     }
 
+    @GetMapping("/reminders/{id}/can-delete")
+    public ResponseEntity<?> canDelete(@PathVariable Integer id) {
+
+        Long reminderId = id.longValue();
+
+        boolean hasPayments = reminderService.hasPaidEntries(reminderId);
+
+        return ResponseEntity.ok(
+                Map.of(
+                        "canDelete", !hasPayments,
+                        "hasPayments", hasPayments));
+    }
+
     @GetMapping("/reminders/{id}/tracker")
     public List<ScheduleEntry> getTracker(@PathVariable Integer id) {
         return scheduleEntryRepository.findByReminderIdOrderByOccurrenceDateAsc(id.longValue());
@@ -134,6 +147,19 @@ public class EngagementController {
                 .findTop2ByReminderIdOrderByOccurrenceDateDesc(id);
     }
 
+    @PostMapping("/reminders/{id}/cancel")
+    public ResponseEntity<?> cancelReminder(@PathVariable Integer id) {
+
+        Account account = SecurityUtil.getCurrentAccountId();
+
+        reminderService.cancelRemainingInstallments(
+                id,
+                account.getId());
+
+        return ResponseEntity.ok(
+                Map.of("message", "Remaining installments removed"));
+    }
+
     // 2. GREETING APIS (Added for completeness)
 
     @GetMapping("/greetings/account/{accountId}")
@@ -142,11 +168,12 @@ public class EngagementController {
     }
 
     @PostMapping("/greetings")
-    public ResponseEntity<?> createGreeting(@RequestBody Greeting greeting) {
+    public ResponseEntity<?> createGreeting(
+            @RequestBody Greeting greeting) {
 
-        if (greeting.getAccountId() == null) {
-            return ResponseEntity.badRequest().body(Map.of("error", "AccountId required"));
-        }
+        Account account = SecurityUtil.getCurrentAccountId();
+
+        greeting.setAccountId(account.getId());
 
         if (greeting.getStatus() == null) {
             greeting.setStatus("Scheduled");
@@ -157,6 +184,48 @@ public class EngagementController {
         return ResponseEntity.ok(Map.of(
                 "id", saved.getId(),
                 "status", "created"));
+    }
+
+    @PutMapping("/greetings/{id}")
+    public ResponseEntity<?> updateGreeting(
+            @PathVariable Integer id,
+            @RequestBody Greeting updatedGreeting) {
+
+        try {
+
+            Account account = SecurityUtil.getCurrentAccountId();
+
+            Greeting existing = greetingService
+                    .getById(id, account.getId())
+                    .orElseThrow(() -> new RuntimeException("Greeting not found"));
+
+            existing.setGreetingType(updatedGreeting.getGreetingType());
+
+            existing.setCustomerId(updatedGreeting.getCustomerId());
+
+            existing.setCustomerGroupId(updatedGreeting.getCustomerGroupId());
+
+            existing.setMessage(updatedGreeting.getMessage());
+
+            existing.setGreetingDate(updatedGreeting.getGreetingDate());
+
+            existing.setGreetingTime(updatedGreeting.getGreetingTime());
+
+            existing.setChannels(updatedGreeting.getChannels());
+
+            existing.setStatus(updatedGreeting.getStatus());
+
+            Greeting saved = greetingService.save(existing);
+
+            return ResponseEntity.ok(saved);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", e.getMessage()));
+        }
     }
 
     @PutMapping("/greetings/{id}/image")
@@ -189,6 +258,35 @@ public class EngagementController {
         }
     }
 
+    @GetMapping("/greetings/{id}")
+    public ResponseEntity<?> getGreetingById(
+            @PathVariable Integer id) {
+
+        try {
+
+            System.out.println("GREETING API HIT");
+            System.out.println("ID = " + id);
+
+            Account account = SecurityUtil.getCurrentAccountId();
+
+            System.out.println("ACCOUNT = " + account.getId());
+
+            Greeting greeting = greetingService
+                    .getById(id, account.getId())
+                    .orElseThrow(() -> new RuntimeException("Greeting not found"));
+
+            System.out.println("GREETING FOUND = " + greeting.getId());
+
+            return ResponseEntity.ok(greeting);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", e.getMessage()));
+        }
+    }
+
     @DeleteMapping("/greetings/{id}")
     public ResponseEntity<?> deleteGreeting(@PathVariable Integer id, @RequestParam Integer accountId) {
         try {
@@ -212,13 +310,14 @@ public class EngagementController {
 
             map.put("id", t.getId());
 
-            map.put("customerId",t.getCustomerId());
+            map.put("customerId", t.getCustomerId());
 
-            Customer customer = customerService  .getById(t.getCustomerId().intValue()).orElse(null);
+            Customer customer = customerService.getById(t.getCustomerId().intValue()).orElse(null);
 
-            map.put("customerName",customer != null? customer.getName() : "Unknown Customer");
+            map.put("customerName", customer != null ? customer.getName() : "Unknown Customer");
 
-            String channel = Boolean.TRUE.equals(t.getSentWhatsapp())? "wa": Boolean.TRUE.equals(t.getSentEmail())
+            String channel = Boolean.TRUE.equals(t.getSentWhatsapp()) ? "wa"
+                    : Boolean.TRUE.equals(t.getSentEmail())
                             ? "em"
                             : "sms";
 

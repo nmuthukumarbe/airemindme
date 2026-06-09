@@ -2,6 +2,8 @@ package com.server.realsync.services;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class CatalogProductService {
     /** All products for an account, newest first */
     public List<CatalogProduct> getByAccountId(Integer accountId) {
         return repo.findByAccountIdOrderByCreatedAtDesc(accountId);
+    }
+    public Page<CatalogProduct> getByAccountId(Integer accountId, Pageable pageable) {
+        return repo.findByAccountId(accountId, pageable);
     }
 
     /** Single product scoped to account */
