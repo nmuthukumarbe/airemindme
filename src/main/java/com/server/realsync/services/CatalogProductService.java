@@ -21,8 +21,13 @@ public class CatalogProductService {
     public List<CatalogProduct> getByAccountId(Integer accountId) {
         return repo.findByAccountIdOrderByCreatedAtDesc(accountId);
     }
+
     public Page<CatalogProduct> getByAccountId(Integer accountId, Pageable pageable) {
         return repo.findByAccountId(accountId, pageable);
+    }
+
+    public List<CatalogProduct> search(Integer accountId, String query) {
+        return repo.search(accountId, query);
     }
 
     /** Single product scoped to account */

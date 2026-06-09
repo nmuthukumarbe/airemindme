@@ -409,7 +409,7 @@ public class HomeController {
 				CustomerGroup group = groupOpt.get();
 
 				// long memberCount = customerService.countByGroupId(
-				// 		String.valueOf(greeting.getCustomerGroupId()));
+				// String.valueOf(greeting.getCustomerGroupId()));
 
 				model.addAttribute(
 						"customerGroupName",
@@ -461,6 +461,8 @@ public class HomeController {
 		model.addAttribute("account", account);
 		return "remindmeui/engagement";
 	}
+
+	
 
 	@GetMapping("/user-management.html")
 	public String users(Model model) {

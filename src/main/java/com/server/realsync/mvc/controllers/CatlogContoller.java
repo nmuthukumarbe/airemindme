@@ -28,7 +28,7 @@ import com.server.realsync.util.SecurityUtil;
 public class CatlogContoller {
 
     @Autowired
-    private CatlogPlanService settingsPlanService;
+    private CatlogPlanService planService;
 
     @Autowired
     private CatalogProductService productService;
@@ -44,7 +44,7 @@ public class CatlogContoller {
     public Page<CatalogPlan> getPlans(@RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "6") int size) {
         Account account = SecurityUtil.getCurrentAccountId();
-        return settingsPlanService.getByAccountId(
+        return planService.getByAccountId(
                 account.getId(),
                 PageRequest.of(page, size,
                         Sort.by("id").descending()));
@@ -55,19 +55,19 @@ public class CatlogContoller {
     public CatalogPlan createPlan(@RequestBody CatalogPlan plan) {
         Account account = SecurityUtil.getCurrentAccountId();
         plan.setAccountId(account.getId());
-        return settingsPlanService.save(plan);
+        return planService.save(plan);
     }
 
     // PUT /api/catalog/plans/{id}
     @PutMapping("/plans/{id}")
     public ResponseEntity<CatalogPlan> updatePlan(@PathVariable Integer id, @RequestBody CatalogPlan plan) {
         Account account = SecurityUtil.getCurrentAccountId();
-        return settingsPlanService.getById(id)
+        return planService.getById(id)
                 .filter(existing -> existing.getAccountId().equals(account.getId()))
                 .map(existing -> {
                     plan.setId(id);
                     plan.setAccountId(account.getId());
-                    return ResponseEntity.ok(settingsPlanService.save(plan));
+                    return ResponseEntity.ok(planService.save(plan));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -76,10 +76,10 @@ public class CatlogContoller {
     @DeleteMapping("/plans/{id}")
     public ResponseEntity<Void> deletePlan(@PathVariable Integer id) {
         Account account = SecurityUtil.getCurrentAccountId();
-        return settingsPlanService.getById(id)
+        return planService.getById(id)
                 .filter(existing -> existing.getAccountId().equals(account.getId()))
                 .map(existing -> {
-                    settingsPlanService.delete(id);
+                    planService.delete(id);
                     return ResponseEntity.ok().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -88,11 +88,11 @@ public class CatlogContoller {
     @PatchMapping("/plans/{id}/toggle-status")
     public ResponseEntity<CatalogPlan> togglePlanStatus(@PathVariable Integer id) {
         Account account = SecurityUtil.getCurrentAccountId();
-        return settingsPlanService.getById(id)
+        return planService.getById(id)
                 .filter(p -> p.getAccountId().equals(account.getId()))
                 .map(p -> {
                     p.setStatus("active".equals(p.getStatus()) ? "inactive" : "active");
-                    return ResponseEntity.ok(settingsPlanService.save(p));
+                    return ResponseEntity.ok(planService.save(p));
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -104,13 +104,31 @@ public class CatlogContoller {
 
         Account account = SecurityUtil.getCurrentAccountId();
 
-        return settingsPlanService.getById(id)
+        return planService.getById(id)
                 .filter(p -> p.getAccountId().equals(account.getId()))
                 .map(p -> {
                     p.setImageUrl(body.get("imageUrl"));
-                    return ResponseEntity.ok(settingsPlanService.save(p));
+                    return ResponseEntity.ok(planService.save(p));
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/products/search")
+    public List<CatalogProduct> searchProducts(
+            @RequestParam String query) {
+
+        Account account = SecurityUtil.getCurrentAccountId();
+
+        return productService.search(account.getId(), query);
+    }
+
+    @GetMapping("/plans/search")
+    public List<CatalogPlan> searchPlans(
+            @RequestParam String query) {
+
+        Account account = SecurityUtil.getCurrentAccountId();
+
+        return planService.search(account.getId(), query);
     }
 
     @GetMapping("/products")
@@ -311,7 +329,7 @@ public class CatlogContoller {
         Account account = SecurityUtil.getCurrentAccountId();
         Integer accId = account.getId();
         return ResponseEntity.ok(Map.of(
-                "activePlans", settingsPlanService.countActiveByAccountId(accId),
+                "activePlans", planService.countActiveByAccountId(accId),
                 "activeProducts", productService.countActiveByAccountId(accId),
                 "activeTemplates", templateService.countActiveByAccountId(accId)));
     }

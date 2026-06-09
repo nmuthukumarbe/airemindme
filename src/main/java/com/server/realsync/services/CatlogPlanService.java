@@ -25,6 +25,10 @@ public class CatlogPlanService {
         return catalogPlanRepository.findByAccountId(accountId, pageable);
     }
 
+    public List<CatalogPlan> search(Integer accountId, String query) {
+        return catalogPlanRepository.search(accountId, query);
+    }
+
     public long countByAccountId(Integer accountId) {
         return catalogPlanRepository.countByAccountId(accountId);
     }

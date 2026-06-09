@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice Detail - Reminder Me</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #f8f9fb; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
+    .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1f2937; color: white; padding: 12px 24px; border-radius: 12px; font-size: 14px; z-index: 9999; opacity: 0; transition: opacity .3s; pointer-events: none; }
+    .toast.show { opacity: 1; }
+
+    /* ===== A4 PRINT STYLES ===== */
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .no-print { display: none !important; }
+      body { background: white !important; margin: 0; padding: 0; }
+      .print-area { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
+      .invoice-print-card {
+        width: 210mm;
+        min-height: 297mm;
+        max-height: 297mm;
+        margin: 0 auto;
+        background: white !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        border: none !important;
+        font-size: 12px;
+        overflow: hidden;
+      }
+      .invoice-print-card .inv-header { padding: 24px 28px 20px; }
+      .invoice-print-card .inv-body { padding: 16px 28px; }
+      .invoice-print-card .inv-footer { padding: 12px 28px; }
+      .invoice-print-card table { font-size: 11px; }
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+    }
+    .invoice-print-card { background: white; }
+  </style>
+</head>
+<body style="overflow-x:hidden" class="bg-gray-50">
+
+<!-- Sidebar Desktop -->
+<div class="hidden md:flex fixed left-0 top-0 h-screen w-56 bg-white border-r border-gray-100 flex-col z-30 no-print">
+  <div class="px-4 pt-5 pb-3"><a href="home.html" class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><div><p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p><p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p></div></a></div>
+  <nav class="flex-1 px-3 py-2 overflow-y-auto">
+    <a href="home.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-sm font-medium">Home</span></a>
+    <a href="customers.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-sm font-medium">Customers</span></a>
+    <a href="sales.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-50 text-indigo-700 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg><span class="text-sm font-semibold">Sales</span></a>
+    <a href="inventory.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg><span class="text-sm font-medium">Inventory</span></a>
+    <a href="engagement.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-sm font-medium">Engage</span></a>
+    <a href="promotions.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg><span class="text-sm font-medium">Promotions</span></a>
+    <a href="appointments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span class="text-sm font-medium">Appointments</span></a>
+    <a href="reports.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg><span class="text-sm font-medium">Reports</span></a>
+    <a href="user-management.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-medium">Users</span></a>
+    <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-medium">Settings</span></a>
+  </nav>
+  <div class="px-4 py-3 border-t border-gray-100"><div class="flex items-center gap-2.5"><div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center"><span class="text-indigo-700 text-xs font-bold">AS</span></div><div><p class="text-xs font-semibold text-gray-800">Arjun Sharma</p><p class="text-[10px] text-gray-400">Admin</p></div></div></div>
+</div>
+
+<!-- Mobile Header -->
+<div class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-100 z-40 px-4 py-3 flex items-center justify-between no-print">
+  <button onclick="openMobileNav()" class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  <span class="text-sm font-bold text-gray-900">Invoice Detail</span>
+  <a href="sales.html" class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></a>
+</div>
+
+<!-- Mobile Nav Drawer -->
+<div id="mobileNavBg" class="md:hidden fixed inset-0 bg-black/30 z-50 hidden no-print" onclick="closeMobileNav()"></div>
+<div id="mobileNavDrawer" class="md:hidden fixed top-0 left-0 h-screen w-64 bg-white z-50 flex flex-col shadow-2xl no-print" style="transform:translateX(-100%);transition:transform .3s">
+  <div class="px-4 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between">
+    <span class="text-sm font-bold text-gray-900">Reminder Me</span>
+    <button onclick="closeMobileNav()" class="w-8 h-8 flex items-center justify-center text-gray-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+  </div>
+  <nav class="flex-1 px-3 py-3 overflow-y-auto">
+    <a href="home.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-sm font-semibold">Home</span></a>
+    <a href="customers.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-sm font-semibold">Customers</span></a>
+    <a href="sales.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-50 text-indigo-700 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg><span class="text-sm font-semibold">Sales</span></a>
+    <a href="inventory.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg><span class="text-sm font-semibold">Inventory</span></a>
+    <a href="engagement.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-sm font-semibold">Engage</span></a>
+    <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-semibold">Settings</span></a>
+  </nav>
+</div>
+
+<!-- Main Content -->
+<div class="md:ml-56 min-h-screen pb-24 md:pb-8 pt-14 md:pt-0">
+
+  <!-- Sticky Page Header -->
+  <div class="bg-white border-b border-gray-100 px-4 md:px-6 py-3 flex items-center justify-between sticky top-14 md:top-0 z-20 no-print">
+    <div class="flex items-center gap-3">
+      <a href="sales.html" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </a>
+      <div>
+        <p class="text-xs text-gray-400 hidden md:block"><a href="home.html" class="hover:text-indigo-600">Home</a> / <a href="sales.html" class="hover:text-indigo-600">Sales</a> / <span class="text-gray-700">INV-2024-004</span></p>
+        <h1 class="text-base font-bold text-gray-900">Invoice INV-2024-004</h1>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="px-3 py-1.5 rounded-full text-xs font-bold bg-red-100 text-red-700">UNPAID</span>
+      <button onclick="printInvoice()" class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>Print / PDF
+      </button>
+      <a href="invoice-create.html?edit=1&id=INV-2024-004&customer=Kavya+Fashions&status=Unpaid" class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>Edit
+      </a>
+      <button onclick="document.getElementById('paymentModal').classList.remove('hidden')" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>Record Payment
+      </button>
+    </div>
+  </div>
+
+  <div class="px-4 md:px-6 py-5 max-w-5xl mx-auto">
+    <div class="flex flex-col lg:flex-row gap-5">
+
+      <!-- Invoice Card (Printable) -->
+      <div class="flex-1">
+        <div id="invoicePrintArea" class="invoice-print-card rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+
+          <!-- Header -->
+          <div class="inv-header bg-gradient-to-br from-indigo-600 to-indigo-700 px-6 py-6">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+              <div class="text-white">
+                <div class="flex items-center gap-3 mb-2">
+                  <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center"><span class="text-white text-lg font-bold">A</span></div>
+                  <div>
+                    <p class="text-base font-bold">Acme Financial Services</p>
+                    <p class="text-indigo-200 text-xs">GST: 29AABCT1332L1ZV</p>
+                  </div>
+                </div>
+                <p class="text-indigo-100 text-xs">123, MG Road, Bangalore - 560001, Karnataka</p>
+                <p class="text-indigo-100 text-xs">+91 98765 43210 · billing@acmefinancial.in</p>
+              </div>
+              <div class="text-right">
+                <p class="text-white/60 text-[10px] uppercase tracking-widest font-semibold">Tax Invoice</p>
+                <p class="text-white text-2xl font-extrabold">INVOICE</p>
+                <div class="mt-2 bg-white/15 rounded-xl px-4 py-2.5 text-left min-w-[180px]">
+                  <div class="flex justify-between mb-1.5"><span class="text-indigo-200 text-[11px]">Invoice No.</span><span class="text-white text-xs font-bold">INV-2024-004</span></div>
+                  <div class="flex justify-between mb-1.5"><span class="text-indigo-200 text-[11px]">Date</span><span class="text-white text-xs">15 Jun 2024</span></div>
+                  <div class="flex justify-between mb-1.5"><span class="text-indigo-200 text-[11px]">Due Date</span><span class="text-white text-xs font-semibold text-red-300">15 Jul 2024</span></div>
+                  <div class="flex justify-between"><span class="text-indigo-200 text-[11px]">Status</span><span class="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">UNPAID</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bill To / Ship To -->
+          <div class="inv-body px-6 py-4 border-b border-gray-100">
+            <div class="grid grid-cols-2 gap-6">
+              <div>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Bill To</p>
+                <p class="text-sm font-bold text-gray-900">Kavya Fashions</p>
+                <p class="text-xs text-gray-600 mt-0.5">8, Fashion Street, Colaba</p>
+                <p class="text-xs text-gray-600">Mumbai - 400001, Maharashtra</p>
+                <p class="text-xs text-gray-500 mt-0.5">kavya@fashions.com · +91 98001 12345</p>
+                <p class="text-xs text-gray-500">GSTIN: 27AABCK1234M1ZX</p>
+              </div>
+              <div>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Ship To</p>
+                <p class="text-xs text-gray-600">Same as billing address</p>
+                <div class="mt-2">
+                  <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Payment Terms</p>
+                  <p class="text-xs text-gray-700 font-medium">Net 30 Days</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Line Items Table -->
+          <div class="inv-body px-6 py-4 border-b border-gray-100">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="border-b-2 border-gray-200">
+                  <th class="text-left text-[10px] font-bold text-gray-400 uppercase pb-2 w-8">#</th>
+                  <th class="text-left text-[10px] font-bold text-gray-400 uppercase pb-2">Item / Description</th>
+                  <th class="text-center text-[10px] font-bold text-gray-400 uppercase pb-2 w-12">Qty</th>
+                  <th class="text-right text-[10px] font-bold text-gray-400 uppercase pb-2 w-24">Rate</th>
+                  <th class="text-center text-[10px] font-bold text-gray-400 uppercase pb-2 w-12">GST</th>
+                  <th class="text-right text-[10px] font-bold text-gray-400 uppercase pb-2 w-24">Tax</th>
+                  <th class="text-right text-[10px] font-bold text-gray-400 uppercase pb-2 w-24">Amount</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50">
+                <tr class="py-2">
+                  <td class="py-2.5 text-gray-400 text-xs">1</td>
+                  <td class="py-2.5">
+                    <p class="font-semibold text-gray-800 text-sm">Office Chair Pro X200</p>
+                    <p class="text-xs text-gray-400">SKU: CHR-001 · Furniture · Nos</p>
+                  </td>
+                  <td class="py-2.5 text-center text-gray-700 text-sm">4</td>
+                  <td class="py-2.5 text-right text-gray-700 text-sm">₹8,500</td>
+                  <td class="py-2.5 text-center text-gray-500 text-xs">18%</td>
+                  <td class="py-2.5 text-right text-gray-500 text-sm">₹6,120</td>
+                  <td class="py-2.5 text-right font-semibold text-gray-800 text-sm">₹40,120</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 text-gray-400 text-xs">2</td>
+                  <td class="py-2.5">
+                    <p class="font-semibold text-gray-800 text-sm">Web Design Consulting</p>
+                    <p class="text-xs text-gray-400">SAC: SVC-001 · Services · 2 Hours</p>
+                  </td>
+                  <td class="py-2.5 text-center text-gray-700 text-sm">2</td>
+                  <td class="py-2.5 text-right text-gray-700 text-sm">₹5,000</td>
+                  <td class="py-2.5 text-center text-gray-500 text-xs">18%</td>
+                  <td class="py-2.5 text-right text-gray-500 text-sm">₹1,800</td>
+                  <td class="py-2.5 text-right font-semibold text-gray-800 text-sm">₹11,800</td>
+                </tr>
+                <tr>
+                  <td class="py-2.5 text-gray-400 text-xs">3</td>
+                  <td class="py-2.5">
+                    <p class="font-semibold text-gray-800 text-sm">HD Monitor 24"</p>
+                    <p class="text-xs text-gray-400">SKU: MON-006 · Electronics · Nos</p>
+                  </td>
+                  <td class="py-2.5 text-center text-gray-700 text-sm">2</td>
+                  <td class="py-2.5 text-right text-gray-700 text-sm">₹14,500</td>
+                  <td class="py-2.5 text-center text-gray-500 text-xs">18%</td>
+                  <td class="py-2.5 text-right text-gray-500 text-sm">₹5,220</td>
+                  <td class="py-2.5 text-right font-semibold text-gray-800 text-sm">₹34,220</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Totals -->
+          <div class="inv-body px-6 py-4 border-b border-gray-100">
+            <div class="flex flex-col md:flex-row gap-6 justify-between">
+              <!-- Bank & Notes -->
+              <!-- <div class="flex-1 space-y-3">
+                <div>
+                  <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Bank Details</p>
+                  <div class="text-xs text-gray-600 space-y-0.5 bg-gray-50 rounded-xl p-3">
+                    <p><span class="text-gray-400">Bank:</span> HDFC Bank</p>
+                    <p><span class="text-gray-400">A/C No:</span> 50200012345678</p>
+                    <p><span class="text-gray-400">IFSC:</span> HDFC0001234</p>
+                    <p><span class="text-gray-400">Branch:</span> MG Road, Bangalore</p>
+                  </div>
+                </div>
+                <div>
+                  <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">Notes</p>
+                  <p class="text-xs text-gray-600">Thank you for your business! Payment due within 30 days of invoice date.</p>
+                </div>
+              </div> -->
+
+              <!-- Summary -->
+              <div class="md:w-60 shrink-0">
+                <div class="space-y-1.5 bg-gray-50 rounded-2xl p-4">
+                  <div class="flex justify-between text-sm"><span class="text-gray-500">Subtotal</span><span class="font-medium text-gray-700">₹60,000</span></div>
+                  <div class="flex justify-between text-sm"><span class="text-gray-500">Discount (5%)</span><span class="text-red-500">-₹3,000</span></div>
+                  <div class="flex justify-between text-sm"><span class="text-gray-500">CGST</span><span class="text-gray-700">₹6,570</span></div>
+                  <div class="flex justify-between text-sm"><span class="text-gray-500">SGST</span><span class="text-gray-700">₹6,570</span></div>
+                  <div class="flex justify-between text-sm"><span class="text-gray-500">Shipping</span><span class="text-gray-700">₹500</span></div>
+                  <div class="pt-2 border-t border-gray-200 flex justify-between"><span class="font-bold text-gray-900">Total</span><span class="font-extrabold text-indigo-600 text-lg">₹70,640</span></div>
+                  <div class="pt-1 pb-0"><p class="text-[10px] text-gray-500 italic leading-relaxed">Amount in words: Seventy Thousand Six Hundred Forty Rupees Only</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Signature -->
+          <div class="inv-footer px-6 py-4 flex justify-between items-end">
+            <div>
+              <p class="text-[10px] text-gray-400 mb-1 uppercase tracking-wider">Terms & Conditions</p>
+              <p class="text-[11px] text-gray-500 max-w-xs">Goods once sold will not be taken back or exchanged. All disputes are subject to Bangalore jurisdiction.</p>
+            </div>
+            <div class="text-right">
+              <p class="text-[10px] text-gray-400">For Acme Financial Services</p>
+              <div class="w-28 h-8 border-b border-gray-300 mt-8 ml-auto"></div>
+              <p class="text-[10px] text-gray-500 mt-1">Authorized Signatory</p>
+            </div>
+          </div>
+
+          <!-- Print Footer -->
+          <div class="bg-indigo-600 px-6 py-2.5 text-center">
+            <p class="text-indigo-200 text-[10px]">This is a computer generated invoice · Reminder Me · Acme Financial Services · billing@acmefinancial.in</p>
+          </div>
+
+        </div><!-- /invoice-print-card -->
+
+        <!-- Share / Action Row (non-print) -->
+        <div class="flex gap-2 mt-3 no-print">
+          <button onclick="showToast('Invoice shared on WhatsApp')" class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-green-500 text-white text-sm font-semibold hover:bg-green-600 transition">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp
+          </button>
+          <button onclick="showToast('Invoice sent via Email')" class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>Email
+          </button>
+          <button onclick="printInvoice()" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>Print
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Sidebar: Activity -->
+      <div class="lg:w-72 shrink-0 space-y-4 no-print">
+
+        <!-- Activity Timeline -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <h3 class="text-sm font-bold text-gray-800 mb-4">Activity Timeline</h3>
+          <div class="space-y-4">
+            <div class="flex gap-3">
+              <div class="flex flex-col items-center"><div class="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center"><svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div class="w-px flex-1 bg-gray-100 my-1"></div></div>
+              <div class="pb-3"><p class="text-xs font-semibold text-gray-700">Invoice Created</p><p class="text-[11px] text-gray-400">15 Jun 2024 · 10:32 AM</p></div>
+            </div>
+            <div class="flex gap-3">
+              <div class="flex flex-col items-center"><div class="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center"><svg class="w-3.5 h-3.5 text-green-600" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div><div class="w-px flex-1 bg-gray-100 my-1"></div></div>
+              <div class="pb-3"><p class="text-xs font-semibold text-gray-700">WhatsApp Sent</p><p class="text-[11px] text-gray-400">15 Jun 2024 · 10:35 AM</p></div>
+            </div>
+            <div class="flex gap-3">
+              <div class="flex flex-col items-center"><div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center"><svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></div><div class="w-px flex-1 bg-gray-100 my-1"></div></div>
+              <div class="pb-3"><p class="text-xs font-semibold text-gray-700">Invoice Viewed</p><p class="text-[11px] text-gray-400">16 Jun 2024 · 02:10 PM</p></div>
+            </div>
+            <div class="flex gap-3">
+              <div class="flex flex-col items-center"><div class="w-7 h-7 rounded-full bg-yellow-100 flex items-center justify-center"><svg class="w-3.5 h-3.5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div></div>
+              <div><p class="text-xs font-semibold text-gray-700">Reminder Sent</p><p class="text-[11px] text-gray-400">30 Jun 2024 · 09:00 AM</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Summary -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <h3 class="text-sm font-bold text-gray-800 mb-3">Payment Summary</h3>
+          <div class="space-y-2">
+            <div class="flex justify-between text-sm"><span class="text-gray-500">Invoice Amount</span><span class="font-semibold text-gray-800">₹70,640</span></div>
+            <div class="flex justify-between text-sm"><span class="text-gray-500">Amount Paid</span><span class="font-semibold text-green-600">₹0</span></div>
+            <div class="pt-2 border-t border-gray-100 flex justify-between text-sm"><span class="font-bold text-gray-800">Balance Due</span><span class="font-bold text-red-600">₹70,640</span></div>
+          </div>
+          <button onclick="document.getElementById('paymentModal').classList.remove('hidden')" class="w-full mt-4 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition">Record Payment</button>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <h3 class="text-sm font-bold text-gray-800 mb-3">Quick Actions</h3>
+          <div class="space-y-2">
+            <a href="invoice-create.html?edit=1&id=INV-2024-004&customer=Kavya+Fashions" class="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-600 hover:bg-gray-50 text-sm"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>Edit Invoice</a>
+            <button onclick="showToast('Invoice duplicated')" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-gray-600 hover:bg-gray-50 text-sm"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>Duplicate Invoice</button>
+            <button onclick="showToast('Credit note created')" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-gray-600 hover:bg-gray-50 text-sm"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>Create Credit Note</button>
+            <button onclick="showToast('Invoice marked as cancelled')" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-red-500 hover:bg-red-50 text-sm"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>Cancel Invoice</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Record Payment Modal -->
+<div id="paymentModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4">
+  <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl">
+    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+      <h3 class="text-base font-bold text-gray-900">Record Payment</h3>
+      <button onclick="document.getElementById('paymentModal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <div class="px-6 py-4 space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1.5">Payment Mode</label>
+        <div class="grid grid-cols-5 gap-2">
+          <button onclick="setPayMode(this,'upi')" class="pay-mode-btn bg-indigo-50 text-indigo-700 rounded-xl py-2 text-xs font-semibold border-2 border-indigo-300">UPI</button>
+          <button onclick="setPayMode(this,'bank')" class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">Bank</button>
+          <button onclick="setPayMode(this,'cash')" class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">Cash</button>
+          <button onclick="setPayMode(this,'cheque')" class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">Cheque</button>
+          <button onclick="setPayMode(this,'card')" class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">Card</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1.5">Amount (₹)</label>
+          <input type="number" value="70640" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1.5">Payment Date</label>
+          <input type="date" id="payDate" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1.5">Reference / Transaction ID</label>
+        <input type="text" placeholder="UPI Ref, Cheque No, etc." class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-500 mb-1.5">Notes</label>
+        <textarea rows="2" placeholder="Optional notes..." class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
+      </div>
+    </div>
+    <div class="px-6 py-4 border-t border-gray-100 flex gap-3">
+      <button onclick="document.getElementById('paymentModal').classList.add('hidden')" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold">Cancel</button>
+      <button onclick="recordPayment()" class="flex-1 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700">Record Payment</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Bottom Nav -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-1 pb-2 pt-1 flex items-end justify-around z-30 no-print">
+  <a href="home.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-[10px] font-medium">Home</span></a>
+  <a href="sales.html" class="flex flex-col items-center gap-0.5 text-indigo-600 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg><span class="text-[10px] font-medium text-indigo-600">Sales</span></a>
+  <div class="relative flex flex-col items-center" style="margin-bottom:8px">
+    <a href="engagement.html" class="w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-300 -mt-5"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></a>
+    <span class="text-[10px] font-medium text-gray-400 mt-0.5">Engage</span>
+  </div>
+  <a href="inventory.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg><span class="text-[10px] font-medium">Inventory</span></a>
+  <a href="settings.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-[10px] font-medium">Settings</span></a>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script>
+function printInvoice() { window.print(); }
+
+function setPayMode(btn, mode) {
+  document.querySelectorAll('.pay-mode-btn').forEach(b => { b.className = 'pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200'; });
+  btn.className = 'pay-mode-btn bg-indigo-50 text-indigo-700 rounded-xl py-2 text-xs font-semibold border-2 border-indigo-300';
+}
+
+function recordPayment() {
+  document.getElementById('paymentModal').classList.add('hidden');
+  showToast('Payment of ₹70,640 recorded successfully');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function openMobileNav() { document.getElementById('mobileNavDrawer').style.transform='translateX(0)'; document.getElementById('mobileNavBg').classList.remove('hidden'); }
+function closeMobileNav() { document.getElementById('mobileNavDrawer').style.transform='translateX(-100%)'; document.getElementById('mobileNavBg').classList.add('hidden'); }
+
+document.getElementById('payDate').value = new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>

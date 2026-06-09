@@ -8,31 +8,172 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: "#f0fdf4",
-              100: "#dcfce7",
-              200: "#bbf7d0",
-              300: "#86efac",
-              400: "#4ade80",
-              500: "#48B26F",
-              600: "#3a9360",
-              700: "#15803d",
-              800: "#166534",
-              900: "#14532d",
-            },
-          },
-          fontFamily: {
-            sans: ["Inter", "sans-serif"],
-          },
-        },
-      },
-    };
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f9fb;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 4px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .subtab {
+      cursor: pointer;
+      white-space: nowrap;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+      border-bottom: 2px solid transparent;
+      transition: all .15s;
+      flex-shrink: 0;
+    }
+
+    .subtab.active {
+      color: #4f46e5;
+      border-bottom-color: #4f46e5;
+      font-weight: 700;
+    }
+
+    .subtab:not(.active):hover {
+      color: #374151;
+      background: #f9fafb;
+    }
+
+    .filter-pill {
+      cursor: pointer;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid #e5e7eb;
+      color: #6b7280;
+      white-space: nowrap;
+      transition: all .15s;
+    }
+
+    .filter-pill.active {
+      background: #4f46e5;
+      color: #fff;
+      border-color: #4f46e5;
+    }
+
+    .date-range-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: white;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .date-range-btn:hover {
+      border-color: #6366f1;
+      color: #4f46e5;
+    }
+
+    #dateRangeDropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 4px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, .12);
+      z-index: 50;
+      min-width: 320px;
+      padding: 16px;
+    }
+
+    #dateRangeDropdown.open {
+      display: block;
+    }
+
+    .preset-btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid #e5e7eb;
+      color: #6b7280;
+      cursor: pointer;
+    }
+
+    .preset-btn:hover,
+    .preset-btn.active {
+      background: #eef2ff;
+      color: #4f46e5;
+      border-color: #c7d2fe;
+    }
+
+    .pg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .pg-btn:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+
+    .pg-btn.active {
+      background: #4f46e5;
+      border-color: #4f46e5;
+      color: white;
+      font-weight: 700;
+    }
+
+    .pg-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .mini-chart-bar {
+      display: inline-block;
+      background: #c7d2fe;
+      border-radius: 3px 3px 0 0;
+      width: 18px;
+      margin: 0 1px;
+      vertical-align: bottom;
+      transition: background .15s;
+    }
+
+    .mini-chart-bar:hover {
+      background: #6366f1;
+    }
+  </style>
 </head>
 
 <body class="font-sans antialiased bg-gray-50">
@@ -2849,7 +2990,7 @@ Regular service ensures:</textarea>
 
         }
       }
-      
+
       // Show target section
       document
         .getElementById(sectionName + "-section")

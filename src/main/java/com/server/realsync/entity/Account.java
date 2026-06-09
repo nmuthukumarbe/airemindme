@@ -50,6 +50,15 @@ public class Account {
 	@Column(name = "business_name", length = 50)
 	private String businessName;
 
+	@Column(name = "gst_number", length = 20)
+	private String gstNumber;
+
+	@Column(name = "business_email", length = 100)
+	private String businessEmail;
+
+	@Column(name = "business_phone", length = 20)
+	private String businessPhone;
+
 	// Getters and Setters
 	public Integer getId() {
 		return id;
@@ -149,5 +158,28 @@ public class Account {
 	public void setBusinessName(String businessName) {
 		this.businessName = businessName;
 	}
+	public String getGstNumber() {
+    return gstNumber;
+}
+
+public void setGstNumber(String gstNumber) {
+    this.gstNumber = gstNumber;
+}
+
+public String getBusinessEmail() {
+    return businessEmail;
+}
+
+public void setBusinessEmail(String businessEmail) {
+    this.businessEmail = businessEmail;
+}
+
+public String getBusinessPhone() {
+    return businessPhone;
+}
+
+public void setBusinessPhone(String businessPhone) {
+    this.businessPhone = businessPhone;
+}
 
 }

@@ -6,6 +6,7 @@ import com.server.realsync.services.UserService;
 import com.server.realsync.util.SecurityUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import com.server.realsync.entity.User;
 import com.server.realsync.services.AccountService;
@@ -42,6 +43,25 @@ public class SettingsController {
 
         return "Profile Updated";
     }
+
+   @PutMapping("/account/business-details")
+public ResponseEntity<String> updateBusinessDetails(
+        @RequestBody Account req) {
+
+    Integer accountId = SecurityUtil.getCurrentAccountId().getId();
+
+    Account account = accountService.getById(accountId);
+
+    account.setBusinessName(req.getBusinessName());
+    account.setBusinessEmail(req.getBusinessEmail());
+    account.setBusinessPhone(req.getBusinessPhone());
+    account.setGstNumber(req.getGstNumber());
+    account.setAddress(req.getAddress());
+
+    accountService.save(account);
+
+    return ResponseEntity.ok("Updated");
+}
 
     // ==========================
     // UPDATE PASSWORD
