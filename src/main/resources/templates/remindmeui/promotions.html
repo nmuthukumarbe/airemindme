@@ -508,18 +508,32 @@
             </label>
           </div>
 
-          <!-- Individual dropdown -->
+          <!-- Individual Search -->
           <div id="indDropdown" class="hidden mb-4">
-            <div class="relative"><select
-                class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none">
-                <option>Choose customer...</option>
-                <option>Rajesh Kumar</option>
-                <option>Anjali Singh</option>
-                <option>Mohammed Ibrahim</option>
-              </select><svg class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
-                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg></div>
+            <div class="relative">
+              <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input id="customerSearchInput" type="text" placeholder="Search customer name..."
+                oninput="searchCustomers(this.value)"
+                class="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            </div>
+            <!-- Search Results -->
+            <div id="customerSearchResults"
+              class="hidden mt-2 bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm max-h-48 overflow-y-auto">
+            </div>
+            <!-- Selected Customer -->
+            <div id="selectedCustomerBox"
+              class="hidden mt-2 flex items-center justify-between px-4 py-3 rounded-2xl bg-indigo-50 border border-indigo-200">
+              <div>
+                <p id="selectedCustomerName" class="text-sm font-semibold text-gray-900"></p>
+                <p id="selectedCustomerMobile" class="text-xs text-gray-400"></p>
+              </div>
+              <button onclick="clearSelectedCustomer()"
+                class="text-xs text-red-500 font-medium hover:text-red-700">Remove</button>
+            </div>
           </div>
 
           <!-- Send Via -->
@@ -727,7 +741,7 @@
         }));
 
         renderCards();
-         renderPagination();
+        renderPagination();
       } catch (err) {
         console.error("Error loading catalog:", err);
       }
@@ -763,22 +777,80 @@ class="group-item flex items-center justify-between px-4 py-3 rounded-xl border 
       }
     }
 
+    let allCustomers = [];
+
     async function loadCustomers() {
       try {
         const res = await fetch('/api/customers/my-customers');
-        const customers = await res.json();
-        const select = document.querySelector("#indDropdown select");
-
-        select.innerHTML = `<option value="">Choose customer...</option>` +
-          customers.map(c => `<option value="${c.id}">${c.name} (${c.mobile})</option>`).join('');
-
-        select.onchange = (e) => {
-          state.selectedCustomerId = e.target.value ? parseInt(e.target.value) : null;
-          document.getElementById('recipientsCount').textContent = state.selectedCustomerId ? '1' : '0';
-        };
+        allCustomers = await res.json();
       } catch (e) {
         console.error("Failed to load customers", e);
       }
+    }
+
+    function searchCustomers(query) {
+      const resultsBox = document.getElementById('customerSearchResults');
+      const q = query.trim().toLowerCase();
+
+      if (!q) {
+        resultsBox.classList.add('hidden');
+        resultsBox.innerHTML = '';
+        return;
+      }
+
+      const matches = allCustomers.filter(c =>
+        (c.name && c.name.toLowerCase().includes(q)) ||
+        (c.mobile && c.mobile.includes(q))
+      );
+
+      if (matches.length === 0) {
+        resultsBox.classList.remove('hidden');
+        resultsBox.innerHTML = `
+            <div class="px-4 py-3 text-sm text-gray-400 text-center">
+                No results found
+            </div>`;
+        return;
+      }
+
+      resultsBox.classList.remove('hidden');
+      resultsBox.innerHTML = matches.map(c => `
+        <div onclick="selectCustomer(${c.id}, '${c.name}', '${c.mobile || ''}')"
+            class="flex items-center gap-3 px-4 py-3 hover:bg-indigo-50 cursor-pointer border-b border-gray-50 last:border-0 transition">
+            <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
+                <span class="text-xs font-bold text-indigo-600">
+                    ${c.name ? c.name.charAt(0).toUpperCase() : '?'}
+                </span>
+            </div>
+            <div>
+                <p class="text-sm font-semibold text-gray-900">${c.name}</p>
+                <p class="text-xs text-gray-400">${c.mobile || ''}</p>
+            </div>
+        </div>
+    `).join('');
+    }
+
+    function selectCustomer(id, name, mobile) {
+      // Update state
+      state.selectedCustomerId = id;
+      document.getElementById('recipientsCount').textContent = '1';
+
+      // Hide search results
+      document.getElementById('customerSearchResults').classList.add('hidden');
+
+      // Clear search input
+      document.getElementById('customerSearchInput').value = '';
+
+      // Show selected customer box
+      document.getElementById('selectedCustomerName').textContent = name;
+      document.getElementById('selectedCustomerMobile').textContent = mobile;
+      document.getElementById('selectedCustomerBox').classList.remove('hidden');
+    }
+
+    function clearSelectedCustomer() {
+      state.selectedCustomerId = null;
+      document.getElementById('recipientsCount').textContent = '0';
+      document.getElementById('selectedCustomerBox').classList.add('hidden');
+      document.getElementById('customerSearchInput').value = '';
     }
 
     async function loadPromotions() {
@@ -1271,68 +1343,68 @@ class="group-item flex items-center justify-between px-4 py-3 rounded-xl border 
       navigator.clipboard.writeText(url).then(() => { alert('Link copied!'); });
     }
 
-// PAGINATION FOR PRODUCTS AND PLANS
+    // PAGINATION FOR PRODUCTS AND PLANS
 
-function renderPagination() {
+    function renderPagination() {
 
-  const planPg = document.getElementById("planPagination");
-  const productPg = document.getElementById("productPagination");
+      const planPg = document.getElementById("planPagination");
+      const productPg = document.getElementById("productPagination");
 
-  if (planPg) {
-    planPg.innerHTML = "";
+      if (planPg) {
+        planPg.innerHTML = "";
 
-    if (planTotalPages > 1) {
+        if (planTotalPages > 1) {
 
-      for (let i = 0; i < planTotalPages; i++) {
+          for (let i = 0; i < planTotalPages; i++) {
 
-        const btn = document.createElement("button");
+            const btn = document.createElement("button");
 
-        btn.innerText = i + 1;
+            btn.innerText = i + 1;
 
-        btn.className =
-          "px-3 py-1 rounded border text-sm " +
-          (i === planPage
-            ? "bg-indigo-600 text-white"
-            : "bg-white text-gray-700 hover:bg-gray-50");
+            btn.className =
+              "px-3 py-1 rounded border text-sm " +
+              (i === planPage
+                ? "bg-indigo-600 text-white"
+                : "bg-white text-gray-700 hover:bg-gray-50");
 
-        btn.onclick = () => {
-          planPage = i;
-          loadCatalog();
-        };
+            btn.onclick = () => {
+              planPage = i;
+              loadCatalog();
+            };
 
-        planPg.appendChild(btn);
+            planPg.appendChild(btn);
+          }
+        }
+      }
+
+      if (productPg) {
+
+        productPg.innerHTML = "";
+
+        if (productTotalPages > 1) {
+
+          for (let i = 0; i < productTotalPages; i++) {
+
+            const btn = document.createElement("button");
+
+            btn.innerText = i + 1;
+
+            btn.className =
+              "px-3 py-1 rounded border text-sm " +
+              (i === productPage
+                ? "bg-indigo-600 text-white"
+                : "bg-white text-gray-700 hover:bg-gray-50");
+
+            btn.onclick = () => {
+              productPage = i;
+              loadCatalog();
+            };
+
+            productPg.appendChild(btn);
+          }
+        }
       }
     }
-  }
-
-  if (productPg) {
-
-    productPg.innerHTML = "";
-
-    if (productTotalPages > 1) {
-
-      for (let i = 0; i < productTotalPages; i++) {
-
-        const btn = document.createElement("button");
-
-        btn.innerText = i + 1;
-
-        btn.className =
-          "px-3 py-1 rounded border text-sm " +
-          (i === productPage
-            ? "bg-indigo-600 text-white"
-            : "bg-white text-gray-700 hover:bg-gray-50");
-
-        btn.onclick = () => {
-          productPage = i;
-          loadCatalog();
-        };
-
-        productPg.appendChild(btn);
-      }
-    }
-  }
-}
     // =============================================================================
     // TEMPLATES
     // =============================================================================

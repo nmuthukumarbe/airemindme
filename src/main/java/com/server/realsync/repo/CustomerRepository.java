@@ -18,6 +18,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
         List<Customer> findByAccountId(Integer accountId);
 
+
         @Query(value = "SELECT * FROM customer WHERE account_id = :accountId AND FIND_IN_SET(:groupId, customer_group_id) ORDER BY created_at DESC", countQuery = "SELECT COUNT(*) FROM customer WHERE account_id = :accountId AND FIND_IN_SET(:groupId, customer_group_id)", nativeQuery = true)
         Page<Customer> findByAccountIdAndCustomerGroupId(
                         @Param("accountId") Integer accountId,
