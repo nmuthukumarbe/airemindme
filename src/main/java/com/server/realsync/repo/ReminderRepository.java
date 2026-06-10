@@ -16,13 +16,11 @@ public interface ReminderRepository extends JpaRepository<Reminder, Integer> {
 
         Optional<Reminder> findByIdAndAccountId(Integer id, Integer accountId);
 
-
         long countByAccountId(Integer accountId);
 
         long countByAccountIdAndStatus(Integer accountId, String status);
 
         long deleteByIdAndAccountId(Integer id, Integer accountId);
-
 
         // Filter by the Promotion Item (Plan or Product)
         List<Reminder> findByAccountIdAndAttachedItemTypeAndAttachedItemId(
@@ -34,5 +32,8 @@ public interface ReminderRepository extends JpaRepository<Reminder, Integer> {
                         "AND status = 'Sent' " +
                         "AND DATE(created_at) = CURDATE()", nativeQuery = true)
         long countSentToday(@Param("accountId") Integer accountId);
+
+        @Query(value = "SELECT * FROM reminders WHERE account_id = :accountId AND status = 'Scheduled' AND reminder_date >= CURDATE() ORDER BY reminder_date ASC LIMIT 3", nativeQuery = true)
+        List<Reminder> findTop3UpcomingByAccountId(@Param("accountId") Integer accountId);
 
 }
