@@ -1067,6 +1067,7 @@
     function switchTab(tab) {
       activeTab = tab;
 
+      // ── Show/hide content ──
       const dashboardTab = document.getElementById('tab-dashboard');
       const reportsTab = document.getElementById('tab-generated');
 
@@ -1080,6 +1081,21 @@
         }
       }
 
+      // ── Update tab button colors ──
+      const allTabs = ['dashboard', 'generated'];
+      allTabs.forEach(t => {
+        const btn = document.getElementById('mt-' + t);
+        if (!btn) return;
+        if (t === tab) {
+          btn.classList.add('border-indigo-600', 'text-indigo-600');
+          btn.classList.remove('border-transparent', 'text-gray-500');
+        } else {
+          btn.classList.remove('border-indigo-600', 'text-indigo-600');
+          btn.classList.add('border-transparent', 'text-gray-500');
+        }
+      });
+
+      // ── Breadcrumb ──
       const breadcrumb = document.getElementById('breadcrumbTab');
       if (breadcrumb) {
         breadcrumb.textContent =
