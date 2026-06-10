@@ -29,7 +29,7 @@
 			class="dash-header bg-white border-b border-gray-100 px-4 md:px-6 py-4 flex items-center justify-between sticky top-14 md:top-0 z-20">
 			<div>
 				<p class="text-sm text-gray-500">Good morning 👋</p>
-				<h1 class="text-xl font-bold text-gray-900">Acme Financial Services</h1>
+				<h1 class="text-xl font-bold text-gray-900" th:text="${account.businessName}">My Business</h1>
 			</div>
 			<div class="flex items-center gap-3">
 				<button
@@ -40,8 +40,10 @@
 					</svg>
 					<span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
 				</button>
-				<div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center"><span
-						class="text-white text-sm font-bold">A</span></div>
+				<div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center">
+					<span class="text-white text-sm font-bold"
+						th:text="${account.businessName != null ? account.businessName.substring(0,1).toUpperCase() : 'A'}">A</span>
+				</div>
 			</div>
 		</div>
 
