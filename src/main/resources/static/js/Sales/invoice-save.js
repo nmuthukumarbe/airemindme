@@ -131,3 +131,21 @@ async function saveAndContinue() {
         console.error("Save and continue failed:", err);
     }
 }
+
+/**
+ * Save invoice as UNPAID (final save for new invoices)
+ */
+async function saveFinalInvoice() {
+    const invoice = buildInvoicePayload();
+    invoice.status = "UNPAID";
+
+    try {
+        const saved = await saveInvoice(invoice);
+        // Redirect to invoice detail page
+        setTimeout(() => {
+            location.href = `/invoice-detail?id=${saved.id}`;
+        }, 500);
+    } catch (err) {
+        console.error("Save invoice failed:", err);
+    }
+}

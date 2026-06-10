@@ -1,1255 +1,1239 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sales - Reminder Me</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="rm-data.js"></script>
+  <script src="/js/Sales/rm-data.js"></script>
   <script>
-function saveEstimate() {
-  document.getElementById('estimateModal').classList.add('hidden');
-  showToast('Estimate saved successfully');
-  renderEstimates();
-}
-function saveCreditNote() {
-  document.getElementById('creditNoteModal').classList.add('hidden');
-  showToast('Credit note created successfully');
-  renderCreditNotes();
-}
-</script>
+    function saveEstimate() {
+      document.getElementById('estimateModal').classList.add('hidden');
+      showToast('Estimate saved successfully');
+      renderEstimates();
+    }
+    function saveCreditNote() {
+      document.getElementById('creditNoteModal').classList.add('hidden');
+      showToast('Credit note created successfully');
+      renderCreditNotes();
+    }
+  </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; background: #f8f9fb; }
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    .subtab { cursor: pointer; white-space: nowrap; padding: 10px 18px; font-size: 13px; font-weight: 500; color: #6b7280; border-bottom: 2px solid transparent; transition: all .15s; flex-shrink: 0; }
-    .subtab.active { color: #4f46e5; border-bottom-color: #4f46e5; font-weight: 700; }
-    .subtab:not(.active):hover { color: #374151; background: #f9fafb; }
-    .filter-pill { cursor: pointer; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 500; border: 1px solid #e5e7eb; color: #6b7280; white-space: nowrap; transition: all .15s; }
-    .filter-pill.active { background: #4f46e5; color: #fff; border-color: #4f46e5; }
-    .date-range-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 10px; border: 1px solid #e5e7eb; background: white; font-size: 13px; color: #374151; cursor: pointer; font-weight: 500; }
-    .date-range-btn:hover { border-color: #6366f1; color: #4f46e5; }
-    #dateRangeDropdown { display: none; position: absolute; top: 100%; right: 0; margin-top: 4px; background: white; border: 1px solid #e5e7eb; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,.12); z-index: 50; min-width: 320px; padding: 16px; }
-    #dateRangeDropdown.open { display: block; }
-    .preset-btn { padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; border: 1px solid #e5e7eb; color: #6b7280; cursor: pointer; }
-    .preset-btn:hover, .preset-btn.active { background: #eef2ff; color: #4f46e5; border-color: #c7d2fe; }
-    
-    .pg-btn { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; border:1px solid #e5e7eb; font-size:13px; font-weight:500; color:#6b7280; cursor:pointer; transition:all .15s; }
-    .pg-btn:hover { background:#f3f4f6; border-color:#d1d5db; }
-    .pg-btn.active { background:#4f46e5; border-color:#4f46e5; color:white; font-weight:700; }
-    .pg-btn:disabled { opacity:0.4; cursor:not-allowed; }
-    .mini-chart-bar { display: inline-block; background: #c7d2fe; border-radius: 3px 3px 0 0; width: 18px; margin: 0 1px; vertical-align: bottom; transition: background .15s; }
-    .mini-chart-bar:hover { background: #6366f1; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f9fb;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 4px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .subtab {
+      cursor: pointer;
+      white-space: nowrap;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+      border-bottom: 2px solid transparent;
+      transition: all .15s;
+      flex-shrink: 0;
+    }
+
+    .subtab.active {
+      color: #4f46e5;
+      border-bottom-color: #4f46e5;
+      font-weight: 700;
+    }
+
+    .subtab:not(.active):hover {
+      color: #374151;
+      background: #f9fafb;
+    }
+
+    .filter-pill {
+      cursor: pointer;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid #e5e7eb;
+      color: #6b7280;
+      white-space: nowrap;
+      transition: all .15s;
+    }
+
+    .filter-pill.active {
+      background: #4f46e5;
+      color: #fff;
+      border-color: #4f46e5;
+    }
+
+    .date-range-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: white;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .date-range-btn:hover {
+      border-color: #6366f1;
+      color: #4f46e5;
+    }
+
+    #dateRangeDropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 4px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, .12);
+      z-index: 50;
+      min-width: 320px;
+      padding: 16px;
+    }
+
+    #dateRangeDropdown.open {
+      display: block;
+    }
+
+    .preset-btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid #e5e7eb;
+      color: #6b7280;
+      cursor: pointer;
+    }
+
+    .preset-btn:hover,
+    .preset-btn.active {
+      background: #eef2ff;
+      color: #4f46e5;
+      border-color: #c7d2fe;
+    }
+
+    .pg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .pg-btn:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+
+    .pg-btn.active {
+      background: #4f46e5;
+      border-color: #4f46e5;
+      color: white;
+      font-weight: 700;
+    }
+
+    .pg-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .mini-chart-bar {
+      display: inline-block;
+      background: #c7d2fe;
+      border-radius: 3px 3px 0 0;
+      width: 18px;
+      margin: 0 1px;
+      vertical-align: bottom;
+      transition: background .15s;
+    }
+
+    .mini-chart-bar:hover {
+      background: #6366f1;
+    }
   </style>
 </head>
+
 <body style="overflow-x:hidden" class="bg-gray-50">
 
-<!-- ===== SIDEBAR ===== -->
-<div class="hidden md:flex fixed left-0 top-0 h-screen w-56 bg-white border-r border-gray-100 flex-col z-30">
-  <div class="px-4 pt-5 pb-3"><a href="home.html" class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><div><p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p><p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p></div></a></div>
-  <nav class="flex-1 px-3 py-2 overflow-y-auto">
-    <a href="home.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-sm font-medium">Home</span></a>
-    <a href="customers.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-sm font-medium">Customers</span></a>
-    <a href="sales.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg><span class="text-sm font-semibold">Sales</span></a>
-    <a href="inventory.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg><span class="text-sm font-medium">Inventory</span></a>
-    <a href="engagement.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-sm font-medium">Engage</span></a>
-    <a href="promotions.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg><span class="text-sm font-medium">Promotions</span></a>
-    <a href="appointments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span class="text-sm font-medium">Appointments</span></a>
-    <a href="reports.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span class="text-sm font-medium">Reports</span></a>
-    <a href="user-management.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-medium">Users</span></a>
-    <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-500 hover:bg-gray-50 mb-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-medium">Settings</span></a>
-    <div class="mt-4">
-      <p class="px-3 text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-2">Quick Actions</p>
-      <button onclick="window.location.href='invoice-create.html'" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 mb-1"><div class="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0"><svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg></div><span class="text-sm">Create Invoice</span></button>
+  <!-- Sidebar -->
+  <div th:replace="~{remindmeui/fragments/layout :: sidebar(activePage='sales')}"></div>
+
+  <!-- Mobile nav -->
+  <div th:replace="~{remindmeui/fragments/layout :: mobileNav(activePage='sales')}"></div>
+
+  <div id="mobileNavBg" class="md:hidden hidden fixed inset-0 bg-black/50 z-[45] backdrop-blur-sm"
+    onclick="closeMobileNav()"></div>
+  <div id="mobileNavDrawer"
+    class="md:hidden fixed top-0 left-0 h-screen w-72 bg-white z-[46] shadow-2xl flex flex-col transition-transform duration-300"
+    style="transform:translateX(-100%)">
+    <div class="px-4 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg
+            class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg></div>
+        <div>
+          <p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p>
+        </div>
+      </div><button onclick="closeMobileNav()"
+        class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500"><svg class="w-4 h-4"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg></button>
     </div>
-  </nav>
-  <div class="px-4 py-4 border-t border-gray-100"><div class="flex items-center gap-3 mb-3"><div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span class="text-white text-sm font-bold">A</span></div><div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p><p class="text-xs text-gray-400 truncate mt-0.5">Acme Financial Services</p></div></div><button onclick="window.location.href='login.html'" class="flex items-center gap-2 px-1 py-1 text-gray-500 hover:text-red-600 transition"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg><span class="text-sm font-medium">Sign Out</span></button></div>
-</div>
-
-<!-- MOBILE HEADER -->
-<div class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-100 z-40 h-14 flex items-center justify-between px-4 shadow-sm">
-  <button onclick="openMobileNav()" class="w-9 h-9 flex items-center justify-center rounded-xl text-gray-600 hover:bg-gray-100"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-  <span class="text-sm font-bold text-gray-900">Sales</span>
-  <button onclick="window.location.href='invoice-create.html'" class="w-9 h-9 flex items-center justify-center rounded-xl bg-indigo-600 text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></button>
-</div>
-<div id="mobileNavBg" class="md:hidden hidden fixed inset-0 bg-black/50 z-[45] backdrop-blur-sm" onclick="closeMobileNav()"></div>
-<div id="mobileNavDrawer" class="md:hidden fixed top-0 left-0 h-screen w-72 bg-white z-[46] shadow-2xl flex flex-col transition-transform duration-300" style="transform:translateX(-100%)">
-  <div class="px-4 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between flex-shrink-0"><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg></div><div><p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p><p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p></div></div><button onclick="closeMobileNav()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button></div>
-  <nav class="flex-1 px-3 py-3 overflow-y-auto space-y-0.5">
-    <a href="home.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-sm font-semibold">Home</span></a>
-    <a href="customers.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-sm font-semibold">Customers</span></a>
-    <a href="sales.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg><span class="text-sm font-semibold">Sales</span></a>
-    <a href="inventory.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg><span class="text-sm font-semibold">Inventory</span></a>
-    <a href="engagement.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg><span class="text-sm font-semibold">Engage</span></a>
-    <a href="promotions.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg><span class="text-sm font-semibold">Promotions</span></a>
-    <a href="appointments.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span class="text-sm font-semibold">Appointments</span></a>
-    <a href="reports.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span class="text-sm font-semibold">Reports</span></a>
-    <a href="user-management.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-semibold">Users</span></a>
-    <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-sm font-semibold">Settings</span></a>
-  </nav>
-  <div class="px-3 py-3 border-t border-gray-100 flex-shrink-0"><div class="flex items-center gap-2.5 px-2 py-1.5"><div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span class="text-white text-xs font-bold">A</span></div><div class="flex-1 min-w-0"><p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p><p class="text-[10px] text-gray-400 truncate mt-0.5">Acme Financial Services</p></div></div></div>
-</div>
-
-<!-- ===== MAIN ===== -->
-<div class="md:ml-56 min-h-screen pb-24 md:pb-0 pt-14 md:pt-0">
-
-  <!-- Page Header -->
-  <div class="bg-white border-b border-gray-100 px-4 md:px-6 py-4 flex items-center justify-between sticky top-14 md:top-0 z-20">
-    <div>
-      <p class="text-xs text-gray-400 mb-0.5 hidden md:block"><a href="home.html" class="hover:text-indigo-600">Home</a> / <span class="text-gray-700">Sales</span></p>
-      <h1 class="text-xl font-bold text-gray-900">Sales</h1>
-    </div>
-    <div class="hidden md:flex items-center gap-2">
-      <button onclick="window.location.href='invoice-create.html'" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition shadow-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>New Invoice
-      </button>
-      <button class="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>Record Payment
-      </button>
+    <nav class="flex-1 px-3 py-3 overflow-y-auto space-y-0.5">
+      <a href="home.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg><span class="text-sm font-semibold">Home</span></a>
+      <a href="customers.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg><span class="text-sm font-semibold">Customers</span></a>
+      <a href="sales.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+        </svg><span class="text-sm font-semibold">Sales</span></a>
+      <a href="inventory.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        </svg><span class="text-sm font-semibold">Inventory</span></a>
+      <a href="engagement.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg><span class="text-sm font-semibold">Engage</span></a>
+      <a href="promotions.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+        </svg><span class="text-sm font-semibold">Promotions</span></a>
+      <a href="appointments.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg><span class="text-sm font-semibold">Appointments</span></a>
+      <a href="reports.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg><span class="text-sm font-semibold">Reports</span></a>
+      <a href="user-management.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg><span class="text-sm font-semibold">Users</span></a>
+      <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg><span class="text-sm font-semibold">Settings</span></a>
+    </nav>
+    <div class="px-3 py-3 border-t border-gray-100 flex-shrink-0">
+      <div class="flex items-center gap-2.5 px-2 py-1.5">
+        <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span
+            class="text-white text-xs font-bold">A</span></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p>
+          <p class="text-[10px] text-gray-400 truncate mt-0.5">Acme Financial Services</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Sub-Tabs -->
-  <div class="bg-white border-b border-gray-100 sticky top-[105px] md:top-[65px] z-10">
-    <div class="flex gap-1 px-4 md:px-6 py-2 overflow-x-auto">
-      <button class="subtab active" onclick="switchTab('dashboard',this)">Dashboard</button>
-      <button class="subtab" onclick="switchTab('invoices',this)">Invoices</button>
-      <button class="subtab" onclick="switchTab('payments',this)">Payments</button>
-      <button class="subtab" onclick="switchTab('estimates',this)">Estimates</button>
-      <button class="subtab" onclick="switchTab('creditnotes',this)">Credit Notes</button>
-      <button class="subtab" onclick="switchTab('qrbilling',this)">⚡ QR Billing</button>
+  <!-- ===== MAIN ===== -->
+  <div class="md:ml-56 min-h-screen pb-24 md:pb-0 pt-14 md:pt-0">
+
+    <!-- Page Header -->
+    <div
+      class="bg-white border-b border-gray-100 px-4 md:px-6 py-4 flex items-center justify-between sticky top-14 md:top-0 z-20">
+      <div>
+        <p class="text-xs text-gray-400 mb-0.5 hidden md:block"><a href="home.html"
+            class="hover:text-indigo-600">Home</a> / <span class="text-gray-700">Sales</span></p>
+        <h1 class="text-xl font-bold text-gray-900">Sales</h1>
+      </div>
+      <div class="hidden md:flex items-center gap-2">
+        <button onclick="window.location.href='invoice-create.html'"
+          class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>New Invoice
+        </button>
+        <button
+          class="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>Record Payment
+        </button>
+      </div>
     </div>
-  </div>
 
-  <div class="px-4 md:px-6 py-5">
-
-    <!-- ===== TAB: DASHBOARD ===== -->
-    <div id="tab-dashboard" class="tab-content active">
-
-      <!-- KPI Row -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <p class="text-xs text-gray-500 mb-1">Total Revenue</p>
-          <p class="text-2xl font-extrabold text-gray-900">&#8377;4.82L</p>
-          <p class="text-xs text-green-600 font-medium mt-1">&#8593; 18% vs last month</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <p class="text-xs text-gray-500 mb-1">Paid</p>
-          <p class="text-2xl font-extrabold text-green-600">&#8377;3.21L</p>
-          <p class="text-xs text-gray-400 mt-1">18 invoices</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <p class="text-xs text-gray-500 mb-1">Outstanding</p>
-          <p class="text-2xl font-extrabold text-orange-500">&#8377;1.18L</p>
-          <p class="text-xs text-gray-400 mt-1">9 invoices</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <p class="text-xs text-gray-500 mb-1">Overdue</p>
-          <p class="text-2xl font-extrabold text-red-500">&#8377;43K</p>
-          <p class="text-xs text-red-500 font-medium mt-1">3 invoices</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <p class="text-xs text-gray-500 mb-1">Avg Invoice Value</p>
-          <p class="text-2xl font-extrabold text-gray-900">&#8377;15,078</p>
-          <p class="text-xs text-green-600 font-medium mt-1">&#8593; 6% vs last month</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <p class="text-xs text-gray-500 mb-1">Customers Billed</p>
-          <p class="text-2xl font-extrabold text-gray-900">24</p>
-          <p class="text-xs text-gray-400 mt-1">this month</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <p class="text-xs text-gray-500 mb-1">Total Invoices</p>
-          <p class="text-2xl font-extrabold text-indigo-600">32</p>
-          <p class="text-xs text-gray-400 mt-1">June 2024</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <p class="text-xs text-gray-500 mb-1">Collection Rate</p>
-          <p class="text-2xl font-extrabold text-gray-900">66.5%</p>
-          <p class="text-xs text-orange-500 font-medium mt-1">&#8595; 4% vs last month</p>
-        </div>
+    <!-- Sub-Tabs -->
+    <div class="bg-white border-b border-gray-100 sticky top-[105px] md:top-[65px] z-10">
+      <div class="flex gap-1 px-4 md:px-6 py-2 overflow-x-auto">
+        <button class="subtab active" onclick="switchTab('dashboard',this)">Dashboard</button>
+        <button class="subtab" onclick="switchTab('invoices',this)">Invoices</button>
+        <button class="subtab" onclick="switchTab('payments',this)">Payments</button>
+        <!-- <button class="subtab" onclick="switchTab('estimates',this)">Estimates</button>
+        <button class="subtab" onclick="switchTab('creditnotes',this)">Credit Notes</button>
+        <button class="subtab" onclick="switchTab('qrbilling',this)">⚡ QR Billing</button> -->
       </div>
+    </div>
 
-      <!-- Revenue Bar Chart -->
-      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
-        <div class="flex items-center justify-between mb-4">
-          <div>
-            <p class="text-sm font-bold text-gray-900">Monthly Revenue</p>
-            <p class="text-xs text-gray-400">Jan – Jun 2024</p>
-          </div>
-          <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">&#8593; 18% growth</span>
-        </div>
-        <div class="flex items-end gap-3 h-32">
-          <div class="flex-1 flex flex-col items-center gap-1">
-            <span class="text-[10px] text-gray-400">&#8377;2.4L</span>
-            <div style="height:60%;background:#c7d2fe;border-radius:6px 6px 0 0;width:100%"></div>
-            <span class="text-[10px] text-gray-400">Jan</span>
-          </div>
-          <div class="flex-1 flex flex-col items-center gap-1">
-            <span class="text-[10px] text-gray-400">&#8377;2.9L</span>
-            <div style="height:72%;background:#c7d2fe;border-radius:6px 6px 0 0;width:100%"></div>
-            <span class="text-[10px] text-gray-400">Feb</span>
-          </div>
-          <div class="flex-1 flex flex-col items-center gap-1">
-            <span class="text-[10px] text-gray-400">&#8377;3.1L</span>
-            <div style="height:78%;background:#c7d2fe;border-radius:6px 6px 0 0;width:100%"></div>
-            <span class="text-[10px] text-gray-400">Mar</span>
-          </div>
-          <div class="flex-1 flex flex-col items-center gap-1">
-            <span class="text-[10px] text-gray-400">&#8377;3.6L</span>
-            <div style="height:88%;background:#a5b4fc;border-radius:6px 6px 0 0;width:100%"></div>
-            <span class="text-[10px] text-gray-400">Apr</span>
-          </div>
-          <div class="flex-1 flex flex-col items-center gap-1">
-            <span class="text-[10px] text-gray-400">&#8377;4.1L</span>
-            <div style="height:94%;background:#818cf8;border-radius:6px 6px 0 0;width:100%"></div>
-            <span class="text-[10px] text-gray-400">May</span>
-          </div>
-          <div class="flex-1 flex flex-col items-center gap-1">
-            <span class="text-[10px] text-gray-400">&#8377;4.8L</span>
-            <div style="height:100%;background:#4f46e5;border-radius:6px 6px 0 0;width:100%"></div>
-            <span class="text-[10px] font-bold text-indigo-600">Jun</span>
-          </div>
-        </div>
-      </div>
+    <div class="px-4 md:px-6 py-5">
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <!-- Top Customers -->
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-          <p class="text-sm font-bold text-gray-900 mb-4">Top Customers by Revenue</p>
-          <div class="space-y-3">
-            <div class="flex items-center gap-3"><div class="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700">J</div><div class="flex-1"><div class="flex justify-between"><span class="text-sm font-medium text-gray-800">Jain Jewellers</span><span class="text-sm font-bold text-gray-900">&#8377;89,400</span></div><div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-indigo-600 h-1.5 rounded-full" style="width:100%"></div></div></div></div>
-            <div class="flex items-center gap-3"><div class="w-7 h-7 rounded-full bg-purple-100 flex items-center justify-center text-xs font-bold text-purple-700">M</div><div class="flex-1"><div class="flex justify-between"><span class="text-sm font-medium text-gray-800">Mehta Pharma</span><span class="text-sm font-bold text-gray-900">&#8377;67,800</span></div><div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-purple-500 h-1.5 rounded-full" style="width:76%"></div></div></div></div>
-            <div class="flex items-center gap-3"><div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-700">G</div><div class="flex-1"><div class="flex justify-between"><span class="text-sm font-medium text-gray-800">Gupta Electronics</span><span class="text-sm font-bold text-gray-900">&#8377;53,600</span></div><div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-blue-500 h-1.5 rounded-full" style="width:60%"></div></div></div></div>
-            <div class="flex items-center gap-3"><div class="w-7 h-7 rounded-full bg-pink-100 flex items-center justify-center text-xs font-bold text-pink-700">K</div><div class="flex-1"><div class="flex justify-between"><span class="text-sm font-medium text-gray-800">Kavya Fashions</span><span class="text-sm font-bold text-gray-900">&#8377;31,200</span></div><div class="w-full bg-gray-100 rounded-full h-1.5 mt-1"><div class="bg-pink-500 h-1.5 rounded-full" style="width:35%"></div></div></div></div>
+      <!-- ===== TAB: DASHBOARD ===== -->
+      <div id="tab-dashboard" class="tab-content active">
+
+        <!-- KPI Row -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+            <p class="text-xs text-gray-500 mb-1">Total Revenue</p>
+            <p class="text-2xl font-extrabold text-gray-900">&#8377;4.82L</p>
+            <p class="text-xs text-green-600 font-medium mt-1">&#8593; 18% vs last month</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+            <p class="text-xs text-gray-500 mb-1">Paid</p>
+            <p class="text-2xl font-extrabold text-green-600">&#8377;3.21L</p>
+            <p class="text-xs text-gray-400 mt-1">18 invoices</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+            <p class="text-xs text-gray-500 mb-1">Outstanding</p>
+            <p class="text-2xl font-extrabold text-orange-500">&#8377;1.18L</p>
+            <p class="text-xs text-gray-400 mt-1">9 invoices</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+            <p class="text-xs text-gray-500 mb-1">Overdue</p>
+            <p class="text-2xl font-extrabold text-red-500">&#8377;43K</p>
+            <p class="text-xs text-red-500 font-medium mt-1">3 invoices</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+            <p class="text-xs text-gray-500 mb-1">Avg Invoice Value</p>
+            <p class="text-2xl font-extrabold text-gray-900">&#8377;15,078</p>
+            <p class="text-xs text-green-600 font-medium mt-1">&#8593; 6% vs last month</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+            <p class="text-xs text-gray-500 mb-1">Customers Billed</p>
+            <p class="text-2xl font-extrabold text-gray-900">24</p>
+            <p class="text-xs text-gray-400 mt-1">this month</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+            <p class="text-xs text-gray-500 mb-1">Total Invoices</p>
+            <p class="text-2xl font-extrabold text-indigo-600">32</p>
+            <p class="text-xs text-gray-400 mt-1">June 2024</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+            <p class="text-xs text-gray-500 mb-1">Collection Rate</p>
+            <p class="text-2xl font-extrabold text-gray-900">66.5%</p>
+            <p class="text-xs text-orange-500 font-medium mt-1">&#8595; 4% vs last month</p>
           </div>
         </div>
-        <!-- Status Breakdown -->
+
+        <!-- Revenue Bar Chart -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <p class="text-sm font-bold text-gray-900">Monthly Revenue</p>
+              <p class="text-xs text-gray-400">Jan – Jun 2024</p>
+            </div>
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2.5 py-1 rounded-full">&#8593; 18%
+              growth</span>
+          </div>
+          <div class="flex items-end gap-3 h-32">
+            <div class="flex-1 flex flex-col items-center gap-1">
+              <span class="text-[10px] text-gray-400">&#8377;2.4L</span>
+              <div style="height:60%;background:#c7d2fe;border-radius:6px 6px 0 0;width:100%"></div>
+              <span class="text-[10px] text-gray-400">Jan</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-1">
+              <span class="text-[10px] text-gray-400">&#8377;2.9L</span>
+              <div style="height:72%;background:#c7d2fe;border-radius:6px 6px 0 0;width:100%"></div>
+              <span class="text-[10px] text-gray-400">Feb</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-1">
+              <span class="text-[10px] text-gray-400">&#8377;3.1L</span>
+              <div style="height:78%;background:#c7d2fe;border-radius:6px 6px 0 0;width:100%"></div>
+              <span class="text-[10px] text-gray-400">Mar</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-1">
+              <span class="text-[10px] text-gray-400">&#8377;3.6L</span>
+              <div style="height:88%;background:#a5b4fc;border-radius:6px 6px 0 0;width:100%"></div>
+              <span class="text-[10px] text-gray-400">Apr</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-1">
+              <span class="text-[10px] text-gray-400">&#8377;4.1L</span>
+              <div style="height:94%;background:#818cf8;border-radius:6px 6px 0 0;width:100%"></div>
+              <span class="text-[10px] text-gray-400">May</span>
+            </div>
+            <div class="flex-1 flex flex-col items-center gap-1">
+              <span class="text-[10px] text-gray-400">&#8377;4.8L</span>
+              <div style="height:100%;background:#4f46e5;border-radius:6px 6px 0 0;width:100%"></div>
+              <span class="text-[10px] font-bold text-indigo-600">Jun</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <!-- Top Customers -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <p class="text-sm font-bold text-gray-900 mb-4">Top Customers by Revenue</p>
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700">
+                  J</div>
+                <div class="flex-1">
+                  <div class="flex justify-between"><span class="text-sm font-medium text-gray-800">Jain
+                      Jewellers</span><span class="text-sm font-bold text-gray-900">&#8377;89,400</span></div>
+                  <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1">
+                    <div class="bg-indigo-600 h-1.5 rounded-full" style="width:100%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-7 h-7 rounded-full bg-purple-100 flex items-center justify-center text-xs font-bold text-purple-700">
+                  M</div>
+                <div class="flex-1">
+                  <div class="flex justify-between"><span class="text-sm font-medium text-gray-800">Mehta
+                      Pharma</span><span class="text-sm font-bold text-gray-900">&#8377;67,800</span></div>
+                  <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1">
+                    <div class="bg-purple-500 h-1.5 rounded-full" style="width:76%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-700">
+                  G</div>
+                <div class="flex-1">
+                  <div class="flex justify-between"><span class="text-sm font-medium text-gray-800">Gupta
+                      Electronics</span><span class="text-sm font-bold text-gray-900">&#8377;53,600</span></div>
+                  <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1">
+                    <div class="bg-blue-500 h-1.5 rounded-full" style="width:60%"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-7 h-7 rounded-full bg-pink-100 flex items-center justify-center text-xs font-bold text-pink-700">
+                  K</div>
+                <div class="flex-1">
+                  <div class="flex justify-between"><span class="text-sm font-medium text-gray-800">Kavya
+                      Fashions</span><span class="text-sm font-bold text-gray-900">&#8377;31,200</span></div>
+                  <div class="w-full bg-gray-100 rounded-full h-1.5 mt-1">
+                    <div class="bg-pink-500 h-1.5 rounded-full" style="width:35%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Status Breakdown -->
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <p class="text-sm font-bold text-gray-900 mb-4">Invoice Status Breakdown</p>
+            <div class="flex items-center justify-center mb-4">
+              <svg viewBox="0 0 120 120" class="w-32 h-32">
+                <circle cx="60" cy="60" r="46" fill="none" stroke="#e5e7eb" stroke-width="16" />
+                <circle cx="60" cy="60" r="46" fill="none" stroke="#4f46e5" stroke-width="16" stroke-dasharray="182 107"
+                  stroke-dashoffset="0" transform="rotate(-90 60 60)" />
+                <circle cx="60" cy="60" r="46" fill="none" stroke="#f97316" stroke-width="16" stroke-dasharray="91 198"
+                  stroke-dashoffset="-182" transform="rotate(-90 60 60)" />
+                <circle cx="60" cy="60" r="46" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="25 264"
+                  stroke-dashoffset="-273" transform="rotate(-90 60 60)" />
+                <text x="60" y="57" text-anchor="middle" font-size="11" font-weight="800" fill="#1f2937">32</text>
+                <text x="60" y="70" text-anchor="middle" font-size="7" fill="#6b7280">invoices</text>
+              </svg>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-indigo-600"></div><span class="text-sm text-gray-600">Paid</span>
+                </div><span class="text-sm font-bold text-gray-900">18 (56%)</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-orange-500"></div><span
+                    class="text-sm text-gray-600">Unpaid</span>
+                </div><span class="text-sm font-bold text-gray-900">9 (28%)</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-red-500"></div><span class="text-sm text-gray-600">Overdue</span>
+                </div><span class="text-sm font-bold text-gray-900">3 (9%)</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-gray-300"></div><span class="text-sm text-gray-600">Draft</span>
+                </div><span class="text-sm font-bold text-gray-900">2 (6%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Invoices Quick View -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-          <p class="text-sm font-bold text-gray-900 mb-4">Invoice Status Breakdown</p>
-          <div class="flex items-center justify-center mb-4">
-            <svg viewBox="0 0 120 120" class="w-32 h-32">
-              <circle cx="60" cy="60" r="46" fill="none" stroke="#e5e7eb" stroke-width="16"/>
-              <circle cx="60" cy="60" r="46" fill="none" stroke="#4f46e5" stroke-width="16" stroke-dasharray="182 107" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
-              <circle cx="60" cy="60" r="46" fill="none" stroke="#f97316" stroke-width="16" stroke-dasharray="91 198" stroke-dashoffset="-182" transform="rotate(-90 60 60)"/>
-              <circle cx="60" cy="60" r="46" fill="none" stroke="#ef4444" stroke-width="16" stroke-dasharray="25 264" stroke-dashoffset="-273" transform="rotate(-90 60 60)"/>
-              <text x="60" y="57" text-anchor="middle" font-size="11" font-weight="800" fill="#1f2937">32</text>
-              <text x="60" y="70" text-anchor="middle" font-size="7" fill="#6b7280">invoices</text>
-            </svg>
+          <div class="flex items-center justify-between mb-4">
+            <p class="text-sm font-bold text-gray-900">Recent Invoices</p><button
+              onclick="switchTab('invoices',document.querySelectorAll('.subtab')[1])"
+              class="text-xs font-semibold text-indigo-600 hover:underline">View all</button>
           </div>
           <div class="space-y-2">
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-indigo-600"></div><span class="text-sm text-gray-600">Paid</span></div><span class="text-sm font-bold text-gray-900">18 (56%)</span></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-orange-500"></div><span class="text-sm text-gray-600">Unpaid</span></div><span class="text-sm font-bold text-gray-900">9 (28%)</span></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-red-500"></div><span class="text-sm text-gray-600">Overdue</span></div><span class="text-sm font-bold text-gray-900">3 (9%)</span></div>
-            <div class="flex items-center justify-between"><div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-gray-300"></div><span class="text-sm text-gray-600">Draft</span></div><span class="text-sm font-bold text-gray-900">2 (6%)</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Recent Invoices Quick View -->
-      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-        <div class="flex items-center justify-between mb-4"><p class="text-sm font-bold text-gray-900">Recent Invoices</p><button onclick="switchTab('invoices',document.querySelectorAll('.subtab')[1])" class="text-xs font-semibold text-indigo-600 hover:underline">View all</button></div>
-        <div class="space-y-2">
-          <div onclick="window.location.href='invoice-detail.html'" class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 cursor-pointer"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700">J</div><div><p class="text-sm font-semibold text-gray-800">Jain Jewellers</p><p class="text-xs text-gray-400">INV-2024-010 · 16 Jun 2024</p></div></div><div class="text-right"><p class="text-sm font-bold text-gray-900">&#8377;89,400</p><span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">Unpaid</span></div></div>
-          <div onclick="window.location.href='invoice-detail.html'" class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 cursor-pointer"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-xs font-bold text-green-700">S</div><div><p class="text-sm font-semibold text-gray-800">Sharma Textiles</p><p class="text-xs text-gray-400">INV-2024-009 · 15 Jun 2024</p></div></div><div class="text-right"><p class="text-sm font-bold text-gray-900">&#8377;11,250</p><span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">Paid</span></div></div>
-          <div onclick="window.location.href='invoice-detail.html'" class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 cursor-pointer"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600">G</div><div><p class="text-sm font-semibold text-gray-800">Gupta Electronics</p><p class="text-xs text-gray-400">INV-2024-008 · 14 Jun 2024</p></div></div><div class="text-right"><p class="text-sm font-bold text-gray-900">&#8377;53,600</p><span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">Draft</span></div></div>
-        </div>
-      </div>
-    </div><!-- /dashboard -->
-
-    <!-- ===== TAB: INVOICES ===== -->
-    <div id="tab-invoices" class="tab-content">
-
-      <!-- Search + Date Range -->
-      <div class="flex flex-col sm:flex-row gap-2 mb-4">
-        <div class="relative flex-1">
-          <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          <input id="invSearch" type="text" placeholder="Search by invoice #, customer..." oninput="filterInvoices()" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        </div>
-        <div class="relative">
-          <button class="date-range-btn" onclick="toggleDateDropdown()">
-            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            <span id="dateRangeLabel">Date Range</span>
-            <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-          </button>
-          <div id="dateRangeDropdown">
-            <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">Quick Select</p>
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              <button class="preset-btn" onclick="applyPreset('today')">Today</button>
-              <button class="preset-btn" onclick="applyPreset('yesterday')">Yesterday</button>
-              <button class="preset-btn" onclick="applyPreset('week')">This Week</button>
-              <button class="preset-btn" onclick="applyPreset('month')">This Month</button>
-              <button class="preset-btn" onclick="applyPreset('lastmonth')">Last Month</button>
-              <button class="preset-btn" onclick="applyPreset('quarter')">This Quarter</button>
-              <button class="preset-btn" onclick="applyPreset('year')">This Year</button>
-            </div>
-            <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Custom Range</p>
-            <div class="grid grid-cols-2 gap-2 mb-3">
-              <div><label class="text-xs text-gray-400 block mb-1">From</label><input type="date" id="dateFrom" onchange="applyCustomDate()" class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
-              <div><label class="text-xs text-gray-400 block mb-1">To</label><input type="date" id="dateTo" onchange="applyCustomDate()" class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
-            </div>
-            <div class="flex gap-2">
-              <button onclick="clearDateFilter()" class="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50">Clear</button>
-              <button onclick="toggleDateDropdown()" class="flex-1 px-3 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700">Apply</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Status Filters -->
-      <div class="flex gap-2 overflow-x-auto pb-1 mb-4">
-        <button class="filter-pill active" id="f-all" onclick="setStatusFilter('all',this)">All <span class="ml-1 text-[11px] opacity-70">32</span></button>
-        <button class="filter-pill" id="f-paid" onclick="setStatusFilter('paid',this)">Paid <span class="ml-1 text-[11px] opacity-70">18</span></button>
-        <button class="filter-pill" id="f-unpaid" onclick="setStatusFilter('unpaid',this)">Unpaid <span class="ml-1 text-[11px] opacity-70">9</span></button>
-        <button class="filter-pill" id="f-overdue" onclick="setStatusFilter('overdue',this)">Overdue <span class="ml-1 text-[11px] opacity-70">3</span></button>
-        <button class="filter-pill" id="f-draft" onclick="setStatusFilter('draft',this)">Draft <span class="ml-1 text-[11px] opacity-70">2</span></button>
-      </div>
-
-      <p id="invCount" class="text-xs text-gray-400 mb-3">Showing 10 invoices</p>
-
-      <!-- Desktop Table -->
-      <div class="hidden md:block bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-4">
-        <table class="w-full">
-          <thead class="bg-gray-50 border-b border-gray-100">
-            <tr>
-              <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-5 py-3">Invoice #</th>
-              <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Customer</th>
-              <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Date</th>
-              <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Due Date</th>
-              <th class="text-right text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Amount</th>
-              <th class="text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Status</th>
-              <th class="text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody id="invTableBody" class="divide-y divide-gray-50"></tbody>
-        </table>
-      </div>
-
-      <!-- Mobile Cards -->
-      <div id="invCards" class="md:hidden space-y-3 mb-4"></div>
-
-      <p id="noInvMsg" class="hidden text-sm text-gray-400 text-center py-10">No invoices match your filter.</p>
-      <div id="invPagination" class="flex justify-center py-3"></div>
-    </div><!-- /invoices -->
-
-    <!-- ===== TAB: PAYMENTS ===== -->
-    <div id="tab-payments" class="tab-content">
-      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div class="bg-gray-50 border-b border-gray-100 px-5 py-3 flex items-center justify-between">
-          <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Payment History</p>
-          <button class="text-xs font-semibold text-indigo-600 hover:underline">Export</button>
-        </div>
-        <div id="paymentsList" class="divide-y divide-gray-50"></div>
-      </div>
-    </div>
-
-    <!-- ===== TAB: ESTIMATES ===== -->
-    <div id="tab-estimates" class="tab-content">
-      <div class="flex items-center justify-between mb-4">
-        <p class="text-sm text-gray-500">Quotations &amp; estimates sent to customers</p>
-        <button onclick="document.getElementById('estimateModal').classList.remove('hidden')" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>New Estimate
-        </button>
-      </div>
-      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div id="estimatesList" class="divide-y divide-gray-50"></div>
-        <div id="estPagination" class="flex justify-center py-3"></div>
-      </div>
-    </div>
-
-    <!-- ===== TAB: CREDIT NOTES ===== -->
-    <div id="tab-creditnotes" class="tab-content">
-      <div class="flex items-center justify-between mb-4">
-        <p class="text-sm text-gray-500">Credit notes issued against invoices</p>
-        <button onclick="document.getElementById('creditNoteModal').classList.remove('hidden')" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>New Credit Note
-        </button>
-      </div>
-      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div id="creditNotesList" class="divide-y divide-gray-50"></div>
-        <div id="cnPagination" class="flex justify-center py-3"></div>
-      </div>
-    </div>
-
-
-    <!-- ===== TAB: QR BILLING ===== -->
-    <div id="tab-qrbilling" class="tab-content">
-
-      <!-- KPI Strip -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Today's Bills</p>
-          <p class="text-2xl font-extrabold text-gray-900 mt-1" id="qrKpiToday">0</p>
-        </div>
-        <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl shadow-sm p-4">
-          <p class="text-[10px] font-bold text-indigo-200 uppercase tracking-widest">Today's Revenue</p>
-          <p class="text-2xl font-extrabold text-white mt-1" id="qrKpiRevenue">₹0</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Products</p>
-          <p class="text-2xl font-extrabold text-gray-900 mt-1" id="qrKpiProducts">0</p>
-        </div>
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-          <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Low Stock</p>
-          <p class="text-2xl font-extrabold text-red-500 mt-1" id="qrKpiLowStock">0</p>
-        </div>
-      </div>
-
-      <!-- Main 2-panel layout -->
-      <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
-
-        <!-- LEFT: Scanner + Product Catalog -->
-        <div class="lg:col-span-3 space-y-4">
-
-          <!-- Scanner Panel -->
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-            <div class="flex items-center justify-between mb-3">
-              <p class="text-sm font-bold text-gray-800">⚡ Scanner</p>
-              <button onclick="clearQRBill()" class="text-xs text-red-400 hover:text-red-600 font-semibold px-2 py-1 rounded-lg hover:bg-red-50 transition">✕ Clear Bill</button>
-            </div>
-            <div id="qrScanArea" class="w-full h-28 bg-gray-900 rounded-xl flex items-center justify-center cursor-pointer mb-3 relative overflow-hidden select-none" onclick="simulateQRScan()">
-              <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/60 to-gray-900"></div>
-              <div class="relative z-10 flex flex-col items-center gap-1.5">
-                <svg class="w-8 h-8 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h2M4 12v.01M12 8h.01M8 12h.01M8 20h.01M20 12h.01M16 4h.01M4 16h.01M4 8h.01"/></svg>
-                <p class="text-white text-xs font-semibold">Tap to Simulate Scan</p>
+            <div onclick="window.location.href =`invoice-detail.html?id=${inv.id}`;"
+              class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 cursor-pointer">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700">
+                  J</div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-800">Jain Jewellers</p>
+                  <p class="text-xs text-gray-400">INV-2024-010 · 16 Jun 2024</p>
+                </div>
               </div>
-              <div id="scanLine" class="hidden absolute left-0 right-0 h-0.5 bg-green-400 shadow-lg shadow-green-400" style="top:30%;animation:scan 1.5s linear infinite"></div>
-            </div>
-            <div class="flex gap-2 mb-3">
-              <input id="qrCodeInput" type="text" placeholder="Enter SKU, QR code or product name..." class="flex-1 px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" onkeydown="if(event.key==='Enter')addQRItem()">
-              <button onclick="addQRItem()" class="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition shrink-0">Add</button>
-            </div>
-            <!-- Customer Row -->
-            <div class="flex items-center gap-3">
-              <label class="text-xs font-semibold text-gray-500 shrink-0">Customer</label>
-              <select id="qrBillCustomer" class="flex-1 px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 bg-white">
-                <option value="">Walk-in Customer</option>
-                <option value="c1">Rajesh Kumar</option>
-                <option value="c2">Anjali Singh</option>
-                <option value="c3">Mohammed Ibrahim</option>
-                <option value="c4">Sunita Patel</option>
-                <option value="c5">Vikram Nair</option>
-                <option value="c7">Amit Gupta</option>
-                <option value="c8">Priya Mehta</option>
-                <option value="c11">Kavita Sharma</option>
-                <option value="c12">Rohit Joshi</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Product Catalog -->
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
-              <p class="text-sm font-bold text-gray-800 shrink-0">Product Catalog</p>
-              <input id="qrProductSearch" type="text" placeholder="Search by name, SKU…" oninput="filterQRProducts()" class="w-full sm:w-56 px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            </div>
-            <!-- Category pills -->
-            <div class="flex gap-1.5 overflow-x-auto pb-2 mb-3" id="qrCategoryPills">
-              <button onclick="setQRCategory('all',this)" class="qr-cat-pill active shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold bg-indigo-600 text-white">All</button>
-            </div>
-            <!-- Product Grid -->
-            <div id="qrProductGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-72 overflow-y-auto pr-1"></div>
-            <p id="qrNoProducts" class="hidden text-center text-sm text-gray-400 py-6">No products found</p>
-          </div>
-
-        </div>
-
-        <!-- RIGHT: Bill Panel -->
-        <div class="lg:col-span-2">
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 lg:sticky lg:top-20">
-            <div class="flex items-center justify-between mb-3">
-              <p class="text-sm font-bold text-gray-800">Bill Preview</p>
-              <span id="qrBillItemCount" class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full">0 items</span>
-            </div>
-
-            <!-- Items -->
-            <div id="qrBillItems" class="space-y-2 max-h-56 overflow-y-auto mb-3 min-h-[80px]">
-              <div id="qrBillEmpty" class="flex flex-col items-center justify-center py-6 text-gray-300">
-                <svg class="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                <p class="text-sm">Scan or tap products to add</p>
+              <div class="text-right">
+                <p class="text-sm font-bold text-gray-900">&#8377;89,400</p><span
+                  class="text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">Unpaid</span>
               </div>
             </div>
-
-            <!-- Discount -->
-            <div class="flex items-center gap-2 mb-3 bg-gray-50 rounded-xl px-3 py-2">
-              <label class="text-xs font-semibold text-gray-500 shrink-0">Discount</label>
-              <input id="qrDiscount" type="number" min="0" max="100" step="0.5" value="0" oninput="renderQRBill()" class="w-16 px-2 py-1 border border-gray-200 rounded-lg text-sm text-center focus:outline-none focus:ring-2 focus:ring-indigo-400">
-              <span class="text-xs text-gray-400">%</span>
-            </div>
-
-            <!-- Totals -->
-            <div class="border-t border-gray-100 pt-3 space-y-1.5 mb-3">
-              <div class="flex justify-between text-sm"><span class="text-gray-500">Subtotal</span><span id="qrSubtotal" class="font-medium text-gray-800">₹0</span></div>
-              <div class="flex justify-between text-sm"><span class="text-gray-500">Discount</span><span id="qrDiscountAmt" class="text-green-600">−₹0</span></div>
-              <div class="flex justify-between text-sm"><span class="text-gray-500">GST (18%)</span><span id="qrGst" class="text-gray-600">₹0</span></div>
-              <div class="flex justify-between font-extrabold text-base pt-2 border-t border-gray-100">
-                <span>Total</span><span id="qrTotal" class="text-indigo-600 text-xl">₹0</span>
+            <div onclick="window.location.href =`invoice-detail.html?id=${inv.id}`;"
+              class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 cursor-pointer">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-xs font-bold text-green-700">
+                  S</div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-800">Sharma Textiles</p>
+                  <p class="text-xs text-gray-400">INV-2024-009 · 15 Jun 2024</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="text-sm font-bold text-gray-900">&#8377;11,250</p><span
+                  class="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">Paid</span>
               </div>
             </div>
-
-            <!-- Payment Mode -->
-            <div class="grid grid-cols-4 gap-1.5 mb-3">
-              <button onclick="setQRPayMode(this,'Cash')" class="qr-pay-btn py-2 rounded-xl text-xs font-semibold border-2 border-indigo-300 bg-indigo-50 text-indigo-700">Cash</button>
-              <button onclick="setQRPayMode(this,'UPI')" class="qr-pay-btn py-2 rounded-xl text-xs font-semibold border-2 border-gray-200 text-gray-600">UPI</button>
-              <button onclick="setQRPayMode(this,'Card')" class="qr-pay-btn py-2 rounded-xl text-xs font-semibold border-2 border-gray-200 text-gray-600">Card</button>
-              <button onclick="setQRPayMode(this,'Credit')" class="qr-pay-btn py-2 rounded-xl text-xs font-semibold border-2 border-gray-200 text-gray-600">Credit</button>
+            <div onclick="window.location.href =`invoice-detail.html?id=${inv.id}`;"
+              class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 cursor-pointer">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-600">
+                  G</div>
+                <div>
+                  <p class="text-sm font-semibold text-gray-800">Gupta Electronics</p>
+                  <p class="text-xs text-gray-400">INV-2024-008 · 14 Jun 2024</p>
+                </div>
+              </div>
+              <div class="text-right">
+                <p class="text-sm font-bold text-gray-900">&#8377;53,600</p><span
+                  class="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">Draft</span>
+              </div>
             </div>
+          </div>
+        </div>
+      </div><!-- /dashboard -->
 
-            <!-- Actions -->
-            <button onclick="processQRBill()" class="w-full py-3 bg-green-600 text-white rounded-xl font-bold text-sm hover:bg-green-700 transition flex items-center justify-center gap-2 mb-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Confirm &amp; Bill
+      <!-- ===== TAB: INVOICES ===== -->
+      <div id="tab-invoices" class="tab-content">
+
+        <!-- Search + Date Range -->
+        <div class="flex flex-col sm:flex-row gap-2 mb-4">
+          <div class="relative flex-1">
+            <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input id="invSearch" type="text" placeholder="Search by invoice #, customer..." oninput="filterInvoices()"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div class="relative">
+            <button class="date-range-btn" onclick="toggleDateDropdown()">
+              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span id="dateRangeLabel">Date Range</span>
+              <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
             </button>
-            <button onclick="window.location.href='invoice-create.html'" class="w-full py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-semibold hover:bg-gray-50 transition">Convert to Invoice</button>
+            <div id="dateRangeDropdown">
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-3">Quick Select</p>
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                <button class="preset-btn" onclick="applyPreset('today',this)">Today</button>
+                <button class="preset-btn" onclick="applyPreset('yesterday',this)">Yesterday</button>
+                <button class="preset-btn" onclick="applyPreset('week',this)">This Week</button>
+                <button class="preset-btn" onclick="applyPreset('month',this)">This Month</button>
+                <button class="preset-btn" onclick="applyPreset('lastmonth',this)">Last Month</button>
+                <button class="preset-btn" onclick="applyPreset('quarter',this)">This Quarter</button>
+                <button class="preset-btn" onclick="applyPreset('year',this)">This Year</button>
+              </div>
+              <p class="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Custom Range</p>
+              <div class="grid grid-cols-2 gap-2 mb-3">
+                <div><label class="text-xs text-gray-400 block mb-1">From</label><input type="date" id="dateFrom"
+                    onchange="applyCustomDate()"
+                    class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div><label class="text-xs text-gray-400 block mb-1">To</label><input type="date" id="dateTo"
+                    onchange="applyCustomDate()"
+                    class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+              </div>
+              <div class="flex gap-2">
+                <button onclick="clearDateFilter()"
+                  class="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50">Clear</button>
+                <button onclick="toggleDateDropdown()"
+                  class="flex-1 px-3 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700">Apply</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Recent QR Bills -->
-      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mt-4">
-        <div class="flex items-center justify-between mb-4">
-          <p class="text-sm font-bold text-gray-800">Recent QR Bills</p>
-          <span class="text-xs text-gray-400" id="qrBillsTotalCount"></span>
+        <!-- Status Filters -->
+        <div class="flex gap-2 overflow-x-auto pb-1 mb-4">
+          <button class="filter-pill active" id="f-all" onclick="setStatusFilter('all',this)">All <span
+              class="ml-1 text-[11px] opacity-70">32</span></button>
+          <button class="filter-pill" id="f-paid" onclick="setStatusFilter('paid',this)">Paid <span
+              class="ml-1 text-[11px] opacity-70">18</span></button>
+          <button class="filter-pill" id="f-unpaid" onclick="setStatusFilter('unpaid',this)">Unpaid <span
+              class="ml-1 text-[11px] opacity-70">9</span></button>
+          <button class="filter-pill" id="f-overdue" onclick="setStatusFilter('overdue',this)">Overdue <span
+              class="ml-1 text-[11px] opacity-70">3</span></button>
+          <button class="filter-pill" id="f-draft" onclick="setStatusFilter('draft',this)">Draft <span
+              class="ml-1 text-[11px] opacity-70">2</span></button>
         </div>
-        <!-- Desktop table -->
-        <div class="hidden md:block overflow-x-auto">
+
+        <p id="invCount" class="text-xs text-gray-400 mb-3">Showing 10 invoices</p>
+
+        <!-- Desktop Table -->
+        <div class="hidden md:block bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden mb-4">
           <table class="w-full">
-            <thead class="bg-gray-50 rounded-xl">
+            <thead class="bg-gray-50 border-b border-gray-100">
               <tr>
-                <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Bill #</th>
-                <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Customer</th>
-                <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Date &amp; Time</th>
-                <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Items</th>
-                <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Mode</th>
-                <th class="text-right text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Amount</th>
+                <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-5 py-3">Invoice #
+                </th>
+                <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Customer
+                </th>
+                <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Date</th>
+                <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Due Date
+                </th>
+                <th class="text-right text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Amount
+                </th>
+                <th class="text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Status
+                </th>
+                <th class="text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Actions
+                </th>
               </tr>
             </thead>
-            <tbody id="qrBillsTableBody" class="divide-y divide-gray-50"></tbody>
+            <tbody id="invTableBody" class="divide-y divide-gray-50"></tbody>
           </table>
         </div>
-        <!-- Mobile cards -->
-        <div id="qrBillsMobile" class="md:hidden space-y-2"></div>
-        <p id="qrBillsEmpty" class="hidden text-center text-sm text-gray-400 py-6">No QR bills yet. Process a bill to see it here.</p>
+
+        <!-- Mobile Cards -->
+        <div id="invCards" class="md:hidden space-y-3 mb-4"></div>
+
+        <p id="noInvMsg" class="hidden text-sm text-gray-400 text-center py-10">No invoices match your filter.</p>
+        <div id="invPagination" class="flex justify-center py-3"></div>
+      </div><!-- /invoices -->
+
+      <!-- ===== TAB: PAYMENTS ===== -->
+      <div id="tab-payments" class="tab-content">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="bg-gray-50 border-b border-gray-100 px-5 py-3 flex items-center justify-between">
+            <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Payment History</p>
+            <button class="text-xs font-semibold text-indigo-600 hover:underline">Export</button>
+          </div>
+          <div id="paymentsList" class="divide-y divide-gray-50"></div>
+        </div>
       </div>
 
+
+    </div><!-- /px-4 -->
+  </div><!-- /main -->
+
+  <!-- Mobile Bottom Nav -->
+  <div
+    class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-1 pb-2 pt-1 flex items-end justify-around z-30">
+    <a href="home.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5"
+        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+      </svg><span class="text-[10px] font-medium">Home</span></a>
+    <a href="customers.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5"
+        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg><span class="text-[10px] font-medium">Customers</span></a>
+    <div class="relative flex flex-col items-center" style="margin-bottom:8px">
+      <a href="engagement.html"
+        class="w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-300 -mt-5"><svg
+          class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg></a>
+      <span class="text-[10px] font-medium text-gray-400 mt-0.5">Engage</span>
     </div>
-
-  </div><!-- /px-4 -->
-</div><!-- /main -->
-
-<!-- Mobile Bottom Nav -->
-<div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-1 pb-2 pt-1 flex items-end justify-around z-30">
-  <a href="home.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="text-[10px] font-medium">Home</span></a>
-  <a href="customers.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg><span class="text-[10px] font-medium">Customers</span></a>
-  <div class="relative flex flex-col items-center" style="margin-bottom:8px">
-    <a href="engagement.html" class="w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-300 -mt-5"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></a>
-    <span class="text-[10px] font-medium text-gray-400 mt-0.5">Engage</span>
+    <a href="sales.html" class="flex flex-col items-center gap-0.5 text-indigo-600 px-2 py-1"><svg class="w-5 h-5"
+        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+      </svg><span class="text-[10px] font-medium">Sales</span></a>
+    <a href="settings.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5"
+        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg><span class="text-[10px] font-medium">Settings</span></a>
   </div>
-  <a href="sales.html" class="flex flex-col items-center gap-0.5 text-indigo-600 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg><span class="text-[10px] font-medium">Sales</span></a>
-  <a href="settings.html" class="flex flex-col items-center gap-0.5 text-gray-400 px-2 py-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="text-[10px] font-medium">Settings</span></a>
-</div>
+  <script src="/js/Sales/sales-invoice.js"></script>
+  <script>
+    // ---- DATA ----
 
-<script>
-// ---- DATA ----
-const INVOICES = [
-  {id:'INV-2024-001',customer:'Ramesh Traders',date:'2024-06-01',due:'2024-06-15',amount:18500,status:'paid'},
-  {id:'INV-2024-002',customer:'Priya Enterprises',date:'2024-06-03',due:'2024-06-18',amount:42000,status:'paid'},
-  {id:'INV-2024-003',customer:'Suresh & Sons',date:'2024-06-05',due:'2024-06-20',amount:9750,status:'overdue'},
-  {id:'INV-2024-004',customer:'Kavya Fashions',date:'2024-06-07',due:'2024-06-22',amount:31200,status:'unpaid'},
-  {id:'INV-2024-005',customer:'Mehta Pharma',date:'2024-06-08',due:'2024-06-23',amount:67800,status:'paid'},
-  {id:'INV-2024-006',customer:'Patel Hardware',date:'2024-06-10',due:'2024-06-25',amount:15400,status:'overdue'},
-  {id:'INV-2024-007',customer:'Lakshmi Stores',date:'2024-06-12',due:'2024-06-27',amount:28900,status:'unpaid'},
-  {id:'INV-2024-008',customer:'Gupta Electronics',date:'2024-06-14',due:'2024-06-29',amount:53600,status:'draft'},
-  {id:'INV-2024-009',customer:'Sharma Textiles',date:'2024-06-15',due:'2024-06-30',amount:11250,status:'paid'},
-  {id:'INV-2024-010',customer:'Jain Jewellers',date:'2024-06-16',due:'2024-07-01',amount:89400,status:'unpaid'},
-];
 
-const STATUS_COLORS = {
-  paid:'bg-green-100 text-green-700',
-  unpaid:'bg-orange-100 text-orange-700',
-  overdue:'bg-red-100 text-red-700',
-  draft:'bg-gray-100 text-gray-600'
-};
+    const STATUS_COLORS = {
+      paid: 'bg-green-100 text-green-700',
+      unpaid: 'bg-orange-100 text-orange-700',
+      overdue: 'bg-red-100 text-red-700',
+      draft: 'bg-gray-100 text-gray-600'
+    };
 
-let activeStatus = 'all';
-let activeDateFrom = null;
-let activeDateTo = null;
+    let activeStatus = 'all';
+    let activeDateFrom = null;
+    let activeDateTo = null;
 
-// ---- TAB SWITCHING ----
-function switchTab(tabId, btn) {
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.subtab').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + tabId).classList.add('active');
-  btn.classList.add('active');
-  if (tabId === 'payments') renderPayments();
-  if (tabId === 'estimates') renderEstimates();
-  if (tabId === 'creditnotes') renderCreditNotes();
-  if (tabId === 'qrbilling') { initQRProducts(); renderRecentQRBills(); }
-  if (tabId === 'invoices') filterInvoices();
-}
+    // ---- TAB SWITCHING ----
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.subtab').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      btn.classList.add('active');
+      if (tabId === 'payments') renderPayments();
+      if (tabId === 'estimates') renderEstimates();
+      if (tabId === 'creditnotes') renderCreditNotes();
+      if (tabId === 'qrbilling') { initQRProducts(); renderRecentQRBills(); }
+      if (tabId === 'invoices') filterInvoices();
+    }
 
-// ---- NAV ----
-function openMobileNav() { document.getElementById('mobileNavDrawer').style.transform='translateX(0)'; document.getElementById('mobileNavBg').classList.remove('hidden'); }
-function closeMobileNav() { document.getElementById('mobileNavDrawer').style.transform='translateX(-100%)'; document.getElementById('mobileNavBg').classList.add('hidden'); }
+    // ---- NAV ----
+    function openMobileNav() { document.getElementById('mobileNavDrawer').style.transform = 'translateX(0)'; document.getElementById('mobileNavBg').classList.remove('hidden'); }
+    function closeMobileNav() { document.getElementById('mobileNavDrawer').style.transform = 'translateX(-100%)'; document.getElementById('mobileNavBg').classList.add('hidden'); }
 
-// ---- DATE RANGE ----
-function toggleDateDropdown() {
-  document.getElementById('dateRangeDropdown').classList.toggle('open');
-  document.addEventListener('click', closeDateOnOutside, true);
-}
-function closeDateOnOutside(e) {
-  const dd = document.getElementById('dateRangeDropdown');
-  if (!dd.contains(e.target) && !e.target.closest('.date-range-btn')) {
-    dd.classList.remove('open');
-    document.removeEventListener('click', closeDateOnOutside, true);
-  }
-}
+    // ---- DATE RANGE ----
+    function toggleDateDropdown() {
+      document.getElementById('dateRangeDropdown').classList.toggle('open');
+      document.addEventListener('click', closeDateOnOutside, true);
+    }
+    function closeDateOnOutside(e) {
+      const dd = document.getElementById('dateRangeDropdown');
+      if (!dd.contains(e.target) && !e.target.closest('.date-range-btn')) {
+        dd.classList.remove('open');
+        document.removeEventListener('click', closeDateOnOutside, true);
+      }
+    }
 
-function applyPreset(preset) {
-  const now = new Date();
-  let from, to;
-  const fmt = d => d.toISOString().split('T')[0];
-  const startOf = (d, unit) => { const r = new Date(d); if(unit==='week'){r.setDate(d.getDate()-d.getDay());} else if(unit==='month'){r.setDate(1);} else if(unit==='quarter'){r.setMonth(Math.floor(d.getMonth()/3)*3,1);} else if(unit==='year'){r.setMonth(0,1);} r.setHours(0,0,0,0); return r; };
-  if (preset==='today') { from=to=fmt(now); }
-  else if (preset==='yesterday') { const y=new Date(now); y.setDate(now.getDate()-1); from=to=fmt(y); }
-  else if (preset==='week') { from=fmt(startOf(now,'week')); to=fmt(now); }
-  else if (preset==='month') { from=fmt(startOf(now,'month')); to=fmt(now); }
-  else if (preset==='lastmonth') { const lm=new Date(now); lm.setDate(0); const lms=new Date(lm); lms.setDate(1); from=fmt(lms); to=fmt(lm); }
-  else if (preset==='quarter') { from=fmt(startOf(now,'quarter')); to=fmt(now); }
-  else if (preset==='year') { from=fmt(startOf(now,'year')); to=fmt(now); }
 
-  document.getElementById('dateFrom').value = from;
-  document.getElementById('dateTo').value = to;
-  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
-  activeDateFrom = from; activeDateTo = to;
-  updateDateLabel();
-  filterInvoices();
-}
 
-function applyCustomDate() {
-  activeDateFrom = document.getElementById('dateFrom').value || null;
-  activeDateTo = document.getElementById('dateTo').value || null;
-  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-  updateDateLabel();
-  filterInvoices();
-}
 
-function clearDateFilter() {
-  activeDateFrom = null; activeDateTo = null;
-  document.getElementById('dateFrom').value = '';
-  document.getElementById('dateTo').value = '';
-  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-  updateDateLabel();
-  filterInvoices();
-  document.getElementById('dateRangeDropdown').classList.remove('open');
-}
 
-function updateDateLabel() {
-  const lbl = document.getElementById('dateRangeLabel');
-  if (activeDateFrom && activeDateTo) {
-    const fmtD = s => { const [y,m,d]=s.split('-'); return d+'/'+m+'/'+y.slice(2); };
-    lbl.textContent = fmtD(activeDateFrom) + ' – ' + fmtD(activeDateTo);
-  } else { lbl.textContent = 'Date Range'; }
-}
 
-// ---- FILTER + RENDER ----
-function setStatusFilter(status, btn) {
-  activeStatus = status;
-  document.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  filterInvoices();
-}
+    // ========== PAGINATION HELPER ==========
+    function makePagination(containerId, total, page, perPage, onPage) {
+      const pages = Math.ceil(total / perPage);
+      if (pages <= 1) { const el = document.getElementById(containerId); if (el) el.innerHTML = ''; return; }
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      let html = '<div class="flex items-center gap-1 flex-wrap">';
+      html += `<span class="text-xs text-gray-500 mr-2">${(page - 1) * perPage + 1}–${Math.min(page * perPage, total)} of ${total}</span>`;
+      html += `<button class="pg-btn" onclick="${onPage}(${page - 1})" ${page === 1 ? 'disabled' : ''}>‹</button>`;
+      for (let i = 1; i <= pages; i++) {
+        if (pages > 7 && i > 2 && i < pages - 1 && Math.abs(i - page) > 1) { if (i === 3 || i === pages - 2) html += '<span class="text-gray-400 text-xs px-1">…</span>'; continue; }
+        html += `<button class="pg-btn ${i === page ? 'active' : ''}" onclick="${onPage}(${i})">${i}</button>`;
+      }
+      html += `<button class="pg-btn" onclick="${onPage}(${page + 1})" ${page === pages ? 'disabled' : ''}>›</button>`;
+      html += '</div>';
+      el.innerHTML = html;
+    }
 
-function filterInvoices() {
-  const q = (document.getElementById('invSearch').value || '').toLowerCase();
-  let list = INVOICES.filter(inv => {
-    if (activeStatus !== 'all' && inv.status !== activeStatus) return false;
-    if (activeDateFrom && inv.date < activeDateFrom) return false;
-    if (activeDateTo && inv.date > activeDateTo) return false;
-    if (q && !inv.id.toLowerCase().includes(q) && !inv.customer.toLowerCase().includes(q)) return false;
-    return true;
-  });
-  renderInvoiceTable(list);
-}
+    // ========== INVOICES (from localStorage) ==========
+    let INV_PAGE = 1; const INV_PER = 8;
+    let currentInvList = [];
 
-function renderInvoiceTable(list, totalCount) {
-  const tbody = document.getElementById('invTableBody');
-  const cards = document.getElementById('invCards');
-  const noMsg = document.getElementById('noInvMsg');
-  const total = totalCount !== undefined ? totalCount : list.length;
-  document.getElementById('invCount').textContent = 'Showing ' + list.length + ' of ' + total + ' invoice' + (total!==1?'s':'');
 
-  if (!list.length) { tbody.innerHTML=''; cards.innerHTML=''; noMsg.classList.remove('hidden'); return; }
-  noMsg.classList.add('hidden');
 
-  const actionBtn = (inv) => {
-    if (inv.status==='paid') return `<button onclick="window.location.href='invoice-detail.html'" class="text-xs px-2.5 py-1 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50">View</button>`;
-    if (inv.status==='draft') return `<button onclick="window.location.href='invoice-create.html'" class="text-xs px-2.5 py-1 rounded-lg border border-indigo-200 text-indigo-600 hover:bg-indigo-50">Edit</button>`;
-    return `<button onclick="window.location.href='invoice-detail.html'" class="text-xs px-2.5 py-1 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">Pay</button>`;
-  };
+    function renderInvoicePage(p) {
+      if (p) INV_PAGE = p;
+      const list = currentInvList;
+      const pageItems = list.slice((INV_PAGE - 1) * INV_PER, INV_PAGE * INV_PER);
+      renderInvoiceTable(pageItems, list.length);
+      makePagination('invPagination', list.length, INV_PAGE, INV_PER, 'renderInvoicePage');
+    }
 
-  tbody.innerHTML = list.map(inv => `
-    <tr class="hover:bg-gray-50 cursor-pointer" onclick="window.location.href='invoice-detail.html'">
-      <td class="px-5 py-3.5 text-sm font-semibold text-indigo-600">${inv.id}</td>
-      <td class="px-4 py-3.5 text-sm text-gray-800">${inv.customer}</td>
-      <td class="px-4 py-3.5 text-sm text-gray-500">${inv.date}</td>
-      <td class="px-4 py-3.5 text-sm text-gray-500">${inv.due}</td>
-      <td class="px-4 py-3.5 text-sm font-bold text-gray-900 text-right">&#8377;${inv.amount.toLocaleString('en-IN')}</td>
-      <td class="px-4 py-3.5 text-center"><span class="text-xs font-semibold px-2.5 py-1 rounded-full ${STATUS_COLORS[inv.status]}">${inv.status.charAt(0).toUpperCase()+inv.status.slice(1)}</span></td>
-      <td class="px-4 py-3.5 text-center" onclick="event.stopPropagation()">${actionBtn(inv)}</td>
-    </tr>
-  `).join('');
 
-  cards.innerHTML = list.map(inv => `
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 cursor-pointer" onclick="window.location.href='invoice-detail.html'">
-      <div class="flex items-start justify-between mb-2">
-        <div><p class="text-sm font-semibold text-gray-900">${inv.customer}</p><p class="text-xs text-gray-400">${inv.id}</p></div>
-        <span class="text-xs font-semibold px-2.5 py-1 rounded-full ${STATUS_COLORS[inv.status]}">${inv.status.charAt(0).toUpperCase()+inv.status.slice(1)}</span>
+    // ========== INIT ==========
+    const todayStr = new Date().toISOString().split('T')[0];
+    const validStr = new Date(Date.now() + 15 * 86400000).toISOString().split('T')[0];
+    if (document.getElementById('estDate')) { document.getElementById('estDate').value = todayStr; document.getElementById('estValid').value = validStr; }
+    if (document.getElementById('cnDate')) document.getElementById('cnDate').value = todayStr;
+
+    
+    filterInvoices();
+    loadInvoices();
+    // renderEstimates();
+    // renderCreditNotes();
+    // renderRecentQRBills();
+  </script>
+
+
+
+  <!-- New Estimate Modal -->
+  <div id="estimateModal"
+    class="hidden fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl">
+      <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <h3 class="text-base font-bold text-gray-900">New Estimate</h3>
+        <button onclick="document.getElementById('estimateModal').classList.add('hidden')"
+          class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100"><svg
+            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg></button>
       </div>
-      <div class="flex items-center justify-between">
-        <div><p class="text-xs text-gray-400">Due: ${inv.due}</p></div>
-        <p class="text-base font-bold text-gray-900">&#8377;${inv.amount.toLocaleString('en-IN')}</p>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ---- PAYMENTS ----
-const PAYMENTS = [
-  {inv:'INV-2024-001',customer:'Ramesh Traders',date:'2024-06-14',amount:18500,mode:'UPI',ref:'UPI-7834902'},
-  {inv:'INV-2024-002',customer:'Priya Enterprises',date:'2024-06-17',amount:42000,mode:'Bank Transfer',ref:'NEFT-112345'},
-  {inv:'INV-2024-005',customer:'Mehta Pharma',date:'2024-06-22',amount:67800,mode:'Cheque',ref:'CHQ-004521'},
-  {inv:'INV-2024-009',customer:'Sharma Textiles',date:'2024-06-29',amount:11250,mode:'Cash',ref:'CSH-001'},
-];
-function renderPayments() {
-  document.getElementById('paymentsList').innerHTML = PAYMENTS.map(p => `
-    <div class="flex items-center justify-between px-5 py-4 hover:bg-gray-50">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>
-        <div><p class="text-sm font-semibold text-gray-800">${p.customer}</p><p class="text-xs text-gray-400">${p.inv} · ${p.date} · ${p.mode}</p><p class="text-xs text-gray-400">Ref: ${p.ref}</p></div>
-      </div>
-      <p class="text-sm font-bold text-green-600">+&#8377;${p.amount.toLocaleString('en-IN')}</p>
-    </div>
-  `).join('');
-}
-
-// ---- ESTIMATES ----
-const ESTIMATES = [
-  {id:'EST-2024-001',customer:'Nisha Boutique',date:'2024-06-10',valid:'2024-06-25',amount:28000,status:'Sent'},
-  {id:'EST-2024-002',customer:'Ravi Constructions',date:'2024-06-12',valid:'2024-06-27',amount:95000,status:'Accepted'},
-  {id:'EST-2024-003',customer:'Om Traders',date:'2024-06-15',valid:'2024-06-30',amount:12500,status:'Draft'},
-  {id:'EST-2024-004',customer:'Sunrise Cafe',date:'2024-06-16',valid:'2024-07-01',amount:8900,status:'Expired'},
-];
-const EST_COLORS = {Sent:'bg-blue-100 text-blue-700',Accepted:'bg-green-100 text-green-700',Draft:'bg-gray-100 text-gray-600',Expired:'bg-red-100 text-red-600'};
-function renderEstimates() {
-  document.getElementById('estimatesList').innerHTML = ESTIMATES.map(e => `
-    <div class="flex items-center justify-between px-5 py-4 hover:bg-gray-50 cursor-pointer">
-      <div><p class="text-sm font-semibold text-gray-800">${e.customer}</p><p class="text-xs text-gray-400">${e.id} · ${e.date} · Valid till ${e.valid}</p></div>
-      <div class="text-right"><p class="text-sm font-bold text-gray-900">&#8377;${e.amount.toLocaleString('en-IN')}</p><span class="text-xs font-semibold px-2 py-0.5 rounded-full ${EST_COLORS[e.status]}">${e.status}</span></div>
-    </div>
-  `).join('');
-}
-
-// ---- CREDIT NOTES ----
-const CREDIT_NOTES = [
-  {id:'CN-2024-001',customer:'Suresh & Sons',date:'2024-06-08',amount:2500,reason:'Goods returned – damaged',status:'Applied'},
-  {id:'CN-2024-002',customer:'Patel Hardware',date:'2024-06-11',amount:1800,reason:'Price correction',status:'Open'},
-  {id:'CN-2024-003',customer:'Kavya Fashions',date:'2024-06-14',amount:4200,reason:'Product discount applied post-invoice',status:'Open'},
-];
-const CN_COLORS = {Applied:'bg-green-100 text-green-700',Open:'bg-orange-100 text-orange-700'};
-function renderCreditNotes() {
-  document.getElementById('creditNotesList').innerHTML = CREDIT_NOTES.map(c => `
-    <div class="flex items-center justify-between px-5 py-4 hover:bg-gray-50 cursor-pointer">
-      <div><p class="text-sm font-semibold text-gray-800">${c.customer}</p><p class="text-xs text-gray-400">${c.id} · ${c.date}</p><p class="text-xs text-gray-400">${c.reason}</p></div>
-      <div class="text-right"><p class="text-sm font-bold text-red-600">-&#8377;${c.amount.toLocaleString('en-IN')}</p><span class="text-xs font-semibold px-2 py-0.5 rounded-full ${CN_COLORS[c.status]}">${c.status}</span></div>
-    </div>
-  `).join('');
-}
-
-
-// ========== PAGINATION HELPER ==========
-function makePagination(containerId, total, page, perPage, onPage) {
-  const pages = Math.ceil(total / perPage);
-  if (pages <= 1) { const el = document.getElementById(containerId); if(el) el.innerHTML=''; return; }
-  const el = document.getElementById(containerId);
-  if (!el) return;
-  let html = '<div class="flex items-center gap-1 flex-wrap">';
-  html += `<span class="text-xs text-gray-500 mr-2">${(page-1)*perPage+1}–${Math.min(page*perPage,total)} of ${total}</span>`;
-  html += `<button class="pg-btn" onclick="${onPage}(${page-1})" ${page===1?'disabled':''}>‹</button>`;
-  for (let i=1;i<=pages;i++) {
-    if (pages > 7 && i > 2 && i < pages-1 && Math.abs(i-page) > 1) { if(i===3||i===pages-2) html+='<span class="text-gray-400 text-xs px-1">…</span>'; continue; }
-    html += `<button class="pg-btn ${i===page?'active':''}" onclick="${onPage}(${i})">${i}</button>`;
-  }
-  html += `<button class="pg-btn" onclick="${onPage}(${page+1})" ${page===pages?'disabled':''}>›</button>`;
-  html += '</div>';
-  el.innerHTML = html;
-}
-
-// ========== INVOICES (from localStorage) ==========
-let INV_PAGE = 1; const INV_PER = 8;
-let currentInvList = [];
-
-function initInvoices() {
-  // Merge localStorage + static INVOICES
-  const stored = RMData.getInvoices();
-  // override static
-  INVOICES.forEach(si => { if (!stored.find(s => s.id === si.id)) stored.push(si); });
-  return stored;
-}
-
-function filterInvoices() {
-  INV_PAGE = 1;
-  const q = (document.getElementById('invSearch')?.value || '').toLowerCase();
-  const all = initInvoices();
-  let list = all.filter(inv => {
-    if (activeStatus !== 'all' && inv.status !== activeStatus) return false;
-    if (activeDateFrom && inv.date < activeDateFrom) return false;
-    if (activeDateTo && inv.date > activeDateTo) return false;
-    if (q && !inv.id.toLowerCase().includes(q) && !(inv.customer||'').toLowerCase().includes(q)) return false;
-    return true;
-  });
-  currentInvList = list;
-  renderInvoicePage();
-}
-
-function renderInvoicePage(p) {
-  if (p) INV_PAGE = p;
-  const list = currentInvList;
-  const pageItems = list.slice((INV_PAGE-1)*INV_PER, INV_PAGE*INV_PER);
-  renderInvoiceTable(pageItems, list.length);
-  makePagination('invPagination', list.length, INV_PAGE, INV_PER, 'renderInvoicePage');
-}
-
-// ========== ESTIMATES ==========
-let EST_PAGE = 1; const EST_PER = 6;
-function renderEstimates(p) {
-  if (p) EST_PAGE = p;
-  const items = ESTIMATES.slice((EST_PAGE-1)*EST_PER, EST_PAGE*EST_PER);
-  document.getElementById('estimatesList').innerHTML = items.map(e => `
-    <div class="flex items-center justify-between px-5 py-4 hover:bg-gray-50 cursor-pointer">
-      <div><p class="text-sm font-semibold text-gray-800">${e.customer}</p><p class="text-xs text-gray-400">${e.id} · ${e.date} · Valid till ${e.valid}</p></div>
-      <div class="text-right"><p class="text-sm font-bold text-gray-900">&#8377;${e.amount.toLocaleString('en-IN')}</p><span class="text-xs font-semibold px-2 py-0.5 rounded-full ${EST_COLORS[e.status]}">${e.status}</span></div>
-    </div>`).join('');
-  makePagination('estPagination', ESTIMATES.length, EST_PAGE, EST_PER, 'renderEstimates');
-}
-
-// ========== CREDIT NOTES ==========
-let CN_PAGE = 1; const CN_PER = 6;
-function renderCreditNotes(p) {
-  if (p) CN_PAGE = p;
-  const items = CREDIT_NOTES.slice((CN_PAGE-1)*CN_PER, CN_PAGE*CN_PER);
-  document.getElementById('creditNotesList').innerHTML = items.map(c => `
-    <div class="flex items-center justify-between px-5 py-4 hover:bg-gray-50 cursor-pointer">
-      <div><p class="text-sm font-semibold text-gray-800">${c.customer}</p><p class="text-xs text-gray-400">${c.id} · ${c.date}</p><p class="text-xs text-gray-400">${c.reason}</p></div>
-      <div class="text-right"><p class="text-sm font-bold text-red-600">-&#8377;${c.amount.toLocaleString('en-IN')}</p><span class="text-xs font-semibold px-2 py-0.5 rounded-full ${CN_COLORS[c.status]}">${c.status}</span></div>
-    </div>`).join('');
-  makePagination('cnPagination', CREDIT_NOTES.length, CN_PAGE, CN_PER, 'renderCreditNotes');
-}
-
-// ========== QR BILLING ==========
-let qrBillItems = [];
-let qrPayMode = 'Cash';
-let qrActiveCategory = 'all';
-const QR_PRODUCTS_MAP = {};
-let QR_ALL_PRODUCTS = [];
-
-function initQRProducts() {
-  QR_ALL_PRODUCTS = RMData.getProducts();
-  QR_ALL_PRODUCTS.forEach(p => { QR_PRODUCTS_MAP[p.sku] = p; QR_PRODUCTS_MAP[p.id] = p; });
-  buildCategoryPills();
-  filterQRProducts();
-  qrUpdateKPIs();
-}
-
-function qrUpdateKPIs() {
-  const bills = JSON.parse(localStorage.getItem('rm_qr_bills') || '[]');
-  const today = new Date().toISOString().split('T')[0];
-  const todayBills = bills.filter(b => b.date === today);
-  const revenue = todayBills.reduce((s, b) => s + (b.amount || 0), 0);
-  const lowStock = QR_ALL_PRODUCTS.filter(p => (p.stock || 0) <= (p.reorderLevel || 5)).length;
-  const el = id => document.getElementById(id);
-  if (el('qrKpiToday')) el('qrKpiToday').textContent = todayBills.length;
-  if (el('qrKpiRevenue')) el('qrKpiRevenue').textContent = '₹' + revenue.toLocaleString('en-IN');
-  if (el('qrKpiProducts')) el('qrKpiProducts').textContent = QR_ALL_PRODUCTS.length;
-  if (el('qrKpiLowStock')) el('qrKpiLowStock').textContent = lowStock;
-}
-
-function buildCategoryPills() {
-  const cats = ['all', ...new Set(QR_ALL_PRODUCTS.map(p => p.category).filter(Boolean))];
-  const container = document.getElementById('qrCategoryPills');
-  if (!container) return;
-  container.innerHTML = cats.map(cat =>
-    `<button onclick="setQRCategory('${cat}',this)" class="qr-cat-pill shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition ${cat === qrActiveCategory ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}">${cat === 'all' ? 'All' : cat}</button>`
-  ).join('');
-}
-
-function setQRCategory(cat, btn) {
-  qrActiveCategory = cat;
-  document.querySelectorAll('.qr-cat-pill').forEach(b => {
-    b.className = 'qr-cat-pill shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold transition ' + (b === btn ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200');
-  });
-  filterQRProducts();
-}
-
-function filterQRProducts() {
-  const q = (document.getElementById('qrProductSearch')?.value || '').toLowerCase();
-  let list = QR_ALL_PRODUCTS;
-  if (qrActiveCategory !== 'all') list = list.filter(p => p.category === qrActiveCategory);
-  if (q) list = list.filter(p => p.name.toLowerCase().includes(q) || (p.sku || '').toLowerCase().includes(q));
-  renderQRProductGrid(list);
-}
-
-function renderQRProductGrid(list) {
-  const grid = document.getElementById('qrProductGrid');
-  const noMsg = document.getElementById('qrNoProducts');
-  if (!grid) return;
-  if (!list.length) {
-    grid.innerHTML = '';
-    if (noMsg) noMsg.classList.remove('hidden');
-    return;
-  }
-  if (noMsg) noMsg.classList.add('hidden');
-  const PAY_COLORS = { Electronics:'bg-blue-50 text-blue-600', Furniture:'bg-amber-50 text-amber-700', Textiles:'bg-purple-50 text-purple-700', Pharmacy:'bg-green-50 text-green-700', Jewellery:'bg-yellow-50 text-yellow-700' };
-  grid.innerHTML = list.slice(0, 30).map(p => {
-    const inCart = qrBillItems.find(i => i.sku === p.sku);
-    const outOfStock = (p.stock || 0) <= 0;
-    const catColor = PAY_COLORS[p.category] || 'bg-gray-50 text-gray-600';
-    return `<div onclick="${outOfStock ? '' : `qrAddBySku('${p.sku}')`}" class="rounded-xl border ${outOfStock ? 'border-gray-100 opacity-50 cursor-not-allowed' : inCart ? 'border-indigo-300 bg-indigo-50 cursor-pointer' : 'border-gray-100 hover:border-indigo-200 hover:bg-indigo-50/40 cursor-pointer'} p-3 transition select-none">
-      <p class="text-xs font-bold text-gray-800 truncate leading-tight">${p.name}</p>
-      <p class="text-[10px] text-gray-400 mb-1.5">${p.sku}</p>
-      <div class="flex items-center justify-between">
-        <p class="text-sm font-extrabold text-indigo-600">₹${(p.price || 0).toLocaleString('en-IN')}</p>
-        <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${outOfStock ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}">${outOfStock ? 'OOS' : 'Stk:' + (p.stock || 0)}</span>
-      </div>
-      ${inCart ? `<p class="text-[10px] font-bold text-indigo-600 mt-1">✓ In cart (${inCart.qty})</p>` : ''}
-    </div>`;
-  }).join('');
-}
-
-function simulateQRScan() {
-  const el = document.getElementById('scanLine');
-  el.classList.remove('hidden');
-  el.style.animation = 'none'; el.offsetHeight; el.style.animation = '';
-  const avail = QR_ALL_PRODUCTS.filter(p => (p.stock || 0) > 0);
-  const p = avail[Math.floor(Math.random() * avail.length)];
-  if (!p) return;
-  setTimeout(() => { el.classList.add('hidden'); qrAddBySku(p.sku); showToast('QR scanned: ' + p.name); }, 1200);
-}
-
-function qrAddBySku(sku) {
-  const p = QR_PRODUCTS_MAP[sku];
-  if (!p) { showToast('Product not found: ' + sku); return; }
-  if ((p.stock || 0) <= 0) { showToast('⚠️ Out of stock: ' + p.name); return; }
-  const existing = qrBillItems.find(i => i.sku === p.sku);
-  if (existing) {
-    if (existing.qty >= (p.stock || 99)) { showToast('⚠️ Max stock reached for ' + p.name); return; }
-    existing.qty++;
-  } else {
-    qrBillItems.push({ id: p.id, sku: p.sku, name: p.name, price: p.price || 0, cost: p.cost || 0, gst: 18, qty: 1, stock: p.stock || 99 });
-  }
-  renderQRBill();
-  filterQRProducts();
-}
-
-function addQRItem() {
-  const val = (document.getElementById('qrCodeInput')?.value || '').trim();
-  if (!val) return;
-  const match = QR_PRODUCTS_MAP[val] || QR_ALL_PRODUCTS.find(p => p.name.toLowerCase().includes(val.toLowerCase()));
-  if (match) { qrAddBySku(match.sku || match.id); } else { showToast('No product found for: ' + val); }
-  document.getElementById('qrCodeInput').value = '';
-}
-
-function changeQRQty(sku, delta) {
-  const item = qrBillItems.find(i => i.sku === sku);
-  if (!item) return;
-  item.qty = Math.max(1, Math.min(item.qty + delta, item.stock));
-  renderQRBill();
-  filterQRProducts();
-}
-
-function removeQRItem(sku) {
-  qrBillItems = qrBillItems.filter(i => i.sku !== sku);
-  renderQRBill();
-  filterQRProducts();
-}
-
-function clearQRBill() {
-  qrBillItems = [];
-  if (document.getElementById('qrDiscount')) document.getElementById('qrDiscount').value = 0;
-  renderQRBill();
-  filterQRProducts();
-}
-
-function renderQRBill() {
-  const container = document.getElementById('qrBillItems');
-  const empty = document.getElementById('qrBillEmpty');
-  const countEl = document.getElementById('qrBillItemCount');
-  const discountPct = parseFloat(document.getElementById('qrDiscount')?.value || 0) || 0;
-  if (!qrBillItems.length) {
-    container.innerHTML = '';
-    if (empty) { empty.style.display = 'flex'; container.appendChild(empty); }
-    if (countEl) countEl.textContent = '0 items';
-    ['qrSubtotal','qrDiscountAmt','qrGst','qrTotal'].forEach(id => { const e = document.getElementById(id); if(e) e.textContent = id === 'qrDiscountAmt' ? '−₹0' : '₹0'; });
-    return;
-  }
-  if (empty) empty.style.display = 'none';
-  let subtotal = 0;
-  container.innerHTML = qrBillItems.map(item => {
-    const line = item.qty * item.price;
-    subtotal += line;
-    return `<div class="flex items-center gap-2 py-2 border-b border-gray-50">
-      <div class="flex-1 min-w-0">
-        <p class="text-xs font-semibold text-gray-800 truncate">${item.name}</p>
-        <p class="text-[10px] text-gray-400">₹${item.price.toLocaleString('en-IN')} each</p>
-      </div>
-      <div class="flex items-center gap-1 shrink-0">
-        <button onclick="changeQRQty('${item.sku}',-1)" class="w-6 h-6 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-100 text-xs font-bold">−</button>
-        <span class="text-xs font-bold w-5 text-center">${item.qty}</span>
-        <button onclick="changeQRQty('${item.sku}',1)" class="w-6 h-6 rounded-lg border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-100 text-xs font-bold">+</button>
-        <button onclick="removeQRItem('${item.sku}')" class="w-6 h-6 rounded-lg text-red-400 hover:bg-red-50 flex items-center justify-center ml-0.5 text-xs">✕</button>
-      </div>
-      <span class="text-xs font-bold text-gray-800 w-16 text-right shrink-0">₹${line.toLocaleString('en-IN')}</span>
-    </div>`;
-  }).join('');
-  const discAmt = subtotal * discountPct / 100;
-  const afterDisc = subtotal - discAmt;
-  const gst = afterDisc * 0.18;
-  const total = afterDisc + gst;
-  if (countEl) countEl.textContent = qrBillItems.length + ' item' + (qrBillItems.length !== 1 ? 's' : '');
-  const fmt = v => '₹' + v.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  document.getElementById('qrSubtotal').textContent = fmt(subtotal);
-  document.getElementById('qrDiscountAmt').textContent = '−' + fmt(discAmt);
-  document.getElementById('qrGst').textContent = fmt(gst);
-  document.getElementById('qrTotal').textContent = fmt(total);
-}
-
-function setQRPayMode(btn, mode) {
-  qrPayMode = mode;
-  document.querySelectorAll('.qr-pay-btn').forEach(b => { b.className = 'qr-pay-btn py-2 rounded-xl text-xs font-semibold border-2 border-gray-200 text-gray-600'; });
-  btn.className = 'qr-pay-btn py-2 rounded-xl text-xs font-semibold border-2 border-indigo-300 bg-indigo-50 text-indigo-700';
-}
-
-function processQRBill() {
-  if (!qrBillItems.length) { showToast('Add items to bill first'); return; }
-  // Reduce stock immediately
-  qrBillItems.forEach(item => {
-    RMData.adjustStock(item.id, -item.qty, 'Sale', 'QR-BILL-' + Date.now(), 'QR quick bill');
-  });
-  const custEl = document.getElementById('qrBillCustomer');
-  const custName = custEl.options[custEl.selectedIndex].text;
-  const custId = custEl.value;
-  const discountPct = parseFloat(document.getElementById('qrDiscount')?.value || 0) || 0;
-  const invNum = RMData.nextInvoiceNum();
-  const today = new Date().toISOString().split('T')[0];
-  const due = new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0];
-
-  // Save draft to localStorage so invoice-create can read it
-  const draft = {
-    id: invNum,
-    customer: custName || 'Walk-in Customer',
-    customerId: custId || '',
-    date: today,
-    due,
-    payMode: qrPayMode,
-    discountPct,
-    items: qrBillItems.map(i => ({ name: i.name, sku: i.sku, qty: i.qty, rate: i.price, gst: 18, desc: 'SKU: ' + i.sku }))
-  };
-  localStorage.setItem('rm_qr_draft', JSON.stringify(draft));
-
-  // Navigate to invoice-create with the draft
-  window.location.href = 'invoice-create.html?from=qr';
-}
-
-function renderRecentQRBills() {
-  const bills = JSON.parse(localStorage.getItem('rm_qr_bills') || '[]');
-  const tbody = document.getElementById('qrBillsTableBody');
-  const mobile = document.getElementById('qrBillsMobile');
-  const emptyMsg = document.getElementById('qrBillsEmpty');
-  const countEl = document.getElementById('qrBillsTotalCount');
-  if (countEl) countEl.textContent = bills.length + ' total';
-  if (!bills.length) {
-    if (tbody) tbody.innerHTML = '';
-    if (mobile) mobile.innerHTML = '';
-    if (emptyMsg) emptyMsg.classList.remove('hidden');
-    return;
-  }
-  if (emptyMsg) emptyMsg.classList.add('hidden');
-  const PAY_COLORS = { Cash:'bg-green-100 text-green-700', UPI:'bg-blue-100 text-blue-700', Card:'bg-purple-100 text-purple-700', Credit:'bg-orange-100 text-orange-700' };
-  if (tbody) {
-    tbody.innerHTML = bills.slice(0, 10).map(b => {
-      const ts = b.timestamp ? new Date(b.timestamp) : new Date(b.date);
-      const timeStr = ts.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-      const pc = PAY_COLORS[b.payMode] || 'bg-gray-100 text-gray-600';
-      return `<tr class="hover:bg-gray-50/50 transition">
-        <td class="px-4 py-3 text-sm font-bold text-indigo-600">${b.id}</td>
-        <td class="px-4 py-3 text-sm text-gray-700">${b.customer}</td>
-        <td class="px-4 py-3 text-xs text-gray-400">${b.date} ${timeStr}</td>
-        <td class="px-4 py-3 text-sm text-gray-600">${(b.items || []).length} items</td>
-        <td class="px-4 py-3"><span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${pc}">${b.payMode || 'Cash'}</span></td>
-        <td class="px-4 py-3 text-sm font-bold text-gray-900 text-right">₹${b.amount.toLocaleString('en-IN')}</td>
-      </tr>`;
-    }).join('');
-  }
-  if (mobile) {
-    mobile.innerHTML = bills.slice(0, 6).map(b => {
-      const pc = PAY_COLORS[b.payMode] || 'bg-gray-100 text-gray-600';
-      return `<div class="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
-        <div><p class="text-sm font-bold text-indigo-600">${b.id}</p><p class="text-xs text-gray-400">${b.customer} · ${b.date}</p></div>
-        <div class="text-right"><p class="text-sm font-bold text-gray-900">₹${b.amount.toLocaleString('en-IN')}</p><span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full ${pc}">${b.payMode || 'Cash'}</span></div>
-      </div>`;
-    }).join('');
-  }
-}
-
-// ========== INIT ==========
-const todayStr = new Date().toISOString().split('T')[0];
-const validStr = new Date(Date.now() + 15*86400000).toISOString().split('T')[0];
-if(document.getElementById('estDate')) { document.getElementById('estDate').value = todayStr; document.getElementById('estValid').value = validStr; }
-if(document.getElementById('cnDate')) document.getElementById('cnDate').value = todayStr;
-
-initQRProducts();
-filterInvoices();
-renderEstimates();
-renderCreditNotes();
-renderRecentQRBills();
-</script>
-
-<!-- New Estimate Modal -->
-<div id="estimateModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4">
-  <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl">
-    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-      <h3 class="text-base font-bold text-gray-900">New Estimate</h3>
-      <button onclick="document.getElementById('estimateModal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-    </div>
-    <div class="px-6 py-4 space-y-3">
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">Estimate No.</label>
-          <input type="text" value="EST-2024-005" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+      <div class="px-6 py-4 space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Estimate No.</label>
+            <input type="text" value="EST-2024-005"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Date</label>
+            <input type="date" id="estDate"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+          </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">Date</label>
-          <input type="date" id="estDate" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Customer</label>
+          <select
+            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+            <option value="">Select customer...</option>
+            <option>Nisha Boutique</option>
+            <option>Ravi Constructions</option>
+            <option>Kavya Fashions</option>
+            <option>Om Traders</option>
+            <option>Patel Hardware</option>
+          </select>
         </div>
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">Customer</label>
-        <select class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
-          <option value="">Select customer...</option>
-          <option>Nisha Boutique</option>
-          <option>Ravi Constructions</option>
-          <option>Kavya Fashions</option>
-          <option>Om Traders</option>
-          <option>Patel Hardware</option>
-        </select>
-      </div>
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">Valid Until</label>
-          <input type="date" id="estValid" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">Estimate Amount (₹)</label>
-          <input type="number" placeholder="0.00" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
-        </div>
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">Description / Scope</label>
-        <textarea rows="3" placeholder="Describe the estimate scope..." class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">Status</label>
-        <select class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
-          <option>Draft</option>
-          <option>Sent</option>
-          <option>Accepted</option>
-          <option>Expired</option>
-        </select>
-      </div>
-    </div>
-    <div class="px-6 py-4 border-t border-gray-100 flex gap-3">
-      <button onclick="document.getElementById('estimateModal').classList.add('hidden')" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold">Cancel</button>
-      <button onclick="saveEstimate()" class="flex-1 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700">Save Estimate</button>
-    </div>
-  </div>
-</div>
-
-<!-- New Credit Note Modal -->
-<div id="creditNoteModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4">
-  <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl">
-    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-      <h3 class="text-base font-bold text-gray-900">New Credit Note</h3>
-      <button onclick="document.getElementById('creditNoteModal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-    </div>
-    <div class="px-6 py-4 space-y-3">
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">Credit Note No.</label>
-          <input type="text" value="CN-2024-004" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Valid Until</label>
+            <input type="date" id="estValid"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Estimate Amount (₹)</label>
+            <input type="number" placeholder="0.00"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+          </div>
         </div>
         <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">Date</label>
-          <input type="date" id="cnDate" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
-        </div>
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">Customer</label>
-        <select class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
-          <option value="">Select customer...</option>
-          <option>Nisha Boutique</option>
-          <option>Ravi Constructions</option>
-          <option>Kavya Fashions</option>
-          <option>Om Traders</option>
-          <option>Patel Hardware</option>
-        </select>
-      </div>
-      <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">Against Invoice</label>
-        <select class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
-          <option value="">Select invoice...</option>
-          <option>INV-2024-001 – Suresh &amp; Sons – ₹28,380</option>
-          <option>INV-2024-002 – Patel Hardware – ₹12,980</option>
-          <option>INV-2024-004 – Kavya Fashions – ₹36,816</option>
-        </select>
-      </div>
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1">Credit Amount (₹)</label>
-          <input type="number" placeholder="0.00" class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Description / Scope</label>
+          <textarea rows="3" placeholder="Describe the estimate scope..."
+            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-500 mb-1">Status</label>
-          <select class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
-            <option>Open</option>
-            <option>Applied</option>
+          <select
+            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+            <option>Draft</option>
+            <option>Sent</option>
+            <option>Accepted</option>
+            <option>Expired</option>
           </select>
         </div>
       </div>
-      <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">Reason</label>
-        <select class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
-          <option>Goods returned – damaged</option>
-          <option>Price correction</option>
-          <option>Product discount applied post-invoice</option>
-          <option>Service not delivered</option>
-          <option>Other</option>
-        </select>
+      <div class="px-6 py-4 border-t border-gray-100 flex gap-3">
+        <button onclick="document.getElementById('estimateModal').classList.add('hidden')"
+          class="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold">Cancel</button>
+        <button onclick="saveEstimate()"
+          class="flex-1 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700">Save
+          Estimate</button>
       </div>
-      <div>
-        <label class="block text-xs font-semibold text-gray-500 mb-1">Remarks</label>
-        <textarea rows="2" placeholder="Additional notes..." class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
-      </div>
-    </div>
-    <div class="px-6 py-4 border-t border-gray-100 flex gap-3">
-      <button onclick="document.getElementById('creditNoteModal').classList.add('hidden')" class="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold">Cancel</button>
-      <button onclick="saveCreditNote()" class="flex-1 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700">Save Credit Note</button>
     </div>
   </div>
-</div>
+
+  <!-- New Credit Note Modal -->
+  <div id="creditNoteModal"
+    class="hidden fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4">
+    <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl">
+      <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <h3 class="text-base font-bold text-gray-900">New Credit Note</h3>
+        <button onclick="document.getElementById('creditNoteModal').classList.add('hidden')"
+          class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100"><svg
+            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg></button>
+      </div>
+      <div class="px-6 py-4 space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Credit Note No.</label>
+            <input type="text" value="CN-2024-004"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Date</label>
+            <input type="date" id="cnDate"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Customer</label>
+          <select
+            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+            <option value="">Select customer...</option>
+            <option>Nisha Boutique</option>
+            <option>Ravi Constructions</option>
+            <option>Kavya Fashions</option>
+            <option>Om Traders</option>
+            <option>Patel Hardware</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Against Invoice</label>
+          <select
+            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+            <option value="">Select invoice...</option>
+            <option>INV-2024-001 – Suresh &amp; Sons – ₹28,380</option>
+            <option>INV-2024-002 – Patel Hardware – ₹12,980</option>
+            <option>INV-2024-004 – Kavya Fashions – ₹36,816</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Credit Amount (₹)</label>
+            <input type="number" placeholder="0.00"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Status</label>
+            <select
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+              <option>Open</option>
+              <option>Applied</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Reason</label>
+          <select
+            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+            <option>Goods returned – damaged</option>
+            <option>Price correction</option>
+            <option>Product discount applied post-invoice</option>
+            <option>Service not delivered</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Remarks</label>
+          <textarea rows="2" placeholder="Additional notes..."
+            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
+        </div>
+      </div>
+      <div class="px-6 py-4 border-t border-gray-100 flex gap-3">
+        <button onclick="document.getElementById('creditNoteModal').classList.add('hidden')"
+          class="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold">Cancel</button>
+        <button onclick="saveCreditNote()"
+          class="flex-1 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700">Save
+          Credit Note</button>
+      </div>
+    </div>
+  </div>
 
 </body>
+
 </html>
+
+
+
+
+
+
+
+<!-- ===== TAB: ESTIMATES ===== -->
+<!-- <div id="tab-estimates" class="tab-content">
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-sm text-gray-500">Quotations &amp; estimates sent to customers</p>
+          <button onclick="document.getElementById('estimateModal').classList.remove('hidden')"
+            class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>New Estimate
+          </button>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div id="estimatesList" class="divide-y divide-gray-50"></div>
+          <div id="estPagination" class="flex justify-center py-3"></div>
+        </div>
+      </div> -->
+
+<!-- ===== TAB: CREDIT NOTES ===== -->
+<!-- <div id="tab-creditnotes" class="tab-content">
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-sm text-gray-500">Credit notes issued against invoices</p>
+          <button onclick="document.getElementById('creditNoteModal').classList.remove('hidden')"
+            class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>New Credit Note
+          </button>
+        </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div id="creditNotesList" class="divide-y divide-gray-50"></div>
+          <div id="cnPagination" class="flex justify-center py-3"></div>
+        </div>
+      </div> -->
+
+
+<!-- ===== TAB: QR BILLING ===== -->
+<div id="tab-qrbilling" class="tab-content">
+
+  <!-- KPI Strip -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+      <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Today's Bills</p>
+      <p class="text-2xl font-extrabold text-gray-900 mt-1" id="qrKpiToday">0</p>
+    </div>
+    <div class="bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl shadow-sm p-4">
+      <p class="text-[10px] font-bold text-indigo-200 uppercase tracking-widest">Today's Revenue</p>
+      <p class="text-2xl font-extrabold text-white mt-1" id="qrKpiRevenue">₹0</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+      <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Products</p>
+      <p class="text-2xl font-extrabold text-gray-900 mt-1" id="qrKpiProducts">0</p>
+    </div>
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+      <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Low Stock</p>
+      <p class="text-2xl font-extrabold text-red-500 mt-1" id="qrKpiLowStock">0</p>
+    </div>
+  </div>
+
+  <!-- Main 2-panel layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+
+    <!-- LEFT: Scanner + Product Catalog -->
+    <div class="lg:col-span-3 space-y-4">
+
+      <!-- Scanner Panel -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-sm font-bold text-gray-800">⚡ Scanner</p>
+          <button onclick="clearQRBill()"
+            class="text-xs text-red-400 hover:text-red-600 font-semibold px-2 py-1 rounded-lg hover:bg-red-50 transition">✕
+            Clear Bill</button>
+        </div>
+        <div id="qrScanArea"
+          class="w-full h-28 bg-gray-900 rounded-xl flex items-center justify-center cursor-pointer mb-3 relative overflow-hidden select-none"
+          onclick="simulateQRScan()">
+          <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/60 to-gray-900"></div>
+          <div class="relative z-10 flex flex-col items-center gap-1.5">
+            <svg class="w-8 h-8 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h2M4 12v.01M12 8h.01M8 12h.01M8 20h.01M20 12h.01M16 4h.01M4 16h.01M4 8h.01" />
+            </svg>
+            <p class="text-white text-xs font-semibold">Tap to Simulate Scan</p>
+          </div>
+          <div id="scanLine" class="hidden absolute left-0 right-0 h-0.5 bg-green-400 shadow-lg shadow-green-400"
+            style="top:30%;animation:scan 1.5s linear infinite"></div>
+        </div>
+        <div class="flex gap-2 mb-3">
+          <input id="qrCodeInput" type="text" placeholder="Enter SKU, QR code or product name..."
+            class="flex-1 px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            onkeydown="if(event.key==='Enter')addQRItem()">
+          <button onclick="addQRItem()"
+            class="px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition shrink-0">Add</button>
+        </div>
+        <!-- Customer Row -->
+        <div class="flex items-center gap-3">
+          <label class="text-xs font-semibold text-gray-500 shrink-0">Customer</label>
+          <select id="qrBillCustomer"
+            class="flex-1 px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 bg-white">
+            <option value="">Walk-in Customer</option>
+            <option value="c1">Rajesh Kumar</option>
+            <option value="c2">Anjali Singh</option>
+            <option value="c3">Mohammed Ibrahim</option>
+            <option value="c4">Sunita Patel</option>
+            <option value="c5">Vikram Nair</option>
+            <option value="c7">Amit Gupta</option>
+            <option value="c8">Priya Mehta</option>
+            <option value="c11">Kavita Sharma</option>
+            <option value="c12">Rohit Joshi</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Product Catalog -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
+          <p class="text-sm font-bold text-gray-800 shrink-0">Product Catalog</p>
+          <input id="qrProductSearch" type="text" placeholder="Search by name, SKU…" oninput="filterQRProducts()"
+            class="w-full sm:w-56 px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <!-- Category pills -->
+        <div class="flex gap-1.5 overflow-x-auto pb-2 mb-3" id="qrCategoryPills">
+          <button onclick="setQRCategory('all',this)"
+            class="qr-cat-pill active shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold bg-indigo-600 text-white">All</button>
+        </div>
+        <!-- Product Grid -->
+        <div id="qrProductGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-72 overflow-y-auto pr-1"></div>
+        <p id="qrNoProducts" class="hidden text-center text-sm text-gray-400 py-6">No products found</p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Bill Panel -->
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 lg:sticky lg:top-20">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-sm font-bold text-gray-800">Bill Preview</p>
+          <span id="qrBillItemCount" class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2.5 py-1 rounded-full">0
+            items</span>
+        </div>
+
+        <!-- Items -->
+        <div id="qrBillItems" class="space-y-2 max-h-56 overflow-y-auto mb-3 min-h-[80px]">
+          <div id="qrBillEmpty" class="flex flex-col items-center justify-center py-6 text-gray-300">
+            <svg class="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            <p class="text-sm">Scan or tap products to add</p>
+          </div>
+        </div>
+
+        <!-- Discount -->
+        <div class="flex items-center gap-2 mb-3 bg-gray-50 rounded-xl px-3 py-2">
+          <label class="text-xs font-semibold text-gray-500 shrink-0">Discount</label>
+          <input id="qrDiscount" type="number" min="0" max="100" step="0.5" value="0" oninput="renderQRBill()"
+            class="w-16 px-2 py-1 border border-gray-200 rounded-lg text-sm text-center focus:outline-none focus:ring-2 focus:ring-indigo-400">
+          <span class="text-xs text-gray-400">%</span>
+        </div>
+
+        <!-- Totals -->
+        <div class="border-t border-gray-100 pt-3 space-y-1.5 mb-3">
+          <div class="flex justify-between text-sm"><span class="text-gray-500">Subtotal</span><span id="qrSubtotal"
+              class="font-medium text-gray-800">₹0</span></div>
+          <div class="flex justify-between text-sm"><span class="text-gray-500">Discount</span><span id="qrDiscountAmt"
+              class="text-green-600">−₹0</span></div>
+          <div class="flex justify-between text-sm"><span class="text-gray-500">GST (18%)</span><span id="qrGst"
+              class="text-gray-600">₹0</span></div>
+          <div class="flex justify-between font-extrabold text-base pt-2 border-t border-gray-100">
+            <span>Total</span><span id="qrTotal" class="text-indigo-600 text-xl">₹0</span>
+          </div>
+        </div>
+
+        <!-- Payment Mode -->
+        <div class="grid grid-cols-4 gap-1.5 mb-3">
+          <button onclick="setQRPayMode(this,'Cash')"
+            class="qr-pay-btn py-2 rounded-xl text-xs font-semibold border-2 border-indigo-300 bg-indigo-50 text-indigo-700">Cash</button>
+          <button onclick="setQRPayMode(this,'UPI')"
+            class="qr-pay-btn py-2 rounded-xl text-xs font-semibold border-2 border-gray-200 text-gray-600">UPI</button>
+          <button onclick="setQRPayMode(this,'Card')"
+            class="qr-pay-btn py-2 rounded-xl text-xs font-semibold border-2 border-gray-200 text-gray-600">Card</button>
+          <button onclick="setQRPayMode(this,'Credit')"
+            class="qr-pay-btn py-2 rounded-xl text-xs font-semibold border-2 border-gray-200 text-gray-600">Credit</button>
+        </div>
+
+        <!-- Actions -->
+        <button onclick="processQRBill()"
+          class="w-full py-3 bg-green-600 text-white rounded-xl font-bold text-sm hover:bg-green-700 transition flex items-center justify-center gap-2 mb-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          Confirm &amp; Bill
+        </button>
+        <button onclick="window.location.href='invoice-create.html'"
+          class="w-full py-2.5 border border-gray-200 text-gray-600 rounded-xl text-sm font-semibold hover:bg-gray-50 transition">Convert
+          to Invoice</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent QR Bills -->
+  <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mt-4">
+    <div class="flex items-center justify-between mb-4">
+      <p class="text-sm font-bold text-gray-800">Recent QR Bills</p>
+      <span class="text-xs text-gray-400" id="qrBillsTotalCount"></span>
+    </div>
+    <!-- Desktop table -->
+    <div class="hidden md:block overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-gray-50 rounded-xl">
+          <tr>
+            <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Bill #
+            </th>
+            <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Customer
+            </th>
+            <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Date
+              &amp; Time</th>
+            <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Items
+            </th>
+            <th class="text-left text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Mode
+            </th>
+            <th class="text-right text-[10px] font-bold text-gray-400 uppercase tracking-widest px-4 py-3">Amount
+            </th>
+          </tr>
+        </thead>
+        <tbody id="qrBillsTableBody" class="divide-y divide-gray-50"></tbody>
+      </table>
+    </div>
+    <!-- Mobile cards -->
+    <div id="qrBillsMobile" class="md:hidden space-y-2"></div>
+    <p id="qrBillsEmpty" class="hidden text-center text-sm text-gray-400 py-6">No QR bills yet. Process a bill to
+      see it here.</p>
+  </div>
+
+</div>

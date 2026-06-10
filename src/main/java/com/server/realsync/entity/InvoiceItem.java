@@ -1,6 +1,8 @@
 package com.server.realsync.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "invoice_items")
@@ -11,30 +13,32 @@ public class InvoiceItem {
     private Long id;
 
     private String itemType;
-
     private Long itemRefId;
-
     private String itemName;
-
     private Integer qty;
 
-    private Double rate;
+    @Column(precision = 19, scale = 4)
+    private BigDecimal rate;
 
-    private Double gst;
+    @Column(precision = 19, scale = 4)
+    private BigDecimal gst;
 
-    private Double taxAmount;
+    @Column(precision = 19, scale = 4)
+    private BigDecimal taxAmount;
 
-    private Double lineTotal;
+    @Column(precision = 19, scale = 4)
+    private BigDecimal lineTotal;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
+    @JsonIgnore
     private Invoice invoice;
 
     public InvoiceItem() {
     }
 
     // ==========================
-    // GETTERS & SETTERS
+    // GETTERS & SETTERS (BigDecimal)
     // ==========================
 
     public Long getId() {
@@ -77,35 +81,35 @@ public class InvoiceItem {
         this.qty = qty;
     }
 
-    public Double getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 
-    public void setRate(Double rate) {
+    public void setRate(BigDecimal rate) {
         this.rate = rate;
     }
 
-    public Double getGst() {
+    public BigDecimal getGst() {
         return gst;
     }
 
-    public void setGst(Double gst) {
+    public void setGst(BigDecimal gst) {
         this.gst = gst;
     }
 
-    public Double getTaxAmount() {
+    public BigDecimal getTaxAmount() {
         return taxAmount;
     }
 
-    public void setTaxAmount(Double taxAmount) {
+    public void setTaxAmount(BigDecimal taxAmount) {
         this.taxAmount = taxAmount;
     }
 
-    public Double getLineTotal() {
+    public BigDecimal getLineTotal() {
         return lineTotal;
     }
 
-    public void setLineTotal(Double lineTotal) {
+    public void setLineTotal(BigDecimal lineTotal) {
         this.lineTotal = lineTotal;
     }
 

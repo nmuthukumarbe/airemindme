@@ -1,12 +1,15 @@
 package com.server.realsync.entity;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "invoices")
@@ -25,17 +28,23 @@ public class Invoice {
 
     private LocalDate dueDate;
 
-    private Double subtotal = 0.0;
+    @Column(precision = 19, scale = 4)
+    private BigDecimal subtotal = BigDecimal.ZERO;
 
-    private Double taxAmount = 0.0;
+    @Column(precision = 19, scale = 4)
+    private BigDecimal taxAmount = BigDecimal.ZERO;
 
-    private Double discountAmount = 0.0;
+    @Column(precision = 19, scale = 4)
+    private BigDecimal discountAmount = BigDecimal.ZERO;
 
-    private Double shippingAmount = 0.0;
+    @Column(precision = 19, scale = 4)
+    private BigDecimal shippingAmount = BigDecimal.ZERO;
 
-    private Double grandTotal = 0.0;
+    @Column(precision = 19, scale = 4)
+    private BigDecimal grandTotal = BigDecimal.ZERO;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private InvoiceStatus status;
 
     @Column(length = 2000)
     private String notes;
@@ -45,6 +54,15 @@ public class Invoice {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @Column(length = 100)
+    private String createdBy;
+
+    @Column(length = 100)
+    private String updatedBy;
 
     @OneToMany(
             mappedBy = "invoice",
@@ -100,51 +118,51 @@ public class Invoice {
         this.dueDate = dueDate;
     }
 
-    public Double getSubtotal() {
+    public BigDecimal getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(Double subtotal) {
+    public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
 
-    public Double getTaxAmount() {
+    public BigDecimal getTaxAmount() {
         return taxAmount;
     }
 
-    public void setTaxAmount(Double taxAmount) {
+    public void setTaxAmount(BigDecimal taxAmount) {
         this.taxAmount = taxAmount;
     }
 
-    public Double getDiscountAmount() {
+    public BigDecimal getDiscountAmount() {
         return discountAmount;
     }
 
-    public void setDiscountAmount(Double discountAmount) {
+    public void setDiscountAmount(BigDecimal discountAmount) {
         this.discountAmount = discountAmount;
     }
 
-    public Double getShippingAmount() {
+    public BigDecimal getShippingAmount() {
         return shippingAmount;
     }
 
-    public void setShippingAmount(Double shippingAmount) {
+    public void setShippingAmount(BigDecimal shippingAmount) {
         this.shippingAmount = shippingAmount;
     }
 
-    public Double getGrandTotal() {
+    public BigDecimal getGrandTotal() {
         return grandTotal;
     }
 
-    public void setGrandTotal(Double grandTotal) {
+    public void setGrandTotal(BigDecimal grandTotal) {
         this.grandTotal = grandTotal;
     }
 
-    public String getStatus() {
+    public InvoiceStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(InvoiceStatus status) {
         this.status = status;
     }
 
@@ -166,6 +184,26 @@ public class Invoice {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     public List<InvoiceItem> getItems() {
