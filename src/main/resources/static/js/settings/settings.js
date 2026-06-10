@@ -120,6 +120,41 @@ async function saveProfile() {
     }
 }
 
+
+async function saveBusinessDetails() {
+
+    const payload = {
+        businessName: document.getElementById("businessName").value,
+        gstNumber: document.getElementById("gstNumber").value,
+        businessEmail: document.getElementById("businessEmail").value,
+        businessPhone: document.getElementById("businessPhone").value,
+        address: document.getElementById("businessAddress").value
+    };
+
+    try {
+
+        const response = await fetch("/api/settings/account/business-details", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const message = await response.text();
+
+        if (response.ok) {
+            showToast(message || "Business details updated");
+        } else {
+            showToast(message || "Update failed", "error");
+        }
+
+    } catch (err) {
+        console.error(err);
+        showToast("Something went wrong", "error");
+    }
+}
+
 // ─── Update Password ──────────────────────────────────────────
 //
 // ⚠️  SECURITY NOTE (for your SettingsController):

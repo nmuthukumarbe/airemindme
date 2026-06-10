@@ -173,7 +173,7 @@
           </svg>
           Gateways
         </button>
-       
+
         <button onclick="switchSettingsTab('users')" id="st-users"
           class="flex items-center gap-2 px-4 py-3 border-b-2 border-transparent text-gray-500 text-sm font-semibold hover:text-gray-700 flex-shrink-0">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -196,8 +196,8 @@
       <div id="sp-general">
         <p class="text-xs text-gray-400 mb-4">Profile, notifications &amp; preferences</p>
 
-      
-       
+
+
 
         <!-- Profile Card -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-5 flex items-center justify-between">
@@ -243,7 +243,60 @@
             class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition shadow-sm">Save
             Changes</button>
         </div>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-5">
+          <!-- Title -->
+          <p class="text-xs font-semibold text-gray-800 uppercase tracking-widest mb-4">Business Details</p>
 
+          <!-- Subtitle -->
+          <p class="text-xs text-gray-500 mb-4">These details will be reflected in your invoices and professional
+            reports.</p>
+
+          <!-- Input Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+
+            <!-- Business Name -->
+            <div>
+              <label class="text-sm font-medium text-gray-700 mb-1.5 block">Business Name</label>
+              <input id="businessName" type="text" th:value="${account.businessName}"
+                class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- GST Number -->
+            <div>
+              <label class="text-sm font-medium text-gray-700 mb-1.5 block">GST Number</label>
+              <input id="gstNumber" type="text" th:value="${account.gstNumber}"
+                class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- Business Email -->
+            <div>
+              <label class="text-sm font-medium text-gray-700 mb-1.5 block">Business Email</label>
+              <input id="businessEmail" type="email" th:value="${account.businessEmail}"
+                class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- Business Phone -->
+            <div>
+              <label class="text-sm font-medium text-gray-700 mb-1.5 block">Business Phone</label>
+              <input id="businessPhone" type="tel" th:value="${account.businessPhone}"
+                class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- Address (Full Width) -->
+            <div class="md:col-span-2">
+              <label class="text-sm font-medium text-gray-700 mb-1.5 block">Business Address</label>
+              <textarea id="businessAddress" rows="3"
+                class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                th:text="${account.address}"></textarea>
+            </div>
+          </div>
+
+          <!-- Save Button -->
+          <button onclick="saveBusinessDetails()"
+            class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition shadow-sm">
+            Save Business Details
+          </button>
+        </div>
         <!-- Password Reset -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-5">
           <p class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Change Password</p>
@@ -513,7 +566,7 @@
       </div>
 
       <!-- ══════════════════ CATALOG TAB ══════════════════ -->
-     
+
 
       <!-- ══════════════════ USER MANAGEMENT TAB ══════════════════ -->
       <div id="sp-users" class="hidden">
@@ -600,7 +653,7 @@
           <div th:each="g : ${groups}"
             class="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition group">
             <div class="flex items-center justify-between mb-3">
-              
+
               <!-- Delete Button -->
               <button th:onclick="'deleteGroup(' + ${g.id} + ')'" class="text-gray-300 hover:text-red-500 transition">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
