@@ -18,6 +18,9 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
+    @Autowired
+    private com.server.realsync.repo.CustomerRepository customerRepository;
+
     // CREATE REPORT
     @PostMapping
     public ResponseEntity<?> createReport(@RequestBody Report report) {
@@ -49,5 +52,21 @@ public class ReportController {
         }
 
         return ResponseEntity.ok(report);
+    }
+
+    // SEARCH CUSTOMERS
+    @GetMapping("/customers/search")
+    public ResponseEntity<?> searchCustomers(@RequestParam String query) {
+
+        Account account = SecurityUtil.getCurrentAccountId();
+
+        org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(0, 10);
+
+        return ResponseEntity.ok(
+                customerRepository.searchByAccount(account.getId(), query, pageable)
+                        .getContent()
+                        .stream()
+                        .map(c -> java.util.Map.of("id", c.getId(), "name", c.getName()))
+                        .collect(java.util.stream.Collectors.toList()));
     }
 }

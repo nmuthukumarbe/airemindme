@@ -45,11 +45,42 @@ function saveCustomer(e) {
     e.preventDefault();
 
     const id = document.getElementById("cId").value;
-
-    // IMPORTANT: Get the raw string from the hidden input (e.g., "1,5")
     const groupIdString = document.getElementById("cSegment").value;
+
+    // ── PHONE VALIDATION ──
+    const phoneValue = document.getElementById("cPhone").value.trim();
+    const countryCode = document.getElementById("countryCode").value;
+
+    if (!phoneValue) {
+        showToast("Phone number is required", "error");
+        return;
+    }
+
+    // India (+91) must be exactly 10 digits
+    if (countryCode === "+91" && !/^\d{10}$/.test(phoneValue)) {
+        showToast("Please enter a valid 10-digit phone number", "error");
+        return;
+    }
+
+    // Other countries — at least 7 digits
+    if (countryCode !== "+91" && !/^\d{7,15}$/.test(phoneValue)) {
+        showToast("Please enter a valid phone number", "error");
+        return;
+    }
+
+    // ── EMAIL VALIDATION ──
+    const emailValue = document.getElementById("cEmail").value.trim();
+    if (emailValue !== "") {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailValue)) {
+            showToast("Please enter a valid email address", "error");
+            return;
+        }
+    }
+
     const fullPhone = getFullPhone();
     if (!fullPhone) return;
+
     const customer = {
         name: document.getElementById("cName").value,
         mobile: fullPhone,
@@ -57,7 +88,6 @@ function saveCustomer(e) {
         dob: document.getElementById("cBirthday").value || null,
         weddingDate: document.getElementById("cAnniversary").value || null,
         channel: selectedChannels.join(","),
-        // This must match the field name in your Java Entity exactly
         customerGroupId: groupIdString
     };
 
@@ -72,36 +102,26 @@ function saveCustomer(e) {
         .then(async res => {
             if (!res.ok) {
                 const errorData = await res.json();
-                // Pass exactly what the backend says
                 throw new Error(errorData.message || "Save failed");
             }
             return res.json();
         })
         .then(() => {
-
             showToast(
                 id
                     ? "Customer updated successfully"
                     : "Customer added successfully"
             );
-
             setTimeout(() => {
-
                 const url = new URL(window.location.href);
-
                 url.searchParams.delete("editId");
-
                 window.location.href = url.pathname + url.search;
-
             }, 1200);
         })
         .catch(err => {
-
             showToast(err.message, "error");
-
         });
 }
-
 
 
 // import .js
