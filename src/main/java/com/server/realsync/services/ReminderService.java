@@ -141,11 +141,13 @@ public class ReminderService {
     /** Hard delete */
 
     @Transactional
-    public void cancelRemainingInstallments(Integer reminderId,Integer accountId) {
+    public void cancelRemainingInstallments(Integer reminderId, Integer accountId) {
 
-        Reminder reminder = getById(reminderId, accountId).orElseThrow(() -> new RuntimeException("Reminder not found"));
+        Reminder reminder = getById(reminderId, accountId)
+                .orElseThrow(() -> new RuntimeException("Reminder not found"));
 
-        scheduleEntryRepository.deleteByReminderIdAndStatusNot(reminder.getId().longValue(),ScheduleEntryStatus.COMPLETED);
+        scheduleEntryRepository.deleteByReminderIdAndStatusNot(reminder.getId().longValue(),
+                ScheduleEntryStatus.COMPLETED);
     }
 
     @Transactional
@@ -225,6 +227,10 @@ public class ReminderService {
 
         save(reminder);
 
+    }
+
+    public List<Reminder> getTop3UpcomingByAccountId(Integer accountId) {
+        return repo.findTop3UpcomingByAccountId(accountId);
     }
 
 }

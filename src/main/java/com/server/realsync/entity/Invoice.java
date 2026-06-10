@@ -1,143 +1,178 @@
-/**
- * 
- */
 package com.server.realsync.entity;
+
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "invoice")
+@Table(name = "invoices")
 public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @Column
-    private Double amount;
+    @Column(unique = true)
+    private String invoiceNumber;
 
-    @Column(name = "created_at", updatable = false)
+    private Long customerId;
+
+    private LocalDate invoiceDate;
+
+    private LocalDate dueDate;
+
+    private Double subtotal = 0.0;
+
+    private Double taxAmount = 0.0;
+
+    private Double discountAmount = 0.0;
+
+    private Double shippingAmount = 0.0;
+
+    private Double grandTotal = 0.0;
+
+    private String status;
+
+    @Column(length = 2000)
+    private String notes;
+
+    @Column(length = 2000)
+    private String terms;
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-    
-    @Column(name = "plan_id", nullable = false)
-    private Integer planId;
+    @OneToMany(
+            mappedBy = "invoice",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<InvoiceItem> items = new ArrayList<>();
 
-    @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
-
-    @Column(name = "mode_of_payment", nullable = false)
-    private String modeOfPayment;
-    
-    @Column(name = "status", nullable = false)
-    private String status;
-    
-    @Column(name = "merchant_order_id", nullable = false)
-    private String merchantOrderId;
-    
-    @Column(name = "account_id", nullable = false)
-    private Integer accountId;
-
-    @PrePersist
-    public void prePersist() {
-        createdAt = LocalDateTime.now();
-        updatedAt = createdAt;
+    public Invoice() {
     }
 
-    @PreUpdate
-    public void preUpdate() {
-        updatedAt = LocalDateTime.now();
+    // ==========================
+    // GETTERS & SETTERS
+    // ==========================
+
+    public Long getId() {
+        return id;
     }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public String getInvoiceNumber() {
+        return invoiceNumber;
+    }
 
-	public Double getAmount() {
-		return amount;
-	}
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
+    }
 
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
+    public Long getCustomerId() {
+        return customerId;
+    }
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
+    }
 
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.createdAt = createdAt;
-	}
+    public LocalDate getInvoiceDate() {
+        return invoiceDate;
+    }
 
-	public LocalDateTime getUpdatedAt() {
-		return updatedAt;
-	}
+    public void setInvoiceDate(LocalDate invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
 
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
-	}
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
 
-	public Integer getPlanId() {
-		return planId;
-	}
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
 
-	public void setPlanId(Integer planId) {
-		this.planId = planId;
-	}
+    public Double getSubtotal() {
+        return subtotal;
+    }
 
-	public LocalDate getStartDate() {
-		return startDate;
-	}
+    public void setSubtotal(Double subtotal) {
+        this.subtotal = subtotal;
+    }
 
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
+    public Double getTaxAmount() {
+        return taxAmount;
+    }
 
-	public String getModeOfPayment() {
-		return modeOfPayment;
-	}
+    public void setTaxAmount(Double taxAmount) {
+        this.taxAmount = taxAmount;
+    }
 
-	public void setModeOfPayment(String modeOfPayment) {
-		this.modeOfPayment = modeOfPayment;
-	}
+    public Double getDiscountAmount() {
+        return discountAmount;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public void setDiscountAmount(Double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public Double getShippingAmount() {
+        return shippingAmount;
+    }
 
-	public String getMerchantOrderId() {
-		return merchantOrderId;
-	}
+    public void setShippingAmount(Double shippingAmount) {
+        this.shippingAmount = shippingAmount;
+    }
 
-	public void setMerchantOrderId(String merchantOrderId) {
-		this.merchantOrderId = merchantOrderId;
-	}
+    public Double getGrandTotal() {
+        return grandTotal;
+    }
 
-	public Integer getAccountId() {
-		return accountId;
-	}
+    public void setGrandTotal(Double grandTotal) {
+        this.grandTotal = grandTotal;
+    }
 
-	public void setAccountId(Integer accountId) {
-		this.accountId = accountId;
-	}
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getTerms() {
+        return terms;
+    }
+
+    public void setTerms(String terms) {
+        this.terms = terms;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public List<InvoiceItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<InvoiceItem> items) {
+        this.items = items;
+    }
 }

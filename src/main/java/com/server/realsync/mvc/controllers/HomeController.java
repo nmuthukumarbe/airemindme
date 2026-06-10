@@ -122,10 +122,13 @@ public class HomeController {
 	@GetMapping("/home.html")
 	public String getAdminDashboard(Model model) {
 		Account loggedIn = SecurityUtil.getCurrentAccountId();
-
 		Account account = accountService.getById(loggedIn.getId());
 
+		List<Reminder> upcomingReminders = reminderService
+				.getTop3UpcomingByAccountId(account.getId());
+
 		model.addAttribute("account", account);
+		model.addAttribute("upcomingReminders", upcomingReminders);
 		return "remindmeui/home";
 	}
 

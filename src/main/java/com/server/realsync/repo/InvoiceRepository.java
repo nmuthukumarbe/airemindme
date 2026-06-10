@@ -1,8 +1,12 @@
 package com.server.realsync.repo;
 
+import com.server.realsync.entity.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.server.realsync.entity.Invoice;
+import java.util.Optional;
 
-public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
+public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
+
+    Optional<Invoice> findByInvoiceNumber(String invoiceNumber);
+
 }

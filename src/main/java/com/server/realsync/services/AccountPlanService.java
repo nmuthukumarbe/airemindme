@@ -95,55 +95,7 @@ public class AccountPlanService {
 		//gmailSender.accounPaymentConfirmation(account, planId, invoice);
 		return accountPlan;
 	}
-    
-    public AccountPlan updateAccountPlanUsage(AccountPlan accountPlan, Account account, Integer planId,
-			Invoice invoice) {
+   
 
-    	boolean isInvoiceNeeded = false;
-		if (invoice == null) {
-			invoice = new Invoice();
-			isInvoiceNeeded = true;
-			invoice.setMerchantOrderId("");
-			invoice.setStatus("COMPLETED");
-		}
-		invoice.setAccountId(account.getId());
-		
-		if (planId == 1) {
-			accountPlan.setBalance(accountPlan.getBalance()+4999.0);
-			accountPlan.setPlan(planService.findById(1).get());
-			accountPlan.setStartDate(LocalDate.now(ZoneId.of("Asia/Kolkata")));
-			accountPlan.setEndDate(LocalDate.now(ZoneId.of("Asia/Kolkata")).plusMonths(12));
-			invoice.setAmount(4999.0);
-			invoice.setPlanId(1);
-		} else if (planId == 2) {
-			accountPlan.setBalance(accountPlan.getBalance()+7499.0);
-			accountPlan.setPlan(planService.findById(2).get());
-			accountPlan.setStartDate(LocalDate.now(ZoneId.of("Asia/Kolkata")));
-			accountPlan.setEndDate(LocalDate.now(ZoneId.of("Asia/Kolkata")).plusMonths(12));
-			invoice.setAmount(7499.0);
-			invoice.setPlanId(2);
-		} else if (planId == 3) {
-			accountPlan.setBalance(accountPlan.getBalance()+9999.0);
-			accountPlan.setPlan(planService.findById(3).get());
-			accountPlan.setStartDate(LocalDate.now(ZoneId.of("Asia/Kolkata")));
-			accountPlan.setEndDate(LocalDate.now(ZoneId.of("Asia/Kolkata")).plusMonths(12));
-			invoice.setAmount(9999.0);
-			invoice.setPlanId(3);
-		} else if (planId == 4) {
-			accountPlan.setBalance(accountPlan.getBalance()+14999.0);
-			accountPlan.setPlan(planService.findById(4).get());
-			accountPlan.setStartDate(LocalDate.now(ZoneId.of("Asia/Kolkata")));
-			accountPlan.setEndDate(LocalDate.now(ZoneId.of("Asia/Kolkata")).plusMonths(12));
-			invoice.setAmount(14999.0);
-			invoice.setPlanId(4);
-		} 
-		repository.save(accountPlan);
-		if (isInvoiceNeeded) {
-			invoice.setStartDate(accountPlan.getStartDate());
-			invoice.setModeOfPayment("GPAY");
-			invoiceService.create(invoice);
-		}
-		//gmailSender.accounPaymentConfirmation(account, planId, invoice);
-		return accountPlan;
-	}
+
 }
