@@ -1,4 +1,5 @@
 let selectedCustomerId = null;
+let selectedCustomer = null;
 //Customer Search & Selection
 
 async function searchCustomer(keyword) {
@@ -68,6 +69,7 @@ async function searchCustomer(keyword) {
 
 async function selectCustomer(customerId) {
 
+
     try {
 
         const response = await fetch(
@@ -79,7 +81,8 @@ async function selectCustomer(customerId) {
         }
 
         const customer = await response.json();
-
+        console.log("Customer Response:", customer);
+        selectedCustomer = customer;
         selectedCustomerId = customer.id;
 
         document.getElementById("customerSearch").value =
@@ -410,4 +413,85 @@ function calcTotals() {
         "Amount in words: " +
         numberToWords(Math.round(total)) +
         " Rupees Only";
+}
+
+/**
+ * Load invoice data from API for editing
+ */
+async function loadInvoice(invoiceId) {
+    try {
+        const response = await fetch(`/api/invoices/${invoiceId}`);
+        if (!response.ok) {
+            throw new Error("Invoice not found");
+        }
+
+        const invoice = await response.json();
+        console.log("Loaded invoice:", invoice);
+
+        // Populate basic fields
+        document.getElementById("invoiceNum").value = invoice.invoiceNumber || "";
+        document.getElementById("invoiceDate").value = invoice.invoiceDate || "";
+        document.getElementById("dueDate").value = invoice.dueDate || "";
+        document.getElementById("billToAddr").value = invoice.customerAddress || "";
+        document.getElementById("billToGST").value = invoice.customerGst || "";
+        document.getElementById("shipToAddr").value = invoice.shippingAddress || "";
+        document.getElementById("invoiceNotes").value = invoice.notes || "";
+        document.getElementById("invoiceTerms").value = invoice.terms || "";
+        document.getElementById("shippingAmt").value = invoice.shippingAmount || "0";
+
+        // Set customer
+        if (invoice.customerId) {
+            selectedCustomerId = invoice.customerId;
+            selectedCustomer = {
+                id: invoice.customerId,
+                name: invoice.customerName,
+                address: invoice.customerAddress,
+                mobile: invoice.customerPhone,
+                gstNumber: invoice.customerGst
+            };
+            document.getElementById("customerSearch").value = invoice.customerName || "";
+        }
+
+        // Clear existing items and add invoice items
+        const lineItemsContainer = document.getElementById("lineItems");
+        lineItemsContainer.innerHTML = "";
+
+        if (invoice.items && invoice.items.length > 0) {
+            invoice.items.forEach((item, index) => {
+                addItem(item.itemType === "PRODUCT" ? "product" : "service");
+
+                const rows = document.querySelectorAll(".invoice-row");
+                const row = rows[rows.length - 1];
+
+                if (row) {
+                    const nameInput = row.querySelector(".itemName");
+                    const itemTypeInput = row.querySelector(".itemType");
+                    const itemRefIdInput = row.querySelector(".itemRefId");
+                    const qtyInput = row.querySelector(".qty");
+                    const rateInput = row.querySelector(".rate");
+                    const gstSelect = row.querySelector(".gst");
+
+                    if (nameInput) nameInput.value = item.itemName || "";
+                    if (itemTypeInput) itemTypeInput.value = item.itemType || "";
+                    if (itemRefIdInput) itemRefIdInput.value = item.itemRefId || "";
+                    if (qtyInput) qtyInput.value = item.qty || 1;
+                    if (rateInput) rateInput.value = item.rate || 0;
+                    if (gstSelect) gstSelect.value = item.gst || 18;
+
+                    // Calculate the row
+                    calculateRow(row);
+                }
+            });
+        } else {
+            // Add at least one item row
+            addItem("product");
+        }
+
+        // Recalculate totals
+        calcTotals();
+
+    } catch (err) {
+        console.error("Error loading invoice:", err);
+        showToast(`Failed to load invoice: ${err.message}`);
+    }
 }

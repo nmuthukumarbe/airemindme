@@ -40,17 +40,18 @@ public class SalesController {
         return "remindmeui/invoice-create";
     }
 
-    @GetMapping("/invoice-detail.html")
-    public String getInvoiceDetail(
-            @RequestParam Long id,
-            Model model) {
+   @GetMapping("/invoice-detail.html")
+public String getInvoiceDetail(
+        @RequestParam(required = false) Long id,
+        @RequestParam(required = false) Boolean preview,
+        Model model) {
 
-        Account loggedIn = SecurityUtil.getCurrentAccountId();
-        Account account = accountService.getById(loggedIn.getId());
+    Account loggedIn = SecurityUtil.getCurrentAccountId();
+    Account account = accountService.getById(loggedIn.getId());
 
-        model.addAttribute("account", account);
-        model.addAttribute("activePage", "sales");
+    model.addAttribute("account", account);
+    model.addAttribute("activePage", "sales");
 
-        return "remindmeui/invoice-detail";
-    }
+    return "remindmeui/invoice-detail";
+}
 }

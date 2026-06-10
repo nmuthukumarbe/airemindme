@@ -228,6 +228,13 @@
         </div>
       </div>
       <div class="hidden md:flex items-center gap-2">
+        <button onclick="saveAndContinue()"
+          class="flex items-center gap-2 px-3 py-2 rounded-xl border border-green-200 text-green-700 text-sm font-medium hover:bg-green-50 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+          </svg>Save
+        </button>
         <button onclick="saveDraft()"
           class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -311,7 +318,7 @@
               <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Bill To</label>
               <div class="relative">
                 <input id="customerSearch" type="text" placeholder="Search customer..." class="line-input"
-                  oninput="searchCustomer(this.value)" onblur="setTimeout(()=>closeCustomerDd(),200)">
+                  oninput="searchCustomer(this.value)" >
                 <div id="customerDd" class="product-dropdown hidden"></div>
               </div>
               <textarea id="billToAddr" rows="3" placeholder="Customer address..."
@@ -405,7 +412,7 @@
                 <textarea id="invoiceTerms" rows="2" placeholder="Payment due within 30 days..."
                   class="line-input resize-none text-sm"></textarea>
               </div>
-              <div>
+              <!-- <div>
                 <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Bank
                   Details</label>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -414,7 +421,7 @@
                   <input type="text" placeholder="IFSC Code" class="line-input text-sm" value="HDFC0001234">
                   <input type="text" placeholder="Branch" class="line-input text-sm" value="MG Road, Bangalore">
                 </div>
-              </div>
+              </div> -->
             </div>
 
             <!-- Summary -->
@@ -469,7 +476,7 @@
               Click to add signature</div>
           </div>
           <div class="text-right">
-            <p class="text-xs text-gray-400">For Acme Financial Services</p>
+             <p class="text-[10px] text-gray-400">For <span th:text="${account.businessName}">Business Name</span></p>
             <div class="w-32 h-10 border-b border-gray-300 mt-6 mx-auto md:mx-0 md:ml-auto"></div>
             <p class="text-xs text-gray-500 mt-1">Authorized Signatory</p>
           </div>
@@ -523,16 +530,17 @@
 
   <!-- Toast -->
   <div id="toast" class="toast"></div>
-
+  <script src="/js/Sales/invoice-create.js"></script>
+  <script src="/js/Sales/invoice-save.js"></script>
   <script>
-   
+
     let itemCount = 0;
 
-   
 
-    
-    
-   
+
+
+
+
     function calcItemAmount(id) {
       const qty = parseFloat(document.getElementById(id + '_qty').value) || 0;
       const rate = parseFloat(document.getElementById(id + '_rate').value) || 0;
@@ -569,8 +577,8 @@
 
 
     // ---- ACTIONS ----
-    function saveDraft() { showToast('Draft saved successfully'); }
-    function previewInvoice() { window.open('invoice-detail.html', '_blank'); }
+
+
     function sendInvoice() { showToast('Invoice sent via WhatsApp & Email'); }
 
     function showToast(msg) {
@@ -590,7 +598,41 @@
     document.getElementById('invoiceDate').value = today;
     document.getElementById('dueDate').value = due;
 
-    // Check if editing existing invoice
+
+    const params = new URLSearchParams(location.search);
+
+    const invoiceId = params.get("id");
+
+    if (invoiceId) {
+
+      document.getElementById('pageTitle').textContent =
+        'Edit Invoice';
+
+      document.getElementById('pageTitleH1').textContent =
+        'Edit Invoice';
+
+      loadInvoice(invoiceId);
+
+    } else {
+
+      addItem('product');
+      addItem('service');
+
+    };
+
+
+
+  </script>
+
+</body>
+
+</html>
+
+
+
+
+<!-- 
+LATER USAGE  // Check if editing existing invoice
     const params = new URLSearchParams(location.search);
     if (params.get('edit')) {
       document.getElementById('pageTitle').textContent = 'Edit Invoice';
@@ -680,9 +722,4 @@
       // Default: 2 blank items
       addItem('product');
       addItem('service');
-    }
-  </script>
-  <script src="/js/Sales/invoice-create.js"></script>
-</body>
-
-</html>
+    } -->
