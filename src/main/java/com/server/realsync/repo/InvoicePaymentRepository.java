@@ -3,6 +3,7 @@ package com.server.realsync.repo;
 import com.server.realsync.entity.InvoicePayment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 public interface InvoicePaymentRepository extends JpaRepository<InvoicePayment, Integer> {
@@ -24,4 +25,11 @@ public interface InvoicePaymentRepository extends JpaRepository<InvoicePayment, 
             WHERE p.invoiceId = :invoiceId
             """)
     Double getTotalPaid(Integer invoiceId);
+
+    @Query("""
+            SELECT COALESCE(SUM(p.amount),0.0)
+            FROM InvoicePayment p
+            WHERE p.accountId = :accountId
+            """)
+    Double sumPaymentsByAccountId(@Param("accountId") Integer accountId);
 }
