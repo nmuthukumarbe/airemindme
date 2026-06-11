@@ -14,6 +14,10 @@ public class InvoiceItemDTO {
 
     private Long itemRefId;
 
+    private String description;
+
+    private String hsnSac;
+
     @NotBlank
     private String itemName;
 
@@ -30,24 +34,94 @@ public class InvoiceItemDTO {
 
     private BigDecimal lineTotal;
 
-    public InvoiceItemDTO() {}
+    public InvoiceItemDTO() {
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getItemType() { return itemType; }
-    public void setItemType(String itemType) { this.itemType = itemType; }
-    public Long getItemRefId() { return itemRefId; }
-    public void setItemRefId(Long itemRefId) { this.itemRefId = itemRefId; }
-    public String getItemName() { return itemName; }
-    public void setItemName(String itemName) { this.itemName = itemName; }
-    public Integer getQty() { return qty; }
-    public void setQty(Integer qty) { this.qty = qty; }
-    public BigDecimal getRate() { return rate; }
-    public void setRate(BigDecimal rate) { this.rate = rate; }
-    public BigDecimal getGst() { return gst; }
-    public void setGst(BigDecimal gst) { this.gst = gst; }
-    public BigDecimal getTaxAmount() { return taxAmount; }
-    public void setTaxAmount(BigDecimal taxAmount) { this.taxAmount = taxAmount; }
-    public BigDecimal getLineTotal() { return lineTotal; }
-    public void setLineTotal(BigDecimal lineTotal) { this.lineTotal = lineTotal; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
+    }
+
+    public Long getItemRefId() {
+        return itemRefId;
+    }
+
+    public void setItemRefId(Long itemRefId) {
+        this.itemRefId = itemRefId;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public Integer getQty() {
+        return qty;
+    }
+
+    public void setQty(Integer qty) {
+        this.qty = qty;
+    }
+
+    public BigDecimal getRate() {
+        return rate;
+    }
+
+    public void setRate(BigDecimal rate) {
+        this.rate = rate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getHsnSac() {
+        return hsnSac;
+    }
+
+    public void setHsnSac(String hsnSac) {
+        this.hsnSac = hsnSac;
+    }
+
+    public BigDecimal getGst() {
+        return gst;
+    }
+
+    public void setGst(BigDecimal gst) {
+        this.gst = gst;
+    }
+
+    public BigDecimal getTaxAmount() {
+        return taxAmount;
+    }
+
+    public void setTaxAmount(BigDecimal taxAmount) {
+        this.taxAmount = taxAmount;
+    }
+
+    public BigDecimal getLineTotal() {
+        return lineTotal;
+    }
+
+    public void setLineTotal(BigDecimal lineTotal) {
+        this.lineTotal = lineTotal;
+    }
 }

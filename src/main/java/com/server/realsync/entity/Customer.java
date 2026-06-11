@@ -35,6 +35,9 @@ public class Customer {
 
     @Column(length = 15)
     private String mobile;
+    
+    @Column(length = 50)
+    private String gstNo;
 
     @Column(columnDefinition = "TEXT")
     private String address;
@@ -116,6 +119,13 @@ public class Customer {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+    public String getGstNo() {
+        return gstNo;
+    }
+
+    public void setGstNo(String gstNo) {
+        this.gstNo = gstNo;
     }
 
     public String getAddress() {

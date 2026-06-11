@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Product Detail</title>
+</head>
+
+<body>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f9fb;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #e2e8f0;
+      border-radius: 4px;
+    }
+
+    .filter-pill {
+      cursor: pointer;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid #e5e7eb;
+      color: #6b7280;
+      white-space: nowrap;
+      transition: all .15s;
+    }
+
+    .filter-pill.active {
+      background: #4f46e5;
+      color: #fff;
+      border-color: #4f46e5;
+    }
+
+    .filter-pill:not(.active):hover {
+      background: #f9fafb;
+      border-color: #d1d5db;
+      color: #374151;
+    }
+
+    .pg-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 32px;
+      padding: 0 10px;
+      min-width: 32px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      font-size: 13px;
+      font-weight: 500;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .pg-btn:hover {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+    }
+
+    .pg-btn.active {
+      background: #4f46e5;
+      border-color: #4f46e5;
+      color: white;
+      font-weight: 700;
+    }
+
+    .pg-btn:disabled,
+    .pg-btn[disabled] {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .timeline-row:hover td {
+      background: #f9fafb;
+    }
+
+    .badge-in {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .badge-out {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .badge-adj {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-active {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .badge-inactive {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .badge-low {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      z-index: 50;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    @media(min-width:768px) {
+      .modal-overlay.open {
+        align-items: center;
+      }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 80px;
+      right: 1rem;
+      background: #1e293b;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 100;
+      opacity: 0;
+      transition: opacity .3s;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+  <!-- Sidebar -->
+  <div th:replace="~{remindmeui/fragments/layout :: sidebar(activePage='catalog')}"></div>
+
+  <!-- Mobile nav -->
+  <div th:replace="~{remindmeui/fragments/layout :: mobileNav(activePage='catalog')}"></div>
+
+
+  <!-- MOBILE NAV OVERLAY -->
+  <div id="mobileNavBg" class="md:hidden hidden fixed inset-0 bg-black/50 z-[45] backdrop-blur-sm"
+    onclick="closeMobileNav()"></div>
+  <div id="mobileNavDrawer"
+    class="md:hidden fixed top-0 left-0 h-screen w-72 bg-white z-[46] shadow-2xl flex flex-col transition-transform duration-300"
+    style="transform:translateX(-100%)">
+    <div class="px-4 pt-5 pb-3 border-b border-gray-100 flex items-center justify-between flex-shrink-0">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-sm"><svg
+            class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg></div>
+        <div>
+          <p class="text-sm font-bold text-gray-900 leading-none">Reminder Me</p>
+          <p class="text-[10px] text-gray-400 mt-0.5">Business Dashboard</p>
+        </div>
+      </div>
+      <button onclick="closeMobileNav()"
+        class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500"><svg class="w-4 h-4"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg></button>
+    </div>
+    <nav class="flex-1 px-3 py-3 overflow-y-auto space-y-0.5">
+      <a href="home.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg><span class="text-sm font-semibold">Home</span></a>
+      <a href="customers.html"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg class="w-5 h-5"
+          fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg><span class="text-sm font-semibold">Customers</span></a>
+      <a href="sales.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+        </svg><span class="text-sm font-semibold">Sales</span></a>
+      <a href="inventory.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-600 text-white"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        </svg><span class="text-sm font-semibold">Inventory</span></a>
+      <a href="reports.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg><span class="text-sm font-semibold">Reports</span></a>
+      <a href="settings.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50"><svg
+          class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg><span class="text-sm font-semibold">Settings</span></a>
+    </nav>
+    <div class="px-3 py-3 border-t border-gray-100 flex-shrink-0">
+      <div class="flex items-center gap-2.5 px-2 py-1.5">
+        <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center flex-shrink-0"><span
+            class="text-white text-xs font-bold">A</span></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-gray-900 truncate leading-none">Arjun Sharma</p>
+          <p class="text-[10px] text-gray-400 truncate mt-0.5">Acme Financial Services</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="md:ml-56 min-h-screen pb-24 md:pb-0 pt-14 md:pt-0">
+
+    <!-- ===== PAGE HEADER ===== -->
+    <div
+      class="bg-white border-b border-gray-100 px-4 md:px-6 py-4 flex items-center justify-between sticky top-14 md:top-0 z-20">
+      <div>
+        <p class="text-xs text-gray-400 mb-0.5 hidden md:block">
+          <a th:href="@{/home.html}" class="hover:text-indigo-600">Home</a>/
+            <a th:href="@{/catalog.html}" class="hover:text-indigo-600">Catalog</a> /
+          <span class="text-gray-700" th:text="${product.name}">Product name</span>
+        </p>
+        <h1 class="text-xl font-bold text-gray-900" th:text="${product.name}">Product name</h1>
+      </div>
+      <!-- Desktop Action Buttons -->
+      <div class="hidden md:flex items-center gap-2">
+        <button onclick="openAddStockModal()"
+          class="flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Add Stock
+        </button>
+       
+      </div>
+    </div>
+
+    <!-- ===== PAGE BODY ===== -->
+    <div id="page-content" class="px-4 md:px-6 py-5 space-y-5">
+
+      <!-- ============================================================
+         1. PRODUCT HERO CARD
+         ============================================================ -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <div class="flex flex-col sm:flex-row gap-5">
+
+          <!-- Product Image -->
+          <div class="flex-shrink-0 self-start">
+            <div
+              class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-indigo-50 to-indigo-100 flex items-center justify-center overflow-hidden border border-indigo-100">
+
+              <!-- Product Image -->
+              <img th:if="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+                th:src="@{/doc/view(path=${product.imageUrl})}" class="w-full h-full object-cover" alt="Product Image">
+
+              <!-- Fallback SVG -->
+              <svg th:unless="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+                class="w-12 h-12 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+
+            </div>
+          </div>
+
+          <!-- Product Info -->
+          <div class="flex-1 min-w-0">
+            <div class="flex flex-wrap items-start gap-2 mb-2">
+              <h2 class="text-lg font-bold text-gray-900 leading-tight" th:text="${product.name}">Product name
+              </h2>
+              <!-- Status Badge -->
+              <span class="badge-active inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
+                th:classappend="${product.status == 'Active'} ? 'badge-active' : (${product.status == 'Low Stock'} ? 'badge-low' : 'badge-inactive')"
+                th:text="${product.status}">Active</span>
+            </div>
+
+            <!-- Meta grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-3 mt-3">
+              <div>
+                <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-0.5">SKU</p>
+                <p class="text-sm font-semibold text-gray-800" th:text="${product.sku}">SKU-GRC-0042</p>
+              </div>
+              <div>
+                <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-0.5">Category</p>
+                <p class="text-sm font-semibold text-gray-800" th:text="${product.category}">Grains & Pulses</p>
+              </div>
+              <div>
+                <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-0.5">Unit Price</p>
+                <p class="text-sm font-bold text-indigo-600" th:text="'₹' + ${product.price}">₹185.00</p>
+              </div>
+              <div>
+                <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-widest mb-0.5">Current Stock</p>
+                <span
+                  class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                      d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                  <span th:text="${product.quantity} + ' units'">342 units</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Action Buttons (shown below hero on small screens) -->
+          <div class="flex sm:hidden gap-2 pt-1">
+            <button onclick="openAddStockModal()"
+              class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>Add Stock
+            </button>
+            <button onclick="openEditModal()"
+              class="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>Edit
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================================
+         2. INVENTORY SUMMARY CARDS
+         ============================================================ -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+
+        <!-- Current Stock -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-indigo-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400 font-medium mb-0.5">Current Stock</p>
+            <p class="text-2xl font-bold text-gray-900" th:text="${product.quantity}">342</p>
+            <p class="text-xs text-gray-400 mt-0.5">units available</p>
+          </div>
+        </div>
+
+        <!-- Total Stock Added -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400 font-medium mb-0.5">Total Stock Added</p>
+            <p class="text-2xl font-bold text-gray-900" th:text="${summary.totalAdded}">1,240</p>
+
+          </div>
+        </div>
+
+        <!-- Total Units Sold -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4">
+          <div class="w-11 h-11 rounded-xl bg-orange-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs text-gray-400 font-medium mb-0.5">Total Units Sold</p>
+            <p class="text-2xl font-bold text-gray-900" th:text="${summary.totalSold}">898</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============================================================
+         3. INVENTORY TRANSACTION TIMELINE
+         ============================================================ -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
+
+        <!-- Card Header -->
+        <div class="px-5 pt-5 pb-4 border-b border-gray-100">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div>
+              <h3 class="text-sm font-bold text-gray-900">Inventory Transaction Timeline</h3>
+              <p class="text-xs text-gray-400 mt-0.5">All stock movements for this product</p>
+            </div>
+            <!-- Desktop search lives here -->
+            <div class="relative hidden sm:block w-64">
+              <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input id="txnSearchDesktop" type="text" placeholder="Search reference, notes…"
+                oninput="filterTxn(this.value)"
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-50">
+            </div>
+          </div>
+
+          <!-- Filter Pills -->
+          <div class="flex gap-2 mt-3 overflow-x-auto pb-1">
+            <button class="filter-pill active" onclick="setFilter('all', this)">All</button>
+            <button class="filter-pill" onclick="setFilter('stock_added', this)">Stock Added</button>
+            <button class="filter-pill" onclick="setFilter('sale', this)">Sales</button>
+            <button class="filter-pill" onclick="setFilter('adjustment', this)">Adjustments</button>
+          </div>
+
+          <!-- Mobile search -->
+          <div class="relative mt-3 sm:hidden">
+            <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none"
+              stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input id="txnSearchMobile" type="text" placeholder="Search reference, notes…"
+              oninput="filterTxn(this.value)"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-50">
+          </div>
+        </div>
+
+        <!-- Table (scrollable on mobile) -->
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[680px]">
+            <thead>
+              <tr class="border-b border-gray-100">
+                <th class="px-5 py-3 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Date
+                </th>
+                <th class="px-5 py-3 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                  Transaction Type</th>
+                <th class="px-5 py-3 text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Qty
+                  Change</th>
+                <th class="px-5 py-3 text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                  Balance After</th>
+                <th class="px-5 py-3 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                  Reference</th>
+                <th class="px-5 py-3 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Notes
+                </th>
+              </tr>
+            </thead>
+            <tbody id="txnTableBody">
+
+              <tr th:each="txn : ${transactions}" class="timeline-row border-b border-gray-50 transition"
+                th:data-type="${txn.type}">
+
+                <td class="px-5 py-3.5">
+                  <p class="text-sm font-semibold text-gray-800"
+                    th:text="${#temporals.format(txn.createdAt,'dd MMM yyyy')}">
+                    10 Jun 2025
+                  </p>
+
+                  <p class="text-xs text-gray-400" th:text="${#temporals.format(txn.createdAt,'hh:mm a')}">
+                    02:14 PM
+                  </p>
+                </td>
+
+                <td class="px-5 py-3.5">
+
+                  <!-- STOCK IN -->
+                  <span th:if="${txn.type == 'STOCK_IN'}"
+                    class="badge-in inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold">
+                    Stock Added
+                  </span>
+
+                  <!-- SALE -->
+                  <span th:if="${txn.type == 'SALE'}"
+                    class="badge-out inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold">
+                    Sale
+                  </span>
+
+                  <!-- ADJUSTMENT -->
+                  <span th:if="${txn.type == 'ADJUSTMENT'}"
+                    class="badge-adj inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold">
+                    Adjustment
+                  </span>
+
+                </td>
+
+                <td class="px-5 py-3.5 text-right">
+
+                  <span th:if="${txn.quantity > 0}" class="text-sm font-bold text-green-600"
+                    th:text="'+' + ${txn.quantity}">
+                    +100
+                  </span>
+
+                  <span th:if="${txn.quantity < 0}" class="text-sm font-bold text-red-600" th:text="${txn.quantity}">
+                    -25
+                  </span>
+
+                </td>
+
+                <td class="px-5 py-3.5 text-right">
+                  <span class="text-sm font-semibold text-gray-800" th:text="${txn.balanceAfter}">
+                    342
+                  </span>
+                </td>
+
+                <td class="px-5 py-3.5">
+                  <span class="text-sm font-medium text-indigo-600" th:text="${txn.referenceNo}">
+                    PO-2025-001
+                  </span>
+                </td>
+
+                <td class="px-5 py-3.5">
+                  <span class="text-sm text-gray-500" th:text="${txn.notes}">
+                    Notes
+                  </span>
+                </td>
+
+              </tr>
+
+              <tr th:if="${#lists.isEmpty(transactions)}">
+                <td colspan="6" class="text-center py-8 text-gray-400">
+                  No Transactions Found
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+
+          <!-- Empty state (hidden by default, shown via JS) -->
+          <div id="txnEmpty" class="hidden py-12 flex flex-col items-center justify-center text-center">
+            <div class="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center mb-3">
+              <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+            <p class="text-sm font-semibold text-gray-600 mb-1">No transactions found</p>
+            <p class="text-xs text-gray-400">Try a different filter or search term</p>
+          </div>
+        </div>
+
+        <!-- ============================================================
+           PAGINATION
+           ============================================================ -->
+        <div class="px-5 py-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+
+          <p class="text-xs text-gray-400 order-2 sm:order-1">
+            Showing
+            <span class="font-semibold text-gray-700" id="pgFrom">0</span>–
+            <span class="font-semibold text-gray-700" id="pgTo">0</span>
+            of
+            <span class="font-semibold text-gray-700" id="pgTotal">0</span>
+            transactions
+          </p>
+
+          <div class="flex items-center gap-1.5 order-1 sm:order-2">
+
+            <button class="pg-btn" id="pgPrev" onclick="changePage(-1)">
+              Prev
+            </button>
+
+            <div id="pageNumbers" class="flex gap-1"></div>
+
+            <button class="pg-btn" id="pgNext" onclick="changePage(1)">
+              Next
+            </button>
+
+          </div>
+
+        </div>
+
+      </div><!-- /transaction card -->
+
+    </div><!-- /page-content -->
+  </div><!-- /main -->
+
+  <!-- ============================================================
+     ADD STOCK MODAL
+     ============================================================ -->
+  <div id="addStockModal" class="modal-overlay" onclick="handleModalBgClick(event,'addStockModal')">
+    <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl" onclick="event.stopPropagation()">
+      <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <h3 class="text-base font-bold text-gray-900">Add Stock</h3>
+        <button onclick="closeModal('addStockModal')"
+          class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="px-6 py-4 space-y-3">
+        <!-- Product (read-only) -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Product</label>
+          <div
+            class="w-full px-3 py-2.5 border border-gray-100 rounded-xl text-sm bg-gray-50 text-gray-700 font-semibold select-none">
+            Premium Basmati Rice <span class="text-gray-400 font-normal">· SKU-GRC-0042</span></div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Quantity to Add <span
+                class="text-red-500">*</span></label>
+            <input type="number" id="addQty" min="1" placeholder="e.g. 50"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Date <span
+                class="text-red-500">*</span></label>
+            <input type="date" id="addDate"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Purchase Order / Reference</label>
+          <input type="text" id="addRef" placeholder="e.g. PO-2025-0099"
+            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300">
+        </div>
+        <!-- <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Supplier</label>
+          <select
+            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300 bg-white">
+            <option value="">Select supplier…</option>
+            <option>Punjab Wholesale</option>
+            <option>Haryana Grains Co.</option>
+            <option>Deccan Agro Exports</option>
+            <option>Other</option>
+          </select>
+        </div> -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Notes</label>
+          <textarea id="addNotes" rows="2" placeholder="Optional notes about this stock addition…"
+            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300 resize-none"></textarea>
+        </div>
+      </div>
+      <div class="px-6 py-4 border-t border-gray-100 flex gap-3">
+        <button onclick="closeModal('addStockModal')"
+          class="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition">Cancel</button>
+        <button onclick="saveAddStock()"
+          class="flex-1 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition">Save
+          Stock</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+     EDIT PRODUCT MODAL
+     ============================================================ -->
+  <div id="editProductModal" class="modal-overlay" onclick="handleModalBgClick(event,'editProductModal')">
+    <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl" onclick="event.stopPropagation()">
+      <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <h3 class="text-base font-bold text-gray-900">Edit Product</h3>
+        <button onclick="closeModal('editProductModal')"
+          class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div class="px-6 py-4 space-y-3">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Product Name <span
+                class="text-red-500">*</span></label>
+            <input type="text" value="Premium Basmati Rice"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">SKU <span
+                class="text-red-500">*</span></label>
+            <input type="text" value="SKU-GRC-0042"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Category</label>
+            <select
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300 bg-white">
+              <option selected>Grains &amp; Pulses</option>
+              <option>Dairy &amp; Eggs</option>
+              <option>Beverages</option>
+              <option>Snacks</option>
+              <option>Spices</option>
+              <option>Packaged Foods</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Unit Price (₹) <span
+                class="text-red-500">*</span></label>
+            <input type="number" value="185.00" step="0.01"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Reorder Level</label>
+            <input type="number" value="50"
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-500 mb-1">Status</label>
+            <select
+              class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300 bg-white">
+              <option selected>Active</option>
+              <option>Inactive</option>
+              <option>Low Stock</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-500 mb-1">Description</label>
+          <textarea rows="2"
+            class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-300 resize-none"
+            placeholder="Product description…">Long-grain aromatic basmati rice, 1 kg pack. Premium quality sourced from Punjab.</textarea>
+        </div>
+      </div>
+      <div class="px-6 py-4 border-t border-gray-100 flex gap-3">
+        <button onclick="closeModal('editProductModal')"
+          class="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition">Cancel</button>
+        <button onclick="saveEdit()"
+          class="flex-1 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition">Save
+          Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+  <script th:inline="javascript">
+    const PRODUCT_ID = [[${ product.id }]];
+  </script>
+  <script>
+    /* ─── Mobile Nav ─── */
+    function openMobileNav() {
+      document.getElementById('mobileNavDrawer').style.transform = 'translateX(0)';
+      document.getElementById('mobileNavBg').classList.remove('hidden');
+    }
+    function closeMobileNav() {
+      document.getElementById('mobileNavDrawer').style.transform = 'translateX(-100%)';
+      document.getElementById('mobileNavBg').classList.add('hidden');
+    }
+
+    /* ─── Modal helpers ─── */
+    function openAddStockModal() {
+      document.getElementById('addStockModal').classList.add('open');
+      // Default to today
+      document.getElementById('addDate').valueAsDate = new Date();
+    }
+    function openEditModal() {
+      document.getElementById('editProductModal').classList.add('open');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
+    }
+    function handleModalBgClick(e, id) {
+      if (e.target === document.getElementById(id)) closeModal(id);
+    }
+
+    /* ─── Toast ─── */
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    /* ─── Save handlers ─── */
+    async function saveAddStock() {
+
+      const qty = document.getElementById('addQty').value;
+      const ref = document.getElementById('addRef').value;
+      const notes = document.getElementById('addNotes').value;
+
+      if (!qty || qty <= 0) {
+        alert("Enter valid quantity");
+        return;
+      }
+
+      try {
+
+        const productId = PRODUCT_ID
+
+        const response = await fetch(
+          `/api/catalog/products/${productId}/add-stock`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              quantity: qty,
+              referenceNo: ref,
+              notes: notes
+            })
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed");
+        }
+
+        const result = await response.json();
+
+        closeModal('addStockModal');
+
+        showToast(
+          `Stock Added. New Qty: ${result.newQuantity}`
+        );
+
+        location.reload();
+
+      } catch (e) {
+        console.error(e);
+        alert("Unable to add stock");
+      }
+    }
+    function saveEdit() {
+      closeModal('editProductModal');
+      showToast('Product updated successfully');
+    }
+
+    /* ─── Filter pills ─── */
+    let activeFilter = 'all';
+    let activeSearch = '';
+
+    function setFilter(type, btn) {
+      activeFilter = type;
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilters();
+    }
+
+    function filterTxn(val) {
+      activeSearch = val.toLowerCase();
+      // Keep both search inputs in sync
+      document.getElementById('txnSearchDesktop').value = val;
+      document.getElementById('txnSearchMobile').value = val;
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const rows = document.querySelectorAll('#txnTableBody tr');
+      let visible = 0;
+      rows.forEach(row => {
+        const matchType = activeFilter === 'all' || row.dataset.type === activeFilter;
+        const rowText = row.textContent.toLowerCase();
+        const matchSearch = !activeSearch || rowText.includes(activeSearch);
+        const show = matchType && matchSearch;
+        row.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      document.getElementById('txnEmpty').classList.toggle('hidden', visible > 0);
+    }
+
+    /* ─── Pagination ─── */
+    let transactions = [];
+    let currentPage = 1;
+    const PAGE_SIZE = 10;
+
+    async function loadTransactions() {
+
+      const res = await fetch(
+        `/api/catalog/products/${PRODUCT_ID}/transactions`
+      );
+
+      transactions = await res.json();
+
+      currentPage = 1;
+
+      renderTransactions();
+      renderPagination();
+    }
+
+    function renderTransactions() {
+
+      const tbody =
+        document.getElementById("txnTableBody");
+
+      const start =
+        (currentPage - 1) * PAGE_SIZE;
+
+      const end =
+        start + PAGE_SIZE;
+
+      const pageData =
+        transactions.slice(start, end);
+
+      tbody.innerHTML = pageData.map(txn => `
+
+      <tr class="timeline-row border-b border-gray-50">
+
+        <td class="px-5 py-3.5">
+          ${new Date(txn.createdAt)
+          .toLocaleString()}
+        </td>
+
+        <td class="px-5 py-3.5">
+          ${txn.type}
+        </td>
+
+        <td class="px-5 py-3.5 text-right">
+          ${txn.quantity}
+        </td>
+
+        <td class="px-5 py-3.5 text-right">
+          ${txn.balanceAfter}
+        </td>
+
+        <td class="px-5 py-3.5">
+          ${txn.referenceNo || ''}
+        </td>
+
+        <td class="px-5 py-3.5">
+          ${txn.notes || ''}
+        </td>
+
+      </tr>
+
+  `).join('');
+    }
+
+    function renderPagination() {
+
+      const total = transactions.length;
+      const totalPages =
+        Math.ceil(total / PAGE_SIZE);
+
+      document.getElementById("pgTotal")
+        .textContent = total;
+
+      document.getElementById("pgFrom")
+        .textContent =
+        total === 0 ? 0 :
+          ((currentPage - 1) * PAGE_SIZE) + 1;
+
+      document.getElementById("pgTo")
+        .textContent =
+        Math.min(currentPage * PAGE_SIZE, total);
+
+      document.getElementById("pgPrev")
+        .disabled = currentPage === 1;
+
+      document.getElementById("pgNext")
+        .disabled = currentPage === totalPages;
+    }
+
+    function changePage(delta) {
+
+      const totalPages =
+        Math.ceil(transactions.length / PAGE_SIZE);
+
+      const next = currentPage + delta;
+
+      if (next < 1 || next > totalPages)
+        return;
+
+      currentPage = next;
+
+      renderTransactions();
+      renderPagination();
+    }
+
+
+
+  </script>
+
+</body>
+
+</html>

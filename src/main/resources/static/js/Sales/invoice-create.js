@@ -309,10 +309,10 @@ function addItem(type) {
         <input 
             type="text" 
             placeholder="Description (optional)" 
-            class="line-input mb-2 text-xs text-gray-500">
+            class="line-input itemDescription mb-2 text-xs text-gray-500">
 
         <div class="grid grid-cols-2 md:grid-cols-[1fr_70px_110px_80px_110px_100px] gap-2 items-center">
-            <input type="text" placeholder="HSN/SAC" class="line-input text-xs">
+            <input type="text"  placeholder="HSN/SAC" class="line-input hsnSac text-xs">
             
             <input 
                 type="number" value="1" min="1" 
@@ -421,6 +421,7 @@ function calcTotals() {
 async function loadInvoice(invoiceId) {
     try {
         const response = await fetch(`/api/invoices/${invoiceId}`);
+
         if (!response.ok) {
             throw new Error("Invoice not found");
         }
@@ -441,15 +442,23 @@ async function loadInvoice(invoiceId) {
 
         // Set customer
         if (invoice.customerId) {
+
             selectedCustomerId = invoice.customerId;
-            selectedCustomer = {
-                id: invoice.customerId,
-                name: invoice.customerName,
-                address: invoice.customerAddress,
-                mobile: invoice.customerPhone,
-                gstNumber: invoice.customerGst
-            };
-            document.getElementById("customerSearch").value = invoice.customerName || "";
+
+            const customerRes = await fetch(`/api/customers/${invoice.customerId}`);
+
+            if (customerRes.ok) {
+
+                const customer = await customerRes.json();
+
+                selectedCustomer = customer;
+
+                document.getElementById("customerSearch").value =
+                    customer.name || "";
+
+
+
+            }
         }
 
         // Clear existing items and add invoice items
@@ -470,13 +479,18 @@ async function loadInvoice(invoiceId) {
                     const qtyInput = row.querySelector(".qty");
                     const rateInput = row.querySelector(".rate");
                     const gstSelect = row.querySelector(".gst");
+                    const descInput = row.querySelector(".itemDescription");
+                    const hsnInput = row.querySelector(".hsnSac");
+
 
                     if (nameInput) nameInput.value = item.itemName || "";
                     if (itemTypeInput) itemTypeInput.value = item.itemType || "";
                     if (itemRefIdInput) itemRefIdInput.value = item.itemRefId || "";
                     if (qtyInput) qtyInput.value = item.qty || 1;
                     if (rateInput) rateInput.value = item.rate || 0;
-                    if (gstSelect) gstSelect.value = item.gst || 18;
+                    if (gstSelect) gstSelect.value = item.gst || 0;
+                    if (descInput) descInput.value = item.description || "";
+                    if (hsnInput) hsnInput.value = item.hsnSac || "";
 
                     // Calculate the row
                     calculateRow(row);

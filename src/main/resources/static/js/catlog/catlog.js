@@ -34,6 +34,8 @@ let tmplFilter = 'all';
 
 let editPlanId = null;   // null = create, number = edit
 let editProductId = null;
+//calcaulate ADD QUANTITY KU 
+let currentQuantity = 0;
 let editTemplateId = null;
 let editRTId = null;
 let planPage = 0;
@@ -501,85 +503,6 @@ async function savePlan() {
     }
 }
 
-async function savePlan() {
-    if (isSavingPlan) return;
-
-    isSavingPlan = true;
-
-    const btn = document.getElementById("planSaveBtn");
-
-    // 🔹 Safe button handling
-    if (btn) {
-        btn.disabled = true;
-        btn.innerText = "Saving...";
-    }
-
-    try {
-        const name = document.getElementById('pm_name').value.trim();
-        const price = document.getElementById('pm_price').value;
-
-        if (!name || !price) {
-            showToast('Plan name and price are required', 'error');
-            return;
-        }
-
-        const file = document.getElementById("planImgInput").files[0];
-
-        const payload = {
-            name,
-            billingCycle: currentBilling,
-            currency: document.getElementById('pm_currency').value,
-            price: parseFloat(price) || 0,
-            description: document.getElementById('pm_desc').value.trim(),
-            features: document.getElementById('pm_features').value.trim(),
-            status: 'active'
-        };
-
-        let res;
-
-        // 🔹 Create or Update
-        if (editPlanId) {
-            await api(`/api/catalog/plans/${editPlanId}`, 'PUT', payload);
-            res = { id: editPlanId };
-        } else {
-            res = await api(`/api/catalog/plans`, 'POST', payload);
-        }
-
-        const planId = res.id;
-
-        // 🔹 Upload Image
-        if (file) {
-            const formData = new FormData();
-            formData.append("file", file);
-
-            const uploadRes = await fetch(`/doc/upload/plan/${planId}`, {
-                method: "POST",
-                body: formData
-            });
-
-            const data = await uploadRes.json();
-
-            await api(`/api/catalog/plans/${planId}/image`, 'PUT', {
-                imageUrl: data.url
-            });
-        }
-
-        showToast(editPlanId ? 'Plan updated!' : 'Plan created!', 'success');
-        closePlanModal();
-        loadPlans();
-
-    } catch (err) {
-        console.error(err);
-        showToast('Error: ' + err.message, 'error');
-    } finally {
-        isSavingPlan = false;
-
-        if (btn) {
-            btn.disabled = false;
-            btn.innerText = editPlanId ? "Save Changes" : "Create Plan";
-        }
-    }
-}
 function togglePlanStatus(id) {
     api(`${API.plans}/${id}/toggle-status`, 'PATCH')
         .then(() => { showToast('Plan status updated', 'success'); loadPlans(); })
@@ -648,7 +571,7 @@ function renderProducts() {
         const catCls = catColors[p.category] || 'bg-gray-100 text-gray-600';
         const imgSrc = p.imageUrl ? FILE_BASE + p.imageUrl : "/assets/image.png"; // fallback
         return `
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition relative group">
+    <div  class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition relative group">
     <img 
   src="${p.imageUrl ? FILE_BASE + p.imageUrl : '/assets/image.png'}"
   class="w-full h-40 object-cover"
@@ -678,6 +601,20 @@ function renderProducts() {
           <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${catCls}">${p.category || 'General'}</span>
         </div>
         <p class="text-base font-bold text-indigo-600 mt-1">${sym(p)}${Number(p.price || 0).toLocaleString()}</p>
+        <div class="mt-3 inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 border border-gray-100">
+    <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+    </svg>
+    <span class="text-xs text-gray-500 font-medium">Stock</span>
+    <span class="text-base font-bold text-gray-900">
+        ${p.quantity || 0}
+    </span>
+</div>
+<a href="/product-details/${p.id}"
+   class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold">
+   View Details
+</a>
         ${p.description ? `<p class="text-xs text-gray-500 mt-1.5 leading-relaxed">${p.description}</p>` : ''}
       </div>
       <div class="flex items-center justify-between pt-3 border-t border-gray-50">
@@ -710,13 +647,18 @@ function openProductModal(id) {
         document.getElementById('prd_price').value = p.price || '';
         document.getElementById('prd_currency').value = p.currency || 'INR';
         document.getElementById('prd_category').value = p.category || 'General';
-        document.getElementById('prd_desc').value = p.description || '';
+        document.getElementById('prd_desc').value = p.description || ''; currentQuantity = p.quantity || 0;
+        document.getElementById('prd_current_qty').value = currentQuantity;
+        document.getElementById('prd_quantity').value = 0;
         document.getElementById('productModalTitle').textContent = 'Edit Product';
         document.getElementById('prodSaveLabel').textContent = 'Save Changes';
     } else {
-        ['prd_name', 'prd_sku', 'prd_price', 'prd_desc'].forEach(i => document.getElementById(i).value = '');
+        ['prd_name', 'prd_sku', 'prd_price', 'prd_desc', 'prd_quantity'].forEach(i => document.getElementById(i).value = '');
         document.getElementById('prd_currency').value = 'INR';
         document.getElementById('prd_category').value = 'Investments';
+        currentQuantity = 0;
+        document.getElementById('prd_current_qty').value = 0;
+        document.getElementById('prd_quantity').value = 0;
         document.getElementById('productModalTitle').textContent = 'New Product';
         document.getElementById('prodSaveLabel').textContent = 'Create Product';
     }
@@ -762,6 +704,8 @@ async function saveProduct() {
             return;
         }
         const file = document.getElementById("prodImgInput").files[0];
+        const addQty = parseInt(document.getElementById('prd_quantity').value || 0);
+        const finalQty = editProductId ? currentQuantity + addQty : addQty;
 
         const payload = {
             name,
@@ -769,6 +713,7 @@ async function saveProduct() {
             category: document.getElementById('prd_category').value,
             currency: document.getElementById('prd_currency').value,
             price: parseFloat(document.getElementById('prd_price').value) || 0,
+            quantity: finalQty,
             description: document.getElementById('prd_desc').value.trim(),
             status: 'active'
         };

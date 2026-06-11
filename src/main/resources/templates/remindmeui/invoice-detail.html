@@ -671,61 +671,125 @@
   <!-- Record Payment Modal -->
   <div id="paymentModal"
     class="hidden fixed inset-0 bg-black/50 z-50 flex items-end md:items-center justify-center p-4">
+
     <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl">
+
       <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
         <h3 class="text-base font-bold text-gray-900">Record Payment</h3>
+
         <button onclick="document.getElementById('paymentModal').classList.add('hidden')"
-          class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100"><svg
-            class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100">
+
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg></button>
+          </svg>
+
+        </button>
       </div>
+
       <div class="px-6 py-4 space-y-4">
+
+        <!-- Payment Mode -->
         <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1.5">Payment Mode</label>
+
+          <label class="block text-xs font-semibold text-gray-500 mb-1.5">
+            Payment Mode
+          </label>
+
           <div class="grid grid-cols-5 gap-2">
-            <button onclick="setPayMode(this,'upi')"
-              class="pay-mode-btn bg-indigo-50 text-indigo-700 rounded-xl py-2 text-xs font-semibold border-2 border-indigo-300">UPI</button>
-            <button onclick="setPayMode(this,'bank')"
-              class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">Bank</button>
-            <button onclick="setPayMode(this,'cash')"
-              class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">Cash</button>
-            <button onclick="setPayMode(this,'cheque')"
-              class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">Cheque</button>
-            <button onclick="setPayMode(this,'card')"
-              class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">Card</button>
+
+            <button onclick="setPayMode(this,'UPI')"
+              class="pay-mode-btn bg-indigo-50 text-indigo-700 rounded-xl py-2 text-xs font-semibold border-2 border-indigo-300">
+              UPI
+            </button>
+
+            <button onclick="setPayMode(this,'BANK')"
+              class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">
+              Bank
+            </button>
+
+            <button onclick="setPayMode(this,'CASH')"
+              class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">
+              Cash
+            </button>
+
+            <button onclick="setPayMode(this,'CHEQUE')"
+              class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">
+              Cheque
+            </button>
+
+            <button onclick="setPayMode(this,'CARD')"
+              class="pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200">
+              Card
+            </button>
+
           </div>
+
         </div>
+
+        <!-- Amount + Date -->
         <div class="grid grid-cols-2 gap-3">
+
           <div>
-            <label class="block text-xs font-semibold text-gray-500 mb-1.5">Amount (₹)</label>
-            <input type="number" value="70640"
+            <label class="block text-xs font-semibold text-gray-500 mb-1.5">
+              Amount (₹)
+            </label>
+
+            <input id="paymentAmount" type="number" placeholder="Enter Amount"
               class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
           </div>
+
           <div>
-            <label class="block text-xs font-semibold text-gray-500 mb-1.5">Payment Date</label>
-            <input type="date" id="payDate"
+            <label class="block text-xs font-semibold text-gray-500 mb-1.5">
+              Payment Date
+            </label>
+
+            <input id="payDate" type="date"
               class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
           </div>
+
         </div>
+
+        <!-- Reference -->
         <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1.5">Reference / Transaction ID</label>
-          <input type="text" placeholder="UPI Ref, Cheque No, etc."
+
+          <label class="block text-xs font-semibold text-gray-500 mb-1.5">
+            Reference / Transaction ID
+          </label>
+
+          <input id="paymentReference" type="text" placeholder="UPI Ref, Cheque No, etc."
             class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400">
+
         </div>
+
+        <!-- Notes -->
         <div>
-          <label class="block text-xs font-semibold text-gray-500 mb-1.5">Notes</label>
-          <textarea rows="2" placeholder="Optional notes..."
+
+          <label class="block text-xs font-semibold text-gray-500 mb-1.5">
+            Notes
+          </label>
+
+          <textarea id="paymentNotes" rows="2" placeholder="Optional notes..."
             class="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-indigo-400 resize-none"></textarea>
+
         </div>
+
       </div>
+
       <div class="px-6 py-4 border-t border-gray-100 flex gap-3">
+
         <button onclick="document.getElementById('paymentModal').classList.add('hidden')"
-          class="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold">Cancel</button>
+          class="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-700 text-sm font-semibold">
+          Cancel
+        </button>
+
         <button onclick="recordPayment()"
-          class="flex-1 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700">Record
-          Payment</button>
+          class="flex-1 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700">
+          Record Payment
+        </button>
+
       </div>
+
     </div>
   </div>
 
@@ -1126,9 +1190,20 @@
   <script>
     function printInvoice() { window.print(); }
 
+    let selectedPaymentMode = "UPI";
+
     function setPayMode(btn, mode) {
-      document.querySelectorAll('.pay-mode-btn').forEach(b => { b.className = 'pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200'; });
-      btn.className = 'pay-mode-btn bg-indigo-50 text-indigo-700 rounded-xl py-2 text-xs font-semibold border-2 border-indigo-300';
+
+      selectedPaymentMode = mode.toUpperCase();
+
+      document.querySelectorAll('.pay-mode-btn')
+        .forEach(b => {
+          b.className =
+            'pay-mode-btn rounded-xl py-2 text-xs font-semibold border-2 border-gray-200 text-gray-600 hover:border-indigo-200';
+        });
+
+      btn.className =
+        'pay-mode-btn bg-indigo-50 text-indigo-700 rounded-xl py-2 text-xs font-semibold border-2 border-indigo-300';
     }
 
     function editInvoice() {
@@ -1140,14 +1215,74 @@
       window.location.href = `/invoice-create?id=${invoice.id}&edit=true`;
     }
 
-    function recordPayment() {
+    async function recordPayment() {
+
       if (isPreview) {
         showToast("Save invoice before recording payment");
         return;
       }
 
-      document.getElementById('paymentModal').classList.add('hidden');
-      showToast('Payment recorded successfully');
+      try {
+
+        const amount =
+          parseFloat(
+            document.getElementById("paymentAmount").value
+          );
+
+        const paymentDate =
+          document.getElementById("payDate").value;
+
+        const referenceNo =
+          document.getElementById("paymentReference").value;
+
+        const notes =
+          document.getElementById("paymentNotes").value;
+
+        if (!amount || amount <= 0) {
+          showToast("Enter valid amount");
+          return;
+        }
+
+        const response = await fetch(
+          `/api/invoices/${invoice.id}/payments`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              amount: amount,
+              paymentMode: selectedPaymentMode,
+              paymentDate: paymentDate,
+              referenceNo: referenceNo,
+              notes: notes
+            })
+          }
+        );
+
+        if (!response.ok) {
+
+          const error = await response.json();
+
+          throw new Error(
+            error.message || "Failed to save payment"
+          );
+        }
+
+        document
+          .getElementById("paymentModal")
+          .classList.add("hidden");
+
+        showToast("Payment recorded successfully");
+
+        await loadInvoice(invoice.id);
+
+      } catch (err) {
+
+        console.error(err);
+
+        showToast("Unable to save payment");
+      }
     }
 
     function showToast(msg) {

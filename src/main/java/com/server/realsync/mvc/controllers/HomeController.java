@@ -30,6 +30,7 @@ import com.server.realsync.entity.CatalogProduct;
 import com.server.realsync.entity.CatalogRTemplate;
 import com.server.realsync.entity.CustomerGroup;
 import com.server.realsync.entity.Greeting;
+import com.server.realsync.entity.InventoryTransaction;
 import com.server.realsync.entity.Reminder;
 import com.server.realsync.entity.ScheduleEntry;
 import com.server.realsync.repo.ScheduleEntryRepository;
@@ -37,6 +38,7 @@ import com.server.realsync.services.AccountService;
 import com.server.realsync.services.CustomerService;
 import com.server.realsync.services.ReminderService;
 import com.server.realsync.services.GreetingService;
+import com.server.realsync.services.InventoryTransactionService;
 import com.server.realsync.services.PromotionService;
 import com.server.realsync.services.CustomerGroupService;
 import com.server.realsync.services.CatalogProductService;
@@ -94,6 +96,8 @@ public class HomeController {
 	GmailSender gmailSender;
 	@Autowired
 	private ScheduleEntryRepository scheduleEntryRepository;
+	@Autowired
+	private InventoryTransactionService txnService;
 
 	@GetMapping
 	public String getWebHomePage(Model model) {
@@ -455,6 +459,34 @@ public class HomeController {
 		return "remindmeui/catalog";
 	}
 
+	@GetMapping("/product-details/{id}")
+	public String inventoryDetail(
+			@PathVariable Integer id,
+			Model model) {
+
+		Integer accountId = SecurityUtil.getCurrentAccountId().getId();
+
+		CatalogProduct product = catalogProductService.getById(id, accountId)
+				.orElseThrow(() -> new RuntimeException("Product not found"));
+
+		List<InventoryTransaction> txns = txnService.getByProduct(id);
+		int totalAdded = txns.stream().filter(t -> "STOCK_IN".equals(t.getType()))
+				.mapToInt(InventoryTransaction::getQuantity).sum();
+		int totalSold = txns.stream().filter(t -> "SALE".equals(t.getType()))
+				.mapToInt(InventoryTransaction::getQuantity).sum();
+
+		Map<String, Object> summary = Map.of(
+				"currentStock", product.getQuantity(),
+				"totalAdded", totalAdded,
+				"totalSold", totalSold);
+
+		model.addAttribute("product", product);
+		model.addAttribute("summary", summary);
+		model.addAttribute("transactions", txns);
+
+		return "remindmeui/productdetail";
+	}
+
 	@GetMapping("/engagement.html")
 	public String engagement(Model model) {
 		Account loggedIn = SecurityUtil.getCurrentAccountId();
@@ -464,8 +496,6 @@ public class HomeController {
 		model.addAttribute("account", account);
 		return "remindmeui/engagement";
 	}
-
-	
 
 	@GetMapping("/user-management.html")
 	public String users(Model model) {

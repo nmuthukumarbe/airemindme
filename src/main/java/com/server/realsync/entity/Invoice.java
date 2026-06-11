@@ -24,6 +24,18 @@ public class Invoice {
 
     private Long customerId;
 
+    private String customerName;
+
+    @Column(length = 2000)
+    private String customerAddress;
+
+    private String customerPhone;
+
+    private String customerGst;
+
+    @Column(length = 2000)
+    private String shippingAddress;
+
     private LocalDate invoiceDate;
 
     private LocalDate dueDate;
@@ -42,6 +54,12 @@ public class Invoice {
 
     @Column(precision = 19, scale = 4)
     private BigDecimal grandTotal = BigDecimal.ZERO;
+
+    @Column(precision = 19, scale = 4)
+    private BigDecimal paidAmount = BigDecimal.ZERO;
+
+    @Column(precision = 19, scale = 4)
+    private BigDecimal balanceAmount = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
     private InvoiceStatus status;
@@ -64,11 +82,9 @@ public class Invoice {
     @Column(length = 100)
     private String updatedBy;
 
-    @OneToMany(
-            mappedBy = "invoice",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    private Boolean inventoryProcessed = false;
+
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<InvoiceItem> items = new ArrayList<>();
 
     public Invoice() {
@@ -212,5 +228,69 @@ public class Invoice {
 
     public void setItems(List<InvoiceItem> items) {
         this.items = items;
+    }
+
+    // Getters and Setters
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
+
+    public String getCustomerGst() {
+        return customerGst;
+    }
+
+    public void setCustomerGst(String customerGst) {
+        this.customerGst = customerGst;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public BigDecimal getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(BigDecimal paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    public BigDecimal getBalanceAmount() {
+        return balanceAmount;
+    }
+
+    public void setBalanceAmount(BigDecimal balanceAmount) {
+        this.balanceAmount = balanceAmount;
+    }
+    public Boolean getInventoryProcessed() {
+        return inventoryProcessed;
+    }
+    public void setInventoryProcessed(Boolean inventoryProcessed) {
+        this.inventoryProcessed = inventoryProcessed;
     }
 }

@@ -23,6 +23,8 @@ public class CatalogProduct {
     private String category;
     private String currency;
     private Double price;
+    @Column(nullable = false)
+    private Integer quantity = 0;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -100,6 +102,14 @@ public class CatalogProduct {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public String getDescription() {

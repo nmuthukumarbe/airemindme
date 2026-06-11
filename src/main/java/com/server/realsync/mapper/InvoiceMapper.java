@@ -28,6 +28,11 @@ public class InvoiceMapper {
         dto.setId(invoice.getId());
         dto.setInvoiceNumber(invoice.getInvoiceNumber());
         dto.setCustomerId(invoice.getCustomerId());
+        dto.setCustomerName(invoice.getCustomerName());
+        dto.setCustomerAddress(invoice.getCustomerAddress());
+        dto.setCustomerPhone(invoice.getCustomerPhone());
+        dto.setCustomerGst(invoice.getCustomerGst());
+        dto.setShippingAddress(invoice.getShippingAddress());
         dto.setInvoiceDate(invoice.getInvoiceDate());
         dto.setDueDate(invoice.getDueDate());
         dto.setSubtotal(invoice.getSubtotal());
@@ -49,6 +54,10 @@ public class InvoiceMapper {
             i.setItemType(it.getItemType());
             i.setItemRefId(it.getItemRefId());
             i.setItemName(it.getItemName());
+            i.setDescription(it.getDescription());
+            i.setHsnSac(it.getHsnSac());
+            i.setDescription(it.getDescription());
+            i.setHsnSac(it.getHsnSac());
             i.setQty(it.getQty());
             // InvoiceItem getters return Double for compatibility; convert where possible
             i.setRate(it.getRate());
@@ -67,6 +76,11 @@ public class InvoiceMapper {
         Invoice invoice = new Invoice();
         invoice.setInvoiceNumber(req.getInvoiceNumber());
         invoice.setCustomerId(req.getCustomerId());
+        invoice.setCustomerName(req.getCustomerName());
+        invoice.setCustomerAddress(req.getCustomerAddress());
+        invoice.setCustomerPhone(req.getCustomerPhone());
+        invoice.setCustomerGst(req.getCustomerGst());
+        invoice.setShippingAddress(req.getShippingAddress());
         invoice.setInvoiceDate(req.getInvoiceDate());
         invoice.setDueDate(req.getDueDate());
         invoice.setSubtotal(req.getSubtotal() == null ? java.math.BigDecimal.ZERO : req.getSubtotal());
@@ -86,6 +100,8 @@ public class InvoiceMapper {
                 entity.setItemType(it.getItemType());
                 entity.setItemRefId(it.getItemRefId());
                 entity.setItemName(it.getItemName());
+                entity.setDescription(it.getDescription());
+                entity.setHsnSac(it.getHsnSac());
                 entity.setQty(it.getQty());
                 entity.setRate(it.getRate());
                 entity.setGst(it.getGst());
@@ -107,6 +123,11 @@ public class InvoiceMapper {
     public static void updateEntityFromDto(Invoice existing, UpdateInvoiceRequestDTO dto) {
         existing.setInvoiceNumber(dto.getInvoiceNumber());
         existing.setCustomerId(dto.getCustomerId());
+        existing.setCustomerName(dto.getCustomerName());
+        existing.setCustomerAddress(dto.getCustomerAddress());
+        existing.setCustomerPhone(dto.getCustomerPhone());
+        existing.setCustomerGst(dto.getCustomerGst());
+        existing.setShippingAddress(dto.getShippingAddress());
         existing.setInvoiceDate(dto.getInvoiceDate());
         existing.setDueDate(dto.getDueDate());
         existing.setSubtotal(dto.getSubtotal() == null ? java.math.BigDecimal.ZERO : dto.getSubtotal());
@@ -128,6 +149,8 @@ public class InvoiceMapper {
                 entity.setItemType(it.getItemType());
                 entity.setItemRefId(it.getItemRefId());
                 entity.setItemName(it.getItemName());
+                entity.setDescription(it.getDescription());
+                entity.setHsnSac(it.getHsnSac());
                 entity.setQty(it.getQty());
                 entity.setRate(it.getRate());
                 entity.setGst(it.getGst());

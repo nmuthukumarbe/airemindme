@@ -1,9 +1,4 @@
 //Actions
-async function saveDraft() {
-    const invoice = buildInvoicePayload();
-    invoice.status = "DRAFT";
-    await saveInvoice(invoice);
-}
 
 async function saveInvoice(invoicePayload) {
     try {
@@ -51,6 +46,8 @@ function buildInvoicePayload() {
             itemType: row.querySelector(".itemType")?.value,
             itemRefId: row.querySelector(".itemRefId")?.value,
             itemName: row.querySelector(".itemName")?.value,
+            description: row.querySelector(".itemDescription")?.value || "",
+            hsnSac: row.querySelector(".hsnSac")?.value || "",
             qty: parseInt(row.querySelector(".qty")?.value || 0),
             rate: parseFloat(row.querySelector(".rate")?.value || 0),
             gst: parseFloat(row.querySelector(".gst")?.value || 0),
@@ -62,14 +59,15 @@ function buildInvoicePayload() {
     const payload = {
         customerId: selectedCustomerId,
         customerName: selectedCustomer?.name || "",
-        customerAddress: selectedCustomer?.address || document.getElementById("billToAddr")?.value || "",
+        customerAddress: document.getElementById("billToAddr")?.value || "",
         customerPhone: selectedCustomer?.mobile || "",
-        customerGst: selectedCustomer?.gstNumber || "",
+        customerGst: document.getElementById("billToGST")?.value || "",
         shippingAddress: document.getElementById("shipToAddr")?.value || "",
         invoiceNumber: document.getElementById("invoiceNum").value,
         invoiceDate: document.getElementById("invoiceDate").value,
         dueDate: document.getElementById("dueDate").value,
         subtotal: extractMoney("subtotalDisplay"),
+        discountAmount: parseFloat(document.getElementById("discountVal")?.value || 0),
         taxAmount: extractMoney("cgstDisplay") + extractMoney("sgstDisplay"),
         shippingAmount: parseFloat(document.getElementById("shippingAmt").value || 0),
         grandTotal: extractMoney("totalDisplay"),
@@ -82,6 +80,7 @@ function buildInvoicePayload() {
     if (invoiceId) {
         payload.id = invoiceId;
     }
+    console.log("PAYLOAD =>", payload);
 
     return payload;
 }
@@ -137,15 +136,38 @@ async function saveAndContinue() {
  */
 async function saveFinalInvoice() {
     const invoice = buildInvoicePayload();
-    invoice.status = "UNPAID";
+    invoice.status = "SENT";
 
     try {
-        const saved = await saveInvoice(invoice);
-        // Redirect to invoice detail page
+        await saveInvoice(invoice);
+
+        showToast("Invoice sent successfully");
+
         setTimeout(() => {
-            location.href = `/invoice-detail?id=${saved.id}`;
+            location.href = "/sales.html";
         }, 500);
+
     } catch (err) {
         console.error("Save invoice failed:", err);
+        showToast(`Failed to save: ${err.message}`);
+    }
+}
+
+async function saveDraft() {
+    const invoice = buildInvoicePayload();
+    invoice.status = "DRAFT";
+
+    try {
+        await saveInvoice(invoice);
+
+        showToast("Draft saved successfully");
+
+        setTimeout(() => {
+            location.href = "/sales.html";
+        }, 500);
+
+    } catch (err) {
+        console.error("Save draft failed:", err);
+        showToast(`Failed to save: ${err.message}`);
     }
 }

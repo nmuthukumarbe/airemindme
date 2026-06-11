@@ -14,11 +14,13 @@ import com.server.realsync.entity.Account;
 import com.server.realsync.entity.CatalogPlan;
 import com.server.realsync.entity.CatalogProduct;
 import com.server.realsync.entity.CatalogTemplate;
+import com.server.realsync.entity.InventoryTransaction;
 import com.server.realsync.entity.CatalogRTemplate;
 import com.server.realsync.services.CatalogProductService;
 import com.server.realsync.services.CatalogRTemplateService;
 import com.server.realsync.services.CatalogTemplateService;
 import com.server.realsync.services.CatlogPlanService;
+import com.server.realsync.services.InventoryTransactionService;
 import com.server.realsync.util.SecurityUtil;
 
 //used for report templates
@@ -38,6 +40,9 @@ public class CatlogContoller {
 
     @Autowired
     private CatalogRTemplateService rTemplateService;
+
+    @Autowired
+    private InventoryTransactionService txnService;
 
     // GET /api/catalog/plans
     @GetMapping("/plans")
@@ -139,23 +144,150 @@ public class CatlogContoller {
         return productService.getByAccountId(account.getId(), PageRequest.of(page, size, Sort.by("id").descending()));
     }
 
+    @GetMapping("/products/{id}")
+    public ResponseEntity<?> getProduct(
+            @PathVariable Integer id) {
+
+        Account account = SecurityUtil.getCurrentAccountId();
+
+        return productService.getById(id, account.getId())
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping("/products")
     public CatalogProduct createProduct(@RequestBody CatalogProduct product) {
         Account account = SecurityUtil.getCurrentAccountId();
         product.setAccountId(account.getId());
         return productService.save(product);
     }
+@PutMapping("/products/{id}")
+public ResponseEntity<CatalogProduct> updateProduct(
+        @PathVariable Integer id,
+        @RequestBody CatalogProduct product) {
 
-    @PutMapping("/products/{id}")
-    public ResponseEntity<CatalogProduct> updateProduct(@PathVariable Integer id,
-            @RequestBody CatalogProduct product) {
+    Account account = SecurityUtil.getCurrentAccountId();
+
+    return productService.getById(id, account.getId())
+            .map(existing -> {
+
+                Integer oldQty = existing.getQuantity() == null
+                        ? 0
+                        : existing.getQuantity();
+
+                Integer newQty = product.getQuantity() == null
+                        ? 0
+                        : product.getQuantity();
+
+                // Update Product
+                existing.setName(product.getName());
+                existing.setSku(product.getSku());
+                existing.setCategory(product.getCategory());
+                existing.setCurrency(product.getCurrency());
+                existing.setPrice(product.getPrice());
+                existing.setQuantity(newQty);
+                existing.setDescription(product.getDescription());
+                existing.setStatus(product.getStatus());
+
+                CatalogProduct savedProduct =
+                        productService.save(existing);
+
+                // Create inventory transaction if quantity changed
+                if (!oldQty.equals(newQty)) {
+
+                    int diff = newQty - oldQty;
+
+                    InventoryTransaction txn =
+                            new InventoryTransaction();
+
+                    txn.setAccountId(account.getId());
+                    txn.setProductId(savedProduct.getId());
+                    txn.setType("ADJUSTMENT");
+                    txn.setQuantity(diff);
+                    txn.setBalanceAfter(newQty);
+                    txn.setReferenceNo("PRODUCT-EDIT");
+
+                    txn.setNotes(
+                            "Stock adjusted via product edit. " +
+                            "Old Qty: " + oldQty +
+                            ", New Qty: " + newQty);
+
+                    txnService.save(txn);
+                }
+
+                return ResponseEntity.ok(savedProduct);
+            })
+            .orElse(ResponseEntity.notFound().build());
+}
+
+
+
+    @GetMapping("/products/{id}/summary")
+    public ResponseEntity<?> getProductSummary(
+            @PathVariable Integer id) {
+
         Account account = SecurityUtil.getCurrentAccountId();
+
         return productService.getById(id, account.getId())
-                .map(existing -> {
-                    product.setId(id);
-                    product.setAccountId(account.getId());
-                    return ResponseEntity.ok(productService.save(product));
+                .map(product -> {
+                    int currentStock = product.getQuantity() == null ? 0 : product.getQuantity();
+
+                    return ResponseEntity.ok(Map.of("currentStock", currentStock));
                 })
+                .orElse(ResponseEntity.notFound().build());
+    }
+    
+
+    @PostMapping("/products/{id}/add-stock")
+    public ResponseEntity<?> addStock(
+            @PathVariable Integer id,
+            @RequestBody Map<String, Object> body) {
+
+        Account account = SecurityUtil.getCurrentAccountId();
+
+        return productService.getById(id, account.getId())
+                .map(product -> {
+                    // Safely extract and parse quantity
+                    Integer qty = Integer.parseInt(String.valueOf(body.getOrDefault("quantity", 0)));
+
+                    String referenceNo = String.valueOf(body.getOrDefault("referenceNo", ""));
+                    String notes = String.valueOf(body.getOrDefault("notes", ""));
+
+                    // Calculate stock
+                    int currentQty = product.getQuantity() != null ? product.getQuantity() : 0;
+                    int newQty = currentQty + qty;
+
+                    // Update Product
+                    product.setQuantity(newQty);
+                    productService.save(product);
+
+                    // Create Transaction
+                    InventoryTransaction txn = new InventoryTransaction();
+                    txn.setAccountId(account.getId());
+                    txn.setProductId(product.getId());
+                    txn.setType("STOCK_IN");
+                    txn.setQuantity(qty);
+                    txn.setBalanceAfter(newQty);
+                    txn.setReferenceNo(referenceNo);
+                    txn.setNotes(notes);
+                    txnService.save(txn);
+
+                    return ResponseEntity.ok(Map.of(
+                            "message", "Stock Added",
+                            "newQuantity", newQty));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/products/{id}/transactions")
+    public ResponseEntity<?> getTransactions(
+            @PathVariable Integer id) {
+
+        Account account = SecurityUtil.getCurrentAccountId();
+
+        return productService.getById(id, account.getId())
+                .map(product -> ResponseEntity.ok(
+                        txnService.getByProduct(id)))
                 .orElse(ResponseEntity.notFound().build());
     }
 

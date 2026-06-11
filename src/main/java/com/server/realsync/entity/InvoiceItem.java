@@ -28,6 +28,11 @@ public class InvoiceItem {
 
     @Column(precision = 19, scale = 4)
     private BigDecimal lineTotal;
+    @Column(length = 1000)
+    private String description;
+
+    @Column(length = 100)
+    private String hsnSac;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invoice_id")
@@ -103,6 +108,22 @@ public class InvoiceItem {
 
     public void setTaxAmount(BigDecimal taxAmount) {
         this.taxAmount = taxAmount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getHsnSac() {
+        return hsnSac;
+    }
+
+    public void setHsnSac(String hsnSac) {
+        this.hsnSac = hsnSac;
     }
 
     public BigDecimal getLineTotal() {
