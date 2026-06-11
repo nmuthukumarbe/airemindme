@@ -32,4 +32,6 @@ public interface InvoicePaymentRepository extends JpaRepository<InvoicePayment, 
             WHERE p.accountId = :accountId
             """)
     Double sumPaymentsByAccountId(@Param("accountId") Integer accountId);
+
+    List<InvoicePayment> findByInvoiceIdInOrderByPaymentDateDesc(List<Integer> invoiceIds);
 }

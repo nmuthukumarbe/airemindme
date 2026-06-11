@@ -60,6 +60,13 @@ import com.server.realsync.util.CustomerMessageService;
 import com.server.realsync.util.GmailSender;
 import com.server.realsync.util.SecurityUtil;
 
+import com.server.realsync.entity.Invoice;
+import com.server.realsync.entity.InvoicePayment;
+import com.server.realsync.entity.InvoiceStatus;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Controller
@@ -114,6 +121,10 @@ public class HomeController {
 	private AppointmentRepository appointmentRepository;
 	@Autowired
 	private InventoryTransactionService txnService;
+	@Autowired
+	private InvoiceRepository invoiceRepository;
+	@Autowired
+	private InvoicePaymentRepository invoicePaymentRepository;
 
 	@GetMapping
 	public String getWebHomePage(Model model) {
@@ -414,16 +425,87 @@ public class HomeController {
 
 		List<CustomerGroup> groups = customerGroupService.getByAccountId(account.getId());
 		List<Reminder> reminders = reminderService.getByCustomerId(id, account.getId());
-		// List<Greeting> greetings = greetingService.getByCustomerId(id,
-		// account.getId());
+		List<Greeting> greetings = greetingService.getGreetingsForCustomer(customer);
 
 		Map<Integer, String> groupMap = groups.stream()
 				.collect(Collectors.toMap(
 						CustomerGroup::getId,
 						CustomerGroup::getName));
 
+		// Invoices & Payments calculations
+		List<Invoice> customerInvoices = invoiceRepository.findByCustomerId(customer.getId().longValue());
+		int totalInvoices = customerInvoices.size();
+		BigDecimal totalInvoiceValue = BigDecimal.ZERO;
+		BigDecimal totalPaid = BigDecimal.ZERO;
+		BigDecimal totalOutstanding = BigDecimal.ZERO;
+		long paidInvoicesCount = 0;
+		long pendingInvoicesCount = 0;
+
+		List<Integer> invoiceIds = new ArrayList<>();
+		Map<Integer, Invoice> invoiceMap = new HashMap<>();
+
+		for (Invoice inv : customerInvoices) {
+			invoiceIds.add(inv.getId().intValue());
+			invoiceMap.put(inv.getId().intValue(), inv);
+
+			if (inv.getStatus() != InvoiceStatus.CANCELLED) {
+				totalInvoiceValue = totalInvoiceValue.add(inv.getGrandTotal() != null ? inv.getGrandTotal() : BigDecimal.ZERO);
+				totalPaid = totalPaid.add(inv.getPaidAmount() != null ? inv.getPaidAmount() : BigDecimal.ZERO);
+				totalOutstanding = totalOutstanding.add(inv.getBalanceAmount() != null ? inv.getBalanceAmount() : BigDecimal.ZERO);
+				
+				if (inv.getStatus() == InvoiceStatus.PAID) {
+					paidInvoicesCount++;
+				} else if (inv.getStatus() != InvoiceStatus.DRAFT) {
+					pendingInvoicesCount++;
+				}
+			}
+		}
+
+		List<InvoicePayment> allPayments = new ArrayList<>();
+		if (!invoiceIds.isEmpty()) {
+			allPayments = invoicePaymentRepository.findByInvoiceIdInOrderByPaymentDateDesc(invoiceIds);
+		}
+
+		List<Map<String, Object>> paymentsList = new ArrayList<>();
+		List<InvoicePayment> latestPayments = allPayments.stream().limit(5).collect(Collectors.toList());
+		for (InvoicePayment p : latestPayments) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("invoiceId", p.getInvoiceId());
+			map.put("amount", p.getAmount());
+			map.put("paymentMode", p.getPaymentMode());
+			map.put("paymentDate", p.getPaymentDate());
+			Invoice inv = invoiceMap.get(p.getInvoiceId());
+			if (inv != null) {
+				map.put("invoiceNumber", inv.getInvoiceNumber());
+				map.put("invoiceDate", inv.getInvoiceDate());
+				map.put("status", inv.getStatus().name());
+			} else {
+				map.put("invoiceNumber", "N/A");
+				map.put("invoiceDate", null);
+				map.put("status", "N/A");
+			}
+			paymentsList.add(map);
+		}
+
+		// Sort upcoming greetings by nearest date
+		LocalDate today = LocalDate.now();
+		List<Greeting> upcomingGreetings = greetings.stream()
+				.filter(g -> g.getGreetingDate() != null && !g.getGreetingDate().isBefore(today))
+				.sorted(Comparator.comparing(Greeting::getGreetingDate))
+				.limit(3)
+				.collect(Collectors.toList());
+
 		model.addAttribute("groupMap", groupMap);
 		model.addAttribute("reminders", reminders);
+		model.addAttribute("greetings", greetings);
+		model.addAttribute("upcomingGreetings", upcomingGreetings);
+		model.addAttribute("totalInvoices", totalInvoices);
+		model.addAttribute("totalInvoiceValue", totalInvoiceValue);
+		model.addAttribute("totalPaid", totalPaid);
+		model.addAttribute("totalOutstanding", totalOutstanding);
+		model.addAttribute("paidInvoicesCount", paidInvoicesCount);
+		model.addAttribute("pendingInvoicesCount", pendingInvoicesCount);
+		model.addAttribute("payments", paymentsList);
 
 		return "remindmeui/customer-detail";
 	}

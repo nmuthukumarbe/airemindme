@@ -22,4 +22,6 @@ public interface GreetingRepository extends JpaRepository<Greeting, Integer> {
     long deleteByIdAndAccountId(Integer id, Integer accountId);
 
     long countByAccountId(Integer accountId);
+
+    List<Greeting> findByAccountIdAndCustomerGroupIdIn(Integer accountId, List<Integer> customerGroupIds);
 }

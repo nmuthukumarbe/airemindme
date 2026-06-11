@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.Comparator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -114,5 +118,28 @@ public class GreetingService {
 
     public long countByAccountId(Integer accountId) {
         return repo.countByAccountId(accountId);
+    }
+
+    public List<Greeting> getGreetingsForCustomer(Customer customer) {
+        List<Greeting> greetings = new ArrayList<>(repo.findByCustomerIdAndAccountId(customer.getId(), customer.getAccountId()));
+        String groupIdStr = customer.getCustomerGroupId();
+        if (groupIdStr != null && !groupIdStr.trim().isEmpty()) {
+            try {
+                List<Integer> groupIds = Arrays.stream(groupIdStr.split(","))
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .map(Integer::parseInt)
+                        .collect(Collectors.toList());
+                if (!groupIds.isEmpty()) {
+                    List<Greeting> groupGreetings = repo.findByAccountIdAndCustomerGroupIdIn(customer.getAccountId(), groupIds);
+                    greetings.addAll(groupGreetings);
+                }
+            } catch (Exception e) {
+                // Ignore parsing errors
+            }
+        }
+        List<Greeting> uniqueGreetings = greetings.stream().distinct().collect(Collectors.toList());
+        uniqueGreetings.sort((g1, g2) -> g2.getGreetingDate().compareTo(g1.getGreetingDate()));
+        return uniqueGreetings;
     }
 }

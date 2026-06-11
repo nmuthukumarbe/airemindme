@@ -64,4 +64,5 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long>, JpaSpec
     """)
     List<RecentInvoiceDTO> findRecentInvoices(@Param("accountId") Integer accountId, Pageable pageable);
 
+    List<Invoice> findByCustomerId(Long customerId);
 }

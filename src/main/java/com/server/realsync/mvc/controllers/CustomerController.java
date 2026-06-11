@@ -101,12 +101,16 @@ public class CustomerController {
         existing.setWeddingDate(customer.getWeddingDate());
         existing.setChannel(customer.getChannel());
         existing.setCustomerGroupId(customer.getCustomerGroupId());
+        existing.setGstNo(customer.getGstNo());
+        existing.setAddress(customer.getAddress());
+        existing.setCity(customer.getCity());
+        existing.setState(customer.getState());
+        existing.setCountry(customer.getCountry());
 
         Customer saved = customerService.save(existing);
 
         return ResponseEntity.ok(saved);
     }
-
 
     @GetMapping("/api/customers/search")
     public ResponseEntity<List<Customer>> searchCustomers(
