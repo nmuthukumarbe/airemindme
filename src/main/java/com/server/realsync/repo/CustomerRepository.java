@@ -33,6 +33,10 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     Optional<Customer> findByAccountIdAndMobile(Integer accountId, String mobile);
 
+    List<Customer> findByAccountIdAndMobileIn(Integer accountId, List<String> mobiles);
+
+    boolean existsByAccountIdAndMobile(Integer accountId, String mobile);
+
     Optional<Customer> findByIdAndAccountId(Integer id, Integer accountId);
 
     long countByAccountId(Integer accountId);

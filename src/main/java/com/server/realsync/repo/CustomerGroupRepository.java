@@ -21,6 +21,8 @@ public interface CustomerGroupRepository extends JpaRepository<CustomerGroup, In
 
     Optional<CustomerGroup> findByAccountIdAndName(Integer accountId, String name);
 
+    Optional<CustomerGroup> findByAccountIdAndNameIgnoreCase(Integer accountId, String name);
+
     @Query(value = """
             SELECT
                 cg.id,

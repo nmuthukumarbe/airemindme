@@ -318,7 +318,7 @@ async function saveNewGroup() {
 }
 // DELETE FROM DATABASE
 async function deleteGroup(id) {
-    if (!confirm("Are you sure? Customers in this group will be moved to 'Uncategorized'.")) return;
+    if (!confirm("Are you sure? Customers in this group will be moved to 'Default'.")) return;
 
     try {
         const response = await fetch(`/api/customer-groups/${id}`, {
