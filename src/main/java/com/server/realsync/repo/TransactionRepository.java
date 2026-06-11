@@ -1,12 +1,13 @@
-/**
- * 
- */
-package com.server.realsync.repo;
+// /**
+//  * 
+//  */
 
-import org.springframework.data.jpa.repository.JpaRepository;
+// package com.server.realsync.repo;
 
-import com.server.realsync.entity.Transaction;
+// import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
+// import com.server.realsync.entity.Transaction;
+
+// public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
 	
-}
+// }
