@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.server.realsync.entity.ScheduleEntry;
@@ -14,6 +16,16 @@ import com.server.realsync.entity.ScheduleEntryStatus;
  */
 
 public interface ScheduleEntryRepository extends JpaRepository<ScheduleEntry, Long> {
+
+    @Query("SELECT COUNT(se) FROM ScheduleEntry se JOIN Schedule s ON se.scheduleId = s.id WHERE s.accountId = :accountId")
+    long countByAccountId(@Param("accountId") Integer accountId);
+
+    @Query("SELECT se.occurrenceDate, s.sourceType FROM ScheduleEntry se JOIN Schedule s ON se.scheduleId = s.id WHERE s.accountId = :accountId AND se.occurrenceDate >= :startDateTime AND se.occurrenceDate <= :endDateTime")
+    List<Object[]> findScheduleEntriesForActivityChart(
+        @Param("accountId") Integer accountId,
+        @Param("startDateTime") LocalDateTime startDateTime,
+        @Param("endDateTime") LocalDateTime endDateTime
+    );
 
     List<ScheduleEntry> findByScheduleId(Long scheduleId);
 

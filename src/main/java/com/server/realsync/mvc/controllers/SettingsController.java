@@ -30,38 +30,50 @@ public class SettingsController {
     // UPDATE PROFILE
     // ==========================
     @PostMapping("/profile")
-    public String updateProfile(@RequestBody Account req) {
+public String updateProfile(@RequestBody Account req) {
 
-        Account account = SecurityUtil.getCurrentAccountId();
+    Integer accountId =
+            SecurityUtil.getCurrentAccountId().getId();
 
-        account.setName(req.getName());
-        account.setEmail(req.getEmail());
-        account.setMobile(req.getMobile());
-        account.setBusinessName(req.getBusinessName());
+    Account account =
+            accountService.getById(accountId);
 
-        accountService.save(account);
-
-        return "Profile Updated";
-    }
-
-   @PutMapping("/account/business-details")
-public ResponseEntity<String> updateBusinessDetails(
-        @RequestBody Account req) {
-
-    Integer accountId = SecurityUtil.getCurrentAccountId().getId();
-
-    Account account = accountService.getById(accountId);
-
-    account.setBusinessName(req.getBusinessName());
-    account.setBusinessEmail(req.getBusinessEmail());
-    account.setBusinessPhone(req.getBusinessPhone());
-    account.setGstNumber(req.getGstNumber());
-    account.setAddress(req.getAddress());
+    account.setName(req.getName());
+    account.setEmail(req.getEmail());
+    account.setMobile(req.getMobile());
 
     accountService.save(account);
 
-    return ResponseEntity.ok("Updated");
+    return "Profile Updated";
 }
+
+    @PutMapping("/account/business-details")
+    public ResponseEntity<String> updateBusinessDetails(
+            @RequestBody Account req) {
+
+        Integer accountId = SecurityUtil.getCurrentAccountId().getId();
+
+        Account account = accountService.getById(accountId);
+
+        if (req.getBusinessName() != null)
+            account.setBusinessName(req.getBusinessName());
+
+        if (req.getBusinessEmail() != null)
+            account.setBusinessEmail(req.getBusinessEmail());
+
+        if (req.getBusinessPhone() != null)
+            account.setBusinessPhone(req.getBusinessPhone());
+
+        if (req.getGstNumber() != null)
+            account.setGstNumber(req.getGstNumber());
+
+        if (req.getAddress() != null)
+            account.setAddress(req.getAddress());
+
+        accountService.save(account);
+
+        return ResponseEntity.ok("Updated");
+    }
 
     // ==========================
     // UPDATE PASSWORD

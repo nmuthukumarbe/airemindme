@@ -22,4 +22,6 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
     List<Promotion> findByAccountIdAndScheduledAtIsNotNull(Integer accountId);
     long countByAccountId(Integer accountId);
 
+    List<Promotion> findByAccountIdOrderByCreatedAtDesc(Integer accountId, org.springframework.data.domain.Pageable pageable);
+
 }

@@ -68,7 +68,7 @@ async function saveProfile() {
     const fullName = document.getElementById("fullName")?.value?.trim();
     const email = document.getElementById("email")?.value?.trim();
     const phone = document.getElementById("phone")?.value?.trim();
-    const businessName = document.getElementById("businessName")?.value?.trim();
+   
 
     // Basic validation
     if (!fullName || !email) {
@@ -93,7 +93,6 @@ async function saveProfile() {
                 name: fullName,
                 email: email,
                 mobile: phone,
-                businessName: businessName,
             }),
         });
 

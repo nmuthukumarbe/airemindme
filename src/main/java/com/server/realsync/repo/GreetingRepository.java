@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 public interface GreetingRepository extends JpaRepository<Greeting, Integer> {
 
     List<Greeting> findByAccountIdOrderByCreatedAtDesc(Integer accountId);
+    List<Greeting> findByAccountIdOrderByCreatedAtDesc(Integer accountId, org.springframework.data.domain.Pageable pageable);
     List<Greeting> findByCustomerIdAndAccountId(Integer customerId, Integer accountId);
 
     Optional<Greeting> findByIdAndAccountId(Integer id, Integer accountId);

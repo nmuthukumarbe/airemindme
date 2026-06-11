@@ -5,12 +5,17 @@ import java.util.Map;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -214,5 +219,20 @@ public class CustomerController {
         }
 
         return ResponseEntity.ok(customer.get());
+    }
+
+    @GetMapping("/api/customers/template")
+    public ResponseEntity<Resource> downloadTemplate() {
+
+        String csv = "name,phone,email,segment,channel,birthday,anniversary\n" +
+                "Rajesh Kumar,+919876543210,rajesh@gmail.com,VIP,1,1995-06-15,2020-01-10\n";
+
+        ByteArrayResource resource = new ByteArrayResource(csv.getBytes(StandardCharsets.UTF_8));
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=customer_import_template.csv")
+                .contentType(MediaType.parseMediaType("text/csv"))
+                .body(resource);
     }
 }

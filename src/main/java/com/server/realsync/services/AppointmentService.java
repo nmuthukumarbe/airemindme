@@ -132,4 +132,8 @@ public class AppointmentService {
                 .findByAccountIdAndAppointmentDateGreaterThanEqual(
                         accountId, LocalDate.now());
     }
+
+    public List<LocalDate> findAppointmentDatesForActivityChart(Integer accountId, LocalDate startDate, LocalDate endDate) {
+        return appointmentRepository.findAppointmentDatesForActivityChart(accountId, startDate, endDate);
+    }
 }

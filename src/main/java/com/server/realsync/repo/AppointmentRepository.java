@@ -6,12 +6,15 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.server.realsync.entity.Appointment;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
         List<Appointment> findByAccountId(Integer accountId);
+
+        List<Appointment> findByAccountIdOrderByCreatedAtDesc(Integer accountId, org.springframework.data.domain.Pageable pageable);
 
         Optional<Appointment> findByIdAndAccountId(Long id, Integer accountId);
 
@@ -46,4 +49,17 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
                             WHERE a.accountId = :accountId
                         """)
         List<Appointment> findAllWithCustomer(Integer accountId);
+
+        @Query("""
+                            SELECT a.appointmentDate
+                            FROM Appointment a
+                            WHERE a.accountId = :accountId
+                              AND a.appointmentDate >= :startDate
+                              AND a.appointmentDate <= :endDate
+                        """)
+        List<java.time.LocalDate> findAppointmentDatesForActivityChart(
+            @Param("accountId") Integer accountId,
+            @Param("startDate") java.time.LocalDate startDate,
+            @Param("endDate") java.time.LocalDate endDate
+        );
 }

@@ -269,3 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Set default view on load
     setView("card");
 });
+
+function downloadTemplate() {
+    window.location.href = "/api/customers/template";
+}

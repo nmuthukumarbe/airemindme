@@ -40,31 +40,31 @@
           </svg>
         </div>
         <div>
-          <h1 class="text-xl font-bold leading-none">Acme Financial Services</h1>
+          <h1 id="businessNameHeader" class="text-xl font-bold leading-none">Acme Financial Services</h1>
           <p class="text-indigo-200 text-sm mt-0.5">Your trusted financial partner</p>
         </div>
       </div>
-      <h2 class="text-2xl font-bold mb-2">Exclusive Offers For You</h2>
+      <h2 id="promoTitleHeader" class="text-2xl font-bold mb-2">Exclusive Offers For You</h2>
       <p class="text-indigo-200 text-sm max-w-sm mx-auto" id="promoBannerDesc">Our expert advisors have curated these
         offerings specially for you. Click to learn more and express your interest.</p>
 
       <!-- Business Contact Strip -->
       <div class="flex items-center justify-center gap-4 mt-5 pt-4 border-t border-white/20">
-        <a href="tel:+919876543210"
+        <a id="phoneContactLink" href="tel:+919876543210" onclick="trackClick('phone')"
           class="flex items-center gap-1.5 text-sm text-indigo-100 hover:text-white transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
           </svg>
-          +91 98765 43210
+          <span id="phoneContactText">+91 98765 43210</span>
         </a>
-        <a href="mailto:info@acmefinancial.com"
+        <a id="emailContactLink" href="mailto:info@acmefinancial.com" onclick="trackClick('email')"
           class="flex items-center gap-1.5 text-sm text-indigo-100 hover:text-white transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
-          info@acmefinancial.com
+          <span id="emailContactText">info@acmefinancial.com</span>
         </a>
       </div>
     </div>
@@ -110,24 +110,24 @@
             <path stroke-linecap="round" stroke-linejoin="round"
               d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
           </svg></div>
-        <p class="font-bold text-gray-800">Acme Financial Services</p>
+        <p id="businessNameFooter" class="font-bold text-gray-800">Acme Financial Services</p>
       </div>
       <p class="text-xs text-gray-400 mb-2">SEBI Reg. No: INH000XXXXX · AMFI Reg. No: ARN-XXXXX</p>
       <p class="text-xs text-gray-400">Investments are subject to market risks. Please read all scheme related documents
         carefully before investing.</p>
       <div class="flex items-center justify-center gap-4 mt-4">
-        <a href="tel:+919876543210" class="flex items-center gap-1.5 text-sm text-indigo-600 hover:text-indigo-700"><svg
+        <a id="phoneFooterLink" href="tel:+919876543210" onclick="trackClick('phone')" class="flex items-center gap-1.5 text-sm text-indigo-600 hover:text-indigo-700"><svg
             class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
           </svg>Call Us</a>
-        <a href="mailto:info@acmefinancial.com"
+        <a id="emailFooterLink" href="mailto:info@acmefinancial.com" onclick="trackClick('email')"
           class="flex items-center gap-1.5 text-sm text-indigo-600 hover:text-indigo-700"><svg class="w-4 h-4"
             fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>Email</a>
-        <a href="#" class="flex items-center gap-1.5 text-sm text-green-600 hover:text-green-700"><svg class="w-4 h-4"
+        <a href="#" onclick="whatsappEnquire('General')" class="flex items-center gap-1.5 text-sm text-green-600 hover:text-green-700"><svg class="w-4 h-4"
             fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -209,57 +209,78 @@
   </div>
 
   <script>
-    // Default fallback items if nothing in localStorage
-
-
+    const entryId = window.location.pathname.split('/').pop();
     const defaultItems = [];
     let items = [];
     let likes = {};
     let enquireItem = null;
-    const params = new URLSearchParams(window.location.search);
-    const promoId = params.get("id");
+    let accountInfo = {};
 
-    console.log("Promo ID:", promoId);
     async function loadItems() {
-      try {
-        const res = await fetch(`/api/promotions/${promoId}/items`);
-        const data = await res.json();
-
-        items = data;
-
+      if (!entryId) {
+        console.error("No entry ID found in URL path");
+        items = defaultItems;
         renderProductCards();
-      } catch (e) {
-        console.error("Failed to load promo items", e);
-        items = defaultItems; // fallback
-        renderProductCards();
+        return;
       }
-    }
-    async function loadItems() {
       try {
-        // ✅ get promoId from URL
-        const params = new URLSearchParams(window.location.search);
-        const promoId = params.get("id");
-
-        console.log("Promo ID:", promoId);
-
-        // ✅ fetch from backend
-        const res = await fetch(`/api/promotions/${promoId}/items`);
-
+        const res = await fetch(`/api/promotions/public/${entryId}`);
         if (!res.ok) throw new Error("API failed");
 
         const data = await res.json();
+        items = data.items || [];
+        accountInfo = data.account || {};
 
-        items = data; // 🔥 SAME variable, no UI change
+        // Dynamic Header and Banners
+        if (accountInfo.name) {
+          document.getElementById("businessNameHeader").textContent = accountInfo.name;
+          document.getElementById("businessNameFooter").textContent = accountInfo.name;
+          document.title = `${data.promotionTitle || 'Exclusive Offers'} - ${accountInfo.name}`;
+        }
+        if (data.promotionTitle) {
+          document.getElementById("promoTitleHeader").textContent = data.promotionTitle;
+        }
+        if (data.promotionDescription) {
+          document.getElementById("promoBannerDesc").textContent = data.promotionDescription;
+        }
 
+        // Dynamic Contact strip & footer links
+        if (accountInfo.phone) {
+          const cleanPhone = accountInfo.phone.replace(/\s+/g, '');
+          document.getElementById("phoneContactText").textContent = accountInfo.phone;
+          document.getElementById("phoneContactLink").href = `tel:${cleanPhone}`;
+          document.getElementById("phoneFooterLink").href = `tel:${cleanPhone}`;
+        }
+        if (accountInfo.email) {
+          document.getElementById("emailContactText").textContent = accountInfo.email;
+          document.getElementById("emailContactLink").href = `mailto:${accountInfo.email}`;
+          document.getElementById("emailFooterLink").href = `mailto:${accountInfo.email}`;
+        }
       } catch (e) {
-        console.error("Failed to load items", e);
-
-        // fallback (your existing behavior)
+        console.error("Failed to load promo items", e);
         items = defaultItems;
       }
-
-      renderProductCards(); // ✅ same function
+      renderProductCards();
     }
+
+    async function trackView() {
+      if (!entryId) return;
+      try {
+        await fetch(`/api/promotions/public/${entryId}/view`, { method: 'POST' });
+      } catch (e) {
+        console.error("Failed to track view", e);
+      }
+    }
+
+    async function trackClick(type) {
+      if (!entryId) return;
+      try {
+        await fetch(`/api/promotions/public/${entryId}/${type}-click`, { method: 'POST' });
+      } catch (e) {
+        console.error("Failed to track click", e);
+      }
+    }
+
     function renderProductCards() {
       const container = document.getElementById('productCards');
       const empty = document.getElementById('emptyState');
@@ -267,20 +288,25 @@
 
       countLabel.textContent = `${items.length} offering${items.length !== 1 ? 's' : ''} selected for you`;
 
-      if (items.length === 0) { container.classList.add('hidden'); empty.classList.remove('hidden'); return; }
-      container.classList.remove('hidden'); empty.classList.add('hidden');
+      if (items.length === 0) { 
+        container.classList.add('hidden'); 
+        empty.classList.remove('hidden'); 
+        return; 
+      }
+      container.classList.remove('hidden'); 
+      empty.classList.add('hidden');
 
       container.innerHTML = items.map((item, i) => {
         const isLiked = likes[item.id] || false;
-        const typeColor = item.type === 'plan' ? 'bg-blue-100 text-blue-700' : 'bg-violet-100 text-violet-700';
+        const typeColor = item.type === 'PLAN' ? 'bg-blue-100 text-blue-700' : 'bg-violet-100 text-violet-700';
         return `
         <div class="bg-white rounded-3xl overflow-hidden shadow-md card-hover border border-gray-100" id="card-${item.id}">
           <!-- Image -->
           <div class="relative h-52 overflow-hidden">
-            <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover">
+            <img src="${item.img || (item.type === 'PLAN' ? 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&q=80' : 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=400&q=80')}" alt="${item.name}" class="w-full h-full object-cover">
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
             <!-- Type badge -->
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full ${typeColor} text-xs font-semibold bg-white/95">${item.type === 'plan' ? '📋 Plan' : '📦 Product'}</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full ${typeColor} text-xs font-semibold bg-white/95">${item.type === 'PLAN' ? '📋 Plan' : '📦 Product'}</span>
             <!-- Like button -->
             <button onclick="toggleLike('${item.id}')" id="like-${item.id}" class="heart-btn absolute top-3 right-3 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition ${isLiked ? 'liked' : ''}">
               <svg class="w-5 h-5 ${isLiked ? 'text-red-500' : 'text-gray-500'}" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
@@ -325,7 +351,7 @@
       }).join('');
     }
 
-    function toggleLike(id) {
+    async function toggleLike(id) {
       likes[id] = !likes[id];
       const btn = document.getElementById('like-' + id);
       const svg = btn.querySelector('svg');
@@ -341,6 +367,7 @@
         lcContainer.querySelector('svg').classList.add('text-red-400');
         lc.textContent = '1';
         showToast('Added to favourites! ❤️');
+        trackClick('like');
       } else {
         btn.classList.remove('liked');
         svg.setAttribute('fill', 'none');
@@ -359,17 +386,29 @@
       document.getElementById('enquireModal').classList.remove('hidden');
     }
 
-    function closeEnquire() { document.getElementById('enquireModal').classList.add('hidden'); }
+    function closeEnquire() { 
+      document.getElementById('enquireModal').classList.add('hidden'); 
+    }
 
-    function submitEnquiry(e) {
+    async function submitEnquiry(e) {
       e.preventDefault();
       closeEnquire();
       showToast('Enquiry sent! Our advisor will contact you shortly 📞');
+      if (entryId) {
+        try {
+          await fetch(`/api/promotions/public/${entryId}/enquiry`, { method: 'POST' });
+        } catch (e) {
+          console.error("Failed to track enquiry", e);
+        }
+      }
     }
 
     function whatsappEnquire(name) {
-      const msg = encodeURIComponent(`Hi! I'm interested in the "${name}" offering from Acme Financial Services. Could you please share more details?`);
-      window.open(`https://wa.me/919876543210?text=${msg}`, '_blank');
+      const targetPhone = accountInfo.phone ? accountInfo.phone.replace(/\s+/g, '') : '919876543210';
+      const businessName = accountInfo.name || 'Acme Financial Services';
+      const msg = encodeURIComponent(`Hi! I'm interested in the "${name}" offering from ${businessName}. Could you please share more details?`);
+      window.open(`https://wa.me/${targetPhone}?text=${msg}`, '_blank');
+      trackClick('whatsapp');
     }
 
     function showToast(msg) {
@@ -380,7 +419,7 @@
     }
 
     loadItems();
-    renderProductCards();
+    trackView();
   </script>
 </body>
 

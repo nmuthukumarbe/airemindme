@@ -12,6 +12,8 @@ public interface ReminderRepository extends JpaRepository<Reminder, Integer> {
 
         List<Reminder> findByAccountIdOrderByCreatedAtDesc(Integer accountId);
 
+        List<Reminder> findByAccountIdOrderByCreatedAtDesc(Integer accountId, org.springframework.data.domain.Pageable pageable);
+
         List<Reminder> findByCustomerIdAndAccountId(Integer customerId, Integer accountId);
 
         Optional<Reminder> findByIdAndAccountId(Integer id, Integer accountId);
