@@ -322,7 +322,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
-            <input type="text" id="phoneInput" placeholder="Phone number..." oninput="onFilter()"
+            <input type="text" id="phoneInput" placeholder="Phone number..." oninput="applyFilters()"
               class="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <!-- Test search -->
@@ -332,7 +332,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <input type="text" id="searchInput" placeholder="Search test name..." oninput="onFilter()"
+            <input type="text" id="searchInput" placeholder="Search test name..." oninput="applyFilters()"
               class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
         </div>
@@ -382,7 +382,7 @@
           <p class="text-[10px] text-amber-600 mt-0.5">Each patient will receive their own separate combined report. Use
             "By Patient" view to select per patient easily.</p>
         </div>
-        <button onclick="clearSelection()"
+        <button onclick="clearSelectionAndHideWarning()"
           class="ml-auto text-xs text-amber-700 font-semibold hover:underline flex-shrink-0">Clear</button>
       </div>
 
@@ -728,7 +728,7 @@
 
           return {
             id: r.id,
-
+            patientId: r.patientId,   // ← ADD THIS LINE
             // Customer
             customer: customer ? customer.name : `Patient #${r.patientId}`,
             phone: customer?.mobile || '',
@@ -763,6 +763,14 @@
     async function loadCustomers() {
       // No longer pre-loading dropdown — search handles it
       setupPatientSearch();
+    }
+
+    function clearSelectionAndHideWarning() {
+      selectedIds.clear();
+      updateSelectionUI();
+      document.getElementById('multiCustWarning').classList.add('hidden');
+      document.getElementById('selectionBar').classList.add('hidden');
+      renderReports();
     }
 
     function setupPatientSearch() {
@@ -870,8 +878,8 @@
        FILTERS & PAGINATION
        ============================================================= */
     function applyFilters() {
-      searchFilter = (document.getElementById('searchInput')?.value || '').toLowerCase();
-      phoneFilter = (document.getElementById('phoneInput')?.value || '').toLowerCase();
+      searchFilter = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+      phoneFilter = (document.getElementById('phoneInput')?.value || '').toLowerCase().trim();
       currentPage = 1;
       renderReports();
     }
@@ -888,14 +896,17 @@
 
         const matchSearch =
           !searchFilter ||
-          r.testName.toLowerCase().includes(searchFilter) ||
-          r.customer.toLowerCase().includes(searchFilter);
+          (r.testName || '').toLowerCase().includes(searchFilter) ||
+          (r.customer || '').toLowerCase().includes(searchFilter);
 
         const matchPhone =
           !phoneFilter ||
-          (r.phone || '').toLowerCase().includes(phoneFilter);
+          (r.phone || '').replace(/\s+/g, '').includes(phoneFilter.replace(/\s+/g, ''));
 
-        return matchStatus && matchSearch && matchPhone;
+        const custVal = document.getElementById('custFilter')?.value || '';
+        const matchCust = !custVal || String(r.patientId) === custVal;
+
+        return matchStatus && matchSearch && matchPhone && matchCust;
       });
     }
 
@@ -1024,25 +1035,201 @@
     /* ── Grouped view ── */
     function renderGrouped() {
       const container = document.getElementById('reportList');
+      const countEl = document.getElementById('filterCount');
       if (!container) return;
 
+      const filtered = getFiltered();
+      if (countEl) countEl.textContent = `${filtered.length} report${filtered.length !== 1 ? 's' : ''}`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+      <div class="text-center py-14 text-gray-400">
+        <svg class="w-12 h-12 mx-auto mb-3 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <p class="text-sm font-medium">No reports found</p>
+      </div>`;
+        return;
+      }
+
       const groups = {};
-      reports.forEach(r => {
+      filtered.forEach(r => {
         if (!groups[r.customer]) groups[r.customer] = [];
         groups[r.customer].push(r);
       });
 
-      container.innerHTML = Object.keys(groups).map(name => `
-    <h3>${name}</h3>
-    ${groups[name].map(r => `
-      <div style="margin-left:10px; padding:5px; border-bottom:1px solid #eee">
-        ${r.testName} — ₹${r.mrp}
-      </div>`).join('')}
-  `).join('');
+      const palettes = [
+        { header: '#4f46e5', light: '#eef2ff', border: '#c7d2fe', text: '#4338ca' },
+        { header: '#0891b2', light: '#ecfeff', border: '#a5f3fc', text: '#0e7490' },
+        { header: '#7c3aed', light: '#f5f3ff', border: '#ddd6fe', text: '#6d28d9' },
+        { header: '#059669', light: '#ecfdf5', border: '#a7f3d0', text: '#047857' },
+        { header: '#dc2626', light: '#fef2f2', border: '#fecaca', text: '#b91c1c' },
+        { header: '#d97706', light: '#fffbeb', border: '#fde68a', text: '#b45309' },
+      ];
+
+      container.innerHTML = Object.keys(groups).map((name, idx) => {
+        const items = groups[name];
+        const total = items.reduce((s, r) => s + (r.mrp || 0), 0);
+        const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+        const phone = items[0]?.phone || '';
+        const allPaid = items.every(r => r.paid);
+        const pal = palettes[idx % palettes.length];
+
+        const completedCount = items.filter(r => r.status === 'Completed').length;
+        const draftCount = items.filter(r => r.status === 'Draft').length;
+        const sharedCount = items.filter(r => r.status === 'Shared').length;
+
+        return `
+      <div style="border-radius:20px; overflow:hidden; margin-bottom:20px;
+                  box-shadow: 0 2px 12px rgba(0,0,0,0.07); border:1px solid ${pal.border};">
+
+        <!-- ══ PATIENT HEADER — colored ══ -->
+        <div style="background:${pal.header}; padding:14px 20px;
+                    display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:12px;">
+
+            <!-- Avatar -->
+            <div style="width:44px; height:44px; border-radius:14px;
+                        background:rgba(255,255,255,0.2); border:2px solid rgba(255,255,255,0.4);
+                        display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <span style="color:white; font-size:14px; font-weight:800; letter-spacing:0.5px;">${initials}</span>
+            </div>
+
+            <!-- Name + details -->
+            <div>
+              <p style="color:white; font-size:15px; font-weight:700; margin:0;">${name}</p>
+              <div style="display:flex; align-items:center; gap:10px; margin-top:3px; flex-wrap:wrap;">
+                ${phone ? `<span style="color:rgba(255,255,255,0.85); font-size:11px;">📱 ${phone}</span>` : ''}
+                <span style="color:rgba(255,255,255,0.85); font-size:11px;">${items.length} report${items.length !== 1 ? 's' : ''}</span>
+                ${completedCount > 0 ? `<span style="background:rgba(255,255,255,0.2); color:white; font-size:10px; padding:1px 8px; border-radius:20px; font-weight:600;">${completedCount} Completed</span>` : ''}
+                ${draftCount > 0 ? `<span style="background:rgba(255,200,0,0.3); color:white; font-size:10px; padding:1px 8px; border-radius:20px; font-weight:600;">${draftCount} Draft</span>` : ''}
+                ${sharedCount > 0 ? `<span style="background:rgba(255,255,255,0.2); color:white; font-size:10px; padding:1px 8px; border-radius:20px; font-weight:600;">${sharedCount} Sent</span>` : ''}
+              </div>
+            </div>
+          </div>
+
+          <!-- Total -->
+          <div style="text-align:right; flex-shrink:0;">
+            <p style="color:white; font-size:20px; font-weight:800; margin:0;">₹${total}</p>
+            <span style="font-size:10px; font-weight:700; padding:2px 10px; border-radius:20px; margin-top:3px; display:inline-block;
+                         background:${allPaid ? 'rgba(52,211,153,0.3)' : 'rgba(251,191,36,0.3)'};
+                         color:white;">
+              ${allPaid ? '✓ All Paid' : '⚠ Has Unpaid'}
+            </span>
+          </div>
+        </div>
+
+        <!-- ══ REPORT ROWS — white background ══ -->
+        <div style="background:white;">
+          ${items.map((r, i) => {
+          const statusColor =
+            r.status === 'Completed' ? '#059669' :
+              r.status === 'Shared' ? '#2563eb' : '#d97706';
+          const statusBg =
+            r.status === 'Completed' ? '#ecfdf5' :
+              r.status === 'Shared' ? '#eff6ff' : '#fffbeb';
+          const rowBg = i % 2 === 0 ? 'white' : '#fafafa';
+
+          return `
+              <div style="display:flex; align-items:center; justify-content:space-between;
+                          padding:12px 20px; background:${rowBg};
+                          border-bottom:1px solid #f3f4f6;">
+
+                <!-- Test icon + name -->
+                <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+                  <div style="width:36px; height:36px; border-radius:10px;
+                              background:${pal.light}; border:1px solid ${pal.border};
+                              display:flex; align-items:center; justify-content:center;
+                              flex-shrink:0; font-size:16px;">🧪</div>
+                  <div style="min-width:0;">
+                    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                      <p style="font-size:13px; font-weight:600; color:#111827; margin:0;">${r.testName}</p>
+                      <span style="font-size:10px; font-weight:600; padding:1px 8px; border-radius:20px;
+                                   background:${statusBg}; color:${statusColor};">${r.status}</span>
+                      <span style="font-size:10px; font-weight:600; padding:1px 8px; border-radius:20px;
+                                   background:${r.paid ? '#ecfdf5' : '#fff7ed'};
+                                   color:${r.paid ? '#059669' : '#ea580c'};">
+                        ${r.paid ? '✓ Paid' : 'Unpaid'}
+                      </span>
+                    </div>
+                    <p style="font-size:11px; color:#9ca3af; margin:2px 0 0 0;">${r.date}</p>
+                  </div>
+                </div>
+
+                <!-- Price + View -->
+                <div style="display:flex; align-items:center; gap:10px; flex-shrink:0; margin-left:12px;">
+                  <span style="font-size:14px; font-weight:700;
+                               color:${r.mrp > 0 ? '#059669' : '#9ca3af'};">₹${r.mrp}</span>
+                  <button onclick="viewReport(${r.id})"
+                    style="padding:6px 14px; border-radius:10px; font-size:12px; font-weight:600;
+                           background:${pal.header}; color:white; border:none; cursor:pointer;
+                           transition:opacity 0.15s;"
+                    onmouseover="this.style.opacity='0.85'"
+                    onmouseout="this.style.opacity='1'">
+                    View
+                  </button>
+                </div>
+              </div>`;
+        }).join('')}
+        </div>
+
+        <!-- ══ FOOTER ══ -->
+        <div style="background:${pal.light}; border-top:1px solid ${pal.border};
+                    padding:12px 20px; display:flex; align-items:center; justify-content:space-between;">
+
+          <!-- Mini stats -->
+          <div style="display:flex; align-items:center; gap:20px;">
+            <div style="text-align:center;">
+              <p style="font-size:13px; font-weight:800; color:#111827; margin:0;">${items.length}</p>
+              <p style="font-size:10px; color:#9ca3af; margin:0;">Tests</p>
+            </div>
+            <div style="width:1px; height:24px; background:#e5e7eb;"></div>
+            <div style="text-align:center;">
+              <p style="font-size:13px; font-weight:800; color:${pal.text}; margin:0;">₹${total}</p>
+              <p style="font-size:10px; color:#9ca3af; margin:0;">Total</p>
+            </div>
+            <div style="width:1px; height:24px; background:#e5e7eb;"></div>
+            <div style="text-align:center;">
+              <p style="font-size:13px; font-weight:800; color:${allPaid ? '#059669' : '#f59e0b'}; margin:0;">
+                ${allPaid ? '✓ Paid' : '⚠ Pending'}
+              </p>
+              <p style="font-size:10px; color:#9ca3af; margin:0;">Payment</p>
+            </div>
+          </div>
+
+          <!-- Send button -->
+          <button onclick="selectGroupAndSend('${name}')"
+            style="display:flex; align-items:center; gap:6px; padding:9px 18px;
+                   border-radius:12px; background:#059669; color:white; border:none;
+                   font-size:12px; font-weight:700; cursor:pointer; transition:opacity 0.15s;"
+            onmouseover="this.style.opacity='0.85'"
+            onmouseout="this.style.opacity='1'">
+            <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+            </svg>
+            Send All to ${name.split(' ')[0]}
+          </button>
+        </div>
+
+      </div>`;
+      }).join('');
     }
 
     function setView(type) {
-      type === 'group' ? renderGrouped() : renderReports();
+      const listBtn = document.getElementById('vw-list');
+      const groupBtn = document.getElementById('vw-group');
+
+      if (type === 'group') {
+        listBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-500 hover:text-gray-700 transition';
+        groupBtn.className = 'px-3 py-1.5 rounded-lg bg-white shadow-sm text-xs font-semibold text-gray-800 transition';
+        renderGrouped();
+      } else {
+        listBtn.className = 'px-3 py-1.5 rounded-lg bg-white shadow-sm text-xs font-semibold text-gray-800 transition';
+        groupBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-500 hover:text-gray-700 transition';
+        renderReports();
+      }
     }
 
 
@@ -1240,6 +1427,16 @@
       });
 
       showToast('Reports sent successfully');
+    }
+
+    function selectGroupAndSend(customerName) {
+      // Select all reports for this customer
+      selectedIds.clear();
+      reports
+        .filter(r => r.customer === customerName)
+        .forEach(r => selectedIds.add(r.id));
+      updateSelectionUI();
+      openSendModal();
     }
 
     /* ── Helper: group items by customer name ── */
