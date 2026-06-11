@@ -68,6 +68,71 @@ function resetGroupUI() {
         if (label) label.classList.replace('text-indigo-700', 'text-gray-800');
     });
 }
+let currentCustomerStep = 1;
+
+function nextCustomerStep() {
+    const nameInput = document.getElementById("cName");
+    const phoneInput = document.getElementById("cPhone");
+    if (nameInput && !nameInput.checkValidity()) {
+        nameInput.reportValidity();
+        return;
+    }
+    if (phoneInput && !phoneInput.checkValidity()) {
+        phoneInput.reportValidity();
+        return;
+    }
+
+    document.getElementById("customerWizardStep1").classList.add("hidden");
+    document.getElementById("customerWizardStep2").classList.remove("hidden");
+    document.getElementById("wizardStepLabel").innerText = "Step 2 of 2: Additional Info";
+    
+    const ind1 = document.getElementById("stepIndicator1");
+    const ind2 = document.getElementById("stepIndicator2");
+    if (ind1 && ind2) {
+        ind1.classList.remove("bg-indigo-600");
+        ind1.classList.add("bg-indigo-100");
+        ind2.classList.remove("bg-gray-200");
+        ind2.classList.add("bg-indigo-600");
+    }
+    currentCustomerStep = 2;
+}
+
+function prevCustomerStep() {
+    document.getElementById("customerWizardStep2").classList.add("hidden");
+    document.getElementById("customerWizardStep1").classList.remove("hidden");
+    document.getElementById("wizardStepLabel").innerText = "Step 1 of 2: Basic Info";
+    
+    const ind1 = document.getElementById("stepIndicator1");
+    const ind2 = document.getElementById("stepIndicator2");
+    if (ind1 && ind2) {
+        ind1.classList.remove("bg-indigo-100");
+        ind1.classList.add("bg-indigo-600");
+        ind2.classList.remove("bg-indigo-600");
+        ind2.classList.add("bg-gray-200");
+    }
+    currentCustomerStep = 1;
+}
+
+function resetCustomerWizard() {
+    document.getElementById("cGstNo").value = "";
+    document.getElementById("cAddress").value = "";
+    document.getElementById("cCity").value = "";
+    document.getElementById("cState").value = "";
+    document.getElementById("cCountry").value = "";
+    
+    document.getElementById("customerWizardStep2").classList.add("hidden");
+    document.getElementById("customerWizardStep1").classList.remove("hidden");
+    document.getElementById("wizardStepLabel").innerText = "Step 1 of 2: Basic Info";
+    
+    const ind1 = document.getElementById("stepIndicator1");
+    const ind2 = document.getElementById("stepIndicator2");
+    if (ind1 && ind2) {
+        ind1.className = "w-6 h-1.5 rounded-full bg-indigo-600 transition-colors";
+        ind2.className = "w-6 h-1.5 rounded-full bg-gray-200 transition-colors";
+    }
+    currentCustomerStep = 1;
+}
+
 function showAddCustomerModal() {
     document.getElementById("cId").value = "";
     document.getElementById("cName").value = "";
@@ -77,27 +142,13 @@ function showAddCustomerModal() {
     document.getElementById("cAnniversary").value = "";
 
     resetGroupUI();
+    resetCustomerWizard();
 
     document.getElementById("modalTitle").innerText = "Add Customer";
     document.getElementById("saveCustomerBtn").innerText = "Add Customer";
 
     // ✅ Show modal first
     document.getElementById("addCustomerModal").classList.remove("hidden");
-
-    // 🔥 THEN initialize Select2 (important)
-    // setTimeout(() => {
-
-    //     $('#countryCode').select2({
-    //         templateResult: formatCountry,
-    //         templateSelection: formatCountry,
-    //         minimumResultsForSearch: 0,
-    //         width: '100%',
-    //         escapeMarkup: function (markup) {
-    //             return markup;
-    //         }
-    //     });
-
-    // }, 100);
 }
 
 function hideAddCustomerModal() {
@@ -105,8 +156,9 @@ function hideAddCustomerModal() {
 }
 
 
-function openEditCustomer(id, name, phone, email, dob, weddingDate, groupIds, channel) {
+function openEditCustomer(id, name, phone, email, dob, weddingDate, groupIds, channel, gstNo, address, city, state, country) {
     resetGroupUI(); // Clear previous highlights
+    resetCustomerWizard();
 
     document.getElementById("cId").value = id;
     document.getElementById("cName").value = name;
@@ -130,6 +182,14 @@ function openEditCustomer(id, name, phone, email, dob, weddingDate, groupIds, ch
     document.getElementById("cEmail").value = email;
     document.getElementById("cBirthday").value = dob ? dob.substring(0, 10) : "";
     document.getElementById("cAnniversary").value = weddingDate ? weddingDate.substring(0, 10) : "";
+    
+    // Step 2 Fields
+    document.getElementById("cGstNo").value = gstNo || "";
+    document.getElementById("cAddress").value = address || "";
+    document.getElementById("cCity").value = city || "";
+    document.getElementById("cState").value = state || "";
+    document.getElementById("cCountry").value = country || "";
+
     console.log("DOB:", dob);
     console.log("Wedding:", weddingDate);
     // FIX: Handle the comma-separated group string

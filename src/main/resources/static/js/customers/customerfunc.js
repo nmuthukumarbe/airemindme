@@ -44,6 +44,12 @@ function getFullPhone() {
 function saveCustomer(e) {
     e.preventDefault();
 
+    // Advance to Step 2 if user hits Enter/submits on Step 1
+    if (typeof currentCustomerStep !== 'undefined' && currentCustomerStep === 1) {
+        nextCustomerStep();
+        return;
+    }
+
     const id = document.getElementById("cId").value;
     const groupIdString = document.getElementById("cSegment").value;
 
@@ -78,6 +84,21 @@ function saveCustomer(e) {
         }
     }
 
+    // ── GST VALIDATION ──
+    const gstNo = document.getElementById("cGstNo").value.trim().toUpperCase();
+    if (gstNo !== "") {
+        const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+        if (!gstRegex.test(gstNo)) {
+            showToast("Please enter a valid GST number", "error");
+            return;
+        }
+    }
+
+    const address = document.getElementById("cAddress").value.trim();
+    const city = document.getElementById("cCity").value.trim();
+    const state = document.getElementById("cState").value.trim();
+    const country = document.getElementById("cCountry").value.trim();
+
     const fullPhone = getFullPhone();
     if (!fullPhone) return;
 
@@ -88,7 +109,12 @@ function saveCustomer(e) {
         dob: document.getElementById("cBirthday").value || null,
         weddingDate: document.getElementById("cAnniversary").value || null,
         channel: selectedChannels.join(","),
-        customerGroupId: groupIdString
+        customerGroupId: groupIdString,
+        gstNo: gstNo || null,
+        address: address || null,
+        city: city || null,
+        state: state || null,
+        country: country || null
     };
 
     const url = id ? "/api/customers/" + id : "/api/customers";

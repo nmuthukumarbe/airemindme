@@ -193,7 +193,12 @@
     this.dataset.dob,
     this.dataset.weddingDate,
     this.dataset.group,
-    this.dataset.channel
+    this.dataset.channel,
+    this.dataset.gstNo,
+    this.dataset.address,
+    this.dataset.city,
+    this.dataset.state,
+    this.dataset.country
 )" th:attr="
     data-id=${customer.id},
     data-name=${customer.name},
@@ -202,7 +207,12 @@
     data-dob=${customer.dob},
     data-wedding-date=${customer.weddingDate},
     data-group=${customer.customerGroupId},
-    data-channel=${customer.channel}
+    data-channel=${customer.channel},
+    data-gst-no=${customer.gstNo},
+    data-address=${customer.address},
+    data-city=${customer.city},
+    data-state=${customer.state},
+    data-country=${customer.country}
 " class="text-xs px-3 py-1 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100">
 
                 Edit
@@ -263,7 +273,12 @@
           this.dataset.dob,
           this.dataset.weddingDate,
           this.dataset.group,
-          this.dataset.channel
+          this.dataset.channel,
+          this.dataset.gstNo,
+          this.dataset.address,
+          this.dataset.city,
+          this.dataset.state,
+          this.dataset.country
         )" th:attr="
           data-id=${customer.id},
           data-name=${customer.name},
@@ -272,7 +287,12 @@
           data-dob=${customer.dob},
           data-wedding-date=${customer.weddingDate},
           data-group=${customer.customerGroupId},
-          data-channel=${customer.channel}"
+          data-channel=${customer.channel},
+          data-gst-no=${customer.gstNo},
+          data-address=${customer.address},
+          data-city=${customer.city},
+          data-state=${customer.state},
+          data-country=${customer.country}"
               class="text-xs px-3 py-1 rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-100">
 
               Edit
@@ -319,92 +339,148 @@
           </svg></button>
       </div>
       <form onsubmit="saveCustomer(event)" class="px-5 pb-6 flex flex-col gap-4">
-
         <input type="hidden" id="cId">
-        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Full Name <span
-              class="text-red-500">*</span></label><input type="text" id="cName" placeholder="Rajesh Kumar" required
-            class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
-        </div>
-        <div>
-          <label class="text-sm font-medium text-gray-700 mb-1.5 block">
-            Phone Number <span class="text-red-500">*</span>
-          </label>
 
-          <div class="flex gap-2 items-center">
+        <!-- Step Indicator -->
+        <div class="flex items-center justify-between border-b border-gray-100 pb-3 mb-1">
+          <span id="wizardStepLabel" class="text-xs font-semibold text-indigo-600 uppercase tracking-wider">Step 1 of 2: Basic Info</span>
+          <div class="flex gap-1">
+            <div id="stepIndicator1" class="w-6 h-1.5 rounded-full bg-indigo-600 transition-colors"></div>
+            <div id="stepIndicator2" class="w-6 h-1.5 rounded-full bg-gray-200 transition-colors"></div>
+          </div>
+        </div>
 
-            <!-- Country Dropdown -->
-            <select id="countryCode" class="w-44">
-              <option value="+91" data-flag="in" selected>India (+91)</option>
-              <option value="+1" data-flag="us">USA (+1)</option>
-              <option value="+27" data-flag="za">South Africa (+27)</option>
-              <option value="+234" data-flag="ng">Nigeria (+234)</option>
-              <option value="+254" data-flag="ke">Kenya (+254)</option>
-              <option value="+20" data-flag="eg">Egypt (+20)</option>
-              <option value="+233" data-flag="gh">Ghana (+233)</option>
-              <option value="+255" data-flag="tz">Tanzania (+255)</option>
-              <option value="+212" data-flag="ma">Morocco (+212)</option>
-              <option value="+44" data-flag="gb">UK (+44)</option>
-            </select>
-            <input type="tel" id="cPhone" placeholder="Enter phone number" maxlength="11" inputmode="numeric" required
-              class="flex-1 px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400" />
+        <!-- STEP 1: Basic Information -->
+        <div id="customerWizardStep1" class="flex flex-col gap-4">
+          <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Full Name <span
+                class="text-red-500">*</span></label><input type="text" id="cName" placeholder="Rajesh Kumar" required
+              class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
           </div>
-        </div>
-        <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Email Address</label><input type="email"
-            id="cEmail" placeholder="customer@email.com"
-            class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Birthday</label>
-            <input type="date" id="cBirthday"
-              class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <div>
+            <label class="text-sm font-medium text-gray-700 mb-1.5 block">
+              Phone Number <span class="text-red-500">*</span>
+            </label>
+
+            <div class="flex gap-2 items-center">
+
+              <!-- Country Dropdown -->
+              <select id="countryCode" class="w-44">
+                <option value="+91" data-flag="in" selected>India (+91)</option>
+                <option value="+1" data-flag="us">USA (+1)</option>
+                <option value="+27" data-flag="za">South Africa (+27)</option>
+                <option value="+234" data-flag="ng">Nigeria (+234)</option>
+                <option value="+254" data-flag="ke">Kenya (+254)</option>
+                <option value="+20" data-flag="eg">Egypt (+20)</option>
+                <option value="+233" data-flag="gh">Ghana (+233)</option>
+                <option value="+255" data-flag="tz">Tanzania (+255)</option>
+                <option value="+212" data-flag="ma">Morocco (+212)</option>
+                <option value="+44" data-flag="gb">UK (+44)</option>
+              </select>
+              <input type="tel" id="cPhone" placeholder="Enter phone number" maxlength="11" inputmode="numeric" required
+                class="flex-1 px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400" />
+            </div>
           </div>
-          <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Anniversary</label><input type="date"
-              id="cAnniversary"
-              class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Email Address</label><input type="email"
+              id="cEmail" placeholder="customer@email.com"
+              class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
           </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Birthday</label>
+              <input type="date" id="cBirthday"
+                class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div><label class="text-sm font-medium text-gray-700 mb-1.5 block">Anniversary</label><input type="date"
+                id="cAnniversary"
+                class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+          </div>
+          <!-- Customer Group Section -->
+          <div>
+            <label class="text-sm font-medium text-gray-700 mb-2 block">Customer Groups</label>
+            <div class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
+              <!-- Loop through DB groups -->
+              <button th:each="group : ${customerGroups}" type="button" th:onclick="|toggleGroupSelection('${group.id}')|"
+                th:id="'sb-' + ${group.id}"
+                class="group-btn flex items-center gap-2 p-3 rounded-2xl border-2 border-gray-100 transition text-left bg-white">
+                <span class="text-lg">📁</span>
+                <div>
+                  <p class="text-sm font-semibold text-gray-800 sbl" th:text="${group.name}">Group</p>
+                </div>
+              </button>
+            </div>
+            <!-- Hidden input with name matching your Java Entity field -->
+            <input type="hidden" id="cSegment" name="customerGroupId">
+          </div>
+          <div>
+            <label class="text-sm font-medium text-gray-700 mb-2 block">Messaging Channels</label>
+            <div class="flex gap-2">
+
+              <input type="hidden" id="channelInput" name="channel">
+
+              <button type="button" onclick="toggleCh(1)" id="ch-wa"
+                class="flex-1 py-2.5 rounded-full text-sm font-semibold bg-green-500 text-white transition">WhatsApp</button>
+
+              <button type="button" onclick="toggleCh(2)" id="ch-sms"
+                class="flex-1 py-2.5 rounded-full text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition">SMS</button>
+
+              <button type="button" onclick="toggleCh(3)" id="ch-email"
+                class="flex-1 py-2.5 rounded-full text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition">Email</button>
+
+            </div>
+          </div>
+          <button type="button" onclick="nextCustomerStep()"
+            class="w-full py-4 rounded-2xl bg-indigo-600 text-white font-semibold flex items-center justify-center gap-2 hover:bg-indigo-700 transition mt-1">
+            Next
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
         </div>
-        <!-- Customer Group Section -->
-        <div>
-          <label class="text-sm font-medium text-gray-700 mb-2 block">Customer Groups</label>
-          <div class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
-            <!-- Loop through DB groups -->
-            <button th:each="group : ${customerGroups}" type="button" th:onclick="|toggleGroupSelection('${group.id}')|"
-              th:id="'sb-' + ${group.id}"
-              class="group-btn flex items-center gap-2 p-3 rounded-2xl border-2 border-gray-100 transition text-left bg-white">
-              <span class="text-lg">📁</span>
-              <div>
-                <p class="text-sm font-semibold text-gray-800 sbl" th:text="${group.name}">Group</p>
-              </div>
+
+        <!-- STEP 2: Additional Information -->
+        <div id="customerWizardStep2" class="hidden flex flex-col gap-4">
+          <div>
+            <label class="text-sm font-medium text-gray-700 mb-1.5 block">GST Number</label>
+            <input type="text" id="cGstNo" placeholder="22AAAAA1111A1Z1"
+              class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400 uppercase">
+          </div>
+          <div>
+            <label class="text-sm font-medium text-gray-700 mb-1.5 block">Address</label>
+            <textarea id="cAddress" placeholder="Enter complete address" rows="3"
+              class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400 resize-none"></textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-sm font-medium text-gray-700 mb-1.5 block">City</label>
+              <input type="text" id="cCity" placeholder="City"
+                class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+            </div>
+            <div>
+              <label class="text-sm font-medium text-gray-700 mb-1.5 block">State</label>
+              <input type="text" id="cState" placeholder="State"
+                class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+            </div>
+          </div>
+          <div>
+            <label class="text-sm font-medium text-gray-700 mb-1.5 block">Country</label>
+            <input type="text" id="cCountry" placeholder="Country"
+              class="w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-gray-400">
+          </div>
+          <div class="flex gap-3 mt-1">
+            <button type="button" onclick="prevCustomerStep()"
+              class="flex-1 py-4 rounded-2xl bg-gray-100 text-gray-700 font-semibold hover:bg-gray-200 transition">
+              Back
+            </button>
+            <button type="submit" id="saveCustomerBtn"
+              class="flex-1 py-4 rounded-2xl bg-emerald-700 text-white font-semibold flex items-center justify-center gap-2 hover:bg-emerald-800 transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+              </svg>
+              Save Customer
             </button>
           </div>
-          <!-- Hidden input with name matching your Java Entity field -->
-          <input type="hidden" id="cSegment" name="customerGroupId">
         </div>
-        <div>
-          <label class="text-sm font-medium text-gray-700 mb-2 block">Messaging Channels</label>
-          <div class="flex gap-2">
-
-            <input type="hidden" id="channelInput" name="channel">
-
-            <button type="button" onclick="toggleCh(1)" id="ch-wa"
-              class="flex-1 py-2.5 rounded-full text-sm font-semibold bg-green-500 text-white transition">WhatsApp</button>
-
-            <button type="button" onclick="toggleCh(2)" id="ch-sms"
-              class="flex-1 py-2.5 rounded-full text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition">SMS</button>
-
-            <button type="button" onclick="toggleCh(3)" id="ch-email"
-              class="flex-1 py-2.5 rounded-full text-sm font-semibold bg-gray-100 text-gray-600 hover:bg-gray-200 transition">Email</button>
-
-          </div>
-        </div>
-        <button type="submit" id="saveCustomerBtn"
-          class="w-full py-4 rounded-2xl bg-emerald-700 text-white font-semibold flex items-center justify-center gap-2 hover:bg-emerald-800 transition mt-1">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-          </svg>
-          Add Customer
-        </button>
       </form>
     </div>
   </div>
@@ -736,7 +812,12 @@
               data.dob,
               data.weddingDate,
               data.customerGroupId,
-              data.channel
+              data.channel,
+              data.gstNo,
+              data.address,
+              data.city,
+              data.state,
+              data.country
             );
 
           })
