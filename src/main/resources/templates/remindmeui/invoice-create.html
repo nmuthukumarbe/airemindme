@@ -321,6 +321,7 @@
                   oninput="searchCustomer(this.value)" >
                 <div id="customerDd" class="product-dropdown hidden"></div>
               </div>
+              <input id="billToMobile" type="tel" placeholder="Customer Mobile (optional)" class="line-input mt-2">
               <textarea id="billToAddr" rows="3" placeholder="Customer address..."
                 class="line-input mt-2 resize-none"></textarea>
               <input id="billToGST" type="text" placeholder="Customer GSTIN (optional)" class="line-input mt-2">
@@ -617,6 +618,7 @@
 
       addItem('product');
       addItem('service');
+      initInvoiceNumber();
 
     };
 

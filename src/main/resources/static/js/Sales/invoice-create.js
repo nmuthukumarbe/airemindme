@@ -68,10 +68,7 @@ async function searchCustomer(keyword) {
 }
 
 async function selectCustomer(customerId) {
-
-
     try {
-
         const response = await fetch(
             `/api/customers/${customerId}`
         );
@@ -91,10 +88,14 @@ async function selectCustomer(customerId) {
         document.getElementById("billToAddr").value =
             customer.address || "";
 
-        const gstField = document.getElementById("billToGST");
+        const mobileField = document.getElementById("billToMobile");
+        if (mobileField) {
+            mobileField.value = customer.mobile || "";
+        }
 
+        const gstField = document.getElementById("billToGST");
         if (gstField) {
-            gstField.value = customer.gstNumber || "";
+            gstField.value = customer.gstNo || customer.gstNumber || "";
         }
 
         closeCustomerDd();
@@ -435,31 +436,24 @@ async function loadInvoice(invoiceId) {
         document.getElementById("dueDate").value = invoice.dueDate || "";
         document.getElementById("billToAddr").value = invoice.customerAddress || "";
         document.getElementById("billToGST").value = invoice.customerGst || "";
+        const mobileField = document.getElementById("billToMobile");
+        if (mobileField) {
+            mobileField.value = invoice.customerPhone || "";
+        }
         document.getElementById("shipToAddr").value = invoice.shippingAddress || "";
         document.getElementById("invoiceNotes").value = invoice.notes || "";
         document.getElementById("invoiceTerms").value = invoice.terms || "";
         document.getElementById("shippingAmt").value = invoice.shippingAmount || "0";
 
-        // Set customer
-        if (invoice.customerId) {
-
-            selectedCustomerId = invoice.customerId;
-
-            const customerRes = await fetch(`/api/customers/${invoice.customerId}`);
-
-            if (customerRes.ok) {
-
-                const customer = await customerRes.json();
-
-                selectedCustomer = customer;
-
-                document.getElementById("customerSearch").value =
-                    customer.name || "";
-
-
-
-            }
-        }
+        // Set customer from snapshot
+        selectedCustomerId = invoice.customerId || null;
+        selectedCustomer = {
+            name: invoice.customerName || "",
+            mobile: invoice.customerPhone || "",
+            address: invoice.customerAddress || "",
+            gstNo: invoice.customerGst || ""
+        };
+        document.getElementById("customerSearch").value = invoice.customerName || "";
 
         // Clear existing items and add invoice items
         const lineItemsContainer = document.getElementById("lineItems");
@@ -507,5 +501,19 @@ async function loadInvoice(invoiceId) {
     } catch (err) {
         console.error("Error loading invoice:", err);
         showToast(`Failed to load invoice: ${err.message}`);
+    }
+}
+
+async function initInvoiceNumber() {
+    try {
+        const response = await fetch("/api/invoices/next-number");
+        if (response.ok) {
+            const data = await response.json();
+            if (data && data.nextNumber) {
+                document.getElementById("invoiceNum").value = data.nextNumber;
+            }
+        }
+    } catch (err) {
+        console.error("Error fetching next invoice number:", err);
     }
 }

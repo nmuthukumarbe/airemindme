@@ -214,4 +214,25 @@ public class InvoiceService {
     public Optional<Invoice> findByInvoiceNumber(String invoiceNumber) {
         return invoiceRepository.findByInvoiceNumber(invoiceNumber);
     }
+
+    public String getNextInvoiceNumber() {
+        String latest = invoiceRepository.findLatestInvoiceNumber();
+        int currentYear = java.time.LocalDate.now().getYear();
+        if (latest == null || latest.trim().isEmpty()) {
+            return String.format("INV-%d-001", currentYear);
+        }
+
+        try {
+            String[] parts = latest.split("-");
+            if (parts.length == 3) {
+                String prefix = parts[0];
+                int year = Integer.parseInt(parts[1]);
+                int nextSeq = Integer.parseInt(parts[2]) + 1;
+                return String.format("%s-%d-%03d", prefix, currentYear, nextSeq);
+            }
+        } catch (Exception e) {
+            // fallback
+        }
+        return String.format("INV-%d-001", currentYear);
+    }
 }

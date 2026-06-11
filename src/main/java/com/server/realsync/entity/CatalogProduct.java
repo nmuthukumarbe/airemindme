@@ -143,4 +143,18 @@ public class CatalogProduct {
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
+
+    public String getHsnSac() {
+        return "9983";
+    }
+
+    public void setHsnSac(String hsnSac) {
+    }
+
+    public Double getGst() {
+        return 18.0;
+    }
+
+    public void setGst(Double gst) {
+    }
 }

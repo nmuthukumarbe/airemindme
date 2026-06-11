@@ -14,7 +14,6 @@ public class CreateInvoiceRequestDTO {
     @NotBlank
     private String invoiceNumber;
 
-    @NotNull
     private Long customerId;
     private String customerName;
     private String customerAddress;

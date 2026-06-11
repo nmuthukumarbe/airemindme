@@ -65,4 +65,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Long>, JpaSpec
     List<RecentInvoiceDTO> findRecentInvoices(@Param("accountId") Integer accountId, Pageable pageable);
 
     List<Invoice> findByCustomerId(Long customerId);
+
+    @Query(value = "SELECT invoice_number FROM invoices ORDER BY id DESC LIMIT 1", nativeQuery = true)
+    String findLatestInvoiceNumber();
 }

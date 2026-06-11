@@ -164,4 +164,17 @@ public class CatalogPlan {
         this.updatedAt = updatedAt;
     }
 
+    public String getHsnSac() {
+        return "9983";
+    }
+
+    public void setHsnSac(String hsnSac) {
+    }
+
+    public Double getGst() {
+        return 18.0;
+    }
+
+    public void setGst(Double gst) {
+    }
 }

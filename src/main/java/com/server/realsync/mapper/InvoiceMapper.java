@@ -58,8 +58,6 @@ public class InvoiceMapper {
             i.setItemName(it.getItemName());
             i.setDescription(it.getDescription());
             i.setHsnSac(it.getHsnSac());
-            i.setDescription(it.getDescription());
-            i.setHsnSac(it.getHsnSac());
             i.setQty(it.getQty());
             // InvoiceItem getters return Double for compatibility; convert where possible
             i.setRate(it.getRate());

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
+import java.util.HashMap;
 
 import jakarta.validation.Valid;
 
@@ -20,6 +22,14 @@ public class InvoiceController {
 
     public InvoiceController(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
+    }
+
+    @GetMapping("/next-number")
+    public ResponseEntity<Map<String, String>> getNextInvoiceNumber() {
+        String nextNum = invoiceService.getNextInvoiceNumber();
+        Map<String, String> res = new HashMap<>();
+        res.put("nextNumber", nextNum);
+        return ResponseEntity.ok(res);
     }
 
     @GetMapping

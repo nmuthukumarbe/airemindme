@@ -14,7 +14,6 @@ public class UpdateInvoiceRequestDTO {
     @NotBlank
     private String invoiceNumber;
 
-    @NotNull
     private Long customerId;
 
     private String customerName;
