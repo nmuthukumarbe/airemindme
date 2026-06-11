@@ -25,6 +25,8 @@ public class InvoiceDetailResponseDTO {
     private BigDecimal grandTotal;
     private InvoiceStatus status;
     private String notes;
+    private BigDecimal paidAmount;
+    private BigDecimal balanceAmount;
     private String terms;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -59,33 +61,43 @@ public class InvoiceDetailResponseDTO {
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
+
     public String getCustomerName() {
         return customerName;
     }
+
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
+
     public String getCustomerAddress() {
         return customerAddress;
     }
+
     public void setCustomerAddress(String customerAddress) {
         this.customerAddress = customerAddress;
     }
+
     public String getCustomerPhone() {
         return customerPhone;
     }
+
     public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
     }
-    public String getCustomerGst() {        
+
+    public String getCustomerGst() {
         return customerGst;
     }
+
     public void setCustomerGst(String customerGst) {
         this.customerGst = customerGst;
     }
+
     public String getShippingAddress() {
         return shippingAddress;
     }
+
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
     }
@@ -145,7 +157,6 @@ public class InvoiceDetailResponseDTO {
     public void setGrandTotal(BigDecimal grandTotal) {
         this.grandTotal = grandTotal;
     }
-
     public InvoiceStatus getStatus() {
         return status;
     }
@@ -161,6 +172,22 @@ public class InvoiceDetailResponseDTO {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+public BigDecimal getPaidAmount() {
+    return paidAmount;
+}
+
+public void setPaidAmount(BigDecimal paidAmount) {
+    this.paidAmount = paidAmount;
+}
+
+public BigDecimal getBalanceAmount() {
+    return balanceAmount;
+}
+
+public void setBalanceAmount(BigDecimal balanceAmount) {
+    this.balanceAmount = balanceAmount;
+}
 
     public String getTerms() {
         return terms;

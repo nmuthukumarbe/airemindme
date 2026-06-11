@@ -23,6 +23,9 @@ public class InvoicePaymentService {
         return repository.findByInvoiceIdOrderByPaymentDateDesc(invoiceId);
     }
 
+    public List<InvoicePayment> getByAccount(Integer accountId) {
+    return repository.findByAccountIdOrderByPaymentDateDesc(accountId);
+} 
     public Double getTotalPaid(Integer invoiceId) {
         return repository.getTotalPaid(invoiceId);
     }

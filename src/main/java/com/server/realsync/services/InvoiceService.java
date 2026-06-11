@@ -18,7 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class InvoiceService {
@@ -127,6 +129,9 @@ public class InvoiceService {
 
         return InvoiceMapper.toDetailDTO(saved);
     }
+    public Invoice save(Invoice invoice){
+    return invoiceRepository.save(invoice);
+}
 
     private void processInventory(Invoice invoice) {
 
@@ -197,6 +202,10 @@ public class InvoiceService {
         Invoice invoice = invoiceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Invoice not found with id " + id));
         invoiceRepository.delete(invoice);
+    }
+
+    public List<Invoice> findAllByIds(Set<Long> ids) {
+        return invoiceRepository.findAllById(ids);
     }
 
     // ==========================

@@ -42,6 +42,8 @@ public class InvoiceMapper {
         dto.setGrandTotal(invoice.getGrandTotal());
         dto.setStatus(invoice.getStatus());
         dto.setNotes(invoice.getNotes());
+        dto.setPaidAmount(invoice.getPaidAmount());
+        dto.setBalanceAmount(invoice.getBalanceAmount());
         dto.setTerms(invoice.getTerms());
         dto.setCreatedAt(invoice.getCreatedAt());
         dto.setUpdatedAt(invoice.getUpdatedAt());
