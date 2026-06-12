@@ -109,6 +109,12 @@ public class InvoiceService {
         Invoice existing = invoiceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Invoice not found with id " + id));
 
+        if (existing.getStatus() == InvoiceStatus.PARTIALLY_PAID
+                || existing.getStatus() == InvoiceStatus.PAID
+                || existing.getStatus() == InvoiceStatus.CANCELLED) {
+            throw new IllegalArgumentException("This invoice cannot be edited because payment transactions already exist.");
+        }
+
         InvoiceMapper.updateEntityFromDto(existing, dto);
         existing.setCustomerName(dto.getCustomerName());
         existing.setCustomerAddress(dto.getCustomerAddress());

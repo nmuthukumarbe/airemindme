@@ -191,6 +191,8 @@ public ResponseEntity<?> recordPayment(@PathVariable Integer id, @RequestBody In
                                 dto.setPaymentDate(payment.getPaymentDate());
                                 dto.setPaymentMode(payment.getPaymentMode());
                                 dto.setReferenceNo(payment.getReferenceNo());
+                                dto.setNotes(payment.getNotes());
+                                dto.setCreatedAt(payment.getCreatedAt());
 
                                 // Populate invoice details from map
                                 if (payment.getInvoiceId() != null) {
@@ -198,6 +200,10 @@ public ResponseEntity<?> recordPayment(@PathVariable Integer id, @RequestBody In
                                         if (invoice != null) {
                                                 dto.setInvoiceNumber(invoice.getInvoiceNumber());
                                                 dto.setCustomerName(invoice.getCustomerName());
+                                                dto.setInvoiceAmount(invoice.getGrandTotal() != null ? invoice.getGrandTotal().doubleValue() : 0.0);
+                                                dto.setRemainingBalance(invoice.getBalanceAmount() != null ? invoice.getBalanceAmount().doubleValue() : 0.0);
+                                                dto.setStatus(invoice.getStatus() != null ? invoice.getStatus().name() : "DRAFT");
+                                                dto.setCreatedBy(invoice.getCreatedBy());
                                         }
                                 }
                                 result.add(dto);
