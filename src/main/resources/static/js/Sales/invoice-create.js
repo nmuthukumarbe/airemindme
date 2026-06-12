@@ -166,9 +166,12 @@ async function performSearch(input, endpoint, selectHandler) {
             dd.innerHTML = items.map(i => {
                 // Using i.installmentAmount for plans, i.price for products
                 const displayPrice = i.price || i.installmentAmount || 0;
+                const desc = i.description || '';
+                const hsn = i.hsnSac || '';
+                const gstVal = i.gst || 0;
                 return `
                     <div class="px-3 py-2 hover:bg-gray-100 cursor-pointer border-b text-sm"
-                         onclick="${selectHandler}(this, ${i.id}, '${escapeHtml(i.name)}', ${displayPrice})">
+                         onclick="${selectHandler}(this, ${i.id}, '${escapeHtml(i.name)}', ${displayPrice}, '${escapeHtml(desc)}', '${escapeHtml(hsn)}', ${gstVal})">
                         <div class="font-medium">${i.name}</div>
                         <div class="text-xs text-gray-500">₹${displayPrice}</div>
                     </div>
@@ -188,7 +191,7 @@ async function searchPlan(input) { await performSearch(input, 'plans', 'selectPl
 /**
  * ITEM SELECTION LOGIC
  */
-function handleSelection(element, id, name, price, type) {
+function handleSelection(element, id, name, price, type, desc, hsnSac, gst) {
     const row = element.closest(".invoice-row");
     if (!row) return;
 
@@ -198,12 +201,22 @@ function handleSelection(element, id, name, price, type) {
     row.querySelector(".qty").value = 1;
     row.querySelector(".rate").value = price;
 
+    if (row.querySelector(".itemDescription")) {
+        row.querySelector(".itemDescription").value = desc || '';
+    }
+    if (row.querySelector(".hsnSac")) {
+        row.querySelector(".hsnSac").value = hsnSac || '';
+    }
+    if (row.querySelector(".gst")) {
+        row.querySelector(".gst").value = gst || 0;
+    }
+
     calculateRow(row);
     closeDropdown(row);
 }
 
-function selectProduct(el, id, name, price) { handleSelection(el, id, name, price, 'PRODUCT'); }
-function selectPlan(el, id, name, amount) { handleSelection(el, id, name, amount, 'SERVICE'); }
+function selectProduct(el, id, name, price, desc, hsnSac, gst) { handleSelection(el, id, name, price, 'PRODUCT', desc, hsnSac, gst); }
+function selectPlan(el, id, name, amount, desc, hsnSac, gst) { handleSelection(el, id, name, amount, 'SERVICE', desc, hsnSac, gst); }
 
 /**
  * CALCULATION LOGIC
@@ -419,15 +432,18 @@ function calcTotals() {
 /**
  * Load invoice data from API for editing
  */
-async function loadInvoice(invoiceId) {
+async function loadInvoice(invoiceIdOrObj) {
     try {
-        const response = await fetch(`/api/invoices/${invoiceId}`);
-
-        if (!response.ok) {
-            throw new Error("Invoice not found");
+        let invoice;
+        if (invoiceIdOrObj && typeof invoiceIdOrObj === "object") {
+            invoice = invoiceIdOrObj;
+        } else {
+            const response = await fetch(`/api/invoices/${invoiceIdOrObj}`);
+            if (!response.ok) {
+                throw new Error("Invoice not found");
+            }
+            invoice = await response.json();
         }
-
-        const invoice = await response.json();
         console.log("Loaded invoice:", invoice);
 
         // Populate basic fields
@@ -444,6 +460,21 @@ async function loadInvoice(invoiceId) {
         document.getElementById("invoiceNotes").value = invoice.notes || "";
         document.getElementById("invoiceTerms").value = invoice.terms || "";
         document.getElementById("shippingAmt").value = invoice.shippingAmount || "0";
+
+        if (document.getElementById("discountVal")) {
+            document.getElementById("discountVal").value = invoice.discountAmount || 0;
+        }
+        if (invoice.discountType && document.getElementById("discountType")) {
+            document.getElementById("discountType").value = invoice.discountType;
+        }
+
+        if (invoice.status) {
+            const statusField = document.getElementById("invoiceStatus");
+            if (statusField) {
+                const mappedStatus = invoice.status.charAt(0) + invoice.status.slice(1).toLowerCase();
+                statusField.value = mappedStatus;
+            }
+        }
 
         // Set customer from snapshot
         selectedCustomerId = invoice.customerId || null;

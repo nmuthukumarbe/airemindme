@@ -64,4 +64,10 @@ public class InvoiceController {
         invoiceService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<InvoiceDetailResponseDTO> cancel(@PathVariable Long id) {
+        InvoiceDetailResponseDTO cancelled = invoiceService.cancelInvoice(id);
+        return ResponseEntity.ok(cancelled);
+    }
 }

@@ -129,6 +129,53 @@ public class InvoiceService {
 
         return InvoiceMapper.toDetailDTO(saved);
     }
+
+    public InvoiceDetailResponseDTO cancelInvoice(Long id) {
+        Invoice invoice = invoiceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Invoice not found with id " + id));
+
+        if (invoice.getStatus() == InvoiceStatus.CANCELLED) {
+            throw new RuntimeException("Invoice is already cancelled");
+        }
+        if (invoice.getStatus() == InvoiceStatus.PAID || invoice.getStatus() == InvoiceStatus.PARTIALLY_PAID) {
+            throw new RuntimeException("Paid or Partially Paid invoices cannot be cancelled");
+        }
+
+        // Restore inventory for PRODUCT items
+        if (Boolean.TRUE.equals(invoice.getInventoryProcessed())) {
+            for (InvoiceItem item : invoice.getItems()) {
+                if ("PRODUCT".equalsIgnoreCase(item.getItemType()) && item.getItemRefId() != null) {
+                    CatalogProduct product = productService.getById(
+                            item.getItemRefId().intValue(),
+                            SecurityUtil.getCurrentAccountId().getId()).orElse(null);
+                    if (product != null) {
+                        int currentQty = product.getQuantity() == null ? 0 : product.getQuantity();
+                        int restoredQty = item.getQty() == null ? 0 : item.getQty();
+                        int newQty = currentQty + restoredQty;
+                        product.setQuantity(newQty);
+                        productService.save(product);
+
+                        // Create transaction
+                        InventoryTransaction txn = new InventoryTransaction();
+                        txn.setAccountId(product.getAccountId());
+                        txn.setProductId(product.getId());
+                        txn.setType("RESTOCK");
+                        txn.setQuantity(restoredQty);
+                        txn.setBalanceAfter(newQty);
+                        txn.setReferenceNo(invoice.getInvoiceNumber());
+                        txn.setNotes("Restored stock via cancelled Invoice " + invoice.getInvoiceNumber());
+                        txnService.save(txn);
+                    }
+                }
+            }
+            invoice.setInventoryProcessed(false);
+        }
+
+        invoice.setStatus(InvoiceStatus.CANCELLED);
+        Invoice saved = invoiceRepository.save(invoice);
+        return InvoiceMapper.toDetailDTO(saved);
+    }
+
     public Invoice save(Invoice invoice){
     return invoiceRepository.save(invoice);
 }

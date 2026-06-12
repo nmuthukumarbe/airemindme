@@ -109,10 +109,8 @@ function previewInvoice() {
         JSON.stringify(invoice)
     );
 
-    window.open(
-        "/invoice-detail.html?preview=true",
-        "_blank"
-    );
+    window.location.href =
+        "/invoice-detail.html?preview=true";
 }
 
 

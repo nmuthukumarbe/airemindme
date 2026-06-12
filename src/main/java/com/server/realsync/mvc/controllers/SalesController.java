@@ -101,9 +101,13 @@ public ResponseEntity<?> recordPayment(@PathVariable Integer id, @RequestBody In
         }
 
         // Basic Validations
-        if (payment.getAmount() == null || payment.getAmount() <= 0) {
+        if (payment.getAmount() == null) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("success", false, "message", "Payment amount must be greater than 0"));
+                    .body(Map.of("success", false, "message", "Please enter payment amount."));
+        }
+        if (payment.getAmount() <= 0) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("success", false, "message", "Payment amount must be greater than zero."));
         }
         if (payment.getPaymentMode() == null || payment.getPaymentMode().isBlank()) {
             return ResponseEntity.badRequest()
@@ -111,7 +115,11 @@ public ResponseEntity<?> recordPayment(@PathVariable Integer id, @RequestBody In
         }
         if (payment.getPaymentDate() == null) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("success", false, "message", "Payment date is required"));
+                    .body(Map.of("success", false, "message", "Please select payment date."));
+        }
+        if (payment.getPaymentDate().isAfter(java.time.LocalDate.now())) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("success", false, "message", "Payment date cannot be in the future."));
         }
 
         Invoice inv = invoiceOpt.get();
@@ -121,7 +129,7 @@ public ResponseEntity<?> recordPayment(@PathVariable Integer id, @RequestBody In
         // Validation: Check if new payment exceeds remaining balance
         if ((currentPaid + payment.getAmount()) > inv.getGrandTotal().doubleValue()) {
             return ResponseEntity.badRequest()
-                    .body(Map.of("success", false, "message", "Payment exceeds invoice amount"));
+                    .body(Map.of("success", false, "message", "Payment exceeds remaining invoice balance."));
         }
 
         // Save Payment

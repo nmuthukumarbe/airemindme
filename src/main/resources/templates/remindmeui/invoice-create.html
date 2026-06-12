@@ -318,7 +318,7 @@
               <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Bill To</label>
               <div class="relative">
                 <input id="customerSearch" type="text" placeholder="Search customer..." class="line-input"
-                  oninput="searchCustomer(this.value)" >
+                  oninput="searchCustomer(this.value)">
                 <div id="customerDd" class="product-dropdown hidden"></div>
               </div>
               <input id="billToMobile" type="tel" placeholder="Customer Mobile (optional)" class="line-input mt-2">
@@ -344,11 +344,7 @@
                   <option>Due on Receipt</option>
                   <option>Advance Payment</option>
                 </select>
-                <select class="line-input" id="invoiceStatus">
-                  <option value="Draft">Draft</option>
-                  <option value="Sent">Sent</option>
-                  <option value="Paid">Paid</option>
-                </select>
+              
               </div>
             </div>
           </div>
@@ -477,7 +473,7 @@
               Click to add signature</div>
           </div>
           <div class="text-right">
-             <p class="text-[10px] text-gray-400">For <span th:text="${account.businessName}">Business Name</span></p>
+            <p class="text-[10px] text-gray-400">For <span th:text="${account.businessName}">Business Name</span></p>
             <div class="w-32 h-10 border-b border-gray-300 mt-6 mx-auto md:mx-0 md:ml-auto"></div>
             <p class="text-xs text-gray-500 mt-1">Authorized Signatory</p>
           </div>
@@ -603,8 +599,20 @@
     const params = new URLSearchParams(location.search);
 
     const invoiceId = params.get("id");
+    const previewEdit = params.get("previewEdit") === "true";
 
-    if (invoiceId) {
+    if (previewEdit) {
+      document.getElementById('pageTitle').textContent = 'Edit Invoice';
+      document.getElementById('pageTitleH1').textContent = 'Edit Invoice';
+      const previewData = localStorage.getItem("invoice_preview");
+      if (previewData) {
+        loadInvoice(JSON.parse(previewData));
+      } else {
+        addItem('product');
+        addItem('service');
+        initInvoiceNumber();
+      }
+    } else if (invoiceId) {
 
       document.getElementById('pageTitle').textContent =
         'Edit Invoice';
@@ -622,7 +630,36 @@
 
     };
 
+    document.addEventListener("DOMContentLoaded", async () => {
 
+      const params = new URLSearchParams(location.search);
+
+      const invoiceId = params.get("id");
+      const previewEdit = params.get("previewEdit");
+
+      // Edit existing invoice
+      if (invoiceId) {
+        await loadInvoice(invoiceId);
+        return;
+      }
+
+      // Edit from preview
+      if (previewEdit === "true") {
+
+        const preview =
+          JSON.parse(localStorage.getItem("invoice_preview"));
+
+        if (preview) {
+
+          populateInvoiceForm(preview);
+
+          // OR
+          // loadPreviewInvoice(preview);
+
+          console.log("Preview restored");
+        }
+      }
+    });
 
   </script>
 

@@ -184,14 +184,15 @@
         </a>
         <div>
           <p class="text-xs text-gray-400 hidden md:block"><a href="home.html" class="hover:text-indigo-600">Home</a> /
-            <a href="sales.html" class="hover:text-indigo-600">Sales</a> / <span
-              class="text-gray-700">INV-2024-004</span>
+            <a href="sales.html" class="hover:text-indigo-600">Sales</a> / <span class="text-gray-700"
+              id="breadcrumbInvoiceNum">INV-2024-004</span>
           </p>
-          <h1 class="text-base font-bold text-gray-900">Invoice INV-2024-004</h1>
+          <h1 class="text-base font-bold text-gray-900" id="titleInvoiceNum">Invoice INV-2024-004</h1>
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <span class="px-3 py-1.5 rounded-full text-xs font-bold bg-red-100 text-red-700">UNPAID</span>
+        <span id="headerInvoiceStatus"
+          class="px-3 py-1.5 rounded-full text-xs font-bold bg-red-100 text-red-700">UNPAID</span>
         <button id="pagePrintButton" type="button" onclick="printInvoice()"
           class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,13 +207,13 @@
               d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
           </svg><span id="pageEditLinkText">Edit</span>
         </a>
-        <button id="previewSaveDraftBtn" type="button" onclick="saveDraftPreview()"
+        <button id="previewSaveDraftBtn" type="button" onclick="saveDraft()"
           class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-100 text-amber-900 text-sm font-medium hover:bg-amber-200 transition shadow-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>Save Draft
         </button>
-        <button id="previewSaveInvoiceBtn" type="button" onclick="saveInvoicePreview()"
+        <button id="previewSaveInvoiceBtn" type="button" onclick="saveFinalInvoice()"
           class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-500 text-white text-sm font-medium hover:bg-amber-600 transition shadow-sm">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -587,7 +588,7 @@
           </div>
 
           <!-- Payment Summary -->
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div id="paymentSummaryCard" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <h3 class="text-sm font-bold text-gray-800 mb-3">
               Payment Summary
             </h3>
@@ -636,25 +637,14 @@
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <h3 class="text-sm font-bold text-gray-800 mb-3">Quick Actions</h3>
             <div class="space-y-2">
-              <a href="invoice-create.html?edit=1&id=INV-2024-004&customer=Kavya+Fashions"
+              <a href="#" id="quickActionEditBtn" onclick="editInvoice(); return false;"
                 class="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-600 hover:bg-gray-50 text-sm"><svg
                   class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>Edit Invoice</a>
-              <button onclick="showToast('Invoice duplicated')"
-                class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-gray-600 hover:bg-gray-50 text-sm"><svg
-                  class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>Duplicate Invoice</button>
-              <button onclick="showToast('Credit note created')"
-                class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-gray-600 hover:bg-gray-50 text-sm"><svg
-                  class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
-                </svg>Create Credit Note</button>
-              <button onclick="showToast('Invoice marked as cancelled')"
+
+              <button id="quickActionCancelBtn" onclick="cancelInvoice(); return false;"
                 class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-red-500 hover:bg-red-50 text-sm"><svg
                   class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -843,6 +833,54 @@
       });
     }
 
+    function updateStatusBadges(status) {
+      const headerStatus = document.getElementById("headerInvoiceStatus");
+      const printStatus = document.getElementById("invoiceStatus");
+
+      const normStatus = (status || "DRAFT").toUpperCase();
+      let headerClass = "";
+      let printClass = "";
+
+      switch (normStatus) {
+        case "DRAFT":
+          headerClass = "px-3 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700";
+          printClass = "bg-gray-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full";
+          break;
+        case "SENT":
+          headerClass = "px-3 py-1.5 rounded-full text-xs font-bold bg-blue-100 text-blue-700";
+          printClass = "bg-blue-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full";
+          break;
+        case "UNPAID":
+          headerClass = "px-3 py-1.5 rounded-full text-xs font-bold bg-red-100 text-red-700";
+          printClass = "bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full";
+          break;
+        case "PARTIALLY_PAID":
+          headerClass = "px-3 py-1.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700";
+          printClass = "bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full";
+          break;
+        case "PAID":
+          headerClass = "px-3 py-1.5 rounded-full text-xs font-bold bg-green-100 text-green-700";
+          printClass = "bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full";
+          break;
+        case "CANCELLED":
+          headerClass = "px-3 py-1.5 rounded-full text-xs font-bold bg-neutral-200 text-neutral-800";
+          printClass = "bg-neutral-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full";
+          break;
+        default:
+          headerClass = "px-3 py-1.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700";
+          printClass = "bg-gray-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full";
+      }
+
+      if (headerStatus) {
+        headerStatus.textContent = normStatus;
+        headerStatus.className = headerClass;
+      }
+      if (printStatus) {
+        printStatus.textContent = normStatus;
+        printStatus.className = printClass;
+      }
+    }
+
     function renderInvoice(invoice) {
 
       if (!invoice) return;
@@ -852,12 +890,65 @@
       const elNum = document.getElementById("invoiceNumber");
       const elDate = document.getElementById("invoiceDate");
       const elDue = document.getElementById("invoiceDueDate");
-      const elStatus = document.getElementById("invoiceStatus");
 
       if (elNum) elNum.textContent = invoice.invoiceNumber || "-";
       if (elDate) elDate.textContent = invoice.invoiceDate || "-";
       if (elDue) elDue.textContent = invoice.dueDate || "-";
-      if (elStatus) elStatus.textContent = invoice.status || "DRAFT";
+
+      const invNum = invoice.invoiceNumber || "Draft Invoice";
+      document.title = "Invoice - " + invNum;
+
+      const elBreadcrumb = document.getElementById("breadcrumbInvoiceNum");
+      const elTitle = document.getElementById("titleInvoiceNum");
+      if (elBreadcrumb) elBreadcrumb.textContent = invNum;
+      if (elTitle) elTitle.textContent = "Invoice " + invNum;
+
+      updateStatusBadges(invoice.status || "DRAFT");
+
+      // Configure edit buttons
+      const quickActionEditBtn = document.getElementById("quickActionEditBtn");
+      const pageEditButton = document.getElementById("pageEditButton");
+      if (quickActionEditBtn) {
+        if (isPreview) {
+          quickActionEditBtn.innerHTML = `<svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>Edit Invoice`;
+        } else {
+          quickActionEditBtn.innerHTML = `<svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>Edit Invoice`;
+        }
+      }
+
+      // Configure cancel button
+      const cancelBtn = document.getElementById("quickActionCancelBtn");
+      if (cancelBtn) {
+        if (isPreview) {
+          cancelBtn.classList.add("hidden");
+        } else {
+          cancelBtn.classList.remove("hidden");
+          if (invoice.status === "PARTIALLY_PAID" || invoice.status === "PAID") {
+            cancelBtn.disabled = true;
+            cancelBtn.className = "w-full flex items-center gap-3 px-3 py-2 rounded-xl text-gray-400 cursor-not-allowed text-sm";
+            cancelBtn.onclick = () => showToast("Paid/Partially Paid invoices cannot be cancelled");
+          } else if (invoice.status === "CANCELLED") {
+            cancelBtn.disabled = true;
+            cancelBtn.className = "w-full flex items-center gap-3 px-3 py-2 rounded-xl text-gray-400 cursor-not-allowed text-sm";
+            cancelBtn.onclick = () => showToast("Invoice is already cancelled");
+          } else {
+            cancelBtn.disabled = false;
+            cancelBtn.className = "w-full flex items-center gap-3 px-3 py-2 rounded-xl text-red-500 hover:bg-red-50 text-sm";
+            cancelBtn.onclick = () => cancelInvoice();
+          }
+        }
+      }
+
+      // Configure record payment buttons
+      const headerRecordPaymentBtn = document.getElementById("headerRecordPaymentBtn");
+      const recordPaymentBtn = document.getElementById("recordPaymentBtn");
+      const hidePayment = isPreview || invoice.status === "CANCELLED";
+      if (headerRecordPaymentBtn) {
+        headerRecordPaymentBtn.classList.toggle("hidden", hidePayment);
+      }
+      if (recordPaymentBtn) {
+        recordPaymentBtn.classList.toggle("hidden", hidePayment);
+      }
 
       // Payment Summary
       const grandTotal = invoice.grandTotal || 0;
@@ -993,6 +1084,7 @@
       }
 
       console.log("Invoice rendered:", invoice);
+      applyPreviewModeUI();
     }
 
     function toggleElementVisibility(element, visible) {
@@ -1023,6 +1115,8 @@
       const pageEditLinkText = document.getElementById('pageEditLinkText');
       const headerRecordPaymentBtn = document.getElementById('headerRecordPaymentBtn');
       const sidebarRecordPaymentBtn = document.getElementById('recordPaymentBtn');
+      const paymentSummaryCard = document.getElementById('paymentSummaryCard');
+      const quickActionCancelBtn = document.getElementById('quickActionCancelBtn');
 
       if (isPreview) {
         // Preview Mode: Show save buttons, hide saved invoice UI
@@ -1036,8 +1130,11 @@
         if (sidebarRecordPaymentBtn) {
           toggleElementVisibility(sidebarRecordPaymentBtn, false);
         }
+        if (paymentSummaryCard) {
+          toggleElementVisibility(paymentSummaryCard, false);
+        }
         if (pageEditButton) {
-          pageEditButton.classList.add('hidden');
+          pageEditButton.classList.remove('hidden');
         }
         if (pageEditLinkText) {
           pageEditLinkText.textContent = 'Edit Invoice';
@@ -1045,20 +1142,96 @@
       } else {
         // Saved Mode: Show saved invoice UI, hide preview buttons
         toggleElementVisibility(banner, false);
-        toggleElementVisibility(activityTimelineCard, true);
-        toggleElementVisibility(savedActionsRow, true);
         toggleElementVisibility(previewSaveDraftBtn, false);
         toggleElementVisibility(previewSaveInvoiceBtn, false);
-        toggleElementVisibility(pagePrintButton, true);
-        toggleElementVisibility(headerRecordPaymentBtn, true);
-        if (sidebarRecordPaymentBtn) {
-          toggleElementVisibility(sidebarRecordPaymentBtn, true);
-        }
-        if (pageEditButton) {
-          pageEditButton.classList.remove('hidden');
-        }
-        if (pageEditLinkText) {
-          pageEditLinkText.textContent = 'Edit';
+
+        // Get status
+        const status = (invoice && invoice.status ? invoice.status : 'DRAFT').toUpperCase();
+
+        if (status === 'DRAFT') {
+          // Show Edit
+          if (pageEditButton) {
+            pageEditButton.classList.remove('hidden');
+            if (pageEditLinkText) pageEditLinkText.textContent = 'Edit';
+          }
+          // Show Print
+          toggleElementVisibility(pagePrintButton, true);
+          toggleElementVisibility(savedActionsRow, true);
+          // Show Activity Timeline
+          toggleElementVisibility(activityTimelineCard, true);
+          // Hide Record Payment
+          toggleElementVisibility(headerRecordPaymentBtn, false);
+          if (sidebarRecordPaymentBtn) {
+            toggleElementVisibility(sidebarRecordPaymentBtn, false);
+          }
+          if (paymentSummaryCard) {
+            toggleElementVisibility(paymentSummaryCard, true);
+          }
+        } 
+        else if (status === 'SENT' || status === 'PARTIALLY_PAID') {
+          // Show Edit
+          if (pageEditButton) {
+            pageEditButton.classList.remove('hidden');
+            if (pageEditLinkText) pageEditLinkText.textContent = 'Edit';
+          }
+          // Show Print
+          toggleElementVisibility(pagePrintButton, true);
+          toggleElementVisibility(savedActionsRow, true);
+          // Show Record Payment
+          toggleElementVisibility(headerRecordPaymentBtn, true);
+          if (sidebarRecordPaymentBtn) {
+            toggleElementVisibility(sidebarRecordPaymentBtn, true);
+            sidebarRecordPaymentBtn.disabled = false;
+            sidebarRecordPaymentBtn.className = "w-full mt-4 py-2.5 rounded-xl bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition";
+            sidebarRecordPaymentBtn.onclick = () => document.getElementById('paymentModal').classList.remove('hidden');
+          }
+          // Show Activity Timeline
+          toggleElementVisibility(activityTimelineCard, true);
+          if (paymentSummaryCard) {
+            toggleElementVisibility(paymentSummaryCard, true);
+          }
+        } 
+        else if (status === 'PAID') {
+          // Show Print
+          toggleElementVisibility(pagePrintButton, true);
+          toggleElementVisibility(savedActionsRow, true);
+          // Show Activity Timeline
+          toggleElementVisibility(activityTimelineCard, true);
+          if (paymentSummaryCard) {
+            toggleElementVisibility(paymentSummaryCard, true);
+          }
+          // Disable payment actions
+          if (headerRecordPaymentBtn) {
+            headerRecordPaymentBtn.classList.add('hidden');
+          }
+          if (sidebarRecordPaymentBtn) {
+            sidebarRecordPaymentBtn.disabled = true;
+            sidebarRecordPaymentBtn.className = "w-full mt-4 py-2.5 rounded-xl bg-gray-200 text-gray-400 cursor-not-allowed text-sm font-semibold";
+            sidebarRecordPaymentBtn.onclick = () => showToast("Invoice is already fully paid");
+          }
+          // Hide Edit
+          if (pageEditButton) {
+            pageEditButton.classList.add('hidden');
+          }
+        } 
+        else if (status === 'CANCELLED') {
+          // Show Print
+          toggleElementVisibility(pagePrintButton, true);
+          toggleElementVisibility(savedActionsRow, true);
+          // Show Activity Timeline
+          toggleElementVisibility(activityTimelineCard, true);
+          if (paymentSummaryCard) {
+            toggleElementVisibility(paymentSummaryCard, true);
+          }
+          // Hide payment actions
+          toggleElementVisibility(headerRecordPaymentBtn, false);
+          if (sidebarRecordPaymentBtn) {
+            toggleElementVisibility(sidebarRecordPaymentBtn, false);
+          }
+          // Disable edit
+          if (pageEditButton) {
+            pageEditButton.classList.add('hidden');
+          }
         }
       }
     }
@@ -1138,9 +1311,9 @@
         const statusLabel = status === "DRAFT" ? "Draft" : "Invoice";
         showToast(`Invoice saved as ${statusLabel}`);
 
-        // Redirect to detail page with the invoice ID
+        // Redirect appropriately
         setTimeout(() => {
-          window.location.href = `/invoice-detail?id=${savedInvoice.id}`;
+          window.location.href = `/invoice-detail.html?id=${savedInvoice.id}`;
         }, 1000);
 
       } catch (err) {
@@ -1166,7 +1339,7 @@
         return;
       }
       const invoiceObj = JSON.parse(previewData);
-      await saveInvoiceData(invoiceObj, "UNPAID");
+      await saveInvoiceData(invoiceObj, "SENT");
     }
 
     async function loadInvoice(invoiceId) {
@@ -1185,10 +1358,50 @@
       }
     }
 
+    async function cancelInvoice() {
+      if (!invoice || !invoice.id) {
+        showToast("No invoice loaded");
+        return;
+      }
+      if (!confirm("Are you sure you want to cancel this invoice?")) {
+        return;
+      }
+      try {
+        const response = await fetch(`/api/invoices/${invoice.id}/cancel`, {
+          method: "POST"
+        });
+        if (!response.ok) {
+          const errorMsg = await response.text();
+          throw new Error(errorMsg);
+        }
+        showToast("Invoice cancelled successfully");
+        await loadInvoice(invoice.id);
+      } catch (err) {
+        console.error("Cancel Error:", err);
+        showToast(`Failed to cancel invoice: ${err.message}`);
+      }
+    }
+
   </script>
 
   <script>
-    function printInvoice() { window.print(); }
+    function printInvoice() {
+
+      if (isPreview) {
+        showToast("Preview invoices cannot be printed. Save the invoice first.");
+        return;
+      }
+
+      window.print();
+    }
+    document.addEventListener("keydown", function (e) {
+
+      if (isPreview && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "p") {
+        e.preventDefault();
+        showToast("Preview invoices cannot be printed. Save the invoice first.");
+      }
+
+    });
 
     let selectedPaymentMode = "UPI";
 
@@ -1205,32 +1418,89 @@
       btn.className =
         'pay-mode-btn bg-indigo-50 text-indigo-700 rounded-xl py-2 text-xs font-semibold border-2 border-indigo-300';
     }
-
     function editInvoice() {
+
+      if (isPreview) {
+
+        if (invoice && invoice.id) {
+
+          window.location.href =
+            `/invoice-create.html?id=${invoice.id}&edit=true&previewEdit=true`;
+
+        } else {
+
+          // unsaved preview
+          window.location.href =
+            `/invoice-create.html?previewEdit=true`;
+
+        }
+
+        return;
+      }
+
       if (!invoice || !invoice.id) {
         showToast("Invoice data not available");
         return;
       }
-      // Redirect to invoice-create page with edit mode
-      window.location.href = `/invoice-create?id=${invoice.id}&edit=true`;
-    }
 
+      window.location.href =
+        `/invoice-create.html?id=${invoice.id}&edit=true`;
+    }
     async function recordPayment() {
 
       if (isPreview) {
         showToast("Save invoice before recording payment");
         return;
       }
+      if (invoice && invoice.status === "CANCELLED") {
+        showToast("Payments cannot be recorded on cancelled invoices");
+        return;
+      }
 
       try {
+        const amountInput = document.getElementById("paymentAmount");
+        const amountValStr = amountInput.value.trim();
 
-        const amount =
-          parseFloat(
-            document.getElementById("paymentAmount").value
-          );
+        // 1. Empty Amount
+        if (amountValStr === "") {
+          showToast("Please enter payment amount.");
+          return;
+        }
 
-        const paymentDate =
-          document.getElementById("payDate").value;
+        const amount = parseFloat(amountValStr);
+
+        // 2. Amount <= 0
+        if (isNaN(amount) || amount <= 0) {
+          showToast("Payment amount must be greater than zero.");
+          return;
+        }
+
+        // 3. Invoice Balance validation
+        const grandTotal = invoice.grandTotal || 0;
+        const paidAmount = invoice.paidAmount || 0;
+        const balanceDue = grandTotal - paidAmount;
+        if (amount > balanceDue) {
+          showToast(`Payment amount cannot exceed remaining balance of ${formatMoney(balanceDue)}.`);
+          return;
+        }
+
+        const paymentDate = document.getElementById("payDate").value;
+
+        // 4. Missing Payment Date
+        if (!paymentDate) {
+          showToast("Please select payment date.");
+          return;
+        }
+
+        // 5. Invalid Future Date
+        const selectedDate = new Date(paymentDate);
+        selectedDate.setHours(0, 0, 0, 0);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (selectedDate > today) {
+          showToast("Payment date cannot be in the future.");
+          return;
+        }
 
         const referenceNo =
           document.getElementById("paymentReference").value;
@@ -1238,35 +1508,43 @@
         const notes =
           document.getElementById("paymentNotes").value;
 
-        if (!amount || amount <= 0) {
-          showToast("Enter valid amount");
+        let response;
+        try {
+          response = await fetch(
+            `/api/invoices/${invoice.id}/payments`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                amount: amount,
+                paymentMode: selectedPaymentMode,
+                paymentDate: paymentDate,
+                referenceNo: referenceNo,
+                notes: notes
+              })
+            }
+          );
+        } catch (netErr) {
+          console.error("Network/API failure:", netErr);
+          showToast("Unable to connect. Please try again.");
           return;
         }
 
-        const response = await fetch(
-          `/api/invoices/${invoice.id}/payments`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              amount: amount,
-              paymentMode: selectedPaymentMode,
-              paymentDate: paymentDate,
-              referenceNo: referenceNo,
-              notes: notes
-            })
-          }
-        );
-
         if (!response.ok) {
-
-          const error = await response.json();
-
-          throw new Error(
-            error.message || "Failed to save payment"
-          );
+          let errorMsg = "Unable to save payment";
+          try {
+            const error = await response.json();
+            errorMsg = error.message || errorMsg;
+          } catch (jsonErr) {
+            try {
+              const text = await response.text();
+              if (text) errorMsg = text;
+            } catch (tErr) {}
+          }
+          showToast(errorMsg);
+          return;
         }
 
         document
@@ -1278,9 +1556,7 @@
         await loadInvoice(invoice.id);
 
       } catch (err) {
-
         console.error(err);
-
         showToast("Unable to save payment");
       }
     }
