@@ -530,12 +530,30 @@
             </button>
           </div>
 
+          <!-- Schedule Selection -->
+          <p class="text-sm font-semibold text-gray-800 mb-2">Schedule</p>
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <button onclick="setScheduleType('now')" id="sch-now" type="button"
+              class="py-2.5 rounded-xl border-2 border-indigo-600 bg-indigo-50 text-indigo-700 text-xs font-semibold transition flex items-center justify-center gap-1.5">
+              ○ Send Now
+            </button>
+            <button onclick="setScheduleType('later')" id="sch-later" type="button"
+              class="py-2.5 rounded-xl border-2 border-gray-200 text-gray-500 hover:border-gray-300 text-xs font-semibold transition flex items-center justify-center gap-1.5">
+              ○ Schedule Later
+            </button>
+          </div>
+          <div id="scheduleTimeWrapper" class="hidden mb-4">
+            <label class="text-xs font-medium text-gray-500 mb-1 block">Scheduled Date & Time</label>
+            <input id="scheduledAtInput" type="datetime-local"
+              class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </div>
+
           <div class="flex items-center gap-2 px-4 py-3 rounded-xl bg-indigo-50 border border-indigo-100">
             <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            <p class="text-sm text-indigo-700 font-medium"><span id="recipientsCount">17</span> recipients will receive
+            <p class="text-sm text-indigo-700 font-medium"><span id="recipientsCount">0</span> recipients will receive
               this link</p>
           </div>
         </div>
@@ -678,7 +696,7 @@
 
         // Normalizing Plans: mapping DB fields like billing_cycle and features
         plans = rawPlans.map(p => ({
-          id: p.id.toString(),
+          id: 'plan-' + p.id.toString(),
           type: 'plan',
           name: p.name,
           price: '₹' + (p.price || 0),
@@ -694,7 +712,7 @@
 
         // Normalizing Products: mapping DB fields like sku
         products = rawProducts.map(p => ({
-          id: p.id.toString(),
+          id: 'product-' + p.id.toString(),
           type: 'product',
           name: p.name,
           price: '₹' + (p.price || 0),
@@ -839,14 +857,17 @@
         // Map backend data to frontend UI fields
         savedLinks = data.map(p => ({
           id: p.id,
+          name: p.name || 'No Name',
           desc: p.description || 'No Description',
           // CRITICAL: Map these names from your join table response
           items: p.itemNames || [],
           recipients: p.recipientCount || 0,
           status: p.status || 'ACTIVE',
           views: p.views || 0,
+          likes: p.likes || 0,
           enquiries: p.enquiries || 0,
           created: p.createdAt ? p.createdAt.split("T")[0] : 'Recently',
+          scheduled: p.scheduledAt ? p.scheduledAt.replace("T", " ").substring(0, 16) : 'Send Now',
           previewEntryId: p.previewEntryId
         }));
 
@@ -876,12 +897,46 @@
     }
     async function createAndSendLink() {
       const selectedIds = Array.from(selected);
+
+      // JS Validations (Rule 10)
+      const description = document.getElementById("promoDesc").value.trim();
+      if (!description) {
+        alert("Validation Error: Description cannot be empty.");
+        return;
+      }
+      if (selectedIds.length === 0) {
+        alert("Validation Error: Please select at least one item.");
+        return;
+      }
+      const groupId = state.targetMode === 'group' ? state.selectedGroupId : null;
+      const customerId = state.targetMode === 'ind' ? state.selectedCustomerId : null;
+      if (!groupId && !customerId) {
+        alert("Validation Error: No recipient selected.");
+        return;
+      }
+
+      let scheduledAt = null;
+      if (selectedScheduleType === 'later') {
+        const schedInput = document.getElementById("scheduledAtInput").value;
+        if (!schedInput) {
+          alert("Validation Error: Please select a schedule date and time.");
+          return;
+        }
+        const schedTime = new Date(schedInput);
+        if (schedTime < new Date()) {
+          alert("Validation Error: Scheduled date cannot be in the past.");
+          return;
+        }
+        scheduledAt = schedInput;
+      }
+
       const payload = {
-        groupId: state.targetMode === 'group' ? state.selectedGroupId : null,
-        customerId: state.targetMode === 'ind' ? state.selectedCustomerId : null,
-        description: document.getElementById("promoDesc").value,
+        groupId: groupId,
+        customerId: customerId,
+        description: description,
         itemIds: selectedIds,
-        sendVia: state.sendVia || 'wa'
+        sendVia: state.sendVia || 'wa',
+        scheduledAt: scheduledAt
       };
 
       try {
@@ -891,35 +946,38 @@
           body: JSON.stringify(payload)
         });
 
-        // Check if the response is actually okay
         if (res.ok) {
-          // If your backend returns plain text instead of JSON, res.json() will crash.
-          // Let's handle both cases:
           const contentType = res.headers.get("content-type");
           let data;
           if (contentType && contentType.includes("application/json")) {
             data = await res.json();
           } else {
-            data = { link: await res.text() }; // Fallback for plain text links
+            data = { link: await res.text() };
           }
 
           // Update UI
           document.getElementById('generatedUrl').textContent = data.link || "Link generated successfully";
           document.getElementById('sentToLabel').textContent = "Promotion saved to database";
 
-          goModalStep(3); // Move to success screen
+          goModalStep(3); // Move to success screen (Rule 8 success flow)
 
           selected.clear();
           updateSelectionUI();
           renderCards();
+          loadPromotions(); // Reload to refresh list card data
 
         } else {
-          const errorMsg = await res.text();
-          alert("Server Error: " + errorMsg);
+          // Parse JSON error response or fallback to plain text
+          try {
+            const errorObj = await res.json();
+            alert("Validation Failed: " + (errorObj.message || "Invalid request"));
+          } catch (jsonErr) {
+            const errorMsg = await res.text();
+            alert("Server Error: " + errorMsg);
+          }
         }
       } catch (e) {
-        console.error("The request worked but the JS failed:", e);
-        // This is where your "Could not connect" error was coming from
+        console.error("Request worked but JS failed:", e);
         alert("Promotion added to DB, but UI failed to update. Refresh the page.");
       }
     }
@@ -1138,12 +1196,45 @@
       document.getElementById("recipientsCount").textContent = count || 0;
     }
 
+    function clearGroupSelection() {
+      document.querySelectorAll(".group-item").forEach(e => {
+        e.classList.remove("border-indigo-600", "bg-indigo-50/50");
+        e.classList.add("border-gray-200");
+        e.querySelector(".tick")?.classList.add("hidden");
+      });
+      state.selectedGroupId = null;
+    }
+
+    let selectedScheduleType = 'now';
+    function setScheduleType(type) {
+      selectedScheduleType = type;
+      const schNow = document.getElementById('sch-now');
+      const schLater = document.getElementById('sch-later');
+      const timeWrapper = document.getElementById('scheduleTimeWrapper');
+
+      if (type === 'now') {
+        schNow.className = 'py-2.5 rounded-xl border-2 border-indigo-600 bg-indigo-50 text-indigo-700 text-xs font-semibold transition flex items-center justify-center gap-1.5';
+        schLater.className = 'py-2.5 rounded-xl border-2 border-gray-200 text-gray-500 hover:border-gray-300 text-xs font-semibold transition flex items-center justify-center gap-1.5';
+        timeWrapper.classList.add('hidden');
+        document.getElementById('scheduledAtInput').value = '';
+      } else {
+        schLater.className = 'py-2.5 rounded-xl border-2 border-indigo-600 bg-indigo-50 text-indigo-700 text-xs font-semibold transition flex items-center justify-center gap-1.5';
+        schNow.className = 'py-2.5 rounded-xl border-2 border-gray-200 text-gray-500 hover:border-gray-300 text-xs font-semibold transition flex items-center justify-center gap-1.5';
+        timeWrapper.classList.remove('hidden');
+      }
+    }
+
     function setSendTo(m) {
       state.targetMode = m;
       const gBtn = document.getElementById('st-group');
       const iBtn = document.getElementById('st-ind');
       const gList = document.getElementById('groupList');
       const iDrop = document.getElementById('indDropdown');
+
+      // Clear previous selections and reset count immediately
+      clearGroupSelection();
+      clearSelectedCustomer();
+      document.getElementById('recipientsCount').textContent = '0';
 
       if (m === 'group') {
         gBtn.className = 'flex-1 py-2 rounded-lg text-sm font-medium bg-white text-indigo-600 shadow-sm flex items-center justify-center gap-1.5 transition';
@@ -1705,7 +1796,7 @@
       // Update Stats
       document.getElementById("stat-total").textContent = savedLinks.length;
       document.getElementById("stat-active").textContent = savedLinks.filter(l => l.status === 'ACTIVE').length;
-      document.getElementById("stat-paused").textContent = savedLinks.filter(l => l.status !== 'ACTIVE').length;
+      document.getElementById("stat-paused").textContent = savedLinks.filter(l => l.status !== 'ACTIVE' && l.status !== 'SCHEDULED').length;
 
       if (!filtered.length) {
         el.innerHTML = `<p class="text-center text-gray-400 py-10">No promotions found in database</p>`;
@@ -1714,45 +1805,63 @@
 
       el.innerHTML = filtered.map(l => {
         const isActive = l.status === 'ACTIVE';
-        const items = l.items || []; // Dynamic items from DB
+        const isScheduled = l.status === 'SCHEDULED';
+        const items = l.items || [];
+
+        let statusColor = 'bg-gray-100 text-gray-600';
+        let formattedStatus = 'Paused';
+        if (isActive) {
+          statusColor = 'bg-emerald-100 text-emerald-600';
+          formattedStatus = 'Active';
+        } else if (isScheduled) {
+          statusColor = 'bg-amber-100 text-amber-600';
+          formattedStatus = 'Scheduled';
+        }
 
         return `
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 mb-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 group">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-3 mb-3">
-                            <div class="w-11 h-11 rounded-2xl ${isActive ? 'bg-indigo-50 text-indigo-600' : 'bg-gray-100 text-gray-400'} flex items-center justify-center transition">
+                            <div class="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center transition">
                                 🔗
                             </div>
                             <div class="min-w-0">
                                 <p class="text-sm font-bold text-gray-900 truncate group-hover:text-indigo-600 transition">
-                                    ${l.desc}
+                                    ${l.name}
                                 </p>
+                                <p class="text-xs text-gray-500 truncate mb-1">${l.desc}</p>
                                 <div class="flex items-center gap-2 mt-0.5">
-                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${isActive ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}">
-                                        ${isActive ? 'Active' : 'Paused'}
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${statusColor}">
+                                        ${formattedStatus}
                                     </span>
-                                    <p class="text-[11px] text-gray-400 font-medium">${l.recipients} recipients</p>
+                                    <p class="text-[11px] text-gray-400 font-medium">Recipients: ${l.recipients}</p>
                                 </div>
                             </div>
                         </div>
 
                         <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-2.5 py-1 rounded-lg bg-gray-50 text-gray-500 text-[10px] font-semibold border border-gray-200">Items: ${items.length}</span>
                             ${items.length > 0
-            ? items.map(name => `<span class="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-[10px] font-semibold border border-indigo-100">${name}</span>`).join('')
-            : '<span class="text-[11px] text-gray-400 italic">No items attached</span>'
-          }
+                              ? items.map(name => `<span class="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-[10px] font-semibold border border-indigo-100">${name}</span>`).join('')
+                              : '<span class="text-[11px] text-gray-400 italic">No items attached</span>'
+                            }
                         </div>
 
-                        <div class="flex items-center gap-6 text-[11px] text-gray-400">
-                            <span class="flex items-center gap-1.5">👁 <b class="text-gray-700">${l.views}</b></span>
-                            <span class="flex items-center gap-1.5">📩 <b class="text-gray-700">${l.enquiries}</b></span>
+                        <div class="flex flex-wrap items-center gap-4 text-[11px] text-gray-400">
+                            <span class="flex items-center gap-1">👁 Views: <b class="text-gray-700">${l.views}</b></span>
+                            <span class="flex items-center gap-1">❤️ Likes: <b class="text-gray-700">${l.likes}</b></span>
+                            <span class="flex items-center gap-1">📩 Enquiries: <b class="text-gray-700">${l.enquiries}</b></span>
+                            <span class="text-gray-300">|</span>
+                            <span>Created: <b>${l.created}</b></span>
+                            ${l.scheduled && l.scheduled !== 'Send Now' ? `<span>Scheduled: <b class="text-amber-600">${l.scheduled}</b></span>` : ''}
                         </div>
                     </div>
 
                     <div class="flex items-center gap-2 w-full md:w-auto pt-3 md:pt-0 border-t md:border-0">
-                        <button onclick="copyPromoLink('${l.previewEntryId}')" class="px-4 py-2.5 rounded-xl bg-gray-50 text-gray-700 text-xs font-semibold hover:bg-gray-100 transition">Copy</button>
-                        <a href="/promo/${l.previewEntryId}" target="_blank" class="px-6 py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-semibold shadow-sm">Preview</a>
+                        <button onclick="showPromoAnalytics('${l.id}', '${l.name.replace(/'/g, "\\'")}')" class="px-4 py-2.5 rounded-xl bg-violet-50 text-violet-700 text-xs font-semibold hover:bg-violet-100 transition">📊 Analytics</button>
+                        <button onclick="copyPromoLink('${l.id}')" class="px-4 py-2.5 rounded-xl bg-gray-50 text-gray-700 text-xs font-semibold hover:bg-gray-100 transition">Copy</button>
+                        <a href="/promo/${l.id}" target="_blank" class="px-6 py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-semibold shadow-sm">Preview</a>
                     </div>
                 </div>
             </div>`;
@@ -1768,10 +1877,88 @@
     function toggleStatus(id) {
       alert("connect backend here");
     }
+
+    async function showPromoAnalytics(id, name) {
+      document.getElementById("analyticsTitle").textContent = name;
+      try {
+        const res = await fetch(`/api/promotions/${id}/analytics`);
+        if (!res.ok) throw new Error("Failed to fetch analytics");
+        const data = await res.json();
+
+        document.getElementById("an-views").textContent = data.totalViews || 0;
+        document.getElementById("an-likes").textContent = data.totalLikes || 0;
+        document.getElementById("an-enquiries").textContent = data.totalEnquiries || 0;
+        document.getElementById("an-wa-clicks").textContent = data.totalWhatsappClicks || 0;
+        document.getElementById("an-phone-clicks").textContent = data.totalPhoneClicks || 0;
+        document.getElementById("an-email-clicks").textContent = data.totalEmailClicks || 0;
+
+        const views = data.totalViews || 0;
+        const enquiries = data.totalEnquiries || 0;
+        const conv = views > 0 ? ((enquiries / views) * 100).toFixed(1) : 0;
+        document.getElementById("an-conversion").textContent = `${conv}%`;
+
+        document.getElementById("analyticsModal").classList.remove("hidden");
+      } catch (e) {
+        console.error(e);
+        alert("Failed to load analytics data.");
+      }
+    }
+
+    function closeAnalyticsModal() {
+      document.getElementById("analyticsModal").classList.add("hidden");
+    }
   </script>
 
+  <!-- Analytics Modal -->
+  <div id="analyticsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeAnalyticsModal()"></div>
+    <div class="relative bg-white rounded-3xl w-full max-w-lg shadow-2xl p-6 overflow-hidden">
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-violet-50 flex items-center justify-center text-violet-600 font-bold">📊</div>
+          <div>
+            <h3 class="text-base font-bold text-gray-900" id="analyticsTitle">Promotion Analytics</h3>
+            <p class="text-xs text-gray-400">Real-time engagement tracking</p>
+          </div>
+        </div>
+        <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">✕</button>
+      </div>
 
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+          <p class="text-xs text-gray-400 font-medium">Total Views</p>
+          <p class="text-2xl font-bold text-gray-900" id="an-views">0</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+          <p class="text-xs text-gray-400 font-medium">Total Likes</p>
+          <p class="text-2xl font-bold text-red-500" id="an-likes">0</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+          <p class="text-xs text-gray-400 font-medium">Total Enquiries</p>
+          <p class="text-2xl font-bold text-indigo-600" id="an-enquiries">0</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+          <p class="text-xs text-gray-400 font-medium">Conversion Rate</p>
+          <p class="text-2xl font-bold text-emerald-600" id="an-conversion">0%</p>
+        </div>
+      </div>
 
+      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Click Tracking Details</p>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between p-3 rounded-xl bg-green-50/50 border border-green-100 text-green-700 text-sm font-semibold">
+          <span>🟢 WhatsApp Clicks</span>
+          <span id="an-wa-clicks">0</span>
+        </div>
+        <div class="flex items-center justify-between p-3 rounded-xl bg-blue-50/50 border border-blue-100 text-blue-700 text-sm font-semibold">
+          <span>🔵 Phone Call Clicks</span>
+          <span id="an-phone-clicks">0</span>
+        </div>
+        <div class="flex items-center justify-between p-3 rounded-xl bg-violet-50/50 border border-violet-100 text-violet-700 text-sm font-semibold">
+          <span>🟣 Email Clicks</span>
+          <span id="an-email-clicks">0</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
-
 </html>

@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.server.realsync.dto.ReportResponse;
 import com.server.realsync.entity.Account;
 import com.server.realsync.entity.AdminUser;
 import com.server.realsync.entity.Appointment;
@@ -142,13 +141,15 @@ public class HomeController {
 		// return "realsync/index";
 	}
 
-	@GetMapping("/signup.html")
-	public String getRegister(@RequestParam(value = "refAccId", required = false) String refAccId,
-			Model model) {
+	@GetMapping({"/signup.html", "/register.html"})
+public String getRegister(
+        @RequestParam(value = "refAccId", required = false) String refAccId,
+        Model model) {
 
-		model.addAttribute("refAccId", refAccId);
-		return "remindme/signup";
-	}
+    model.addAttribute("refAccId", refAccId);
+
+    return "remindmeui/register";
+}
 
 	@GetMapping("/home.html")
 	public String getAdminDashboard(Model model) {
@@ -163,16 +164,20 @@ public class HomeController {
 		Map<Integer, String> customerMap = new HashMap<>();
 		if (!customerIds.isEmpty()) {
 			customerService.getByAccountId(account.getId()).stream()
-				.filter(c -> customerIds.contains(c.getId()))
-				.forEach(c -> customerMap.put(c.getId(), c.getName()));
+					.filter(c -> customerIds.contains(c.getId()))
+					.forEach(c -> customerMap.put(c.getId(), c.getName()));
 		}
 		List<UpcomingReminderDTO> upcomingReminders = upcoming.stream().map(r -> {
 			UpcomingReminderDTO dto = new UpcomingReminderDTO();
 			dto.setId(r.getId());
 			dto.setTitle(r.getTitle());
 			dto.setChannel(r.getChannel());
-			dto.setReminderDate(r.getReminderDate() != null ? r.getReminderDate().format(DateTimeFormatter.ofPattern("dd MMM")) : "");
-			dto.setReminderTime(r.getReminderTime() != null ? r.getReminderTime().format(DateTimeFormatter.ofPattern("hh:mm a")) : "");
+			dto.setReminderDate(
+					r.getReminderDate() != null ? r.getReminderDate().format(DateTimeFormatter.ofPattern("dd MMM"))
+							: "");
+			dto.setReminderTime(
+					r.getReminderTime() != null ? r.getReminderTime().format(DateTimeFormatter.ofPattern("hh:mm a"))
+							: "");
 			dto.setCustomerName(customerMap.getOrDefault(r.getCustomerId(), "N/A"));
 			return dto;
 		}).collect(Collectors.toList());
@@ -205,7 +210,8 @@ public class HomeController {
 		LocalDateTime startDateTime = LocalDate.now().minusDays(6).atStartOfDay();
 		LocalDateTime endDateTime = LocalDate.now().atTime(23, 59, 59, 999999999);
 
-		List<Object[]> seEntries = scheduleEntryRepository.findScheduleEntriesForActivityChart(accountId, startDateTime, endDateTime);
+		List<Object[]> seEntries = scheduleEntryRepository.findScheduleEntriesForActivityChart(accountId, startDateTime,
+				endDateTime);
 		for (Object[] row : seEntries) {
 			LocalDateTime occurrenceDate = (LocalDateTime) row[0];
 			if (occurrenceDate != null) {
@@ -216,7 +222,8 @@ public class HomeController {
 			}
 		}
 
-		List<LocalDate> apptDates = appointmentService.findAppointmentDatesForActivityChart(accountId, LocalDate.now().minusDays(6), LocalDate.now());
+		List<LocalDate> apptDates = appointmentService.findAppointmentDatesForActivityChart(accountId,
+				LocalDate.now().minusDays(6), LocalDate.now());
 		for (LocalDate date : apptDates) {
 			if (date != null) {
 				String dateStr = date.toString();
@@ -242,48 +249,53 @@ public class HomeController {
 
 		List<Reminder> reminders = reminderRepository.findByAccountIdOrderByCreatedAtDesc(accountId, limitFive);
 		List<Greeting> greetings = greetingRepository.findByAccountIdOrderByCreatedAtDesc(accountId, limitFive);
-		List<Appointment> appointments = appointmentRepository.findByAccountIdOrderByCreatedAtDesc(accountId, limitFive);
+		List<Appointment> appointments = appointmentRepository.findByAccountIdOrderByCreatedAtDesc(accountId,
+				limitFive);
 		List<Promotion> promotions = promotionRepository.findByAccountIdOrderByCreatedAtDesc(accountId, limitFive);
 
 		java.util.Set<Integer> customerIds = new java.util.HashSet<>();
 		java.util.Set<Integer> groupIds = new java.util.HashSet<>();
 
 		for (Reminder r : reminders) {
-			if (r.getCustomerId() != null) customerIds.add(r.getCustomerId());
+			if (r.getCustomerId() != null)
+				customerIds.add(r.getCustomerId());
 		}
 		for (Greeting g : greetings) {
-			if (g.getCustomerId() != null) customerIds.add(g.getCustomerId());
-			if (g.getCustomerGroupId() != null) groupIds.add(g.getCustomerGroupId());
+			if (g.getCustomerId() != null)
+				customerIds.add(g.getCustomerId());
+			if (g.getCustomerGroupId() != null)
+				groupIds.add(g.getCustomerGroupId());
 		}
 		for (Appointment a : appointments) {
-			if (a.getCustomer() != null) customerIds.add(a.getCustomer().getId());
+			if (a.getCustomer() != null)
+				customerIds.add(a.getCustomer().getId());
 		}
 		for (Promotion p : promotions) {
-			if (p.getCustomerGroupId() != null) groupIds.add(p.getCustomerGroupId());
+			if (p.getCustomerGroupId() != null)
+				groupIds.add(p.getCustomerGroupId());
 		}
 
 		Map<Integer, String> customerMap = new HashMap<>();
 		if (!customerIds.isEmpty()) {
 			customerService.getByAccountId(accountId).stream()
-				.filter(c -> customerIds.contains(c.getId()))
-				.forEach(c -> customerMap.put(c.getId(), c.getName()));
+					.filter(c -> customerIds.contains(c.getId()))
+					.forEach(c -> customerMap.put(c.getId(), c.getName()));
 		}
 		Map<Integer, String> groupMap = new HashMap<>();
 		if (!groupIds.isEmpty()) {
 			customerGroupService.getByAccountId(accountId).stream()
-				.filter(g -> groupIds.contains(g.getId()))
-				.forEach(g -> groupMap.put(g.getId(), g.getName()));
+					.filter(g -> groupIds.contains(g.getId()))
+					.forEach(g -> groupMap.put(g.getId(), g.getName()));
 		}
 
 		for (Reminder r : reminders) {
 			LocalDateTime cAt = r.getCreatedAt() != null ? r.getCreatedAt() : LocalDateTime.now();
 			activities.add(new RecentActivityDTO(
-				"Reminder",
-				r.getTitle(),
-				customerMap.getOrDefault(r.getCustomerId(), "N/A"),
-				r.getStatus(),
-				cAt
-			));
+					"Reminder",
+					r.getTitle(),
+					customerMap.getOrDefault(r.getCustomerId(), "N/A"),
+					r.getStatus(),
+					cAt));
 		}
 		for (Greeting g : greetings) {
 			LocalDateTime cAt = g.getCreatedAt() != null ? g.getCreatedAt() : LocalDateTime.now();
@@ -294,34 +306,33 @@ public class HomeController {
 				name = "Group: " + groupMap.getOrDefault(g.getCustomerGroupId(), "N/A");
 			}
 			activities.add(new RecentActivityDTO(
-				"Greeting",
-				g.getGreetingType() + " Greeting",
-				name,
-				g.getStatus(),
-				cAt
-			));
+					"Greeting",
+					g.getGreetingType() + " Greeting",
+					name,
+					g.getStatus(),
+					cAt));
 		}
 		for (Appointment a : appointments) {
 			LocalDateTime cAt = a.getCreatedAt() != null ? a.getCreatedAt() : LocalDateTime.now();
 			String custName = a.getCustomer() != null ? a.getCustomer().getName() : "N/A";
 			activities.add(new RecentActivityDTO(
-				"Appointment",
-				a.getServiceName(),
-				custName,
-				a.getStatus(),
-				cAt
-			));
+					"Appointment",
+					a.getServiceName(),
+					custName,
+					a.getStatus(),
+					cAt));
 		}
 		for (Promotion p : promotions) {
 			LocalDateTime cAt = p.getCreatedAt() != null ? p.getCreatedAt() : LocalDateTime.now();
-			String groupName = p.getCustomerGroupId() != null ? groupMap.getOrDefault(p.getCustomerGroupId(), "All Customers") : "All Customers";
+			String groupName = p.getCustomerGroupId() != null
+					? groupMap.getOrDefault(p.getCustomerGroupId(), "All Customers")
+					: "All Customers";
 			activities.add(new RecentActivityDTO(
-				"Promotion",
-				p.getAiGeneratedTitle() != null ? p.getAiGeneratedTitle() : p.getDescription(),
-				"Group: " + groupName,
-				p.getStatus(),
-				cAt
-			));
+					"Promotion",
+					p.getAiGeneratedTitle() != null ? p.getAiGeneratedTitle() : p.getDescription(),
+					"Group: " + groupName,
+					p.getStatus(),
+					cAt));
 		}
 
 		activities.sort((a1, a2) -> a2.getCreatedAt().compareTo(a1.getCreatedAt()));
@@ -449,10 +460,12 @@ public class HomeController {
 			invoiceMap.put(inv.getId().intValue(), inv);
 
 			if (inv.getStatus() != InvoiceStatus.CANCELLED) {
-				totalInvoiceValue = totalInvoiceValue.add(inv.getGrandTotal() != null ? inv.getGrandTotal() : BigDecimal.ZERO);
+				totalInvoiceValue = totalInvoiceValue
+						.add(inv.getGrandTotal() != null ? inv.getGrandTotal() : BigDecimal.ZERO);
 				totalPaid = totalPaid.add(inv.getPaidAmount() != null ? inv.getPaidAmount() : BigDecimal.ZERO);
-				totalOutstanding = totalOutstanding.add(inv.getBalanceAmount() != null ? inv.getBalanceAmount() : BigDecimal.ZERO);
-				
+				totalOutstanding = totalOutstanding
+						.add(inv.getBalanceAmount() != null ? inv.getBalanceAmount() : BigDecimal.ZERO);
+
 				if (inv.getStatus() == InvoiceStatus.PAID) {
 					paidInvoicesCount++;
 				} else if (inv.getStatus() != InvoiceStatus.DRAFT) {
@@ -675,15 +688,22 @@ public class HomeController {
 		return "remindmeui/greeting-detail";
 	}
 
-	@GetMapping("/promo/{entryId}")
-	public String openPromoLanding(@PathVariable Long entryId, Model model) {
-		PromotionEntry entry = promotionEntryService.getById(entryId).orElse(null);
-		if (entry == null) {
-			return "error";
-		}
-		com.server.realsync.entity.Promotion promo = promotionService.getById(entry.getPromotionId()).orElse(null);
+	@GetMapping("/promo/{promotionId}")
+	public String openPromoLanding(@PathVariable Long promotionId,
+			@RequestParam(value = "entry", required = false) Long entryId, Model model) {
+		com.server.realsync.entity.Promotion promo = promotionService.getById(promotionId).orElse(null);
 		if (promo == null) {
 			return "error";
+		}
+		PromotionEntry entry = null;
+		if (entryId != null) {
+			entry = promotionEntryService.getById(entryId).orElse(null);
+		}
+		if (entry == null) {
+			List<PromotionEntry> entries = promotionEntryService.getByPromotion(promotionId);
+			if (!entries.isEmpty()) {
+				entry = entries.get(0);
+			}
 		}
 		model.addAttribute("promo", promo);
 		model.addAttribute("entry", entry);

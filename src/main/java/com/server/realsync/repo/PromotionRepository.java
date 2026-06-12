@@ -24,4 +24,5 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
     List<Promotion> findByAccountIdOrderByCreatedAtDesc(Integer accountId, org.springframework.data.domain.Pageable pageable);
 
+    List<Promotion> findByStatusAndScheduledAtLessThanEqual(String status, java.time.LocalDateTime dateTime);
 }

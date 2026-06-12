@@ -32,26 +32,28 @@ public class SecurityConfig {
 
 		http.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/api/accounts/signup", "/mweb/login", "/signup.html","/register.html", "/login", "/privacy",
-								"/terms", "/css/**", "/js/**", "/img/**",  "/assets/**","/realsync-assets/**", "/promo/**", "/api/promotions/public/**")
+						.requestMatchers("/api/accounts/signup", "/mweb/login", "/signup.html", "/register.html",
+								"/login", "/privacy",
+								"/terms", "/css/**", "/js/**", "/img/**", "/assets/**", "/realsync-assets/**",
+								"/promo/**", "/api/promotions/public/**")
 						.permitAll().requestMatchers("/").permitAll()
+						.requestMatchers("/register").permitAll()
+						.requestMatchers("/register.html").permitAll()
 						.requestMatchers(new AntPathRequestMatcher("/realsync-assets/**")).permitAll()
 						.requestMatchers("/realsync/**").permitAll().requestMatchers("/mweb/register").permitAll()
 						.requestMatchers("/mweb/terms").permitAll().requestMatchers("/api/auth/register").permitAll()
 						.requestMatchers("/register").permitAll().anyRequest().authenticated())
 				.formLogin(form -> form
-		                .loginPage("/login.html")           // GET /login (login page)
-		                .loginProcessingUrl("/login")  // POST /login (handled by Spring Security)
-		                .defaultSuccessUrl("/home.html", true)
-		                .failureUrl("/login.html?error=true")
-		                .permitAll()
-		        )
+						.loginPage("/login.html") // GET /login (login page)
+						.loginProcessingUrl("/login") // POST /login (handled by Spring Security)
+						.defaultSuccessUrl("/home.html", true)
+						.failureUrl("/login.html?error=true")
+						.permitAll())
 
-		        .logout(logout -> logout
-		                .logoutUrl("/logout")
-		                .logoutSuccessUrl("/login.html?logout")
-		                .permitAll()
-		        )
+				.logout(logout -> logout
+						.logoutUrl("/logout")
+						.logoutSuccessUrl("/login.html?logout")
+						.permitAll())
 				// ✅ Persistent login configuration
 				.rememberMe(remember -> remember.key("uniqueAndSecret") // A secret key used to sign cookies
 						.tokenValiditySeconds(60 * 60 * 24 * 14) // 14 days validity
@@ -72,14 +74,14 @@ public class SecurityConfig {
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
 	}
-	
+
 	@Bean
 	public WebServerFactoryCustomizer<TomcatServletWebServerFactory> cookieCustomizer() {
-	    return factory -> factory.addContextCustomizers(context -> {
-	        context.setSessionCookieName("JSESSIONID");
-	        context.setUseHttpOnly(true);
-	        context.setSessionTimeout(30); // minutes
-	    });
+		return factory -> factory.addContextCustomizers(context -> {
+			context.setSessionCookieName("JSESSIONID");
+			context.setUseHttpOnly(true);
+			context.setSessionTimeout(30); // minutes
+		});
 	}
 
 }

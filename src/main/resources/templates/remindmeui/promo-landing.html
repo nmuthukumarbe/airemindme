@@ -72,6 +72,26 @@
 
   <!-- Products Grid -->
   <div class="max-w-2xl mx-auto px-4 py-8">
+    <!-- Metrics Dashboard Strip (Rule 9) -->
+    <div class="grid grid-cols-4 gap-2 bg-indigo-50 border border-indigo-100 rounded-2xl p-4 text-center mb-6 shadow-sm">
+      <!-- <div>
+        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Recipients</p>
+        <p class="text-lg font-black text-indigo-700 mt-0.5" id="m-recipients">0</p>
+      </div>
+      <div>
+        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Views</p>
+        <p class="text-lg font-black text-indigo-700 mt-0.5" id="m-views">0</p>
+      </div>
+      <div>
+        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Likes</p>
+        <p class="text-lg font-black text-indigo-700 mt-0.5" id="m-likes">0</p>
+      </div>
+      <div>
+        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Enquiries</p>
+        <p class="text-lg font-black text-indigo-700 mt-0.5" id="m-enquiries">0</p>
+      </div> -->
+    </div>
+
     <div class="flex items-center justify-between mb-6">
       <div>
         <h3 class="text-lg font-bold text-gray-900">Available Offerings</h3>
@@ -209,7 +229,11 @@
   </div>
 
   <script>
-    const entryId = window.location.pathname.split('/').pop();
+    const promotionId = window.location.pathname.split('/').pop();
+    const urlParams = new URLSearchParams(window.location.search);
+    const entryIdParam = urlParams.get('entry') || urlParams.get('e');
+    let entryId = null;
+
     const defaultItems = [];
     let items = [];
     let likes = {};
@@ -217,19 +241,27 @@
     let accountInfo = {};
 
     async function loadItems() {
-      if (!entryId) {
-        console.error("No entry ID found in URL path");
+      if (!promotionId) {
+        console.error("No promotion ID found in URL path");
         items = defaultItems;
         renderProductCards();
         return;
       }
       try {
-        const res = await fetch(`/api/promotions/public/${entryId}`);
+        const url = `/api/promotions/public/${promotionId}` + (entryIdParam ? `?entry=${entryIdParam}` : '');
+        const res = await fetch(url);
         if (!res.ok) throw new Error("API failed");
 
         const data = await res.json();
         items = data.items || [];
         accountInfo = data.account || {};
+        entryId = data.entryId;
+
+        // Populate metrics (Rule 9)
+        // document.getElementById("m-recipients").textContent = data.recipientCount || 0;
+        // document.getElementById("m-views").textContent = data.viewCount || 0;
+        // document.getElementById("m-likes").textContent = data.likeCount || 0;
+        // document.getElementById("m-enquiries").textContent = data.enquiryCount || 0;
 
         // Dynamic Header and Banners
         if (accountInfo.name) {
@@ -264,7 +296,10 @@
     }
 
     async function trackView() {
-      if (!entryId) return;
+      if (!entryId) {
+        setTimeout(trackView, 250);
+        return;
+      }
       try {
         await fetch(`/api/promotions/public/${entryId}/view`, { method: 'POST' });
       } catch (e) {
