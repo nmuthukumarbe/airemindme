@@ -1,29 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Your Account - Numen</title>
-  
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Join Numen to automate your payment tracking, customer reminders, and interactive catalog promotions. Seamlessly scale your business onboarding today.">
-  <meta name="robots" content="index, follow">
-  
-  <!-- Google Fonts & Icon Providers -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Create Account — Numen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
   <style>
-    /* ---------------------------------------------------- */
-    /* Design Tokens & CSS Variables                       */
-    /* ---------------------------------------------------- */
     :root {
-      /* Colors */
-      --primary-blue: #2563eb;
-      --primary-purple: #9333ea;
-      --dark-slate: #0f172a;
-      
-      --slate-900: #0f172a;
+      --blue: #2563eb;
+      --purple: #9333ea;
+      --dark: #0f172a;
       --slate-800: #1e293b;
       --slate-700: #334155;
       --slate-600: #475569;
@@ -33,1588 +23,1461 @@
       --slate-200: #e2e8f0;
       --slate-100: #f1f5f9;
       --slate-50: #f8fafc;
-      
-      --emerald-500: #10b981;
-      --emerald-600: #059669;
-      --emerald-50: #ecfdf5;
-      
-      --red-500: #ef4444;
-      --red-600: #dc2626;
-      --red-50: #fef2f2;
-      
-      /* Gradients */
-      --gradient-brand: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
-      --gradient-brand-hover: linear-gradient(135deg, #1d4ed8 0%, #7e22ce 100%);
-      --gradient-dark: linear-gradient(135deg, #0f172a 0%, #020617 100%);
-      
-      /* Shadows */
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-      --shadow-premium: 0 25px 50px -12px rgba(15, 23, 42, 0.08);
-      
-      /* Transitions */
-      --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      --white: #ffffff;
+      --success: #10b981;
+      --error: #ef4444;
+      --grad: linear-gradient(135deg, var(--blue), var(--purple));
     }
 
-    /* ---------------------------------------------------- */
-    /* Base Reset                                          */
-    /* ---------------------------------------------------- */
-    * {
-      box-sizing: border-box;
+    *,
+    *::before,
+    *::after {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--slate-50);
-      color: var(--dark-slate);
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--white);
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 1rem 4rem;
       overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ---------------------------------------------------- */
-    /* Split Screen Main Layout                             */
-    /* ---------------------------------------------------- */
-    .onboarding-container {
-      display: flex;
-      min-height: 100vh;
-      width: 100vw;
       position: relative;
     }
 
-    /* Left Sidebar: Branding Content & Trust Indicators */
-    .brand-sidebar {
-      flex: 1;
-      background: var(--gradient-dark);
-      color: #ffffff;
-      padding: 4.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-      overflow: hidden;
-      border-right: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    @media (max-width: 1100px) {
-      .brand-sidebar {
-        display: none; /* Auto responsive collapse for mobile/tablet */
-      }
-    }
-
-    /* Interactive floating shapes behind branding content */
-    .brand-glow-1 {
-      position: absolute;
-      top: -15%;
-      left: -15%;
-      width: 60%;
-      height: 60%;
-      background: radial-gradient(circle, rgba(37, 99, 235, 0.18) 0%, transparent 70%);
-      filter: blur(80px);
+    /* subtle bg blobs — very soft on white */
+    body::before {
+      content: '';
+      position: fixed;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(37, 99, 235, .06) 0%, transparent 70%);
+      top: -200px;
+      left: -200px;
       pointer-events: none;
-      animation: pulse-slow 8s infinite alternate ease-in-out;
-    }
-
-    .brand-glow-2 {
-      position: absolute;
-      bottom: -10%;
-      right: -10%;
-      width: 60%;
-      height: 60%;
-      background: radial-gradient(circle, rgba(147, 51, 234, 0.15) 0%, transparent 70%);
-      filter: blur(80px);
-      pointer-events: none;
-      animation: pulse-slow 12s infinite alternate-reverse ease-in-out;
-    }
-
-    @keyframes pulse-slow {
-      0% { transform: scale(1) translate(0, 0); opacity: 0.8; }
-      100% { transform: scale(1.1) translate(15px, -15px); opacity: 1; }
-    }
-
-    /* Brand Logo styling */
-    .brand-logo-area {
-      z-index: 10;
-    }
-
-    .brand-logo-img {
-      height: 42px;
-      width: auto;
-      object-fit: contain;
-    }
-
-    /* Mid Marketing Pitch Box */
-    .brand-marketing-box {
-      z-index: 10;
-      margin: 3.5rem 0;
-    }
-
-    .marketing-heading {
-      font-size: 2.75rem;
-      font-weight: 800;
-      line-height: 1.25;
-      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #c084fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 1.5rem;
-      letter-spacing: -0.03em;
-    }
-
-    .marketing-paragraph {
-      color: var(--slate-400);
-      font-size: 1.125rem;
-      line-height: 1.6;
-      margin-bottom: 3rem;
-      max-width: 480px;
-    }
-
-    /* Key Benefits List */
-    .benefits-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 1.75rem;
-    }
-
-    .benefit-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1.25rem;
-    }
-
-    .benefit-icon-box {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: var(--transition-fast);
-    }
-
-    .benefit-item:hover .benefit-icon-box {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: translateY(-2px);
-    }
-
-    .benefit-icon-box i {
-      color: #c084fc;
-      font-size: 1.1rem;
-    }
-
-    .benefit-heading {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #ffffff;
-      margin-bottom: 0.25rem;
-    }
-
-    .benefit-desc {
-      font-size: 0.9rem;
-      color: var(--slate-400);
-      line-height: 1.45;
-    }
-
-    /* Bottom Trust and Security strip */
-    .sidebar-footer-strip {
-      z-index: 10;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding-top: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-
-    .social-proof-customers {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .customer-avatars-group {
-      display: flex;
-      align-items: center;
-    }
-
-    .customer-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 2.5px solid var(--dark-slate);
-      margin-left: -10px;
-      object-fit: cover;
-      transition: var(--transition-fast);
-    }
-
-    .customer-avatar:first-child {
-      margin-left: 0;
-    }
-
-    .customer-avatar:hover {
-      transform: scale(1.15) translateY(-2px);
-      z-index: 12;
-    }
-
-    .social-proof-text {
-      font-size: 0.875rem;
-      color: var(--slate-400);
-      font-weight: 500;
-    }
-
-    .social-proof-text strong {
-      color: #ffffff;
-    }
-
-    .badge-ssl-secure {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.8rem;
-      color: var(--slate-400);
-      background: rgba(255, 255, 255, 0.04);
-      padding: 0.6rem 1.1rem;
-      border-radius: 100px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      font-weight: 600;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
-
-    .badge-ssl-secure i {
-      color: var(--emerald-500);
-    }
-
-    /* ---------------------------------------------------- */
-    /* Right Section: Glassmorphic Cards & Signup Wizard    */
-    /* ---------------------------------------------------- */
-    .form-workspace-panel {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4rem 2rem;
-      position: relative;
-      background: radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.04) 0%, transparent 40%),
-                  radial-gradient(circle at 90% 80%, rgba(147, 51, 234, 0.05) 0%, transparent 45%),
-                  #f8fafc;
-      overflow: hidden;
-    }
-
-    @media (max-width: 640px) {
-      .form-workspace-panel {
-        padding: 2.5rem 1rem;
-      }
-    }
-
-    /* Floating beautiful background shapes */
-    .bg-shape-decor {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(70px);
       z-index: 0;
-      opacity: 0.55;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(147, 51, 234, .06) 0%, transparent 70%);
+      bottom: -150px;
+      right: -100px;
       pointer-events: none;
+      z-index: 0;
     }
 
-    .decor-shape-1 {
-      top: 15%;
-      right: 15%;
-      width: 280px;
-      height: 280px;
-      background: radial-gradient(circle, rgba(147, 51, 234, 0.1) 0%, rgba(37, 99, 235, 0.02) 100%);
-      animation: float-shape 16s infinite alternate ease-in-out;
-    }
-
-    .decor-shape-2 {
-      bottom: 15%;
-      left: 10%;
-      width: 320px;
-      height: 320px;
-      background: radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, rgba(147, 51, 234, 0.02) 100%);
-      animation: float-shape 22s infinite alternate-reverse ease-in-out;
-    }
-
-    @keyframes float-shape {
-      0% { transform: translateY(0) rotate(0deg) scale(1); }
-      100% { transform: translateY(-40px) rotate(15deg) scale(1.1); }
-    }
-
-    /* Onboarding glassmorphism card */
-    .glass-registration-card {
-      width: 100%;
-      max-w: 540px;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 28px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      box-shadow: var(--shadow-premium), 
-                  0 1px 3px rgba(0, 0, 0, 0.02),
-                  inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-      padding: 3rem;
+    .wrapper {
       position: relative;
       z-index: 1;
-      display: flex;
-      flex-direction: column;
+      width: 100%;
+      max-width: 520px;
     }
 
-    @media (max-width: 640px) {
-      .glass-registration-card {
-        padding: 2rem 1.5rem;
+    /* ---- LOGO ---- */
+    .logo-section {
+      text-align: center;
+      margin-bottom: 1.75rem;
+      animation: fadeUp .6s ease both;
+    }
+
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 58px;
+      height: 58px;
+      background: var(--grad);
+      border-radius: 16px;
+      font-size: 1.6rem;
+      color: white;
+      margin-bottom: .75rem;
+      box-shadow: 0 8px 28px rgba(37, 99, 235, .25);
+    }
+
+    .logo-name {
+      font-size: 1.75rem;
+      font-weight: 800;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      margin-bottom: .2rem;
+    }
+
+    .logo-tagline {
+      font-size: .82rem;
+      color: var(--slate-500);
+      margin-bottom: .9rem;
+    }
+
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 50px;
+      padding: .32rem .9rem;
+      font-size: .76rem;
+      font-weight: 600;
+      color: var(--blue);
+    }
+
+    .trust-badge i {
+      color: #fbbf24;
+      font-size: .65rem;
+    }
+
+    /* ---- BADGES ---- */
+    .badges-row {
+      display: flex;
+      justify-content: center;
+      gap: .65rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.75rem;
+      animation: fadeUp .6s ease .08s both;
+    }
+
+    .badge-chip {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 50px;
+      padding: .28rem .8rem;
+      font-size: .73rem;
+      font-weight: 600;
+      color: #16a34a;
+    }
+
+    .badge-chip i {
+      font-size: .62rem;
+    }
+
+    /* ---- CARD ---- */
+    .card {
+      background: white;
+      border: 1.5px solid var(--slate-200);
+      border-radius: 24px;
+      padding: 2.25rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, .04), 0 20px 50px rgba(0, 0, 0, .07);
+      animation: fadeUp .6s ease .12s both;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 1.5rem;
         border-radius: 20px;
       }
     }
 
-    /* Onboarding Card Header */
-    .card-meta-header {
-      margin-bottom: 2.25rem;
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .card-main-title {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--slate-900);
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.03em;
-    }
-
-    .card-meta-subtitle {
-      font-size: 0.95rem;
-      color: var(--slate-500);
-      font-weight: 500;
-    }
-
-    .card-meta-subtitle a {
-      color: var(--primary-blue);
-      text-decoration: none;
-      font-weight: 700;
-      transition: var(--transition-fast);
-    }
-
-    .card-meta-subtitle a:hover {
-      color: var(--primary-purple);
-      text-decoration: underline;
-    }
-
-    /* Professional Wizard Progress Indicator */
-    .wizard-progress-area {
+    /* ---- STEPPER ---- */
+    .stepper {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 2.5rem;
-      position: relative;
+      margin-bottom: 2rem;
     }
 
-    .wizard-track-line {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background-color: var(--slate-200);
-      transform: translateY(-50%);
-      z-index: 1;
-      border-radius: 100px;
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .wizard-progress-bar {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 0%;
-      height: 3px;
-      background: var(--gradient-brand);
-      transform: translateY(-50%);
-      z-index: 2;
-      transition: var(--transition-slow);
-      border-radius: 100px;
-    }
-
-    .wizard-step-node {
+    .step-dot {
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background-color: #ffffff;
-      border: 3px solid var(--slate-200);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9rem;
+      font-size: .78rem;
       font-weight: 700;
+      transition: all .35s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-dot.future {
+      background: var(--slate-100);
+      border: 2px solid var(--slate-200);
       color: var(--slate-400);
-      z-index: 3;
-      transition: var(--transition-normal);
+    }
+
+    .step-dot.active {
+      background: var(--grad);
+      border: 2px solid transparent;
+      color: white;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, .12), 0 4px 14px rgba(37, 99, 235, .3);
+    }
+
+    .step-dot.done {
+      background: var(--grad);
+      border: 2px solid transparent;
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, .2);
+    }
+
+    .step-label {
+      font-size: .67rem;
+      font-weight: 500;
+      margin-top: .38rem;
+      white-space: nowrap;
+      transition: color .3s;
+    }
+
+    .step-label.future {
+      color: var(--slate-400);
+    }
+
+    .step-label.active {
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .step-label.done {
+      color: var(--slate-400);
+    }
+
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--slate-200);
+      margin: 0 8px;
+      margin-bottom: 22px;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-line .fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      background: var(--grad);
+      border-radius: 2px;
+      transition: width .5s ease;
+    }
+
+    /* ---- STEP PANELS ---- */
+    .step-panel {
+      display: none;
+      animation: slideIn .3s ease both;
+    }
+
+    .step-panel.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .panel-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: .25rem;
+    }
+
+    .panel-sub {
+      font-size: .83rem;
+      color: var(--slate-500);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ---- FIELDS ---- */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: .9rem;
+    }
+
+    .field {
       position: relative;
     }
 
-    .wizard-step-node::after {
-      content: attr(data-step-title);
-      position: absolute;
-      top: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.725rem;
-      font-weight: 700;
-      color: var(--slate-400);
-      white-space: nowrap;
-      transition: var(--transition-normal);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .wizard-step-node.active {
-      border-color: var(--primary-blue);
-      color: var(--primary-blue);
-      box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15);
-    }
-
-    .wizard-step-node.active::after {
-      color: var(--primary-blue);
-    }
-
-    .wizard-step-node.completed {
-      background-color: var(--primary-blue);
-      border-color: var(--primary-blue);
-      color: #ffffff;
-    }
-
-    .wizard-step-node.completed::after {
-      color: var(--slate-700);
-    }
-
-    /* ---------------------------------------------------- */
-    /* Form Sections & Fields                               */
-    /* ---------------------------------------------------- */
-    .step-container {
-      display: none;
-      opacity: 0;
-      transform: translateY(15px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-
-    .step-container.active {
+    .field label {
       display: block;
-      opacity: 1;
+      font-size: .76rem;
+      font-weight: 700;
+      color: var(--slate-700);
+      margin-bottom: .38rem;
+      letter-spacing: .02em;
+    }
+
+    .field label .opt {
+      font-weight: 400;
+      color: var(--slate-400);
+      font-size: .7rem;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap i.il {
+      position: absolute;
+      left: .85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--slate-400);
+      font-size: .82rem;
+      pointer-events: none;
+      transition: color .25s;
+    }
+
+    .input-wrap i.ir {
+      position: absolute;
+      right: .85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--slate-400);
+      font-size: .82rem;
+      cursor: pointer;
+      transition: color .25s;
+    }
+
+    .input-wrap i.ir:hover {
+      color: var(--slate-600);
+    }
+
+    .input-wrap input,
+    .input-wrap textarea {
+      width: 100%;
+      padding: .72rem .85rem .72rem 2.45rem;
+      background: var(--slate-50);
+      border: 1.5px solid var(--slate-200);
+      border-radius: 11px;
+      color: var(--dark);
+      font-size: .88rem;
+      font-family: 'Inter', sans-serif;
+      transition: all .25s;
+      outline: none;
+    }
+
+    .input-wrap textarea {
+      padding-left: .85rem;
+      resize: vertical;
+      min-height: 76px;
+    }
+
+    .input-wrap input::placeholder,
+    .input-wrap textarea::placeholder {
+      color: var(--slate-400);
+    }
+
+    .input-wrap input:focus,
+    .input-wrap textarea:focus {
+      border-color: var(--blue);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+    }
+
+    .input-wrap input:focus~i.il {
+      color: var(--blue);
+    }
+
+    .field.valid .input-wrap input,
+    .field.valid .input-wrap textarea {
+      border-color: var(--success);
+      background: white;
+    }
+
+    .field.invalid .input-wrap input,
+    .field.invalid .input-wrap textarea {
+      border-color: var(--error);
+      background: #fff5f5;
+      animation: shake .28s ease;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0)
+      }
+
+      25% {
+        transform: translateX(-4px)
+      }
+
+      75% {
+        transform: translateX(4px)
+      }
+    }
+
+    .field-error {
+      font-size: .7rem;
+      color: #dc2626;
+      margin-top: .28rem;
+      display: none;
+      animation: fadeIn .2s ease;
+    }
+
+    .field.invalid .field-error {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-3px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .status-icon {
+      position: absolute;
+      right: .85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: .78rem;
+      display: none;
+      pointer-events: none;
+    }
+
+    .field.valid .status-icon.ok {
+      display: block;
+      color: var(--success);
+    }
+
+    .field.invalid .status-icon.err {
+      display: block;
+      color: var(--error);
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .7rem;
+    }
+
+    @media(max-width:420px) {
+      .field-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ---- PLANS ---- */
+    .plans-label {
+      font-size: .76rem;
+      font-weight: 700;
+      color: var(--slate-700);
+      margin-bottom: .55rem;
+      letter-spacing: .02em;
+    }
+
+    .plans-grid {
+      display: flex;
+      flex-direction: column;
+      gap: .55rem;
+      margin-bottom: 1rem;
+    }
+
+    .plan-card {
+      border: 1.5px solid var(--slate-200);
+      border-radius: 13px;
+      padding: .85rem 1rem;
+      cursor: pointer;
+      transition: all .22s ease;
+      background: var(--slate-50);
+      position: relative;
+    }
+
+    .plan-card:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+
+    .plan-card.selected {
+      border-color: var(--blue);
+      background: #eff6ff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+    }
+
+    .plan-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: .5rem;
+    }
+
+    .plan-name-row {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+    }
+
+    .plan-name {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .popular-pill {
+      background: var(--grad);
+      color: white;
+      font-size: .58rem;
+      font-weight: 800;
+      padding: .18rem .5rem;
+      border-radius: 50px;
+      letter-spacing: .05em;
+    }
+
+    .plan-desc {
+      font-size: .74rem;
+      color: var(--slate-500);
+      margin-top: .22rem;
+    }
+
+    .plan-radio {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 2px solid var(--slate-300);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all .22s;
+      margin-top: 2px;
+    }
+
+    .plan-card.selected .plan-radio {
+      border-color: var(--blue);
+      background: var(--blue);
+    }
+
+    .plan-card.selected .plan-radio::after {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: white;
+    }
+
+    /* feat chips */
+    .feat-row {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      padding-top: .9rem;
+      margin-top: .9rem;
+      border-top: 1px solid var(--slate-200);
+    }
+
+    .feat-chip {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      font-size: .7rem;
+      color: var(--slate-500);
+    }
+
+    .feat-chip i {
+      color: var(--blue);
+      font-size: .62rem;
+    }
+
+    /* ---- PASSWORD STRENGTH ---- */
+    .pw-wrap {
+      margin-top: .55rem;
+    }
+
+    .pw-bar {
+      height: 3px;
+      background: var(--slate-200);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: .45rem;
+    }
+
+    .pw-fill {
+      height: 100%;
+      border-radius: 4px;
+      width: 0;
+      transition: width .35s ease, background .35s ease;
+    }
+
+    .pw-checks {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .25rem;
+    }
+
+    .pw-check {
+      font-size: .7rem;
+      color: var(--slate-400);
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      transition: color .25s;
+    }
+
+    .pw-check i {
+      font-size: .6rem;
+    }
+
+    .pw-check.ok {
+      color: var(--success);
+    }
+
+    /* ---- BUTTONS ---- */
+    .btn-row {
+      display: flex;
+      gap: .65rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-back {
+      flex: 1;
+      padding: .8rem 1rem;
+      border-radius: 11px;
+      border: 1.5px solid var(--slate-200);
+      background: var(--slate-50);
+      color: var(--slate-700);
+      font-size: .88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .22s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-back:hover {
+      background: var(--slate-100);
+      border-color: var(--slate-300);
+    }
+
+    .btn-next {
+      flex: 2;
+      padding: .8rem 1.25rem;
+      border-radius: 11px;
+      border: none;
+      background: var(--grad);
+      color: white;
+      font-size: .88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, .28);
+    }
+
+    .btn-next:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(37, 99, 235, .38);
+    }
+
+    .btn-next:active {
       transform: translateY(0);
     }
 
-    .form-group-item {
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
-
-    .form-group-item label {
-      display: block;
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--slate-700);
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.01em;
-    }
-
-    .form-input-wrapper {
-      position: relative;
-    }
-
-    .form-text-input {
-      width: 100%;
-      padding: 0.85rem 1.15rem;
-      padding-right: 2.75rem; /* Space for status/interactive icons */
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 500;
-      border-radius: 14px;
-      border: 1.5px solid var(--slate-200);
-      outline: none;
-      background-color: #ffffff;
-      color: var(--slate-900);
-      transition: var(--transition-fast);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .form-text-input:focus {
-      border-color: var(--primary-blue);
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
-      background-color: #ffffff;
-    }
-
-    .form-text-input::placeholder {
-      color: var(--slate-400);
-      font-weight: 400;
-    }
-
-    /* Right Edge Icon for Inputs */
-    .form-input-status-icon {
-      position: absolute;
-      right: 1.15rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--slate-400);
-      pointer-events: none;
-      font-size: 1rem;
-      transition: var(--transition-fast);
-    }
-
-    /* Password Reveal Toggle */
-    .password-visibility-trigger {
-      position: absolute;
-      right: 1.15rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--slate-400);
-      cursor: pointer;
-      background: none;
-      border: none;
-      outline: none;
-      font-size: 1rem;
-      padding: 0.25rem;
-      transition: var(--transition-fast);
-    }
-
-    .password-visibility-trigger:hover {
-      color: var(--slate-600);
-    }
-
-    /* Input Valid/Invalid States */
-    .form-text-input.field-invalid {
-      border-color: var(--red-500);
-      background-color: rgba(239, 110, 110, 0.01);
-    }
-
-    .form-text-input.field-invalid:focus {
-      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.08);
-    }
-
-    .form-text-input.field-valid {
-      border-color: var(--emerald-500);
-    }
-
-    .form-text-input.field-valid:focus {
-      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08);
-    }
-
-    /* Inline Validation Feedback Banners */
-    .field-error-feedback {
-      font-size: 0.775rem;
-      margin-top: 0.45rem;
-      font-weight: 600;
-      color: var(--red-500);
-      display: none;
-      align-items: center;
-      gap: 0.35rem;
-      animation: feedback-slide 0.2s ease;
-    }
-
-    @keyframes feedback-slide {
-      from { transform: translateY(-4px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* ---------------------------------------------------- */
-    /* Password Strength Tracker                            */
-    /* ---------------------------------------------------- */
-    .strength-indicator-box {
-      margin-top: 0.65rem;
-    }
-
-    .strength-indicator-bar-bg {
-      height: 5px;
-      border-radius: 100px;
-      background-color: var(--slate-200);
-      overflow: hidden;
-      margin-bottom: 0.45rem;
-    }
-
-    .strength-indicator-bar {
-      height: 100%;
-      width: 0%;
-      border-radius: 100px;
-      transition: var(--transition-normal);
-    }
-
-    .strength-indicator-text {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--slate-500);
-      transition: var(--transition-fast);
-    }
-
-    /* ---------------------------------------------------- */
-    /* Custom Terms & Agreement Checkbox                    */
-    /* ---------------------------------------------------- */
-    .terms-agreement-flex {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.85rem;
-      margin-top: 1.75rem;
-    }
-
-    .terms-checkbox-facade {
-      width: 20px;
-      height: 20px;
-      border-radius: 6px;
-      border: 1.5px solid var(--slate-300);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: var(--transition-fast);
-      flex-shrink: 0;
-      background-color: #ffffff;
-      margin-top: 1px;
-    }
-
-    .terms-checkbox-facade.facade-checked {
-      background-color: var(--primary-blue);
-      border-color: var(--primary-blue);
-      color: #ffffff;
-      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.15);
-    }
-
-    .terms-checkbox-facade i {
-      font-size: 0.75rem;
-      display: none;
-    }
-
-    .terms-checkbox-facade.facade-checked i {
-      display: block;
-    }
-
-    .terms-label-text {
-      font-size: 0.85rem;
-      color: var(--slate-600);
-      line-height: 1.45;
-      user-select: none;
-      font-weight: 500;
-    }
-
-    .terms-label-text a {
-      color: var(--primary-blue);
-      text-decoration: none;
-      font-weight: 700;
-      transition: var(--transition-fast);
-    }
-
-    .terms-label-text a:hover {
-      color: var(--primary-purple);
-      text-decoration: underline;
-    }
-
-    /* ---------------------------------------------------- */
-    /* Navigation Action Row                                */
-    /* ---------------------------------------------------- */
-    .wizard-actions-row {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2.25rem;
-      border-top: 1px solid var(--slate-200);
-      padding-top: 1.75rem;
-    }
-
-    .wizard-action-btn {
-      padding: 0.9rem 1.75rem;
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 700;
-      border-radius: 14px;
-      cursor: pointer;
-      outline: none;
-      transition: var(--transition-normal);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .wizard-btn-prev {
-      background-color: #ffffff;
-      border: 1.5px solid var(--slate-200);
-      color: var(--slate-700);
-      flex: 1;
-    }
-
-    .wizard-btn-prev:hover:not(:disabled) {
-      background-color: var(--slate-50);
-      border-color: var(--slate-400);
-      color: var(--slate-900);
-    }
-
-    .wizard-btn-prev:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    .wizard-btn-next {
-      background: var(--gradient-brand);
-      color: #ffffff;
-      border: none;
-      flex: 1.8;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-    }
-
-    .wizard-btn-next:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.3);
-      background: var(--gradient-brand-hover);
-    }
-
-    .wizard-btn-next:disabled {
-      opacity: 0.65;
+    .btn-next:disabled {
+      opacity: .55;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
 
-    /* Spinner loader animation */
-    .btn-loader-spinner {
-      width: 20px;
-      height: 20px;
-      border: 2.5px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: #ffffff;
-      animation: loader-spin 0.8s linear infinite;
-      display: inline-block;
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
     }
 
-    @keyframes loader-spin {
-      to { transform: rotate(360deg); }
+    .spinner {
+      animation: spin .7s linear infinite;
     }
 
-    /* ---------------------------------------------------- */
-    /* API Failure Notification Banner                      */
-    /* ---------------------------------------------------- */
-    .api-error-banner {
-      background-color: var(--red-50);
-      border: 1.5px solid rgba(239, 68, 68, 0.15);
+    /* ---- CONFIRM REVIEW ---- */
+    .confirm-box {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
       border-radius: 14px;
-      padding: 0.95rem 1.25rem;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .confirm-sect {
+      font-size: .68rem;
+      font-weight: 800;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      padding: .65rem 1rem .35rem;
+      background: #eff6ff;
+      border-bottom: 1px solid #dbeafe;
+    }
+
+    .confirm-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .6rem 1rem;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    .confirm-row:last-child {
+      border-bottom: none;
+    }
+
+    .confirm-k {
+      font-size: .78rem;
+      color: var(--slate-500);
+    }
+
+    .confirm-v {
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--dark);
+      text-align: right;
+      max-width: 60%;
+      word-break: break-all;
+    }
+
+    .confirm-v.plan {
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+    }
+
+    .confirm-green {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: .75rem 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: .55rem;
+      margin-bottom: 1rem;
+    }
+
+    .confirm-green i {
+      color: var(--success);
+      margin-top: 2px;
+      flex-shrink: 0;
+      font-size: .85rem;
+    }
+
+    .confirm-green p {
+      font-size: .8rem;
+      color: #15803d;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .confirm-green p span {
+      display: block;
+      color: #16a34a;
+      font-size: .74rem;
+      font-weight: 400;
+      margin-top: .12rem;
+    }
+
+    /* ---- ERROR TOAST ---- */
+    .error-toast {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 11px;
+      padding: .8rem 1rem;
       display: none;
       align-items: flex-start;
-      gap: 0.85rem;
-      margin-bottom: 2rem;
-      animation: alert-slide-down 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      gap: .55rem;
+      margin-bottom: .9rem;
+      animation: fadeIn .25s ease;
     }
 
-    @keyframes alert-slide-down {
-      from { transform: scale(0.96) translateY(-8px); opacity: 0; }
-      to { transform: scale(1) translateY(0); opacity: 1; }
+    .error-toast.show {
+      display: flex;
     }
 
-    .api-error-banner i.error-alert-icon {
-      color: var(--red-500);
-      font-size: 1.25rem;
-      margin-top: 1px;
+    .error-toast i {
+      color: #dc2626;
+      margin-top: 2px;
+      flex-shrink: 0;
     }
 
-    .api-error-banner-content {
-      font-size: 0.85rem;
-      color: #991b1b;
-      font-weight: 600;
-      flex: 1;
-      line-height: 1.45;
-    }
-
-    .api-error-banner-dismiss {
-      cursor: pointer;
-      color: #991b1b;
-      opacity: 0.55;
-      transition: opacity 0.2s;
-      padding: 2px;
-      font-size: 1rem;
-    }
-
-    .api-error-banner-dismiss:hover {
-      opacity: 1;
-    }
-
-    /* ---------------------------------------------------- */
-    /* Success Fullscreen Animation Overlay                 */
-    /* ---------------------------------------------------- */
-    .fullscreen-success-screen {
-      position: fixed;
-      inset: 0;
-      background-color: var(--dark-slate);
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      color: #ffffff;
-      animation: fade-in-overlay 0.4s ease forwards;
-    }
-
-    @keyframes fade-in-overlay {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .success-card-content {
-      text-align: center;
-      max-width: 440px;
-      padding: 2.5rem;
-      animation: popup-success-card 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-
-    @keyframes popup-success-card {
-      from { transform: scale(0.85); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    /* Custom drawing CSS animation checkmark */
-    .success-animated-checkmark {
-      width: 88px;
-      height: 88px;
-      border-radius: 50%;
+    .error-toast div strong {
       display: block;
-      stroke-width: 2.5;
-      stroke: #ffffff;
-      stroke-miterlimit: 10;
-      box-shadow: inset 0px 0px 0px var(--emerald-500);
-      animation: fill-checkmark-bg .4s ease-in-out .4s forwards, pop-checkmark-scale .3s ease-in-out .9s both;
-      margin: 0 auto 2.5rem;
+      color: #991b1b;
+      font-size: .8rem;
+      font-weight: 700;
+      margin-bottom: .1rem;
     }
 
-    .checkmark-outer-circle {
-      stroke-dasharray: 166;
-      stroke-dashoffset: 166;
-      stroke-width: 2.5;
-      stroke-miterlimit: 10;
-      stroke: var(--emerald-500);
-      fill: none;
-      animation: draw-stroke-line 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    .error-toast div span {
+      font-size: .78rem;
+      color: #b91c1c;
     }
 
-    .checkmark-check-path {
-      transform-origin: 50% 50%;
-      stroke-dasharray: 48;
-      stroke-dashoffset: 48;
-      animation: draw-stroke-line 0.35s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+    /* ---- SUCCESS ---- */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 1.5rem 0;
+      animation: fadeUp .5s ease both;
     }
 
-    @keyframes draw-stroke-line {
-      to { stroke-dashoffset: 0; }
+    .success-screen.show {
+      display: block;
     }
 
-    @keyframes pop-checkmark-scale {
-      0%, 100% { transform: none; }
-      50% { transform: scale3d(1.15, 1.15, 1); }
-    }
-
-    @keyframes fill-checkmark-bg {
-      to { box-shadow: inset 0px 0px 0px 88px var(--emerald-500); }
-    }
-
-    .success-primary-msg {
-      font-size: 2.25rem;
-      font-weight: 900;
-      margin-bottom: 0.75rem;
-      letter-spacing: -0.04em;
-    }
-
-    .success-secondary-msg {
-      font-size: 1.05rem;
-      color: var(--slate-400);
-      line-height: 1.6;
-      margin-bottom: 2rem;
-    }
-
-    .redirecting-subtext {
-      font-size: 0.875rem;
-      color: var(--slate-500);
+    .success-check {
+      width: 76px;
+      height: 76px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      font-weight: 600;
+      font-size: 1.9rem;
+      color: white;
+      margin: 0 auto 1.25rem;
+      box-shadow: 0 0 0 12px rgba(16, 185, 129, .1), 0 8px 28px rgba(16, 185, 129, .3);
+      animation: popIn .5s cubic-bezier(.17, .67, .35, 1.35) both;
     }
 
-    .redirecting-subtext i {
-      color: var(--primary-blue);
+    @keyframes popIn {
+      from {
+        transform: scale(0);
+        opacity: 0
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1
+      }
+    }
+
+    .success-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--dark);
+      margin-bottom: .4rem;
+    }
+
+    .success-sub {
+      font-size: .88rem;
+      color: var(--slate-500);
+      margin-bottom: .35rem;
+    }
+
+    .success-note {
+      font-size: .82rem;
+      color: var(--success);
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+    }
+
+    .redirect-note {
+      font-size: .76rem;
+      color: var(--slate-400);
+    }
+
+    /* confetti */
+    .confetti-wrap {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .cp {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      top: -10px;
+      border-radius: 2px;
+      animation: cffall linear forwards;
+    }
+
+    @keyframes cffall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0
+      }
+    }
+
+    /* signin link */
+    .signin-link {
+      text-align: center;
+      margin-top: 1.1rem;
+      font-size: .8rem;
+      color: var(--slate-400);
+    }
+
+    .signin-link a {
+      color: var(--blue);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .signin-link a:hover {
+      color: #1d4ed8;
     }
   </style>
 </head>
+
 <body>
 
-  <div class="onboarding-container">
-    
-    <!-- Left Section: Premium Branding Sidebar -->
-    <div class="brand-sidebar">
-      <div class="brand-glow-1"></div>
-      <div class="brand-glow-2"></div>
-      
-      <!-- Brand Logo Header -->
-      <div class="brand-logo-area">
-        <a href="/">
-          <img src="https://cdn.builder.io/api/v1/image/assets%2Ffbb0194a6d774fff8617236e5030fdfd%2F95b642517bf849079b5f6a616232ebb4?format=webp&width=800" alt="Numen Logo" class="brand-logo-img">
-        </a>
-      </div>
+  <div class="wrapper">
 
-      <!-- Core Marketing Pitch Content -->
-      <div class="brand-marketing-box">
-        <h2 class="marketing-heading">Grow your business without the friction.</h2>
-        <p class="marketing-paragraph">Streamline payment tracking, follow-ups, and catalog promotions in a unified platform built for modern business operators.</p>
-        
-        <ul class="benefits-list">
-          <li class="benefit-item">
-            <div class="benefit-icon-box">
-              <i class="fa-solid fa-clock-rotate-left"></i>
-            </div>
-            <div>
-              <h3 class="benefit-heading">Automated Payment Reminders</h3>
-              <p class="benefit-desc">Send friendly automated reminders over SMS, Email, and WhatsApp to collect dues faster.</p>
-            </div>
-          </li>
-          <li class="benefit-item">
-            <div class="benefit-icon-box">
-              <i class="fa-solid fa-chart-line"></i>
-            </div>
-            <div>
-              <h3 class="benefit-heading">Interactive Catalog Marketing</h3>
-              <p class="benefit-desc">Attach products and plans to promo lists and track customer views, clicks, and enquiries.</p>
-            </div>
-          </li>
-          <li class="benefit-item">
-            <div class="benefit-icon-box">
-              <i class="fa-solid fa-shield-halved"></i>
-            </div>
-            <div>
-              <h3 class="benefit-heading">Bank-Grade Onboarding</h3>
-              <p class="benefit-desc">Safe payment integrations and secured data flow keeping business credentials encrypted.</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Trust Badges & Metrics Footer -->
-      <div class="sidebar-footer-strip">
-        <div class="social-proof-customers">
-          <div class="customer-avatars-group">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" class="customer-avatar" alt="User Avatar">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" class="customer-avatar" alt="User Avatar">
-            <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=80&q=80" class="customer-avatar" alt="User Avatar">
-          </div>
-          <p class="social-proof-text">Trusted by <strong>10,000+</strong> business operators.</p>
-        </div>
-        
-        <div class="badge-ssl-secure">
-          <i class="fa-solid fa-lock"></i> SSL SECURED
-        </div>
-      </div>
+    <!-- Logo -->
+    <div class="logo-section">
+      <div class="logo-mark"><i class="fas fa-bell"></i></div>
+      <span class="logo-name">Numen</span>
+      <div class="logo-tagline">Never Miss a Customer Engagement Opportunity</div>
+      <span class="trust-badge"><i class="fas fa-star"></i> Trusted by 5,000+ Businesses</span>
     </div>
 
-    <!-- Right Section: Step Onboarding Card Area -->
-    <div class="form-workspace-panel">
-      <!-- Floating decorative shapes inside workspace panel background -->
-      <div class="bg-shape-decor decor-shape-1"></div>
-      <div class="bg-shape-decor decor-shape-2"></div>
-      
-      <!-- Glassmorphism card containing registration wizard -->
-      <div class="glass-registration-card">
-        
-        <!-- Dismissible Alert Banner for API Server Errors -->
-        <div id="apiErrorBanner" class="api-error-banner">
-          <i class="fa-solid fa-triangle-exclamation error-alert-icon"></i>
-          <div id="apiErrorBannerText" class="api-error-banner-content">An error occurred during signup.</div>
-          <i class="fa-solid fa-xmark api-error-banner-dismiss" onclick="dismissApiError()"></i>
+    <!-- Badges -->
+    <div class="badges-row">
+      <span class="badge-chip"><i class="fas fa-check"></i> 14-Day Free Trial</span>
+      <span class="badge-chip"><i class="fas fa-lock"></i> Secure Registration</span>
+      <span class="badge-chip"><i class="fas fa-credit-card"></i> No Credit Card</span>
+    </div>
+
+    <!-- CARD -->
+    <div class="card" id="mainCard">
+
+      <!-- Stepper -->
+      <div class="stepper">
+        <div class="step-item">
+          <div class="step-dot active" id="dot1"><span id="d1">1</span></div>
+          <div class="step-label active" id="lbl1">Personal</div>
         </div>
-
-        <header class="card-meta-header">
-          <h1 class="card-main-title">Create Account</h1>
-          <p class="card-meta-subtitle">Already have an account? <a href="login.html">Sign in</a></p>
-        </header>
-
-        <!-- Stepper Progress Header -->
-        <div class="wizard-progress-area">
-          <div class="wizard-track-line"></div>
-          <div id="wizardProgressBar" class="wizard-progress-bar"></div>
-          
-          <div class="wizard-step-node active" id="stepNode1" data-step-title="Personal">1</div>
-          <div class="wizard-step-node" id="stepNode2" data-step-title="Business">2</div>
-          <div class="wizard-step-node" id="stepNode3" data-step-title="Security">3</div>
+        <div class="step-line" id="line1">
+          <div class="fill" id="fill1"></div>
         </div>
+        <div class="step-item">
+          <div class="step-dot future" id="dot2"><span id="d2">2</span></div>
+          <div class="step-label future" id="lbl2">Business</div>
+        </div>
+        <div class="step-line" id="line2">
+          <div class="fill" id="fill2"></div>
+        </div>
+        <div class="step-item">
+          <div class="step-dot future" id="dot3"><span id="d3">3</span></div>
+          <div class="step-label future" id="lbl3">Security</div>
+        </div>
+      </div>
 
-        <!-- The SignUp Form Element -->
-        <form id="numenSignupForm" autocomplete="off" novalidate>
-          
-          <!-- Thymeleaf Hidden Referral Account ID if present -->
-          <input type="hidden" id="refAccIdHidden" th:value="${refAccId}">
+      <!-- STEP 1: PERSONAL -->
+      <div class="step-panel active" id="panel1">
+        <div class="panel-title">Personal Details</div>
+        <div class="panel-sub">Tell us about yourself to get started</div>
+        <div class="field-group">
 
-          <!-- STEP 1 - Personal Information -->
-          <div class="step-container active" id="stepContainer1">
-            <div class="form-group-item">
-              <label for="inputName">Full Name *</label>
-              <div class="form-input-wrapper">
-                <input type="text" id="inputName" placeholder="John Doe" class="form-text-input" autocomplete="name" required>
-                <i class="fa-solid fa-user form-input-status-icon"></i>
-              </div>
-              <div class="field-error-feedback" id="feedbackName"></div>
+          <div class="field" id="f-name">
+            <label>Full Name</label>
+            <div class="input-wrap">
+              <i class="fas fa-user il"></i>
+              <input type="text" id="name" placeholder="Enter your full name" autocomplete="name">
+              <i class="fas fa-check-circle status-icon ok"></i>
+              <i class="fas fa-exclamation-circle status-icon err"></i>
             </div>
+            <div class="field-error">Minimum 3 characters required</div>
+          </div>
 
-            <div class="form-group-item">
-              <label for="inputEmail">Personal Email *</label>
-              <div class="form-input-wrapper">
-                <input type="email" id="inputEmail" placeholder="john@example.com" class="form-text-input" autocomplete="email" required>
-                <i class="fa-solid fa-envelope form-input-status-icon"></i>
-              </div>
-              <div class="field-error-feedback" id="feedbackEmail"></div>
+          <div class="field" id="f-email">
+            <label>Email Address</label>
+            <div class="input-wrap">
+              <i class="fas fa-envelope il"></i>
+              <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+              <i class="fas fa-check-circle status-icon ok"></i>
+              <i class="fas fa-exclamation-circle status-icon err"></i>
             </div>
+            <div class="field-error">Please enter a valid email address</div>
+          </div>
 
-            <div class="form-group-item">
-              <label for="inputMobile">Mobile Number *</label>
-              <div class="form-input-wrapper">
-                <input type="tel" id="inputMobile" placeholder="9876543210" class="form-text-input" maxlength="10" autocomplete="tel" required>
-                <i class="fa-solid fa-phone form-input-status-icon"></i>
+          <div class="field" id="f-mobile">
+            <label>Mobile Number</label>
+            <div class="input-wrap">
+              <i class="fas fa-mobile-alt il"></i>
+              <input type="tel" id="mobile" placeholder="10-digit mobile number" maxlength="10">
+              <i class="fas fa-check-circle status-icon ok"></i>
+              <i class="fas fa-exclamation-circle status-icon err"></i>
+            </div>
+            <div class="field-error">Enter a valid 10-digit mobile number</div>
+          </div>
+
+        </div>
+        <div class="btn-row">
+          <button class="btn-next" style="flex:1" onclick="goStep(2)">
+            Continue <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: BUSINESS + PLAN -->
+      <div class="step-panel" id="panel2">
+        <div class="panel-title">Business Details</div>
+        <div class="panel-sub">Set up your business profile and choose a plan</div>
+        <div class="field-group">
+
+          <div class="field" id="f-bizName">
+            <label>Business Name</label>
+            <div class="input-wrap">
+              <i class="fas fa-building il"></i>
+              <input type="text" id="businessName" placeholder="Your business name" autocomplete="organization">
+              <i class="fas fa-check-circle status-icon ok"></i>
+              <i class="fas fa-exclamation-circle status-icon err"></i>
+            </div>
+            <div class="field-error">Business name is required</div>
+          </div>
+
+          <div class="field" id="f-bizEmail">
+            <label>Business Email</label>
+            <div class="input-wrap">
+              <i class="fas fa-envelope il"></i>
+              <input type="email" id="businessEmail" placeholder="business@company.com">
+              <i class="fas fa-check-circle status-icon ok"></i>
+              <i class="fas fa-exclamation-circle status-icon err"></i>
+            </div>
+            <div class="field-error">Enter a valid business email</div>
+          </div>
+
+          <div class="field" id="f-bizPhone">
+            <label>Business Phone</label>
+            <div class="input-wrap">
+              <i class="fas fa-phone il"></i>
+              <input type="tel" id="businessPhone" placeholder="Business phone number">
+              <i class="fas fa-check-circle status-icon ok"></i>
+              <i class="fas fa-exclamation-circle status-icon err"></i>
+            </div>
+            <div class="field-error">Business phone is required</div>
+          </div>
+
+          <div class="field-row">
+            <div class="field" id="f-gst">
+              <label>GST Number <span class="opt">(optional)</span></label>
+              <div class="input-wrap">
+                <i class="fas fa-file-invoice il"></i>
+                <input type="text" id="gstNumber" placeholder="GST number">
               </div>
-              <div class="field-error-feedback" id="feedbackMobile"></div>
+            </div>
+            <div class="field" id="f-address">
+              <label>Address <span class="opt">(optional)</span></label>
+              <div class="input-wrap">
+                <i class="fas fa-map-marker-alt il"></i>
+                <input type="text" id="address" placeholder="Business address">
+              </div>
             </div>
           </div>
 
-          <!-- STEP 2 - Business Information -->
-          <div class="step-container" id="stepContainer2">
-            <div class="form-group-item">
-              <label for="inputBusinessName">Business Name *</label>
-              <div class="form-input-wrapper">
-                <input type="text" id="inputBusinessName" placeholder="Acme Enterprises" class="form-text-input" required>
-                <i class="fa-solid fa-building form-input-status-icon"></i>
-              </div>
-              <div class="field-error-feedback" id="feedbackBusinessName"></div>
-            </div>
-
-            <div class="form-group-item">
-              <label for="inputBusinessEmail">Business Email *</label>
-              <div class="form-input-wrapper">
-                <input type="email" id="inputBusinessEmail" placeholder="support@acme.com" class="form-text-input" required>
-                <i class="fa-solid fa-envelope-open-text form-input-status-icon"></i>
-              </div>
-              <div class="field-error-feedback" id="feedbackBusinessEmail"></div>
-            </div>
-
-            <div class="form-group-item">
-              <label for="inputBusinessPhone">Business Phone *</label>
-              <div class="form-input-wrapper">
-                <input type="tel" id="inputBusinessPhone" placeholder="0442345678" class="form-text-input" required>
-                <i class="fa-solid fa-phone-volume form-input-status-icon"></i>
-              </div>
-              <div class="field-error-feedback" id="feedbackBusinessPhone"></div>
-            </div>
-
-            <div class="form-group-item">
-              <label for="inputGst">GST Number (Optional)</label>
-              <div class="form-input-wrapper">
-                <input type="text" id="inputGst" placeholder="22AAAAA0000A1Z5" class="form-text-input">
-                <i class="fa-solid fa-percent form-input-status-icon"></i>
-              </div>
-            </div>
-
-            <div class="form-group-item">
-              <label for="inputAddress">Address (Optional)</label>
-              <div class="form-input-wrapper">
-                <input type="text" id="inputAddress" placeholder="42, Innovation Hub, Tech City" class="form-text-input">
-                <i class="fa-solid fa-location-dot form-input-status-icon"></i>
-              </div>
-            </div>
-          </div>
-
-          <!-- STEP 3 - Account Security -->
-          <div class="step-container" id="stepContainer3">
-            <div class="form-group-item">
-              <label for="inputPassword">Password *</label>
-              <div class="form-input-wrapper">
-                <input type="password" id="inputPassword" placeholder="••••••••" class="form-text-input" autocomplete="new-password" required>
-                <button type="button" class="password-visibility-trigger" onclick="togglePasswordVisibility('inputPassword', this)">
-                  <i class="fa-solid fa-eye"></i>
-                </button>
-              </div>
-              <!-- Interactive strength indicator panel -->
-              <div class="strength-indicator-box">
-                <div class="strength-indicator-bar-bg">
-                  <div id="strengthBarIndicator" class="strength-indicator-bar"></div>
+          <!-- Plan -->
+          <div>
+            <div class="plans-label">Select Your Plan</div>
+            <div class="plans-grid">
+              <div class="plan-card" id="plan-starter" onclick="selectPlan('starter')">
+                <div class="plan-top">
+                  <div>
+                    <div class="plan-name-row"><span class="plan-name">Starter</span></div>
+                    <div class="plan-desc">Up to 500 customers · 1,000 messages/month</div>
+                  </div>
+                  <div class="plan-radio"></div>
                 </div>
-                <span id="strengthLabelFeedback" class="strength-indicator-text">Password strength</span>
               </div>
-              <div class="field-error-feedback" id="feedbackPassword"></div>
-            </div>
-
-            <div class="form-group-item">
-              <label for="inputConfirmPassword">Confirm Password *</label>
-              <div class="form-input-wrapper">
-                <input type="password" id="inputConfirmPassword" placeholder="••••••••" class="form-text-input" autocomplete="new-password" required>
-                <button type="button" class="password-visibility-trigger" onclick="togglePasswordVisibility('inputConfirmPassword', this)">
-                  <i class="fa-solid fa-eye"></i>
-                </button>
+              <div class="plan-card selected" id="plan-professional" onclick="selectPlan('professional')">
+                <div class="plan-top">
+                  <div>
+                    <div class="plan-name-row">
+                      <span class="plan-name">Professional</span>
+                      <span class="popular-pill">POPULAR</span>
+                    </div>
+                    <div class="plan-desc">Up to 5,000 customers · 10,000 messages/month</div>
+                  </div>
+                  <div class="plan-radio"></div>
+                </div>
               </div>
-              <div class="field-error-feedback" id="feedbackConfirmPassword"></div>
-            </div>
-
-            <!-- Terms Custom Checkbox Container -->
-            <div class="terms-agreement-flex">
-              <div class="terms-checkbox-facade" id="facadeTermsCheckbox" onclick="toggleTermsAgreementCheckbox()">
-                <i class="fa-solid fa-check"></i>
-              </div>
-              <input type="checkbox" id="hiddenTermsCheckbox" style="display:none;" required>
-              <div class="terms-label-text">
-                I agree to the Numen <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>.
+              <div class="plan-card" id="plan-enterprise" onclick="selectPlan('enterprise')">
+                <div class="plan-top">
+                  <div>
+                    <div class="plan-name-row"><span class="plan-name">Enterprise</span></div>
+                    <div class="plan-desc">Unlimited customers · Unlimited messaging · Dedicated support</div>
+                  </div>
+                  <div class="plan-radio"></div>
+                </div>
               </div>
             </div>
-            <div class="field-error-feedback" id="feedbackTermsCheckbox"></div>
+            <div class="feat-row">
+              <span class="feat-chip"><i class="fab fa-whatsapp"></i> WhatsApp Campaigns</span>
+              <span class="feat-chip"><i class="fas fa-sms"></i> SMS Automation</span>
+              <span class="feat-chip"><i class="fas fa-envelope"></i> Email Marketing</span>
+              <span class="feat-chip"><i class="fas fa-chart-bar"></i> Analytics</span>
+            </div>
           </div>
 
-          <!-- Navigation Action Button Row -->
-          <div class="wizard-actions-row">
-            <button type="button" id="prevStepBtn" class="wizard-action-btn wizard-btn-prev" disabled onclick="transitionStep(-1)">
-              <i class="fa-solid fa-arrow-left"></i> Previous
-            </button>
-            <button type="button" id="nextStepBtn" class="wizard-action-btn wizard-btn-next" onclick="transitionStep(1)">
-              Next <i class="fa-solid fa-arrow-right"></i>
-            </button>
-            <button type="submit" id="submitWizardBtn" class="wizard-action-btn wizard-btn-next" style="display: none;">
-              <span>Create Account</span> <i class="fa-solid fa-circle-check"></i>
-            </button>
+        </div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="goStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
+          <button class="btn-next" onclick="goStep(3)">Continue <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+
+      <!-- STEP 3: SECURITY + CONFIRM -->
+      <div class="step-panel" id="panel3">
+        <div class="panel-title">Account Security</div>
+        <div class="panel-sub">Create a strong password to protect your account</div>
+        <div class="field-group">
+
+          <div class="field" id="f-pw">
+            <label>Password</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock il"></i>
+              <input type="password" id="password" placeholder="Create a strong password" oninput="checkPw()">
+              <i class="fas fa-eye ir" id="togPw" onclick="togglePw('password','togPw')"></i>
+            </div>
+            <div class="field-error">Password must meet all requirements below</div>
+            <div class="pw-wrap">
+              <div class="pw-bar">
+                <div class="pw-fill" id="pwFill"></div>
+              </div>
+              <div class="pw-checks">
+                <span class="pw-check" id="c-upper"><i class="fas fa-circle"></i> One uppercase</span>
+                <span class="pw-check" id="c-lower"><i class="fas fa-circle"></i> One lowercase</span>
+                <span class="pw-check" id="c-num"><i class="fas fa-circle"></i> One number</span>
+                <span class="pw-check" id="c-len"><i class="fas fa-circle"></i> Min 8 characters</span>
+              </div>
+            </div>
           </div>
 
-        </form>
+          <div class="field" id="f-cpw">
+            <label>Confirm Password</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock il"></i>
+              <input type="password" id="confirmPassword" placeholder="Repeat your password">
+              <i class="fas fa-eye ir" id="togCpw" onclick="togglePw('confirmPassword','togCpw')"></i>
+              <i class="fas fa-check-circle status-icon ok"></i>
+              <i class="fas fa-exclamation-circle status-icon err"></i>
+            </div>
+            <div class="field-error">Passwords do not match</div>
+          </div>
 
+        </div>
+
+        <!-- Review -->
+        <div style="margin-top:1.4rem">
+          <div class="panel-title" style="font-size:.95rem;margin-bottom:.7rem">Review Your Details</div>
+          <div class="confirm-box">
+            <div class="confirm-sect">Personal</div>
+            <div class="confirm-row"><span class="confirm-k">Name</span><span class="confirm-v" id="rv-name">—</span>
+            </div>
+            <div class="confirm-row"><span class="confirm-k">Email</span><span class="confirm-v" id="rv-email">—</span>
+            </div>
+            <div class="confirm-row"><span class="confirm-k">Mobile</span><span class="confirm-v"
+                id="rv-mobile">—</span></div>
+            <div class="confirm-sect">Business</div>
+            <div class="confirm-row"><span class="confirm-k">Business Name</span><span class="confirm-v"
+                id="rv-bizName">—</span></div>
+            <div class="confirm-row"><span class="confirm-k">Business Email</span><span class="confirm-v"
+                id="rv-bizEmail">—</span></div>
+            <div class="confirm-row"><span class="confirm-k">Business Phone</span><span class="confirm-v"
+                id="rv-bizPhone">—</span></div>
+            <div class="confirm-sect">Plan</div>
+            <div class="confirm-row"><span class="confirm-k">Selected Plan</span><span class="confirm-v plan"
+                id="rv-plan">—</span></div>
+          </div>
+          <div class="confirm-green">
+            <i class="fas fa-shield-alt"></i>
+            <p>Secure Setup Complete · Free Trial Activated
+              <span>14-day free trial starts today. No credit card needed.</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Error Toast -->
+        <div class="error-toast" id="apiError">
+          <i class="fas fa-exclamation-triangle"></i>
+          <div>
+            <strong>Registration Failed</strong>
+            <span id="apiErrorMsg">Something went wrong. Please try again.</span>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-back" onclick="goStep(2)"><i class="fas fa-arrow-left"></i> Back</button>
+          <button class="btn-next" id="submitBtn" onclick="handleSubmit()">
+            <i class="fas fa-rocket"></i> Create Account
+          </button>
+        </div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="success-screen" id="successScreen">
+        <div class="success-check"><i class="fas fa-check"></i></div>
+        <div class="success-title">Welcome to Numen!</div>
+        <p class="success-sub">Your account has been created successfully.</p>
+        <p class="success-note">🎉 Your free trial has been activated.</p>
+        <p class="redirect-note">Redirecting to login<span id="rdots"></span></p>
+      </div>
+
+      <div class="signin-link" id="signinLink">
+        Already have an account? <a href="login.html">Sign in</a>
       </div>
     </div>
-
   </div>
 
-  <!-- Success Fullscreen Redirect Screen -->
-  <div class="fullscreen-success-screen" id="fullscreenSuccessOverlay">
-    <div class="success-card-content">
-      <svg class="success-animated-checkmark" viewBox="0 0 52 52">
-        <circle class="checkmark-outer-circle" cx="26" cy="26" r="25" fill="none"/>
-        <path class="checkmark-check-path" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-      </svg>
-      <h1 class="success-primary-msg">Welcome to Numen</h1>
-      <p class="success-secondary-msg">Your account registration was successful. Creating your personalized workspace...</p>
-      
-      <div class="redirecting-subtext">
-        <i class="fa-solid fa-spinner fa-spin"></i> Redirecting you in a moment
-      </div>
-    </div>
-  </div>
+  <div class="confetti-wrap" id="confettiWrap"></div>
 
-  <!-- ---------------------------------------------------- -->
-  /* Interactive Page JavaScript Control Code              */
-  <!-- ---------------------------------------------------- -->
   <script>
-    // Form and Stepper Wizard Configuration
-    let activeStepNum = 1;
-    const maxStepCount = 3;
+    let step = 1;
+    let selectedPlan = 'professional';
 
-    // Field and Error DOM maps for easier referencing and scaling
-    const validationSchema = {
-      name: {
-        inputEl: document.getElementById('inputName'),
-        feedbackEl: document.getElementById('feedbackName'),
-        validate: () => {
-          const val = validationSchema.name.inputEl.value.trim();
-          if (val.length < 3) {
-            return { isValid: false, msg: 'Full name must be at least 3 characters.' };
-          }
-          return { isValid: true };
-        }
-      },
-      email: {
-        inputEl: document.getElementById('inputEmail'),
-        feedbackEl: document.getElementById('feedbackEmail'),
-        validate: () => {
-          const val = validationSchema.email.inputEl.value.trim();
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(val)) {
-            return { isValid: false, msg: 'Please specify a valid email address.' };
-          }
-          return { isValid: true };
-        }
-      },
-      mobile: {
-        inputEl: document.getElementById('inputMobile'),
-        feedbackEl: document.getElementById('feedbackMobile'),
-        validate: () => {
-          const val = validationSchema.mobile.inputEl.value.trim();
-          const mobileRegex = /^\d{10}$/;
-          if (!mobileRegex.test(val)) {
-            return { isValid: false, msg: 'Mobile number must be exactly 10 digits.' };
-          }
-          return { isValid: true };
-        }
-      },
-      businessName: {
-        inputEl: document.getElementById('inputBusinessName'),
-        feedbackEl: document.getElementById('feedbackBusinessName'),
-        validate: () => {
-          const val = validationSchema.businessName.inputEl.value.trim();
-          if (!val) {
-            return { isValid: false, msg: 'Business name is required to register.' };
-          }
-          return { isValid: true };
-        }
-      },
-      businessEmail: {
-        inputEl: document.getElementById('inputBusinessEmail'),
-        feedbackEl: document.getElementById('feedbackBusinessEmail'),
-        validate: () => {
-          const val = validationSchema.businessEmail.inputEl.value.trim();
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (!emailRegex.test(val)) {
-            return { isValid: false, msg: 'Please specify a valid business email address.' };
-          }
-          return { isValid: true };
-        }
-      },
-      businessPhone: {
-        inputEl: document.getElementById('inputBusinessPhone'),
-        feedbackEl: document.getElementById('feedbackBusinessPhone'),
-        validate: () => {
-          const val = validationSchema.businessPhone.inputEl.value.trim();
-          if (!val) {
-            return { isValid: false, msg: 'Business phone is required.' };
-          }
-          return { isValid: true };
-        }
-      },
-      password: {
-        inputEl: document.getElementById('inputPassword'),
-        feedbackEl: document.getElementById('feedbackPassword'),
-        validate: () => {
-          const val = validationSchema.password.inputEl.value;
-          const rules = {
-            length: val.length >= 8,
-            upper: /[A-Z]/.test(val),
-            lower: /[a-z]/.test(val),
-            number: /\d/.test(val)
-          };
-          
-          if (!rules.length) return { isValid: false, msg: 'Password must be at least 8 characters long.' };
-          if (!rules.upper) return { isValid: false, msg: 'Include at least one uppercase letter (A-Z).' };
-          if (!rules.lower) return { isValid: false, msg: 'Include at least one lowercase letter (a-z).' };
-          if (!rules.number) return { isValid: false, msg: 'Include at least one numeric digit (0-9).' };
-          
-          return { isValid: true };
-        }
-      },
-      confirmPassword: {
-        inputEl: document.getElementById('inputConfirmPassword'),
-        feedbackEl: document.getElementById('feedbackConfirmPassword'),
-        validate: () => {
-          const val = validationSchema.confirmPassword.inputEl.value;
-          const parentPass = validationSchema.password.inputEl.value;
-          if (val !== parentPass) {
-            return { isValid: false, msg: 'Password confirmation does not match.' };
-          }
-          return { isValid: true };
+    function goStep(n) {
+      if (n > step && !validateStep(step)) return;
+      step = n;
+      document.querySelectorAll('.step-panel').forEach((p, i) => p.classList.toggle('active', i + 1 === n));
+      if (n === 3) fillReview();
+      updateStepper(n);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateStepper(n) {
+      for (let i = 1; i <= 3; i++) {
+        const dot = document.getElementById('dot' + i);
+        const d = document.getElementById('d' + i);
+        const lbl = document.getElementById('lbl' + i);
+        if (i < n) {
+          dot.className = 'step-dot done';
+          d.innerHTML = '<i class="fas fa-check" style="font-size:.7rem"></i>';
+          lbl.className = 'step-label done';
+        } else if (i === n) {
+          dot.className = 'step-dot active';
+          d.textContent = i;
+          lbl.className = 'step-label active';
+        } else {
+          dot.className = 'step-dot future';
+          d.textContent = i;
+          lbl.className = 'step-label future';
         }
       }
+      for (let i = 1; i <= 2; i++) {
+        document.getElementById('fill' + i).style.width = n > i ? '100%' : '0%';
+      }
+    }
+
+    function validateStep(s) {
+      if (s === 1) {
+        let ok = true;
+        ok = vf('name', v => v.length >= 3, 'f-name') && ok;
+        ok = vf('email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), 'f-email') && ok;
+        ok = vf('mobile', v => /^\d{10}$/.test(v), 'f-mobile') && ok;
+        return ok;
+      }
+      if (s === 2) {
+        let ok = true;
+        ok = vf('businessName', v => v.length > 0, 'f-bizName') && ok;
+        ok = vf('businessEmail', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), 'f-bizEmail') && ok;
+        ok = vf('businessPhone', v => v.length >= 7, 'f-bizPhone') && ok;
+        return ok;
+      }
+      if (s === 3) {
+        const pw = document.getElementById('password').value;
+        const cpw = document.getElementById('confirmPassword').value;
+        const pwOk = /[A-Z]/.test(pw) && /[a-z]/.test(pw) && /\d/.test(pw) && pw.length >= 8;
+        setF('f-pw', pwOk);
+        const cpwOk = pw === cpw && cpw.length > 0;
+        setF('f-cpw', cpwOk);
+        return pwOk && cpwOk;
+      }
+      return true;
+    }
+
+    function vf(id, test, fid) {
+      const ok = test(document.getElementById(id).value.trim());
+      setF(fid, ok); return ok;
+    }
+    function setF(fid, ok) {
+      const f = document.getElementById(fid);
+      if (!f) return;
+      f.classList.toggle('valid', ok);
+      f.classList.toggle('invalid', !ok);
+    }
+
+    // real-time blur validation
+    const rules = {
+      name: { test: v => v.length >= 3, fid: 'f-name' },
+      email: { test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), fid: 'f-email' },
+      mobile: { test: v => /^\d{10}$/.test(v), fid: 'f-mobile' },
+      businessName: { test: v => v.length > 0, fid: 'f-bizName' },
+      businessEmail: { test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), fid: 'f-bizEmail' },
+      businessPhone: { test: v => v.length >= 7, fid: 'f-bizPhone' },
     };
-
-    // Stepper header node updates and slider bar width
-    function syncStepperIndicator() {
-      for (let idx = 1; idx <= maxStepCount; idx++) {
-        const stepView = document.getElementById(`stepContainer${idx}`);
-        const indicatorNode = document.getElementById(`stepNode${idx}`);
-        
-        if (idx === activeStepNum) {
-          stepView.classList.add('active');
-          indicatorNode.className = 'wizard-step-node active';
-        } else if (idx < activeStepNum) {
-          stepView.classList.remove('active');
-          indicatorNode.className = 'wizard-step-node completed';
-        } else {
-          stepView.classList.remove('active');
-          indicatorNode.className = 'wizard-step-node';
-        }
-      }
-
-      // Sync progress bar timeline width
-      const barRatio = ((activeStepNum - 1) / (maxStepCount - 1)) * 100;
-      document.getElementById('wizardProgressBar').style.width = `${barRatio}%`;
-
-      // Handle button labels and interactive displays
-      const prevBtn = document.getElementById('prevStepBtn');
-      const nextBtn = document.getElementById('nextStepBtn');
-      const submitBtn = document.getElementById('submitWizardBtn');
-
-      prevBtn.disabled = activeStepNum === 1;
-
-      if (activeStepNum === maxStepCount) {
-        nextBtn.style.display = 'none';
-        submitBtn.style.display = 'flex';
-      } else {
-        nextBtn.style.display = 'flex';
-        submitBtn.style.display = 'none';
-      }
-    }
-
-    // Step verification sequence
-    function verifyActiveStepInputs(stepIdx) {
-      let isStepClean = true;
-
-      if (stepIdx === 1) {
-        const step1Keys = ['name', 'email', 'mobile'];
-        step1Keys.forEach(k => {
-          const result = validationSchema[k].validate();
-          renderFieldState(validationSchema[k], result);
-          if (!result.isValid) isStepClean = false;
-        });
-      } else if (stepIdx === 2) {
-        const step2Keys = ['businessName', 'businessEmail', 'businessPhone'];
-        step2Keys.forEach(k => {
-          const result = validationSchema[k].validate();
-          renderFieldState(validationSchema[k], result);
-          if (!result.isValid) isStepClean = false;
-        });
-      } else if (stepIdx === 3) {
-        const step3Keys = ['password', 'confirmPassword'];
-        step3Keys.forEach(k => {
-          const result = validationSchema[k].validate();
-          renderFieldState(validationSchema[k], result);
-          if (!result.isValid) isStepClean = false;
-        });
-
-        // Verify terms custom checkbox status
-        const hiddenTerms = document.getElementById('hiddenTermsCheckbox');
-        const facadeTerms = document.getElementById('facadeTermsCheckbox');
-        const termsFeedback = document.getElementById('feedbackTermsCheckbox');
-
-        if (!hiddenTerms.checked) {
-          termsFeedback.textContent = 'Please accept Numen terms & conditions to continue.';
-          termsFeedback.style.display = 'flex';
-          facadeTerms.style.borderColor = 'var(--red-500)';
-          isStepClean = false;
-        } else {
-          termsFeedback.textContent = '';
-          termsFeedback.style.display = 'none';
-          facadeTerms.style.borderColor = 'var(--slate-300)';
-        }
-      }
-
-      return isStepClean;
-    }
-
-    // Renders custom border states and text feedback inline
-    function renderFieldState(schemaObj, result) {
-      if (result.isValid) {
-        schemaObj.inputEl.classList.remove('field-invalid');
-        schemaObj.inputEl.classList.add('field-valid');
-        schemaObj.feedbackEl.textContent = '';
-        schemaObj.feedbackEl.style.display = 'none';
-      } else {
-        schemaObj.inputEl.classList.remove('field-valid');
-        schemaObj.inputEl.classList.add('field-invalid');
-        schemaObj.feedbackEl.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${result.msg}`;
-        schemaObj.feedbackEl.style.display = 'flex';
-      }
-    }
-
-    // Handles Stepper Wizard Transitions
-    function transitionStep(dirOffset) {
-      // Validate current inputs before allowing advance
-      if (dirOffset === 1 && !verifyActiveStepInputs(activeStepNum)) {
-        return;
-      }
-      
-      activeStepNum += dirOffset;
-      
-      // Keep boundaries intact
-      if (activeStepNum < 1) activeStepNum = 1;
-      if (activeStepNum > maxStepCount) activeStepNum = maxStepCount;
-
-      syncStepperIndicator();
-    }
-
-    // Connect real-time field change listeners for immediate feedback
-    Object.keys(validationSchema).forEach(fieldKey => {
-      const item = validationSchema[fieldKey];
-      item.inputEl.addEventListener('input', () => {
-        const checkResult = item.validate();
-        renderFieldState(item, checkResult);
+    Object.keys(rules).forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const r = rules[id];
+      el.addEventListener('blur', () => setF(r.fid, r.test(el.value.trim())));
+      el.addEventListener('input', () => {
+        const f = document.getElementById(r.fid);
+        if (f && (f.classList.contains('valid') || f.classList.contains('invalid')))
+          setF(r.fid, r.test(el.value.trim()));
       });
     });
-
-    // Mask tel inputs to strict integer values only
-    document.getElementById('inputMobile').addEventListener('input', function() {
-      this.value = this.value.replace(/\D/g, '');
+    document.getElementById('confirmPassword').addEventListener('input', () => {
+      const cpw = document.getElementById('confirmPassword').value;
+      const pw = document.getElementById('password').value;
+      if (cpw.length > 0) setF('f-cpw', pw === cpw);
     });
 
-    document.getElementById('inputBusinessPhone').addEventListener('input', function() {
-      this.value = this.value.replace(/[^\d\s\-\+\(\)]/g, '');
-    });
-
-    // Password visibility control
-    function togglePasswordVisibility(fieldId, triggerBtn) {
-      const targetInput = document.getElementById(fieldId);
-      const icon = triggerBtn.querySelector('i');
-      if (targetInput.type === 'password') {
-        targetInput.type = 'text';
-        icon.className = 'fa-solid fa-eye-slash';
-      } else {
-        targetInput.type = 'password';
-        icon.className = 'fa-solid fa-eye';
-      }
+    function selectPlan(p) {
+      selectedPlan = p;
+      ['starter', 'professional', 'enterprise'].forEach(x => {
+        document.getElementById('plan-' + x).classList.toggle('selected', x === p);
+      });
     }
 
-    // Password strength score meter configuration
-    document.getElementById('inputPassword').addEventListener('input', function() {
-      const text = this.value;
-      const progressIndicator = document.getElementById('strengthBarIndicator');
-      const textLabelFeedback = document.getElementById('strengthLabelFeedback');
-      
-      let meterScore = 0;
-      if (text.length >= 8) meterScore++;
-      if (/[A-Z]/.test(text)) meterScore++;
-      if (/[a-z]/.test(text)) meterScore++;
-      if (/\d/.test(text)) meterScore++;
-      if (/[^A-Za-z0-9]/.test(text)) meterScore++; // Extra point for symbols
-
-      if (text.length === 0) {
-        progressIndicator.style.width = '0%';
-        textLabelFeedback.textContent = 'Password strength';
-        textLabelFeedback.style.color = 'var(--slate-500)';
-      } else if (meterScore <= 2) {
-        progressIndicator.style.width = '33%';
-        progressIndicator.style.backgroundColor = 'var(--red-500)';
-        textLabelFeedback.textContent = 'Weak password';
-        textLabelFeedback.style.color = 'var(--red-500)';
-      } else if (meterScore <= 4) {
-        progressIndicator.style.width = '66%';
-        progressIndicator.style.backgroundColor = '#f59e0b'; // Amber Accent
-        textLabelFeedback.textContent = 'Medium password';
-        textLabelFeedback.style.color = '#f59e0b';
-      } else {
-        progressIndicator.style.width = '100%';
-        progressIndicator.style.backgroundColor = 'var(--emerald-500)';
-        textLabelFeedback.textContent = 'Strong security password';
-        textLabelFeedback.style.color = 'var(--emerald-500)';
-      }
-    });
-
-    // Custom facade terms agreement checkbox selection handler
-    function toggleTermsAgreementCheckbox() {
-      const checkboxFacade = document.getElementById('facadeTermsCheckbox');
-      const hiddenCheckboxInput = document.getElementById('hiddenTermsCheckbox');
-      const errorMsgFeedback = document.getElementById('feedbackTermsCheckbox');
-
-      hiddenCheckboxInput.checked = !hiddenCheckboxInput.checked;
-      
-      if (hiddenCheckboxInput.checked) {
-        checkboxFacade.classList.add('facade-checked');
-        checkboxFacade.style.borderColor = 'var(--primary-blue)';
-        errorMsgFeedback.textContent = '';
-        errorMsgFeedback.style.display = 'none';
-      } else {
-        checkboxFacade.classList.remove('facade-checked');
-        checkboxFacade.style.borderColor = 'var(--slate-300)';
-      }
+    function checkPw() {
+      const pw = document.getElementById('password').value;
+      const u = /[A-Z]/.test(pw), l = /[a-z]/.test(pw), n = /\d/.test(pw), len = pw.length >= 8;
+      setChk('c-upper', u); setChk('c-lower', l); setChk('c-num', n); setChk('c-len', len);
+      const score = [u, l, n, len].filter(Boolean).length;
+      const fill = document.getElementById('pwFill');
+      fill.style.width = ['0%', '25%', '50%', '75%', '100%'][score];
+      fill.style.background = ['', '#ef4444', '#f59e0b', '#f59e0b', '#10b981'][score] || '#ef4444';
+    }
+    function setChk(id, ok) {
+      const el = document.getElementById(id);
+      el.classList.toggle('ok', ok);
+      el.querySelector('i').className = ok ? 'fas fa-check-circle' : 'fas fa-circle';
     }
 
-    // API error banner operations
-    function displayApiError(errorMessageText) {
-      const containerBanner = document.getElementById('apiErrorBanner');
-      document.getElementById('apiErrorBannerText').textContent = errorMessageText;
-      containerBanner.style.display = 'flex';
-      containerBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    function togglePw(inp, ico) {
+      const el = document.getElementById(inp);
+      const ic = document.getElementById(ico);
+      el.type = el.type === 'password' ? 'text' : 'password';
+      ic.className = (el.type === 'text' ? 'fas fa-eye-slash' : 'fas fa-eye') + ' ir';
     }
 
-    function dismissApiError() {
-      document.getElementById('apiErrorBanner').style.display = 'none';
+    function fillReview() {
+      const pl = { starter: 'Starter', professional: 'Professional', enterprise: 'Enterprise' };
+      const s = (id) => document.getElementById(id).value || '—';
+      document.getElementById('rv-name').textContent = s('name');
+      document.getElementById('rv-email').textContent = s('email');
+      document.getElementById('rv-mobile').textContent = s('mobile');
+      document.getElementById('rv-bizName').textContent = s('businessName');
+      document.getElementById('rv-bizEmail').textContent = s('businessEmail');
+      document.getElementById('rv-bizPhone').textContent = s('businessPhone');
+      document.getElementById('rv-plan').textContent = pl[selectedPlan] || 'Professional';
     }
 
-    // Submit payload handler function
-    document.getElementById('numenSignupForm').addEventListener('submit', async function(eventObj) {
-      eventObj.preventDefault();
-      
-      // Perform full validation sweeps across all steps prior to sending request
-      let isFormFullyValid = true;
-      for (let idx = 1; idx <= maxStepCount; idx++) {
-        if (!verifyActiveStepInputs(idx)) {
-          isFormFullyValid = false;
-          activeStepNum = idx;
-          syncStepperIndicator();
-          break;
-        }
-      }
+    async function handleSubmit() {
+      if (!validateStep(3)) return;
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-circle-notch spinner"></i> Creating Account...';
+      document.getElementById('apiError').classList.remove('show');
 
-      if (!isFormFullyValid) return;
-
-      // Enter Loading State
-      const submitBtn = document.getElementById('submitWizardBtn');
-      const submitBtnTextSpan = submitBtn.querySelector('span');
-      const submitBtnIcon = submitBtn.querySelector('i');
-      
-      const prevInner = submitBtn.innerHTML;
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `<span class="btn-loader-spinner"></span> <span>Registering Account...</span>`;
-      dismissApiError();
-
-      // Collect structured JSON data payload mapping
-      const postPayload = {
-        name: validationSchema.name.inputEl.value.trim(),
-        email: validationSchema.email.inputEl.value.trim(),
-        mobile: validationSchema.mobile.inputEl.value.trim(),
-        businessName: validationSchema.businessName.inputEl.value.trim(),
-        businessEmail: validationSchema.businessEmail.inputEl.value.trim(),
-        businessPhone: validationSchema.businessPhone.inputEl.value.trim(),
-        gstNumber: document.getElementById('inputGst').value.trim(),
-        address: document.getElementById('inputAddress').value.trim(),
-        password: validationSchema.password.inputEl.value
+      const payload = {
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        mobile: document.getElementById('mobile').value.trim(),
+        businessName: document.getElementById('businessName').value.trim(),
+        businessEmail: document.getElementById('businessEmail').value.trim(),
+        businessPhone: document.getElementById('businessPhone').value.trim(),
+        gstNumber: document.getElementById('gstNumber').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        password: document.getElementById('password').value,
       };
 
       try {
-        const requestResponse = await fetch('/api/accounts/signup', {
+        const res = await fetch('/api/accounts/signup', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(postPayload)
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
         });
-
-        if (requestResponse.ok) {
-          // Trigger fullscreen success overlays
-          document.getElementById('fullscreenSuccessOverlay').style.display = 'flex';
-          
-          // Clear active localStorage cache to reset user environment state
-          localStorage.clear();
-
-          // Wait 3 seconds then redirect to login.html
-          setTimeout(() => {
-            window.location.href = 'login.html';
-          }, 3000);
+        const data = await res.json().catch(() => ({}));
+        if (res.ok) {
+          showSuccess();
         } else {
-          let errorDescription = 'Onboarding registration failed. Please review input fields or try again.';
-          try {
-            const parsedErrJson = await requestResponse.json();
-            errorDescription = parsedErrJson.message || errorDescription;
-          } catch(ignore) {
-            const rawTextErr = await requestResponse.text();
-            if (rawTextErr) errorDescription = rawTextErr;
-          }
-          displayApiError(errorDescription);
+          const msg = data.message || data.error || 'Registration failed. Please try again.';
+          document.getElementById('apiErrorMsg').textContent = msg;
+          document.getElementById('apiError').classList.add('show');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-rocket"></i> Create Account';
         }
-      } catch (networkErr) {
-        console.error("Signup network submission error:", networkErr);
-        displayApiError('Network connection loss occurred. Please verify your internet reachability.');
-      } finally {
-        // Restore button state
-        submitBtn.innerHTML = prevInner;
-        submitBtn.disabled = false;
+      } catch (e) {
+        document.getElementById('apiErrorMsg').textContent = 'Network error. Please check your connection.';
+        document.getElementById('apiError').classList.add('show');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-rocket"></i> Create Account';
       }
-    });
+    }
+
+    function showSuccess() {
+      document.querySelector('.stepper').style.display = 'none';
+      document.getElementById('panel3').classList.remove('active');
+      document.getElementById('signinLink').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      launchConfetti();
+      let c = 0;
+      const d = document.getElementById('rdots');
+      setInterval(() => { d.textContent = '.'.repeat((c++ % 3) + 1); }, 500);
+      setTimeout(() => { window.location.href = 'login.html'; }, 3500);
+    }
+
+    function launchConfetti() {
+      const wrap = document.getElementById('confettiWrap');
+      const cols = ['#2563eb', '#9333ea', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+      for (let i = 0; i < 80; i++) {
+        const p = document.createElement('div');
+        p.className = 'cp';
+        const sz = 5 + Math.random() * 8;
+        p.style.cssText = `left:${Math.random() * 100}%;width:${sz}px;height:${sz}px;background:${cols[Math.floor(Math.random() * cols.length)]};animation-duration:${2 + Math.random() * 2}s;animation-delay:${Math.random()}s;border-radius:${Math.random() > .5 ? '50%' : '2px'};opacity:${.7 + Math.random() * .3}`;
+        wrap.appendChild(p);
+      }
+      setTimeout(() => wrap.innerHTML = '', 5000);
+    }
   </script>
 </body>
+
 </html>

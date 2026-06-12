@@ -40,6 +40,21 @@ public class AccountController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @PostMapping("/signup")
+    public ResponseEntity<com.server.realsync.dto.SignupResponseDto> signup(@RequestBody com.server.realsync.dto.SignupRequestDto requestDto) {
+        try {
+            service.registerAccount(requestDto);
+            return ResponseEntity.ok(new com.server.realsync.dto.SignupResponseDto(true, "Account created successfully"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new com.server.realsync.dto.SignupResponseDto(false, e.getMessage()));
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(new com.server.realsync.dto.SignupResponseDto(false, e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new com.server.realsync.dto.SignupResponseDto(false, "Registration failed: " + e.getMessage()));
+        }
+    }
+
     @GetMapping
     public ResponseEntity<List<Account>> getAllAccounts() {
         List<Account> accounts = service.findAll();
