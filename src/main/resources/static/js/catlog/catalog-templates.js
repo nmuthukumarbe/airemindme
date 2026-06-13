@@ -92,9 +92,67 @@ function renderTemplates() {
     }).join('');
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// DYNAMIC OPTIONS DATA
+// ─────────────────────────────────────────────────────────────────────────────
+const templateTypesByPurpose = {
+    'Reminder': [
+        'Payment Reminder',
+        'Subscription Renewal',
+        'Membership Renewal',
+        'Policy Renewal',
+        'Appointment Reminder',
+        'Service Reminder'
+    ],
+    'Greeting': [
+        'Birthday',
+        'Anniversary',
+        'Festival Greeting',
+        'Welcome Message'
+    ],
+    'Promotion': [
+        'Offer Announcement',
+        'Discount Campaign',
+        'New Product Launch',
+        'Reactivation Campaign'
+    ],
+    'Announcement': [
+        'Business Update',
+        'Holiday Notice',
+        'Timing Change',
+        'Service Update'
+    ],
+    'Follow Up': [
+        'Lead Follow Up',
+        'Customer Follow Up',
+        'Payment Follow Up'
+    ],
+    'Custom': [
+        'Custom'
+    ]
+};
+
+function onPurposeChange() {
+    const purpose = document.getElementById('tm_purpose')?.value || 'Reminder';
+    const typeSelect = document.getElementById('tm_type');
+    if (!typeSelect) return;
+    typeSelect.innerHTML = '';
+    const types = templateTypesByPurpose[purpose] || [];
+    types.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = t;
+        typeSelect.appendChild(opt);
+    });
+}
+
 // ── Template Modal ────────────────────────────────────────────────────────────
 function openTemplateModal(id) {
     editTemplateId = id || null;
+    const purposeSelect = document.getElementById('tm_purpose');
+    const typeSelect = document.getElementById('tm_type');
+    const langSelect = document.getElementById('tm_language');
+
     if (editTemplateId) {
         const t = templates.find(x => x.id === editTemplateId);
         if (!t) return;
@@ -102,19 +160,42 @@ function openTemplateModal(id) {
         document.getElementById('tm_category').value = t.category || 'General';
         document.getElementById('tm_desc').value = t.description || '';
         document.getElementById('tm_content').value = t.content || '';
+        
+        if (purposeSelect) purposeSelect.value = t.purpose || 'Reminder';
+        onPurposeChange();
+        if (typeSelect) typeSelect.value = t.templateType || '';
+        if (langSelect) langSelect.value = t.language || 'English';
+
         const ch = Array.isArray(t.channelList) ? t.channelList
             : (t.channels || '').split(',').map(s => s.trim()).filter(Boolean);
-        document.getElementById('tm_wa').checked = ch.includes('WhatsApp');
-        document.getElementById('tm_sms').checked = ch.includes('SMS');
-        document.getElementById('tm_email').checked = ch.includes('Email');
+        
+        const tmWa = document.getElementById('tm_wa');
+        const tmSms = document.getElementById('tm_sms');
+        const tmEmail = document.getElementById('tm_email');
+        if (tmWa) tmWa.checked = ch.includes('WhatsApp');
+        if (tmSms) tmSms.checked = ch.includes('SMS');
+        if (tmEmail) tmEmail.checked = ch.includes('Email');
+
         document.getElementById('templateModalTitle').textContent = 'Edit AI Template';
         document.getElementById('tmplSaveLabel').textContent = 'Save Changes';
     } else {
-        ['tm_title', 'tm_desc', 'tm_content'].forEach(i => document.getElementById(i).value = '');
+        ['tm_title', 'tm_desc', 'tm_content'].forEach(i => {
+            const el = document.getElementById(i);
+            if (el) el.value = '';
+        });
         document.getElementById('tm_category').value = 'Payment Reminder';
-        document.getElementById('tm_wa').checked = true;
-        document.getElementById('tm_sms').checked = false;
-        document.getElementById('tm_email').checked = false;
+        
+        if (purposeSelect) purposeSelect.value = 'Reminder';
+        onPurposeChange();
+        if (langSelect) langSelect.value = 'English';
+
+        const tmWa = document.getElementById('tm_wa');
+        const tmSms = document.getElementById('tm_sms');
+        const tmEmail = document.getElementById('tm_email');
+        if (tmWa) tmWa.checked = true;
+        if (tmSms) tmSms.checked = false;
+        if (tmEmail) tmEmail.checked = false;
+
         document.getElementById('templateModalTitle').textContent = 'New AI Template';
         document.getElementById('tmplSaveLabel').textContent = 'Save AI Template';
     }
@@ -137,15 +218,94 @@ function generateTemplateContent() {
     document.getElementById('tm_content').value = map[cat] || map['General'];
 }
 
+function generateAITemplate() {
+    const purpose = document.getElementById('tm_purpose')?.value;
+    const templateType = document.getElementById('tm_type')?.value;
+    const language = document.getElementById('tm_language')?.value;
+    const btn = document.getElementById('aiGenerateBtn');
+    const progressSection = document.getElementById('aiProgressSection');
+    const progressText = document.getElementById('aiProgressText');
+    const progressBar = document.getElementById('aiProgressBar');
+
+    if (!purpose || !templateType || !language) {
+        showToast('Please select Purpose, Template Type and Language', 'error');
+        return;
+    }
+
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `
+          <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Generating Template...
+        `;
+    }
+
+    if (progressSection) {
+        progressSection.classList.remove('hidden');
+    }
+
+    // Interval to cycle through messages and animate progress bar
+    let progressVal = 0;
+    const messages = [
+        "Analyzing requirements...",
+        "Creating template...",
+        "Optimizing content..."
+    ];
+    let msgIdx = 0;
+
+    if (progressBar) progressBar.style.width = '0%';
+    if (progressText) progressText.textContent = messages[0];
+
+    const progressInterval = setInterval(() => {
+        progressVal = Math.min(progressVal + 8, 95);
+        if (progressBar) progressBar.style.width = progressVal + '%';
+        
+        if (progressVal > 30 && msgIdx === 0) msgIdx = 1;
+        if (progressVal > 70 && msgIdx === 1) msgIdx = 2;
+        if (progressText) progressText.textContent = messages[msgIdx];
+    }, 200);
+
+    api('/api/ai/template/generate', 'POST', { purpose, templateType, language })
+        .then(res => {
+            const contentArea = document.getElementById('tm_content');
+            if (contentArea && res.content) {
+                contentArea.value = res.content;
+            }
+            showToast('AI Template generated!', 'success');
+        })
+        .catch(err => {
+            showToast('Generation failed: ' + err.message, 'error');
+        })
+        .finally(() => {
+            clearInterval(progressInterval);
+            if (progressBar) progressBar.style.width = '100%';
+            setTimeout(() => {
+                if (progressSection) progressSection.classList.add('hidden');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '✨ Generate With AI';
+                }
+            }, 300);
+        });
+}
+
 function saveTemplate() {
     const title = document.getElementById('tm_title').value.trim();
     const content = document.getElementById('tm_content').value.trim();
     if (!title || !content) { showToast('Title and content are required', 'error'); return; }
 
     const channels = [];
-    if (document.getElementById('tm_wa').checked) channels.push('WhatsApp');
-    if (document.getElementById('tm_sms').checked) channels.push('SMS');
-    if (document.getElementById('tm_email').checked) channels.push('Email');
+    const tmWa = document.getElementById('tm_wa');
+    const tmSms = document.getElementById('tm_sms');
+    const tmEmail = document.getElementById('tm_email');
+
+    if (tmWa && tmWa.checked) channels.push('WhatsApp');
+    else if (!tmWa) channels.push('WhatsApp'); // Safe default
+    if (tmSms && tmSms.checked) channels.push('SMS');
+    if (tmEmail && tmEmail.checked) channels.push('Email');
 
     const payload = {
         title,
@@ -153,6 +313,9 @@ function saveTemplate() {
         description: document.getElementById('tm_desc').value.trim(),
         content,
         channels: channels.join(','),   // backend stores as comma-delimited string
+        purpose: document.getElementById('tm_purpose')?.value || '',
+        templateType: document.getElementById('tm_type')?.value || '',
+        language: document.getElementById('tm_language')?.value || '',
         status: 'active'
     };
 
