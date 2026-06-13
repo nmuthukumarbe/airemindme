@@ -99,6 +99,8 @@ public class HomeController {
 	@Autowired
 	private ReportService reportService;
 	@Autowired
+	private com.server.realsync.services.AccountPlanService accountPlanService;
+	@Autowired
 	private ReminderService reminderService;
 	@Autowired
 	private GreetingService greetingService;
@@ -887,9 +889,11 @@ public String getRegister(
 		Account account = accountService.getById(loggedIn.getId());
 
 		List<CustomerGroup> groups = customerGroupService.getByAccountId(account.getId());
+		com.server.realsync.entity.AccountPlan accountPlan = accountPlanService.getAccountPlanUsage(account.getId()).orElse(null);
 
 		model.addAttribute("account", account);
 		model.addAttribute("groups", groups);
+		model.addAttribute("accountPlan", accountPlan);
 		model.addAttribute("activePage", "settings");
 		return "remindmeui/settings";
 	}

@@ -159,13 +159,7 @@ public class AccountService {
         if (dto.getBusinessName() == null || dto.getBusinessName().trim().isEmpty()) {
             throw new IllegalArgumentException("Business name is required.");
         }
-        if (dto.getBusinessEmail() == null
-                || !dto.getBusinessEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            throw new IllegalArgumentException("Please provide a valid business email.");
-        }
-        if (dto.getBusinessPhone() == null || dto.getBusinessPhone().trim().isEmpty()) {
-            throw new IllegalArgumentException("Business phone is required.");
-        }
+       
 
         String password = dto.getPassword();
         if (password == null || password.length() < 8 ||

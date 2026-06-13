@@ -878,6 +878,27 @@
       gap: 0.5rem;
       margin-bottom: 1.25rem;
     }
+
+    .input-wrap .toggle-pwd {
+      position: absolute;
+      right: .85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--slate-400);
+      cursor: pointer;
+      font-size: .88rem;
+      transition: color .2s;
+      z-index: 10;
+    }
+    .input-wrap .toggle-pwd:hover {
+      color: var(--blue);
+    }
+    .input-wrap.has-toggle .status-icon {
+      right: 2.2rem;
+    }
+    .input-wrap.has-toggle input {
+      padding-right: 3.2rem;
+    }
   </style>
 </head>
 
@@ -965,6 +986,30 @@
               <i class="fas fa-exclamation-circle status-icon err"></i>
             </div>
             <div class="field-error">Enter a valid 10-digit mobile number</div>
+          </div>
+
+          <div class="field" id="f-password">
+            <label>Password</label>
+            <div class="input-wrap has-toggle">
+              <i class="fas fa-lock il"></i>
+              <input type="password" id="password" placeholder="Create a strong password">
+              <i class="fas fa-eye toggle-pwd" onclick="togglePasswordVisibility('password', this)"></i>
+              <i class="fas fa-check-circle status-icon ok"></i>
+              <i class="fas fa-exclamation-circle status-icon err"></i>
+            </div>
+            <div class="field-error">Password must contain uppercase, lowercase, number and special character</div>
+          </div>
+
+          <div class="field" id="f-confirmPassword">
+            <label>Confirm Password</label>
+            <div class="input-wrap has-toggle">
+              <i class="fas fa-lock il"></i>
+              <input type="password" id="confirmPassword" placeholder="Confirm your password">
+              <i class="fas fa-eye toggle-pwd" onclick="togglePasswordVisibility('confirmPassword', this)"></i>
+              <i class="fas fa-check-circle status-icon ok"></i>
+              <i class="fas fa-exclamation-circle status-icon err"></i>
+            </div>
+            <div class="field-error">Passwords do not match</div>
           </div>
 
         </div>
@@ -1271,6 +1316,9 @@
       "Zimbabwe": "USD $"
     };
 
+    let emailDuplicate = false;
+    let mobileDuplicate = false;
+
     function handleCountryChange() {
       const countryVal = document.getElementById('country').value;
       const currencySelect = document.getElementById('currency');
@@ -1310,12 +1358,48 @@
       }
     }
 
+    function isValidPassword(v) {
+      return v.length >= 8 &&
+             /[A-Z]/.test(v) &&
+             /[a-z]/.test(v) &&
+             /\d/.test(v) &&
+             /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(v);
+    }
+
+    function isConfirmPasswordValid(v) {
+      return v === document.getElementById('password').value;
+    }
+
+    function togglePasswordVisibility(id, el) {
+      const input = document.getElementById(id);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        el.className = 'fas fa-eye-slash toggle-pwd';
+      } else {
+        input.type = 'password';
+        el.className = 'fas fa-eye toggle-pwd';
+      }
+    }
+
     function validateStep(s) {
       if (s === 1) {
         let ok = true;
         ok = vf('name', v => v.length >= 3, 'f-name') && ok;
         ok = vf('email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), 'f-email') && ok;
         ok = vf('mobile', v => /^\d{10}$/.test(v), 'f-mobile') && ok;
+        ok = vf('password', isValidPassword, 'f-password') && ok;
+        ok = vf('confirmPassword', isConfirmPasswordValid, 'f-confirmPassword') && ok;
+        if (emailDuplicate) {
+          setF('f-email', false);
+          document.querySelector('#f-email .field-error').textContent = 'Email already registered';
+          ok = false;
+        }
+        if (mobileDuplicate) {
+          setF('f-mobile', false);
+          document.querySelector('#f-mobile .field-error').textContent = 'Mobile number already registered';
+          ok = false;
+        }
         return ok;
       }
       if (s === 2) {
@@ -1340,7 +1424,7 @@
       f.classList.toggle('invalid', !ok);
     }
 
-    // real-time blur validation
+    // real-time blur and initial input validation
     const rules = {
       name: { test: v => v.length >= 3, fid: 'f-name' },
       email: { test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), fid: 'f-email' },
@@ -1354,13 +1438,41 @@
       const el = document.getElementById(id);
       if (!el) return;
       const r = rules[id];
-      el.addEventListener('blur', () => setF(r.fid, r.test(el.value.trim())));
+      el.addEventListener('blur', () => {
+        if (id === 'email' && emailDuplicate) return;
+        if (id === 'mobile' && mobileDuplicate) return;
+        setF(r.fid, r.test(el.value.trim()));
+      });
       el.addEventListener('input', () => {
+        if (id === 'email') emailDuplicate = false;
+        if (id === 'mobile') mobileDuplicate = false;
         const f = document.getElementById(r.fid);
         if (f && (f.classList.contains('valid') || f.classList.contains('invalid')))
           setF(r.fid, r.test(el.value.trim()));
       });
     });
+
+    // Real-time immediate validation for password fields
+    const pwdInput = document.getElementById('password');
+    const cpwdInput = document.getElementById('confirmPassword');
+    if (pwdInput && cpwdInput) {
+      pwdInput.addEventListener('input', () => {
+        const ok = isValidPassword(pwdInput.value);
+        setF('f-password', ok);
+        if (cpwdInput.value) {
+          setF('f-confirmPassword', isConfirmPasswordValid(cpwdInput.value));
+        }
+      });
+      pwdInput.addEventListener('blur', () => {
+        setF('f-password', isValidPassword(pwdInput.value));
+      });
+      cpwdInput.addEventListener('input', () => {
+        setF('f-confirmPassword', isConfirmPasswordValid(cpwdInput.value));
+      });
+      cpwdInput.addEventListener('blur', () => {
+        setF('f-confirmPassword', isConfirmPasswordValid(cpwdInput.value));
+      });
+    }
 
     // tel sanitization
     document.getElementById('mobile').addEventListener('input', function () {
@@ -1378,13 +1490,19 @@
     }
 
     async function handleSubmit() {
+      if (!validateStep(1) || !validateStep(2)) {
+        return;
+      }
+      if (emailDuplicate || mobileDuplicate) {
+        document.getElementById('apiErrorMsg').textContent = 'Please resolve duplicate field errors before submitting.';
+        document.getElementById('apiError').classList.add('show');
+        return;
+      }
+
       const btn = document.getElementById('submitBtn');
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-circle-notch spinner"></i> Creating Account...';
       document.getElementById('apiError').classList.remove('show');
-
-      // Auto-generate backend compatible password satisfying complexity rules
-      const autoPassword = "NumenSetup2026@" + Math.floor(Math.random() * 900000 + 100000);
 
       const payload = {
         name: document.getElementById('name').value.trim(),
@@ -1395,7 +1513,7 @@
         businessPhone: document.getElementById('businessPhone').value.trim(),
         gstNumber: document.getElementById('gstNumber').value.trim(),
         address: document.getElementById('address').value.trim(),
-        password: autoPassword,
+        password: document.getElementById('password').value.trim(),
         businessCategory: document.getElementById('businessCategory').value,
         country: document.getElementById('country').value,
         currency: document.getElementById('currency').value,
@@ -1456,7 +1574,6 @@
 
 
     document.getElementById('email').addEventListener('blur', async function () {
-
       const email = this.value.trim();
       if (!email) return;
 
@@ -1464,23 +1581,37 @@
       const exists = await res.json();
 
       if (exists) {
-        document.getElementById('f-email').classList.add('invalid');
-        document.querySelector('#f-email .field-error').textContent =
-          'Email OR Mobile Number already registered';
+        emailDuplicate = true;
+        setF('f-email', false);
+        document.querySelector('#f-email .field-error').textContent = 'Email already registered';
+      } else {
+        emailDuplicate = false;
+        const fmtOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        setF('f-email', fmtOk);
+        if (!fmtOk) {
+          document.querySelector('#f-email .field-error').textContent = 'Please enter a valid email address';
+        }
       }
     });
-    document.getElementById('mobile').addEventListener('blur', async function () {
 
+    document.getElementById('mobile').addEventListener('blur', async function () {
       const mobile = this.value.trim();
       if (mobile.length !== 10) return;
 
       const res = await fetch(`/api/accounts/check-mobile?mobile=${mobile}`);
       const exists = await res.json();
-
+      console.log('Mobile check result:', exists);
       if (exists) {
-        document.getElementById('f-mobile').classList.add('invalid');
-        document.querySelector('#f-mobile .field-error').textContent =
-          'Email or Mobile Number already registered';
+        mobileDuplicate = true;
+        setF('f-mobile', false);
+        document.querySelector('#f-mobile .field-error').textContent = 'Mobile number already registered';
+      } else {
+        mobileDuplicate = false;
+        const fmtOk = /^\d{10}$/.test(mobile);
+        setF('f-mobile', fmtOk);
+        if (!fmtOk) {
+          document.querySelector('#f-mobile .field-error').textContent = 'Enter a valid 10-digit mobile number';
+        }
       }
     });
   </script>

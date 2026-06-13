@@ -39,6 +39,9 @@ public class AccountController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public AccountController() {
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<com.server.realsync.dto.SignupResponseDto> signup(
             @RequestBody com.server.realsync.dto.SignupRequestDto requestDto) {
