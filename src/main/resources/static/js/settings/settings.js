@@ -86,7 +86,7 @@ async function saveProfile() {
     if (btn) setButtonLoading(btn, true, "Save Changes");
 
     try {
-        const res = await fetch("/api/settings/profile", {
+        const res = await fetch("/api/account/settings/update", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -97,11 +97,12 @@ async function saveProfile() {
         });
 
         if (!res.ok) {
-            const err = await res.text();
-            throw new Error(err || `Server error: ${res.status}`);
+            const err = await res.json();
+            throw new Error(err.message || `Server error: ${res.status}`);
         }
 
-        showToast("Profile updated successfully!", "success");
+        const data = await res.json();
+        showToast(data.message || "Profile updated successfully!", "success");
 
         // Reflect name change in sidebar avatar text if present
         const avatarSpans = document.querySelectorAll(".w-9.h-9.rounded-full span, .w-8.h-8.rounded-full span");
@@ -121,52 +122,82 @@ async function saveProfile() {
 
 
 async function saveBusinessDetails() {
-
     const payload = {
-        businessName: document.getElementById("businessName").value,
-        gstNumber: document.getElementById("gstNumber").value,
-        businessEmail: document.getElementById("businessEmail").value,
-        businessPhone: document.getElementById("businessPhone").value,
-        address: document.getElementById("businessAddress").value
+        businessName: document.getElementById("businessName")?.value,
+        gstNumber: document.getElementById("gstNumber")?.value,
+        businessEmail: document.getElementById("businessEmail")?.value,
+        businessPhone: document.getElementById("businessPhone")?.value,
+        category: document.getElementById("businessCategory")?.value,
+        subcategory: document.getElementById("businessSubcategory")?.value,
+        address: document.getElementById("businessAddress")?.value
     };
 
-    try {
+    const btn = document.querySelector('[onclick="saveBusinessDetails()"]');
+    if (btn) setButtonLoading(btn, true, "Save Business Details");
 
-        const response = await fetch("/api/settings/account/business-details", {
-            method: "PUT",
+    try {
+        const response = await fetch("/api/account/settings/update", {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(payload)
         });
 
-        const message = await response.text();
-
-        if (response.ok) {
-            showToast(message || "Business details updated");
-        } else {
-            showToast(message || "Update failed", "error");
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.message || "Update failed");
         }
+
+        const data = await response.json();
+        showToast(data.message || "Business details updated successfully!");
 
     } catch (err) {
         console.error(err);
-        showToast("Something went wrong", "error");
+        showToast(err.message || "Something went wrong", "error");
+    } finally {
+        if (btn) setButtonLoading(btn, false, "Save Business Details");
+    }
+}
+
+// ─── Save Localization ─────────────────────────────────────────
+async function saveLocalization() {
+    const payload = {
+        country: document.getElementById("country")?.value,
+        timezone: document.getElementById("timezone")?.value,
+        language: document.getElementById("language")?.value,
+        currency: document.getElementById("currency")?.value
+    };
+
+    const btn = document.querySelector('[onclick="saveLocalization()"]');
+    if (btn) setButtonLoading(btn, true, "Save Regional Settings");
+
+    try {
+        const response = await fetch("/api/account/settings/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            const err = await response.json();
+            throw new Error(err.message || "Update failed");
+        }
+
+        const data = await response.json();
+        showToast(data.message || "Localization settings updated successfully!");
+
+    } catch (err) {
+        console.error(err);
+        showToast(err.message || "Something went wrong", "error");
+    } finally {
+        if (btn) setButtonLoading(btn, false, "Save Regional Settings");
     }
 }
 
 // ─── Update Password ──────────────────────────────────────────
-//
-// ⚠️  SECURITY NOTE (for your SettingsController):
-//     Your current /api/settings/password endpoint accepts a
-//     userId in the request body — this lets any logged-in user
-//     change another user's password by spoofing the userId.
-//
-//     Fix: In SettingsController.updatePassword(), replace
-//       userService.findByUserId(dto.getUserId())
-//     with
-//       User user = SecurityUtil.getCurrentUser();   // same as updateProfile
-//     and remove userId from PasswordResetDto entirely.
-//
 async function updatePassword() {
     const currentPassword = document.getElementById("currentPassword")?.value;
     const newPassword = document.getElementById("newPassword")?.value;
@@ -178,7 +209,7 @@ async function updatePassword() {
         return;
     }
 
-    if (newPassword.length < 3) {
+    if (newPassword.length < 8) {
         showToast("New password must be at least 8 characters.", "error");
         return;
     }
@@ -205,14 +236,11 @@ async function updatePassword() {
             body: JSON.stringify({
                 currentPassword: currentPassword,
                 newPassword: newPassword,
-                // userId is intentionally NOT sent here — see security note above.
-                // Once your backend is fixed to use SecurityUtil, remove userId from PasswordResetDto.
             }),
         });
 
         if (!res.ok) {
             const err = await res.text();
-            // Common case: wrong current password
             if (res.status === 401 || res.status === 403) {
                 throw new Error("Current password is incorrect.");
             }
@@ -235,10 +263,6 @@ async function updatePassword() {
     }
 }
 
-
-
-
-
 // Update existing switch function to include 'groups'
 function switchSettingsTab(t) {
     ['general', 'gateways', 'catalog', 'users', 'groups'].forEach(x => {
@@ -260,8 +284,7 @@ function switchSettingsTab(t) {
 // Group Management Logic - FETCH FROM DATABASE
 async function renderGroups() {
     try {
-        // Points to your Controller: @GetMapping("/account/{accountId}")
-        const response = await fetch(`/api/customer-groups/account/${currentAccountId}`);
+        const response = await fetch(`/api/customer-groups/my-groups`);
         const groups = await response.json();
 
         const grid = document.getElementById('groupListGrid');
@@ -306,16 +329,17 @@ async function saveNewGroup() {
     const response = await fetch('/api/customer-groups/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name }) // Only send the name
+        body: JSON.stringify({ name: name })
     });
 
     if (response.ok) {
-        window.location.reload(); // Refresh to see the new group card
+        window.location.reload();
     } else {
         const msg = await response.text();
-        alert(msg); // "A group with this name already exists."
+        alert(msg);
     }
 }
+
 // DELETE FROM DATABASE
 async function deleteGroup(id) {
     if (!confirm("Are you sure? Customers in this group will be moved to 'Default'.")) return;
@@ -326,7 +350,7 @@ async function deleteGroup(id) {
         });
 
         if (response.ok) {
-            renderGroups(); // Refresh
+            renderGroups();
             if (typeof showSettingsToast === 'function') showSettingsToast('Group deleted');
         }
     } catch (error) {

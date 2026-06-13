@@ -20,6 +20,8 @@ import com.server.realsync.repo.RoleRepository;
 import com.server.realsync.repo.UserRepository;
 import com.server.realsync.repo.AccountPlanRepository;
 import com.server.realsync.repo.PlanRepository;
+import com.server.realsync.repo.CreditTransactionRepository;
+import com.server.realsync.entity.CreditTransaction;
 
 @Service
 public class AccountService {
@@ -41,6 +43,9 @@ public class AccountService {
 
     @Autowired
     private PlanRepository planRepository;
+
+    @Autowired
+    private CreditTransactionRepository creditTransactionRepository;
 
     public List<Account> findAll() {
         return repository.findAll();
@@ -109,7 +114,7 @@ public class AccountService {
 
         // Create User
         User user = new User();
-        user.setUsername(dto.getMobile());
+        user.setUsername(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setEmail(dto.getEmail());
         user.setFullName(dto.getName());
@@ -143,7 +148,18 @@ public class AccountService {
         accountPlan.setStartDate(LocalDate.now());
         accountPlan.setEndDate(LocalDate.now().plusDays(30)); // default 30 days validity period
         accountPlan.setBalance(credits);
-        accountPlanRepository.save(accountPlan);
+        accountPlan.setTotalCredits(credits);
+        AccountPlan savedAccountPlan = accountPlanRepository.save(accountPlan);
+
+        // Insert CreditTransaction
+        CreditTransaction transaction = new CreditTransaction();
+        transaction.setAccountId(savedAccount.getId());
+        transaction.setAccountPlanId(savedAccountPlan.getId());
+        transaction.setType("PLAN_BOUGHT");
+        transaction.setCredits(credits);
+        transaction.setBalanceAfter(credits);
+        transaction.setRemarks(planName + " Plan Purchased");
+        creditTransactionRepository.save(transaction);
     }
 
     private void validateSignupRequest(SignupRequestDto dto) {

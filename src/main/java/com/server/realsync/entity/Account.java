@@ -68,6 +68,15 @@ public class Account {
 	@Column(length = 30)
 	private String language;
 
+	@Column(name = "timezone", length = 50)
+	private String timezone;
+
+	@Column(name = "date_format", length = 20)
+	private String dateFormat;
+
+	@Column(name = "number_format", length = 20)
+	private String numberFormat;
+
 	// Getters and Setters
 	public Integer getId() {
 		return id;
@@ -167,52 +176,61 @@ public class Account {
 	public void setBusinessName(String businessName) {
 		this.businessName = businessName;
 	}
+
 	public String getGstNumber() {
-    return gstNumber;
-}
+		return gstNumber;
+	}
 
-public void setGstNumber(String gstNumber) {
-    this.gstNumber = gstNumber;
-}
+	public void setGstNumber(String gstNumber) {
+		this.gstNumber = gstNumber;
+	}
 
-public String getBusinessEmail() {
-    return businessEmail;
-}
+	public String getBusinessEmail() {
+		return businessEmail;
+	}
 
-public void setBusinessEmail(String businessEmail) {
-    this.businessEmail = businessEmail;
-}
+	public void setBusinessEmail(String businessEmail) {
+		this.businessEmail = businessEmail;
+	}
 
-public String getBusinessPhone() {
-    return businessPhone;
-}
+	public String getBusinessPhone() {
+		return businessPhone;
+	}
 
-public void setBusinessPhone(String businessPhone) {
-    this.businessPhone = businessPhone;
-}
+	public void setBusinessPhone(String businessPhone) {
+		this.businessPhone = businessPhone;
+	}
 
-public String getCountry() {
-    return country;
-}
+	public String getCountry() {
+		return country;
+	}
 
-public void setCountry(String country) {
-    this.country = country;
-}
+	public void setCountry(String country) {
+		this.country = country;
+	}
 
-public String getCurrency() {
-    return currency;
-}
+	public String getCurrency() {
+		return currency;
+	}
 
-public void setCurrency(String currency) {
-    this.currency = currency;
-}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 
-public String getLanguage() {
-    return language;
-}
+	public String getLanguage() {
+		return language;
+	}
 
-public void setLanguage(String language) {
-    this.language = language;
-}
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
+	}
 
 }

@@ -49,6 +49,9 @@ public class AccountPlan {
     @Column(name = "balance")
     private double balance;
     
+    @Column(name = "total_credits")
+    private Double totalCredits;
+    
     public Integer getId() {
         return id;
     }
@@ -113,6 +116,14 @@ public class AccountPlan {
 
 	public void setBalance(double balance) {
 		this.balance = balance;
+	}
+
+	public Double getTotalCredits() {
+		return totalCredits;
+	}
+
+	public void setTotalCredits(Double totalCredits) {
+		this.totalCredits = totalCredits;
 	}
 
 }

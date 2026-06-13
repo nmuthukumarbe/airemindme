@@ -13,6 +13,8 @@ import com.server.realsync.entity.Account;
 import com.server.realsync.entity.AccountPlan;
 import com.server.realsync.entity.Invoice;
 import com.server.realsync.repo.AccountPlanRepository;
+import com.server.realsync.repo.CreditTransactionRepository;
+import com.server.realsync.entity.CreditTransaction;
 import com.server.realsync.util.GmailSender;
 
 @Service
@@ -20,6 +22,9 @@ public class AccountPlanService {
 
     @Autowired
     private AccountPlanRepository repository;
+    
+    @Autowired
+    private CreditTransactionRepository creditTransactionRepository;
     
     @Autowired
     private PlanService planService;
@@ -59,41 +64,37 @@ public class AccountPlanService {
     }
     
 
+    @org.springframework.transaction.annotation.Transactional
     public AccountPlan updateAccountPlanUsage(AccountPlan accountPlan, Account account, Integer planId) {
-		//Invoice invoice = new Invoice();
-		//invoice.setAccountId(account.getId());
-		
+		if (planId != null) {
+			planService.findById(planId).ifPresent(accountPlan::setPlan);
+		}
 
-		if (planId == 1) {
-			accountPlan.setBalance(accountPlan.getBalance()+999.0);
-			accountPlan.setPlan(planService.findById(1).get());
-			accountPlan.setStartDate(LocalDate.now(ZoneId.of("Asia/Kolkata")));
-			accountPlan.setEndDate(LocalDate.now(ZoneId.of("Asia/Kolkata")).plusMonths(2));
-			//invoice.setAmount(999.0);
-			//invoice.setPlanId(1);
-			//transaction.setTransactionAmount(999.0);
-		} else if (planId == 2) {
-			accountPlan.setBalance(accountPlan.getBalance()+4999.0);
-			accountPlan.setPlan(planService.findById(2).get());
-			accountPlan.setStartDate(LocalDate.now(ZoneId.of("Asia/Kolkata")));
-			accountPlan.setEndDate(LocalDate.now(ZoneId.of("Asia/Kolkata")).plusMonths(12));
-			//invoice.setAmount(4999.0);
-			//invoice.setPlanId(2);
-			//transaction.setTransactionAmount(4999.0);
-		} 
-		//transaction.setBalanceAfterTransaction(accountPlan.getBalance());
-		//transaction.setAccountPlanId(accountPlan.getId());
-		//transaction.setTransactionDate(LocalDateTime.now(ZoneId.of("Asia/Kolkata")));
-		//transaction.setTransactionDirection("CREDIT");
-		//transaction.setTransactionType("RECHARGE");
-		//this.createTransaction(transaction);
-		//invoice.setStartDate(accountPlan.getStartDate());
-		//invoice.setEndDate(accountPlan.getEndDate());
-		//invoice.setModeOfPayment("GPAY");
-		//invoiceService.saveInvoice(invoice);
-		repository.save(accountPlan);
-		//gmailSender.accounPaymentConfirmation(account, planId, invoice);
-		return accountPlan;
+		String planName = (accountPlan.getPlan() != null) ? accountPlan.getPlan().getName() : "Starter";
+		double credits = 50.0;
+		if ("Growth".equalsIgnoreCase(planName)) {
+			credits = 150.0;
+		} else if ("Business".equalsIgnoreCase(planName)) {
+			credits = 300.0;
+		}
+
+		accountPlan.setTotalCredits(credits);
+		accountPlan.setBalance(credits);
+		accountPlan.setStartDate(LocalDate.now(ZoneId.of("Asia/Kolkata")));
+		accountPlan.setEndDate(LocalDate.now(ZoneId.of("Asia/Kolkata")).plusDays(30));
+		AccountPlan saved = repository.save(accountPlan);
+
+		// Insert CreditTransaction
+		CreditTransaction transaction = new CreditTransaction();
+		transaction.setAccountId(account.getId());
+		transaction.setAccountPlanId(saved.getId());
+		transaction.setType("PLAN_RENEWED");
+		transaction.setCredits(credits);
+		transaction.setBalanceAfter(credits);
+		transaction.setRemarks(planName + " Plan Renewed");
+		creditTransactionRepository.save(transaction);
+
+		return saved;
 	}
    
 

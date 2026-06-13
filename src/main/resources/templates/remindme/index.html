@@ -858,6 +858,7 @@
       padding: 100px 1.5rem;
       background: var(--white);
     }
+
     .industry-grid {
       max-width: 1280px;
       margin: 0 auto;
@@ -865,6 +866,7 @@
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 2rem;
     }
+
     .industry-card {
       background: var(--slate-50);
       border: 1px solid var(--slate-200);
@@ -874,11 +876,13 @@
       position: relative;
       overflow: hidden;
     }
+
     .industry-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
       border-color: var(--primary-blue);
     }
+
     .industry-card-icon {
       width: 50px;
       height: 50px;
@@ -891,12 +895,14 @@
       font-size: 1.5rem;
       margin-bottom: 1.5rem;
     }
+
     .industry-card h3 {
       font-size: 1.25rem;
       font-weight: 700;
       color: var(--dark-slate);
       margin-bottom: 0.75rem;
     }
+
     .industry-card p {
       color: var(--slate-600);
       font-size: 0.95rem;
@@ -908,6 +914,7 @@
       padding: 100px 1.5rem;
       background: var(--slate-50);
     }
+
     .showcase-tabs {
       display: flex;
       justify-content: center;
@@ -915,6 +922,7 @@
       margin-bottom: 3rem;
       flex-wrap: wrap;
     }
+
     .showcase-tab {
       padding: 0.75rem 1.5rem;
       border-radius: 50px;
@@ -925,12 +933,14 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
+
     .showcase-tab.active {
       background: linear-gradient(to right, var(--primary-blue), var(--primary-purple));
       color: var(--white);
       border-color: transparent;
       box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
     }
+
     .mockup-container {
       max-width: 1000px;
       margin: 0 auto;
@@ -940,6 +950,7 @@
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
       overflow: hidden;
     }
+
     .mockup-header {
       background: #1e293b;
       padding: 0.75rem 1.5rem;
@@ -948,14 +959,25 @@
       gap: 0.5rem;
       border-bottom: 1px solid #334155;
     }
+
     .mockup-dot {
       width: 12px;
       height: 12px;
       border-radius: 50%;
     }
-    .mockup-dot.red { background: #ef4444; }
-    .mockup-dot.yellow { background: #f59e0b; }
-    .mockup-dot.green { background: #10b981; }
+
+    .mockup-dot.red {
+      background: #ef4444;
+    }
+
+    .mockup-dot.yellow {
+      background: #f59e0b;
+    }
+
+    .mockup-dot.green {
+      background: #10b981;
+    }
+
     .mockup-address {
       background: #0f172a;
       color: #94a3b8;
@@ -967,21 +989,32 @@
       max-width: 400px;
       text-align: center;
     }
+
     .mockup-body {
       padding: 2rem;
       color: #f1f5f9;
       min-height: 400px;
     }
+
     .mockup-view {
       display: none;
     }
+
     .mockup-view.active {
       display: block;
       animation: fadeIn 0.4s ease forwards;
     }
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* AI Section */
@@ -989,6 +1022,7 @@
       padding: 100px 1.5rem;
       background: var(--white);
     }
+
     .ai-grid {
       max-width: 1280px;
       margin: 0 auto;
@@ -996,6 +1030,7 @@
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 2rem;
     }
+
     .ai-card {
       background: linear-gradient(135deg, rgba(37, 99, 235, 0.02), rgba(147, 51, 234, 0.02));
       border: 1px solid var(--slate-200);
@@ -1003,10 +1038,12 @@
       padding: 2.5rem;
       transition: all 0.3s ease;
     }
+
     .ai-card:hover {
       border-color: var(--primary-purple);
       box-shadow: 0 15px 30px rgba(147, 51, 234, 0.05);
     }
+
     .ai-prompt {
       background: var(--white);
       border: 1px solid var(--slate-200);
@@ -1017,6 +1054,7 @@
       color: var(--slate-600);
       position: relative;
     }
+
     .ai-prompt::before {
       content: "AI Prompt Preview";
       position: absolute;
@@ -1028,6 +1066,7 @@
       font-weight: 700;
       color: var(--primary-purple);
     }
+
     .ai-output {
       background: #0f172a;
       color: var(--white);
@@ -1042,6 +1081,7 @@
       padding: 100px 1.5rem;
       background: var(--slate-50);
     }
+
     .whatsapp-grid {
       max-width: 1280px;
       margin: 0 auto;
@@ -1049,6 +1089,7 @@
       grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
       gap: 2rem;
     }
+
     .whatsapp-preview-card {
       background: var(--white);
       border: 1px solid var(--slate-200);
@@ -1059,6 +1100,7 @@
       gap: 1.25rem;
       justify-content: space-between;
     }
+
     .whatsapp-chat-container {
       background: #efeae2;
       border-radius: 1rem;
@@ -1069,6 +1111,7 @@
       min-height: 200px;
       border: 1px solid var(--slate-200);
     }
+
     .whatsapp-chat-bubble {
       background: #d9fdd3;
       color: #111b21;
@@ -1078,8 +1121,9 @@
       position: relative;
       align-self: flex-start;
       max-width: 90%;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
+
     .whatsapp-chat-bubble::after {
       content: "";
       position: absolute;
@@ -1091,6 +1135,7 @@
       border-width: 0 8px 8px 0;
       border-color: transparent #d9fdd3 transparent transparent;
     }
+
     .whatsapp-chat-bubble .time {
       display: block;
       text-align: right;
@@ -1098,6 +1143,7 @@
       color: #667781;
       margin-top: 0.5rem;
     }
+
     .whatsapp-badge {
       display: inline-flex;
       align-items: center;
@@ -1112,6 +1158,7 @@
       padding: 100px 1.5rem;
       background: var(--white);
     }
+
     .journey-flow {
       max-width: 1200px;
       margin: 4rem auto 0;
@@ -1120,6 +1167,7 @@
       align-items: center;
       gap: 1rem;
     }
+
     .journey-step {
       flex: 1;
       background: var(--slate-50);
@@ -1130,11 +1178,13 @@
       position: relative;
       transition: all 0.3s ease;
     }
+
     .journey-step:hover {
       border-color: var(--primary-blue);
       transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(37,99,235,0.04);
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.04);
     }
+
     .journey-icon {
       width: 55px;
       height: 55px;
@@ -1148,17 +1198,20 @@
       font-size: 1.35rem;
       box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
     }
+
     .journey-step h3 {
       font-size: 1.15rem;
       font-weight: 700;
       color: var(--dark-slate);
       margin-bottom: 0.5rem;
     }
+
     .journey-step p {
       color: var(--slate-600);
       font-size: 0.9rem;
       line-height: 1.5;
     }
+
     .journey-arrow {
       color: var(--slate-400);
       font-size: 1.5rem;
@@ -1172,32 +1225,39 @@
       padding: 100px 1.5rem;
       background: var(--white);
     }
+
     .comparison-table-wrapper {
       max-width: 1000px;
       margin: 3rem auto 0;
       overflow-x: auto;
       border: 1px solid var(--slate-200);
       border-radius: 1.5rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
     }
+
     .comparison-table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
       background: var(--white);
     }
-    .comparison-table th, .comparison-table td {
+
+    .comparison-table th,
+    .comparison-table td {
       padding: 1.25rem 1.5rem;
       border-bottom: 1px solid var(--slate-200);
     }
+
     .comparison-table th {
       background: var(--slate-50);
       font-weight: 700;
       color: var(--dark-slate);
     }
+
     .comparison-table tr:last-child td {
       border-bottom: none;
     }
+
     .comparison-badge {
       font-weight: 600;
       padding: 0.25rem 0.75rem;
@@ -1207,10 +1267,12 @@
       align-items: center;
       gap: 0.25rem;
     }
+
     .comparison-yes {
       background: #d1fae5;
       color: #065f46;
     }
+
     .comparison-no {
       background: #fee2e2;
       color: #991b1b;
@@ -1221,6 +1283,7 @@
       padding: 100px 1.5rem;
       background: var(--slate-50);
     }
+
     .testimonials-grid {
       max-width: 1280px;
       margin: 3rem auto 0;
@@ -1228,27 +1291,32 @@
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 2rem;
     }
+
     .testimonial-card {
       background: var(--white);
       border: 1px solid var(--slate-200);
       border-radius: 1.5rem;
       padding: 2.5rem;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
       transition: all 0.3s;
     }
+
     .testimonial-card:hover {
-      box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
     }
+
     .testimonial-stars {
       color: #fbbf24;
       margin-bottom: 1rem;
     }
+
     .testimonial-user {
       display: flex;
       align-items: center;
       gap: 1rem;
       margin-top: 1.5rem;
     }
+
     .testimonial-avatar {
       width: 48px;
       height: 48px;
@@ -1256,15 +1324,18 @@
       background: var(--slate-200);
       object-fit: cover;
     }
+
     .testimonial-info h4 {
       font-size: 1rem;
       font-weight: 700;
       color: var(--dark-slate);
     }
+
     .testimonial-info p {
       font-size: 0.85rem;
       color: var(--slate-600);
     }
+
     .trust-badges {
       max-width: 900px;
       margin: 5rem auto 0;
@@ -1276,6 +1347,7 @@
       border-top: 1px solid var(--slate-200);
       padding-top: 4rem;
     }
+
     .trust-badge-item {
       text-align: center;
       display: flex;
@@ -1285,6 +1357,7 @@
       color: var(--slate-600);
       max-width: 250px;
     }
+
     .trust-badge-item i {
       font-size: 2.5rem;
       color: var(--primary-blue);
@@ -1292,11 +1365,13 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
     .trust-badge-item h4 {
       font-size: 1.1rem;
       font-weight: 700;
       color: var(--dark-slate);
     }
+
     .trust-badge-item p {
       font-size: 0.85rem;
       line-height: 1.5;
@@ -1307,6 +1382,7 @@
       padding: 100px 1.5rem;
       background: var(--white);
     }
+
     .faq-list {
       max-width: 850px;
       margin: 3rem auto 0;
@@ -1314,6 +1390,7 @@
       flex-direction: column;
       gap: 1rem;
     }
+
     .faq-item {
       border: 1px solid var(--slate-200);
       border-radius: 1rem;
@@ -1321,6 +1398,7 @@
       background: var(--white);
       transition: all 0.3s ease;
     }
+
     .faq-question {
       padding: 1.5rem;
       font-weight: 700;
@@ -1332,6 +1410,7 @@
       user-select: none;
       font-size: 1.1rem;
     }
+
     .faq-answer {
       padding: 0 1.5rem 1.5rem;
       color: var(--slate-600);
@@ -1339,14 +1418,17 @@
       line-height: 1.7;
       font-size: 0.95rem;
     }
+
     .faq-item.active {
       border-color: var(--primary-blue);
-      box-shadow: 0 5px 15px rgba(37,99,235,0.03);
+      box-shadow: 0 5px 15px rgba(37, 99, 235, 0.03);
     }
+
     .faq-item.active .faq-question i {
       transform: rotate(180deg);
       color: var(--primary-blue);
     }
+
     .faq-question i {
       transition: transform 0.3s ease;
       color: var(--slate-400);
@@ -1360,6 +1442,7 @@
       gap: 1rem;
       margin-bottom: 4rem;
     }
+
     .pricing-toggle-container {
       background: var(--slate-100);
       padding: 0.35rem;
@@ -1372,6 +1455,7 @@
       justify-content: space-between;
       border: 1px solid var(--slate-200);
     }
+
     .pricing-toggle-option {
       flex: 1;
       text-align: center;
@@ -1383,9 +1467,11 @@
       transition: color 0.3s;
       user-select: none;
     }
+
     .pricing-toggle-option.active {
       color: var(--white);
     }
+
     .pricing-toggle-bg {
       position: absolute;
       height: calc(100% - 0.7rem);
@@ -1407,12 +1493,9 @@
   <header>
     <div class="header-container">
       <a href="#" class="logo">
-        <div
-				class="logo-icon inline-flex items-center justify-center w-16 h-16 rounded-3xl overflow-hidden shadow-lg shadow-indigo-200 mb-4 bg-white">
-
-				<img src="/assets/logo.jpeg" alt="Numen Logo" class="w-full h-full object-cover">
-
-			</div>
+        <div class="logo-icon inline-flex items-center justify-center w-16 h-16 rounded-3xl overflow-hidden shadow-lg shadow-indigo-200 mb-4 bg-white">
+          <img src="/assets/logo.jpeg" alt="Numen Logo" class="w-full h-full object-cover">
+        </div>
         <span class="logo-text">Numen</span>
       </a>
 
@@ -1500,7 +1583,8 @@
           <i class="fas fa-car"></i>
         </div>
         <h3>Car Service & Wash Centers</h3>
-        <p>Send service due alerts based on vehicle mileage, coordinate bays, issue professional digital estimates, and request post-service feedback automatically.</p>
+        <p>Send service due alerts based on vehicle mileage, coordinate bays, issue professional digital estimates, and
+          request post-service feedback automatically.</p>
       </div>
 
       <!-- Dental Clinic & Doctors -->
@@ -1509,7 +1593,8 @@
           <i class="fas fa-user-md"></i>
         </div>
         <h3>Dental Clinics & Doctors</h3>
-        <p>Manage patient registration, schedule appointments, send WhatsApp slot confirmations, and issue pre-appointment instructions to minimize no-shows.</p>
+        <p>Manage patient registration, schedule appointments, send WhatsApp slot confirmations, and issue
+          pre-appointment instructions to minimize no-shows.</p>
       </div>
 
       <!-- Salons -->
@@ -1518,7 +1603,8 @@
           <i class="fas fa-spa"></i>
         </div>
         <h3>Salons & Beauty Parlors</h3>
-        <p>Provide 24/7 online booking page, assign stylists, send birthday greetings with seasonal discount codes, and keep chairs filled.</p>
+        <p>Provide 24/7 online booking page, assign stylists, send birthday greetings with seasonal discount codes, and
+          keep chairs filled.</p>
       </div>
 
       <!-- Gyms -->
@@ -1527,7 +1613,8 @@
           <i class="fas fa-dumbbell"></i>
         </div>
         <h3>Gyms & Fitness Centers</h3>
-        <p>Automate membership expiration notifications, coordinate trainer schedules, send motivational greetings, and track member attendance seamlessly.</p>
+        <p>Automate membership expiration notifications, coordinate trainer schedules, send motivational greetings, and
+          track member attendance seamlessly.</p>
       </div>
 
       <!-- Hospitals -->
@@ -1536,7 +1623,8 @@
           <i class="fas fa-hospital"></i>
         </div>
         <h3>Hospitals & Healthcare</h3>
-        <p>Enable online doctor booking, organize department shifts, notify emergency schedules, and request patient health check reminders.</p>
+        <p>Enable online doctor booking, organize department shifts, notify emergency schedules, and request patient
+          health check reminders.</p>
       </div>
 
       <!-- Home Services -->
@@ -1545,7 +1633,8 @@
           <i class="fas fa-tools"></i>
         </div>
         <h3>AC & RO Service Providers</h3>
-        <p>Schedule technician dispatches, auto-remind customers for periodic filter replacements, send PDF invoices on completion, and capture online payments.</p>
+        <p>Schedule technician dispatches, auto-remind customers for periodic filter replacements, send PDF invoices on
+          completion, and capture online payments.</p>
       </div>
     </div>
   </section>
@@ -1577,23 +1666,32 @@
       <div class="mockup-body">
         <!-- Dashboard View -->
         <div id="mockup-dashboard" class="mockup-view active" style="font-family: system-ui, sans-serif;">
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
             <h4 style="margin:0; font-size: 1.25rem;">Dashboard Overview</h4>
-            <span style="background: rgba(37, 99, 235, 0.2); color: #60a5fa; font-size: 0.8rem; padding: 0.25rem 0.75rem; border-radius: 50px; font-weight: 700;">Live Metrics</span>
+            <span
+              style="background: rgba(37, 99, 235, 0.2); color: #60a5fa; font-size: 0.8rem; padding: 0.25rem 0.75rem; border-radius: 50px; font-weight: 700;">Live
+              Metrics</span>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+          <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
             <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155;">
-              <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">Total Sales</p>
+              <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">Total
+                Sales</p>
               <h3 style="font-size: 1.75rem; color: #fff; margin:0;">₹1,84,500</h3>
-              <span style="color: #10b981; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-arrow-up"></i> +14.2%</span>
+              <span style="color: #10b981; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-arrow-up"></i>
+                +14.2%</span>
             </div>
             <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155;">
-              <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">Active Clients</p>
+              <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">Active
+                Clients</p>
               <h3 style="font-size: 1.75rem; color: #fff; margin:0;">1,420</h3>
-              <span style="color: #10b981; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-arrow-up"></i> +8.1%</span>
+              <span style="color: #10b981; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-arrow-up"></i>
+                +8.1%</span>
             </div>
             <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155;">
-              <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">WhatsApp Sent</p>
+              <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">WhatsApp
+                Sent</p>
               <h3 style="font-size: 1.75rem; color: #fff; margin:0;">12,850</h3>
               <span style="color: #60a5fa; font-size: 0.75rem; font-weight: 600;">99.2% Delivered</span>
             </div>
@@ -1601,11 +1699,13 @@
           <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155;">
             <h5 style="margin: 0 0 1rem 0; font-size: 0.95rem; color: #fff;">Recent Activity</h5>
             <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;">
-              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+              <div
+                style="display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
                 <span>🚗 Car Service reminder sent to <strong>Ramesh Kumar</strong></span>
                 <span style="color: #10b981; font-weight: 600;">Delivered</span>
               </div>
-              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+              <div
+                style="display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
                 <span>📅 Appointment booked by <strong>Dr. Priya (Dental Clinic)</strong></span>
                 <span style="color: #60a5fa; font-weight: 600;">Scheduled</span>
               </div>
@@ -1619,9 +1719,12 @@
 
         <!-- Customer Management View -->
         <div id="mockup-customers" class="mockup-view" style="font-family: system-ui, sans-serif;">
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
             <h4 style="margin:0; font-size: 1.25rem;">Customer Management</h4>
-            <button style="background: #2563eb; border: none; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600;"><i class="fas fa-plus"></i> Add Customer</button>
+            <button
+              style="background: #2563eb; border: none; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600;"><i
+                class="fas fa-plus"></i> Add Customer</button>
           </div>
           <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; color: #cbd5e1;">
             <thead>
@@ -1639,21 +1742,27 @@
                 <td style="padding: 0.75rem;">+91 98765 43210</td>
                 <td style="padding: 0.75rem;">Car Service</td>
                 <td style="padding: 0.75rem;">Yesterday</td>
-                <td style="padding: 0.75rem;"><span style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Active</span></td>
+                <td style="padding: 0.75rem;"><span
+                    style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Active</span>
+                </td>
               </tr>
               <tr style="border-bottom: 1px solid #1e293b;">
                 <td style="padding: 0.75rem; font-weight: 600; color: #fff;">Dr. Anjali Verma</td>
                 <td style="padding: 0.75rem;">+91 99887 76655</td>
                 <td style="padding: 0.75rem;">Dental Clinic</td>
                 <td style="padding: 0.75rem;">3 days ago</td>
-                <td style="padding: 0.75rem;"><span style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Active</span></td>
+                <td style="padding: 0.75rem;"><span
+                    style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Active</span>
+                </td>
               </tr>
               <tr style="border-bottom: 1px solid #1e293b;">
                 <td style="padding: 0.75rem; font-weight: 600; color: #fff;">Sneha Reddy</td>
                 <td style="padding: 0.75rem;">+91 95551 22334</td>
                 <td style="padding: 0.75rem;">Salon</td>
                 <td style="padding: 0.75rem;">1 week ago</td>
-                <td style="padding: 0.75rem;"><span style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Active</span></td>
+                <td style="padding: 0.75rem;"><span
+                    style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Active</span>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -1661,11 +1770,13 @@
 
         <!-- Invoices View -->
         <div id="mockup-invoices" class="mockup-view" style="font-family: system-ui, sans-serif;">
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
             <h4 style="margin:0; font-size: 1.25rem;">Invoice Generator</h4>
             <span style="font-weight: 700; color: #60a5fa;">#INV-2026-042</span>
           </div>
-          <div style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid #334155; font-size: 0.85rem;">
+          <div
+            style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid #334155; font-size: 0.85rem;">
             <div style="display:flex; justify-content: space-between; margin-bottom: 1rem;">
               <div>
                 <strong>Billed To:</strong>
@@ -1695,55 +1806,74 @@
               <span>₹3,799.00</span>
             </div>
             <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
-              <button style="background: #22c55e; border: none; color: #fff; padding: 0.4rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;"><i class="fab fa-whatsapp"></i> Send PDF Invoice</button>
+              <button
+                style="background: #22c55e; border: none; color: #fff; padding: 0.4rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;"><i
+                  class="fab fa-whatsapp"></i> Send PDF Invoice</button>
             </div>
           </div>
         </div>
 
         <!-- Appointments View -->
         <div id="mockup-appointments" class="mockup-view" style="font-family: system-ui, sans-serif;">
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
             <h4 style="margin:0; font-size: 1.25rem;">Upcoming Appointments</h4>
-            <span style="font-weight: 600; font-size: 0.8rem; background: rgba(37,99,235,0.2); color:#60a5fa; padding: 0.25rem 0.5rem; border-radius: 4px;">Today's Schedule</span>
+            <span
+              style="font-weight: 600; font-size: 0.8rem; background: rgba(37,99,235,0.2); color:#60a5fa; padding: 0.25rem 0.5rem; border-radius: 4px;">Today's
+              Schedule</span>
           </div>
           <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-            <div style="background: #1e293b; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #3b82f6; display: flex; justify-content: space-between; align-items: center;">
+            <div
+              style="background: #1e293b; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #3b82f6; display: flex; justify-content: space-between; align-items: center;">
               <div>
                 <strong style="color: #fff;">10:00 AM - Vikram Singh</strong>
-                <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: #94a3b8;">AC Repair & Maintenance Dispatch</p>
+                <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: #94a3b8;">AC Repair & Maintenance Dispatch
+                </p>
               </div>
-              <span style="font-size: 0.8rem; background: rgba(59, 130, 246, 0.1); color: #60a5fa; padding: 0.25rem 0.5rem; border-radius: 4px;">Assigned</span>
+              <span
+                style="font-size: 0.8rem; background: rgba(59, 130, 246, 0.1); color: #60a5fa; padding: 0.25rem 0.5rem; border-radius: 4px;">Assigned</span>
             </div>
-            <div style="background: #1e293b; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #10b981; display: flex; justify-content: space-between; align-items: center;">
+            <div
+              style="background: #1e293b; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #10b981; display: flex; justify-content: space-between; align-items: center;">
               <div>
                 <strong style="color: #fff;">11:30 AM - Priya Sharma</strong>
                 <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: #94a3b8;">Hair Spa & Detailing Booking</p>
               </div>
-              <span style="font-size: 0.8rem; background: rgba(16, 185, 129, 0.1); color: #34d399; padding: 0.25rem 0.5rem; border-radius: 4px;">Confirmed</span>
+              <span
+                style="font-size: 0.8rem; background: rgba(16, 185, 129, 0.1); color: #34d399; padding: 0.25rem 0.5rem; border-radius: 4px;">Confirmed</span>
             </div>
-            <div style="background: #1e293b; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #fbbf24; display: flex; justify-content: space-between; align-items: center;">
+            <div
+              style="background: #1e293b; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #fbbf24; display: flex; justify-content: space-between; align-items: center;">
               <div>
                 <strong style="color: #fff;">02:00 PM - Amit Patel</strong>
                 <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: #94a3b8;">Personal Training Session (Gym)</p>
               </div>
-              <span style="font-size: 0.8rem; background: rgba(251, 191, 36, 0.1); color: #fcd34d; padding: 0.25rem 0.5rem; border-radius: 4px;">Pending Confirmation</span>
+              <span
+                style="font-size: 0.8rem; background: rgba(251, 191, 36, 0.1); color: #fcd34d; padding: 0.25rem 0.5rem; border-radius: 4px;">Pending
+                Confirmation</span>
             </div>
           </div>
         </div>
 
         <!-- Reports View -->
         <div id="mockup-reports" class="mockup-view" style="font-family: system-ui, sans-serif;">
-          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
             <h4 style="margin:0; font-size: 1.25rem;">Analytics & Campaign ROI</h4>
-            <span style="font-size: 0.8rem; background: rgba(239, 68, 68, 0.1); color: #f87171; padding: 0.25rem 0.5rem; border-radius: 4px;">Monthly Report</span>
+            <span
+              style="font-size: 0.8rem; background: rgba(239, 68, 68, 0.1); color: #f87171; padding: 0.25rem 0.5rem; border-radius: 4px;">Monthly
+              Report</span>
           </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
-            <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155; text-align: center;">
+            <div
+              style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155; text-align: center;">
               <h3 style="font-size: 2rem; color: #10b981; margin:0 0 0.5rem 0;">8.4x</h3>
               <strong style="font-size: 0.9rem; color: #fff;">Average Campaign ROI</strong>
-              <p style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: #94a3b8;">Revenue generated vs messaging costs</p>
+              <p style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: #94a3b8;">Revenue generated vs messaging costs
+              </p>
             </div>
-            <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155; text-align: center;">
+            <div
+              style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155; text-align: center;">
               <h3 style="font-size: 2rem; color: #60a5fa; margin:0 0 0.5rem 0;">98.4%</h3>
               <strong style="font-size: 0.9rem; color: #fff;">WhatsApp Open Rate</strong>
               <p style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: #94a3b8;">High customer engagement metrics</p>
@@ -1829,10 +1959,12 @@
     <div class="ai-grid">
       <div class="ai-card feature-card">
         <h3>AI Reminder Generator</h3>
-        <p>Draft tailored service alerts based on specific vehicle diagnostic errors, customer profiles, or dental pre-op instructions.</p>
+        <p>Draft tailored service alerts based on specific vehicle diagnostic errors, customer profiles, or dental
+          pre-op instructions.</p>
         <div class="ai-prompt">"Draft a service reminder for Amit Sharma. Car service overdue by 15 days."</div>
         <div class="ai-output">
-          "Hi Amit, your Maruti Swift service was due on 30-May. Schedule your appointment today with Numen to avoid fuel mileage drop!"
+          "Hi Amit, your Maruti Swift service was due on 30-May. Schedule your appointment today with Numen to avoid
+          fuel mileage drop!"
         </div>
       </div>
 
@@ -1841,7 +1973,8 @@
         <p>Produce delightful personal wishes, festive greetings, and milestone celebrations automatically.</p>
         <div class="ai-prompt">"Write a warm Diwali greeting with a 10% grooming coupon."</div>
         <div class="ai-output">
-          "May this Diwali bring light & joy! ✨ Enjoy a relaxing session at Spark Salons with 10% off. Code: FESTIVE10. Book now!"
+          "May this Diwali bring light & joy! ✨ Enjoy a relaxing session at Spark Salons with 10% off. Code: FESTIVE10.
+          Book now!"
         </div>
       </div>
 
@@ -1850,7 +1983,8 @@
         <p>Generate highly persuasive copy for weekend packages, monsoon service offers, or salon loyalty deals.</p>
         <div class="ai-prompt">"Generate a rain-ready car wash promotional alert."</div>
         <div class="ai-output">
-          "Monsoon is here! 🌧️ Protect your car's coat. Get our premium hydrophobic wax coating at ₹1,499. Slots filling fast!"
+          "Monsoon is here! 🌧️ Protect your car's coat. Get our premium hydrophobic wax coating at ₹1,499. Slots
+          filling fast!"
         </div>
       </div>
     </div>
@@ -1870,7 +2004,8 @@
       <div class="whatsapp-preview-card feature-card">
         <div>
           <span class="whatsapp-badge"><i class="fab fa-whatsapp"></i> WhatsApp Reminders</span>
-          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.5rem;">Notify clients regarding scheduled check-ups, service routines, or subscription renewals.</p>
+          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.5rem;">Notify clients regarding scheduled
+            check-ups, service routines, or subscription renewals.</p>
         </div>
         <div class="whatsapp-chat-container">
           <div class="whatsapp-chat-bubble">
@@ -1886,7 +2021,8 @@
       <div class="whatsapp-preview-card feature-card">
         <div>
           <span class="whatsapp-badge"><i class="fab fa-whatsapp"></i> WhatsApp Promotions</span>
-          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.5rem;">Broadcast rich campaigns, discount vouchers, and festival updates to your segment list.</p>
+          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.5rem;">Broadcast rich campaigns, discount
+            vouchers, and festival updates to your segment list.</p>
         </div>
         <div class="whatsapp-chat-container">
           <div class="whatsapp-chat-bubble">
@@ -1902,7 +2038,8 @@
       <div class="whatsapp-preview-card feature-card">
         <div>
           <span class="whatsapp-badge"><i class="fab fa-whatsapp"></i> WhatsApp Invoices</span>
-          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.5rem;">Deliver PDF receipts and invoice tracking links immediately upon billing completion.</p>
+          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.5rem;">Deliver PDF receipts and invoice
+            tracking links immediately upon billing completion.</p>
         </div>
         <div class="whatsapp-chat-container">
           <div class="whatsapp-chat-bubble">
@@ -2002,7 +2139,8 @@
       </div>
 
       <!-- Growth Plan (Featured) -->
-      <div class="pricing-card featured feature-card" style="border: 2px solid var(--primary-blue); box-shadow: 0 20px 45px rgba(37, 99, 235, 0.15);">
+      <div class="pricing-card featured feature-card"
+        style="border: 2px solid var(--primary-blue); box-shadow: 0 20px 45px rgba(37, 99, 235, 0.15);">
         <div class="popular-badge">Most Popular</div>
         <h3>Growth</h3>
         <p class="pricing-description">For expanding service hubs seeking high-conversion WhatsApp integration.</p>
@@ -2045,7 +2183,7 @@
   <!-- Comparison Section -->
   <section class="comparison-section">
     <div class="section-header">
-      <h2 class="section-title">Why Choose <span class="gradient-text">Numen</span>?</h2>
+      <h2 class="section-title">Why Choose <span class="gradient-text">ReminderMe</span>?</h2>
       <p class="section-subtitle">
         See how we compare against outdated manual spreadsheets and generic messaging tools.
       </p>
@@ -2056,7 +2194,7 @@
         <thead>
           <tr>
             <th>Feature / Capacity</th>
-            <th>Numen</th>
+            <th>ReminderMe</th>
             <th>Manual Sheets / Books</th>
             <th>Other Alert APIs</th>
           </tr>
@@ -2102,16 +2240,18 @@
     <div class="section-header">
       <h2 class="section-title">Trusted by <span class="gradient-text">Industry Leaders</span></h2>
       <p class="section-subtitle">
-        Join over 5,000+ businesses who rely on Numen daily for operations and messaging.
+        Join over 5,000+ businesses who rely on ReminderMe daily for operations and messaging.
       </p>
     </div>
 
     <div class="testimonials-grid">
       <div class="testimonial-card">
         <div class="testimonial-stars">
-          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+            class="fas fa-star"></i>
         </div>
-        <p>"Our car wash business saw a 28% increase in repeat customers within the first month. The automated WhatsApp service reminders are absolute game-changers."</p>
+        <p>"Our car wash business saw a 28% increase in repeat customers within the first month. The automated WhatsApp
+          service reminders are absolute game-changers."</p>
         <div class="testimonial-user">
           <div class="testimonial-info">
             <h4>Rajesh Kumar</h4>
@@ -2122,9 +2262,11 @@
 
       <div class="testimonial-card">
         <div class="testimonial-stars">
-          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+            class="fas fa-star"></i>
         </div>
-        <p>"We used to lose hours calling clients to confirm appointments. Now, Numen handles everything, and our patient no-show rate has dropped to near zero."</p>
+        <p>"We used to lose hours calling clients to confirm appointments. Now, ReminderMe handles everything, and our
+          patient no-show rate has dropped to near zero."</p>
         <div class="testimonial-user">
           <div class="testimonial-info">
             <h4>Dr. Vikram Mehta</h4>
@@ -2135,9 +2277,11 @@
 
       <div class="testimonial-card">
         <div class="testimonial-stars">
-          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+            class="fas fa-star"></i>
         </div>
-        <p>"The AI Promotion generator draft feature saves us hours of styling copy every festival season. Our bookings were full 2 weeks before Diwali!"</p>
+        <p>"The AI Promotion generator draft feature saves us hours of styling copy every festival season. Our bookings
+          were full 2 weeks before Diwali!"</p>
         <div class="testimonial-user">
           <div class="testimonial-info">
             <h4>Priya Nair</h4>
@@ -2177,53 +2321,73 @@
 
     <div class="faq-list">
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(event)">How does the 21-day free trial work? <i class="fas fa-chevron-down"></i></div>
-        <div class="faq-answer">You get unlimited, full access to all features under the Growth plan for 21 days. No credit card is required. You can upgrade to a paid plan at any time.</div>
+        <div class="faq-question" onclick="toggleFaq(event)">How does the 21-day free trial work? <i
+            class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">You get unlimited, full access to all features under the Growth plan for 21 days. No
+          credit card is required. You can upgrade to a paid plan at any time.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(event)">Do I need my own WhatsApp Business API? <i class="fas fa-chevron-down"></i></div>
-        <div class="faq-answer">We handle the official WhatsApp Business setup for you. You don't need any complex engineering or approval processes—it works right out of the box.</div>
+        <div class="faq-question" onclick="toggleFaq(event)">Do I need my own WhatsApp Business API? <i
+            class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">We handle the official WhatsApp Business setup for you. You don't need any complex
+          engineering or approval processes—it works right out of the box.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(event)">Can I send PDF invoices via WhatsApp? <i class="fas fa-chevron-down"></i></div>
-        <div class="faq-answer">Yes, Numen automatically converts estimates and billing lists into modern PDF invoices and dispatches them straight to your client's WhatsApp.</div>
+        <div class="faq-question" onclick="toggleFaq(event)">Can I send PDF invoices via WhatsApp? <i
+            class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Yes, ReminderMe automatically converts estimates and billing lists into modern PDF
+          invoices and dispatches them straight to your client's WhatsApp.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(event)">Does the AI generate messages in Indian languages? <i class="fas fa-chevron-down"></i></div>
-        <div class="faq-answer">Yes, our AI Generator supports English, Hindi, Tamil, Telugu, Kannada, Bengali, Gujarati, Marathi, and multiple other regional languages.</div>
+        <div class="faq-question" onclick="toggleFaq(event)">Does the AI generate messages in Indian languages? <i
+            class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Yes, our AI Generator supports English, Hindi, Tamil, Telugu, Kannada, Bengali,
+          Gujarati, Marathi, and multiple other regional languages.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(event)">Can I import my existing customer list? <i class="fas fa-chevron-down"></i></div>
-        <div class="faq-answer">Absolutely. You can upload any CSV or Excel sheet, and our intelligent parser will align names, numbers, and due dates immediately.</div>
+        <div class="faq-question" onclick="toggleFaq(event)">Can I import my existing customer list? <i
+            class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Absolutely. You can upload any CSV or Excel sheet, and our intelligent parser will align
+          names, numbers, and due dates immediately.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(event)">Are there any setup fees? <i class="fas fa-chevron-down"></i></div>
-        <div class="faq-answer">No, there are no signup or configuration fees. The setup process is entirely guided and free.</div>
+        <div class="faq-question" onclick="toggleFaq(event)">Are there any setup fees? <i
+            class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">No, there are no signup or configuration fees. The setup process is entirely guided and
+          free.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(event)">Is my business data secure? <i class="fas fa-chevron-down"></i></div>
-        <div class="faq-answer">Security is our highest priority. All customer phone numbers, invoices, and transaction metrics are stored securely using database encryption. We run automated daily backups.</div>
+        <div class="faq-question" onclick="toggleFaq(event)">Is my business data secure? <i
+            class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Security is our highest priority. All customer phone numbers, invoices, and transaction
+          metrics are stored securely using database encryption. We run automated daily backups.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(event)">Can I cancel or change my plan anytime? <i class="fas fa-chevron-down"></i></div>
-        <div class="faq-answer">Yes, you can upgrade, downgrade, or cancel your active subscription directly from your settings dashboard with zero lock-in contracts.</div>
+        <div class="faq-question" onclick="toggleFaq(event)">Can I cancel or change my plan anytime? <i
+            class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Yes, you can upgrade, downgrade, or cancel your active subscription directly from your
+          settings dashboard with zero lock-in contracts.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(event)">What is the difference between plans? <i class="fas fa-chevron-down"></i></div>
-        <div class="faq-answer">Plans scale based on the number of active clients you manage. The Growth plan unlocks priority routes, advanced AI template generation, and multi-language support.</div>
+        <div class="faq-question" onclick="toggleFaq(event)">What is the difference between plans? <i
+            class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Plans scale based on the number of active clients you manage. The Growth plan unlocks
+          priority routes, advanced AI template generation, and multi-language support.</div>
       </div>
 
       <div class="faq-item">
-        <div class="faq-question" onclick="toggleFaq(event)">How do online booking links work? <i class="fas fa-chevron-down"></i></div>
-        <div class="faq-answer">Numen gives you a dedicated booking web page. Clients can view open slots, pick styling chairs or diagnostic slots, and receive auto-confirmation alerts on WhatsApp.</div>
+        <div class="faq-question" onclick="toggleFaq(event)">How do online booking links work? <i
+            class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">ReminderMe gives you a dedicated booking web page. Clients can view open slots, pick
+          styling chairs or diagnostic slots, and receive auto-confirmation alerts on WhatsApp.</div>
       </div>
     </div>
   </section>
@@ -2234,7 +2398,7 @@
       <div class="cta-content">
         <h2>Ready to Transform Your Service Business?</h2>
         <p>
-          Join thousands of salons, clinics, workshops, and gyms using Numen to scale operational efficiency.
+          Join thousands of salons, clinics, workshops, and gyms using ReminderMe to scale operational efficiency.
         </p>
         <div class="cta-buttons">
           <a href="register.html" class="btn btn-white btn-cta">
@@ -2258,10 +2422,11 @@
             <div class="footer-logo-icon">
               <i class="fas fa-bell-slash"></i>
             </div>
-            <span>Numen</span>
+            <span>ReminderMe</span>
           </div>
           <p class="footer-description">
-            All-in-one business operating platform designed for service centers, salons, clinics, and service professionals.
+            All-in-one business operating platform designed for service centers, salons, clinics, and service
+            professionals.
           </p>
           <div class="footer-security">
             <i class="fas fa-shield-alt"></i>
@@ -2300,7 +2465,7 @@
       </div>
 
       <div class="footer-bottom">
-        <p class="copyright">© 2026 Numen. All rights reserved.</p>
+        <p class="copyright">© 2026 ReminderMe. All rights reserved.</p>
         <div class="social-links">
           <a href="#"><i class="fab fa-twitter"></i></a>
           <a href="#"><i class="fab fa-github"></i></a>
@@ -2369,7 +2534,7 @@
       if (!targetOption) return;
 
       const period = targetOption.getAttribute('data-period');
-      
+
       // Update active toggle class
       document.querySelectorAll('.pricing-toggle-option').forEach(opt => {
         opt.classList.remove('active');

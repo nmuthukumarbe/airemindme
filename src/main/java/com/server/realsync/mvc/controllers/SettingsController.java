@@ -1,20 +1,23 @@
 package com.server.realsync.mvc.controllers;
 
 import com.server.realsync.dto.PasswordResetDto;
+import com.server.realsync.dto.SettingsUpdateDto;
 import com.server.realsync.entity.Account;
+import com.server.realsync.entity.User;
+import com.server.realsync.services.AccountService;
 import com.server.realsync.services.UserService;
 import com.server.realsync.util.SecurityUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.server.realsync.entity.User;
-import com.server.realsync.services.AccountService;
-import com.server.realsync.services.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("/api/settings")
+@RequestMapping
 public class SettingsController {
 
     @Autowired
@@ -29,30 +32,22 @@ public class SettingsController {
     // ==========================
     // UPDATE PROFILE
     // ==========================
-    @PostMapping("/profile")
-public String updateProfile(@RequestBody Account req) {
-
-    Integer accountId =
-            SecurityUtil.getCurrentAccountId().getId();
-
-    Account account =
-            accountService.getById(accountId);
-
-    account.setName(req.getName());
-    account.setEmail(req.getEmail());
-    account.setMobile(req.getMobile());
-
-    accountService.save(account);
-
-    return "Profile Updated";
-}
-
-    @PutMapping("/account/business-details")
-    public ResponseEntity<String> updateBusinessDetails(
-            @RequestBody Account req) {
-
+    @PostMapping("/api/settings/profile")
+    public String updateProfile(@RequestBody Account req) {
         Integer accountId = SecurityUtil.getCurrentAccountId().getId();
+        Account account = accountService.getById(accountId);
 
+        account.setName(req.getName());
+        account.setEmail(req.getEmail());
+        account.setMobile(req.getMobile());
+
+        accountService.save(account);
+        return "Profile Updated";
+    }
+
+    @PutMapping("/api/settings/account/business-details")
+    public ResponseEntity<String> updateBusinessDetails(@RequestBody Account req) {
+        Integer accountId = SecurityUtil.getCurrentAccountId().getId();
         Account account = accountService.getById(accountId);
 
         if (req.getBusinessName() != null)
@@ -70,17 +65,21 @@ public String updateProfile(@RequestBody Account req) {
         if (req.getAddress() != null)
             account.setAddress(req.getAddress());
 
-        accountService.save(account);
+        if (req.getCategory() != null)
+            account.setCategory(req.getCategory());
 
+        if (req.getSubcategory() != null)
+            account.setSubcategory(req.getSubcategory());
+
+        accountService.save(account);
         return ResponseEntity.ok("Updated");
     }
 
     // ==========================
     // UPDATE PASSWORD
     // ==========================
-    @PostMapping("/password")
+    @PostMapping("/api/settings/password")
     public String updatePassword(@RequestBody PasswordResetDto dto) {
-
         User user = SecurityUtil.getLoggedInUser();
         if (user == null) {
             return "Unauthorized";
@@ -95,5 +94,78 @@ public String updateProfile(@RequestBody Account req) {
         userService.saveUser(user);
 
         return "Password Updated Successfully";
+    }
+
+    // ==========================================
+    // UNIFIED SETTINGS UPDATE (PROFILE + BUSINESS + REGION)
+    // ==========================================
+    @PostMapping("/api/account/settings/update")
+    public ResponseEntity<?> updateSettings(@RequestBody SettingsUpdateDto req) {
+        Account loggedIn = SecurityUtil.getCurrentAccountId();
+        if (loggedIn == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "User session not found."));
+        }
+
+        Account account = accountService.getById(loggedIn.getId());
+        if (account == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("success", false, "message", "Account not found."));
+        }
+
+        // Profile Section
+        if (req.getName() != null) {
+            account.setName(req.getName());
+        }
+        if (req.getEmail() != null) {
+            account.setEmail(req.getEmail());
+        }
+        if (req.getMobile() != null) {
+            account.setMobile(req.getMobile());
+        }
+
+        // Business Details Section
+        if (req.getBusinessName() != null) {
+            account.setBusinessName(req.getBusinessName());
+        }
+        if (req.getGstNumber() != null) {
+            account.setGstNumber(req.getGstNumber());
+        }
+        if (req.getBusinessEmail() != null) {
+            account.setBusinessEmail(req.getBusinessEmail());
+        }
+        if (req.getBusinessPhone() != null) {
+            account.setBusinessPhone(req.getBusinessPhone());
+        }
+        if (req.getCategory() != null) {
+            account.setCategory(req.getCategory());
+        }
+        if (req.getSubcategory() != null) {
+            account.setSubcategory(req.getSubcategory());
+        }
+        if (req.getAddress() != null) {
+            account.setAddress(req.getAddress());
+        }
+
+        // Region & Localization Section
+        if (req.getCountry() != null) {
+            account.setCountry(req.getCountry());
+        }
+        if (req.getTimezone() != null) {
+            account.setTimezone(req.getTimezone());
+        }
+        if (req.getLanguage() != null) {
+            account.setLanguage(req.getLanguage());
+        }
+        if (req.getCurrency() != null) {
+            account.setCurrency(req.getCurrency());
+        }
+
+        accountService.save(account);
+
+        return ResponseEntity.ok(Map.of(
+            "success", true,
+            "message", "Settings updated successfully"
+        ));
     }
 }

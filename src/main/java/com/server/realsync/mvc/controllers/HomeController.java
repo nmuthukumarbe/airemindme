@@ -535,6 +535,16 @@ public String getRegister(
 		return "remindmeui/promotions";
 	}
 
+	@GetMapping("/aitemplates.html")
+public String getCatalogTemplates(Model model) {
+
+    Account loggedIn = SecurityUtil.getCurrentAccountId();
+    Account account = accountService.getById(loggedIn.getId());
+
+    model.addAttribute("account", account);
+
+    return "remindmeui/Templates";
+}
 	@GetMapping("/reminder-detail.html")
 	public String getReminderDetail(@RequestParam("id") Integer id, Model model) {
 
