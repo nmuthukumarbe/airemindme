@@ -157,7 +157,8 @@ function openTemplateModal(id) {
         const t = templates.find(x => x.id === editTemplateId);
         if (!t) return;
         document.getElementById('tm_title').value = t.title || '';
-        document.getElementById('tm_category').value = t.category || 'General';
+        const tmCat = document.getElementById('tm_category');
+        if (tmCat) tmCat.value = t.category || 'General';
         document.getElementById('tm_desc').value = t.description || '';
         document.getElementById('tm_content').value = t.content || '';
         
@@ -183,7 +184,8 @@ function openTemplateModal(id) {
             const el = document.getElementById(i);
             if (el) el.value = '';
         });
-        document.getElementById('tm_category').value = 'Payment Reminder';
+        const tmCat = document.getElementById('tm_category');
+        if (tmCat) tmCat.value = 'Payment Reminder';
         
         if (purposeSelect) purposeSelect.value = 'Reminder';
         onPurposeChange();
@@ -204,7 +206,7 @@ function openTemplateModal(id) {
 function closeTemplateModal() { document.getElementById('templateModal').classList.add('hidden'); }
 
 function generateTemplateContent() {
-    const cat = document.getElementById('tm_category').value;
+    const cat = document.getElementById('tm_category')?.value || document.getElementById('tm_type')?.value || 'General';
     const desc = document.getElementById('tm_desc').value;
     const map = {
         'Payment Reminder': `Hi {customer_name}! 👋\n\nThis is a friendly reminder that your {plan_name} payment of {amount} is due on {due_date}.\n\nPlease pay to avoid disruption.\nQueries: {business_phone}\n\n— {business_name}`,
@@ -292,6 +294,40 @@ function generateAITemplate() {
         });
 }
 
+const purposeToModuleMap = {
+    'Reminder': 'REMINDER',
+    'Greeting': 'GREETING',
+    'Promotion': 'PROMOTION',
+    'Announcement': 'CAMPAIGN',
+    'Follow Up': 'FOLLOWUP',
+    'Custom': 'GENERAL'
+};
+
+const typeToCategoryMap = {
+    'Payment Reminder': 'PAYMENT',
+    'Subscription Renewal': 'EMI',
+    'Membership Renewal': 'EMI',
+    'Policy Renewal': 'POLICY',
+    'Appointment Reminder': 'CUSTOM',
+    'Service Reminder': 'CUSTOM',
+    'Birthday': 'BIRTHDAY',
+    'Anniversary': 'ANNIVERSARY',
+    'Festival Greeting': 'CUSTOM',
+    'Welcome Message': 'CUSTOM',
+    'Offer Announcement': 'PROMOTION',
+    'Discount Campaign': 'PROMOTION',
+    'New Product Launch': 'PROMOTION',
+    'Reactivation Campaign': 'PROMOTION',
+    'Business Update': 'CUSTOM',
+    'Holiday Notice': 'CUSTOM',
+    'Timing Change': 'CUSTOM',
+    'Service Update': 'CUSTOM',
+    'Lead Follow Up': 'FOLLOWUP',
+    'Customer Follow Up': 'FOLLOWUP',
+    'Payment Follow Up': 'FOLLOWUP',
+    'Custom': 'CUSTOM'
+};
+
 function saveTemplate() {
     const title = document.getElementById('tm_title').value.trim();
     const content = document.getElementById('tm_content').value.trim();
@@ -307,21 +343,46 @@ function saveTemplate() {
     if (tmSms && tmSms.checked) channels.push('SMS');
     if (tmEmail && tmEmail.checked) channels.push('Email');
 
+    const purposeVal = document.getElementById('tm_purpose')?.value || 'Reminder';
+    const typeVal = document.getElementById('tm_type')?.value || 'Custom';
+
     const payload = {
         title,
-        category: document.getElementById('tm_category').value,
+        category: typeToCategoryMap[typeVal] || 'CUSTOM',
         description: document.getElementById('tm_desc').value.trim(),
         content,
         channels: channels.join(','),   // backend stores as comma-delimited string
-        purpose: document.getElementById('tm_purpose')?.value || '',
-        templateType: document.getElementById('tm_type')?.value || '',
-        language: document.getElementById('tm_language')?.value || '',
-        status: 'active'
+        purpose: purposeVal,
+        templateType: typeVal,
+        language: document.getElementById('tm_language')?.value || 'English',
+        status: 'active',
+
+        // New properties for dynamic picking
+        name: title,
+        moduleCode: purposeToModuleMap[purposeVal] || 'GENERAL',
+        prompt: document.getElementById('tm_desc').value.trim(),
+        active: true
     };
 
     const isEdit = editTemplateId !== null;
     api(isEdit ? `${API.templates}/${editTemplateId}` : API.templates, isEdit ? 'PUT' : 'POST', payload)
-        .then(() => { showToast(isEdit ? 'Template updated!' : 'Template saved!', 'success'); closeTemplateModal(); loadTemplates(); })
+        .then((savedTemplate) => { 
+            showToast(isEdit ? 'Template updated!' : 'Template saved!', 'success'); 
+            closeTemplateModal(); 
+            loadTemplates(); 
+            
+            const returnPage = sessionStorage.getItem("returnPage");
+            if (returnPage) {
+                if (typeof showFullLoader === 'function') {
+                    showFullLoader('Saving Template...', 'Redirecting you back to your workspace.');
+                }
+                setTimeout(() => {
+                    sessionStorage.setItem("selectedTemplate", JSON.stringify(savedTemplate));
+                    sessionStorage.removeItem("returnPage");
+                    window.location.href = returnPage;
+                }, 800);
+            }
+        })
         .catch(err => showToast('Error: ' + err.message, 'error'));
 }
 

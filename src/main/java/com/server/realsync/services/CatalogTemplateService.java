@@ -50,4 +50,12 @@ public class CatalogTemplateService {
             return repo.save(t);
         });
     }
+
+    public List<CatalogTemplate> getByModuleCodeAndAccountId(String moduleCode, Integer accountId) {
+        return repo.findByModuleCodeAndAccountIdOrderByCreatedAtDesc(moduleCode, accountId);
+    }
+
+    public List<CatalogTemplate> getByModuleCodeAndCategoryAndAccountId(String moduleCode, String category, Integer accountId) {
+        return repo.findByModuleCodeAndCategoryAndAccountIdOrderByCreatedAtDesc(moduleCode, category, accountId);
+    }
 }

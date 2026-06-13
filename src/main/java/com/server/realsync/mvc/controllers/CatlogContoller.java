@@ -330,8 +330,16 @@ public ResponseEntity<CatalogProduct> updateProduct(
     // =====================================================================
 
     @GetMapping("/templates")
-    public List<CatalogTemplate> getTemplates() {
+    public List<CatalogTemplate> getTemplates(
+            @RequestParam(required = false) String module,
+            @RequestParam(required = false) String category) {
         Account account = SecurityUtil.getCurrentAccountId();
+        if (module != null && !module.isBlank()) {
+            if (category != null && !category.isBlank()) {
+                return templateService.getByModuleCodeAndCategoryAndAccountId(module, category, account.getId());
+            }
+            return templateService.getByModuleCodeAndAccountId(module, account.getId());
+        }
         return templateService.getByAccountId(account.getId());
     }
 

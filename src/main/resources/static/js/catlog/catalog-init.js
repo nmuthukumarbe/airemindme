@@ -20,4 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof loadTemplates === 'function') loadTemplates();
     if (typeof loadRTemplates === 'function') loadRTemplates();
     if (typeof loadSummary === 'function') loadSummary();
+
+    // Check if source param is present (redirected from AI assistant studio flow)
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get('source');
+    if (source) {
+        if (typeof openTemplateModal === 'function') {
+            setTimeout(() => {
+                openTemplateModal(null);
+                const purposeSelect = document.getElementById('tm_purpose');
+                if (purposeSelect) {
+                    if (source === 'reminder') {
+                        purposeSelect.value = 'Reminder';
+                    } else if (source === 'greeting') {
+                        purposeSelect.value = 'Greeting';
+                    }
+                    if (typeof onPurposeChange === 'function') {
+                        onPurposeChange();
+                    }
+                }
+            }, 400);
+        }
+    }
 });

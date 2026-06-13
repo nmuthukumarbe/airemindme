@@ -44,6 +44,21 @@ public class CatalogTemplate {
     @Column(name = "template_type", length = 50)
     private String templateType;
 
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "module_code", length = 50)
+    private String moduleCode;
+
+    @Column(name = "prompt", columnDefinition = "TEXT")
+    private String prompt;
+
+    @Column(name = "active")
+    private Boolean active = true;
+
+    @Column(name = "created_date")
+    private LocalDate createdDate;
+
     @Column(nullable = false)
     private String status = "active";
 
@@ -54,8 +69,44 @@ public class CatalogTemplate {
     protected void onCreate() {
         if (createdAt == null)
             createdAt = LocalDate.now();
+        if (createdDate == null)
+            createdDate = LocalDate.now();
         if (status == null)
             status = "active";
+        syncFields();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        syncFields();
+    }
+
+    private void syncFields() {
+        if (name != null) {
+            this.title = name;
+        } else if (title != null) {
+            this.name = title;
+        }
+
+        if (prompt != null) {
+            this.description = prompt;
+        } else if (description != null) {
+            this.prompt = description;
+        }
+
+        if (createdDate != null) {
+            this.createdAt = createdDate;
+        } else if (createdAt != null) {
+            this.createdDate = createdAt;
+        }
+
+        if (active != null) {
+            this.status = active ? "active" : "inactive";
+        } else if ("active".equals(status)) {
+            this.active = true;
+        } else if ("inactive".equals(status)) {
+            this.active = false;
+        }
     }
 
     // ── Helpers for channels list ──────────────────────────────────────
@@ -101,6 +152,7 @@ public class CatalogTemplate {
 
     public void setTitle(String title) {
         this.title = title;
+        this.name = title;
     }
 
     public String getCategory() {
@@ -117,6 +169,7 @@ public class CatalogTemplate {
 
     public void setDescription(String desc) {
         this.description = desc;
+        this.prompt = desc;
     }
 
     public String getContent() {
@@ -159,12 +212,57 @@ public class CatalogTemplate {
         this.templateType = templateType;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        this.title = name;
+    }
+
+    public String getModuleCode() {
+        return moduleCode;
+    }
+
+    public void setModuleCode(String moduleCode) {
+        this.moduleCode = moduleCode;
+    }
+
+    public String getPrompt() {
+        return prompt;
+    }
+
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
+        this.description = prompt;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+        this.status = active ? "active" : "inactive";
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+        this.createdAt = createdDate;
+    }
+
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+        this.active = "active".equals(status);
     }
 
     public LocalDate getCreatedAt() {
@@ -173,5 +271,6 @@ public class CatalogTemplate {
 
     public void setCreatedAt(LocalDate d) {
         this.createdAt = d;
+        this.createdDate = d;
     }
 }

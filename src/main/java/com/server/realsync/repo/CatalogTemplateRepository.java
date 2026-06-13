@@ -16,4 +16,8 @@ public interface CatalogTemplateRepository extends JpaRepository<CatalogTemplate
     Optional<CatalogTemplate> findByIdAndAccountId(Integer id, Integer accountId);
 
     long countByAccountIdAndStatus(Integer accountId, String status);
+
+    List<CatalogTemplate> findByModuleCodeAndAccountIdOrderByCreatedAtDesc(String moduleCode, Integer accountId);
+
+    List<CatalogTemplate> findByModuleCodeAndCategoryAndAccountIdOrderByCreatedAtDesc(String moduleCode, String category, Integer accountId);
 }

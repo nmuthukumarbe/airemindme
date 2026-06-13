@@ -42,62 +42,67 @@ public class AITemplateController {
             }
 
             // Build Prompt
-            String prompt = String.format("""
-                Generate a professional customer communication template.
+            String prompt = String.format(
+                    """
+                                                                Generate a customer-friendly WhatsApp or SMS message.
 
-                Business Name:
-                %s
+                            The message must sound natural, conversational, and written by a real business owner communicating directly with a customer.
 
-                Business Category:
-                %s
+                            Business Details:
+                            Business Name: %s
+                            Business Category: %s
+                            Business Subcategory: %s
 
-                Business Subcategory:
-                %s
+                            Template Details:
+                            Purpose: %s
+                            Template Type: %s
+                            Language: %s
 
-                Purpose:
-                %s
+                            Instructions:
 
-                Template Type:
-                %s
+                            1. Generate ONLY the message content.
+                            2. Do NOT include titles, headings, labels, explanations, or markdown.
+                            3. Keep the message short and suitable for WhatsApp/SMS (50–120 words).
+                            4. Use a friendly and engaging tone.
+                            5. Avoid corporate phrases such as:
 
-                Language:
-                %s
+                               * "regarding your upcoming service appointment"
+                               * "we appreciate your trust in us"
+                               * "please do not hesitate to contact us"
+                               * "sincerely"
+                            6. Make the message specific to the business category.
+                            7. Include a clear call-to-action when appropriate.
+                            8. Use supported variables naturally.
+                            9. Sound human, not AI-generated.
 
-                Rules:
-                1. Generate only the template message.
-                2. No explanation.
-                3. No markdown.
-                4. No title.
-                5. Use professional tone.
-                6. Include variables when relevant.
+                            Supported Variables:
+                            {customer_name}
+                            {amount}
+                            {due_date}
+                            {business_name}
+                            {plan_name}
 
-                Supported Variables:
-                {customer_name}
-                {amount}
-                {due_date}
-                {business_name}
-                {plan_name}
+                            Examples:
+                            Car Wash:
+                            "Hello {customer_name}, your car is due for a fresh wash. Visit {business_name} before {due_date} and keep it looking its best."
 
-                Examples:
-                Payment reminders should use:
-                {amount}
-                {due_date}
+                            Payment Reminder:
+                            "Hi {customer_name}, this is a reminder that {amount} is due on {due_date}. Thank you for choosing {business_name}."
 
-                Birthday greetings should use:
-                {customer_name}
+                            Birthday Greeting:
+                            "Happy Birthday {customer_name}! Wishing you a wonderful day from all of us at {business_name}."
 
-                Business name should always use:
-                {business_name}
+                            Return only the final message content.
 
-                Return only the final template content.
-                """, 
-                account.getBusinessName() != null ? account.getBusinessName() : "",
-                account.getCategory() != null ? account.getCategory() : "",
-                account.getSubcategory() != null ? account.getSubcategory() : "",
-                request.getPurpose(),
-                request.getTemplateType(),
-                request.getLanguage()
-            );
+
+
+                                                """,
+                    account.getBusinessName() != null ? account.getBusinessName() : "",
+                    account.getCategory() != null ? account.getCategory() : "",
+                    account.getSubcategory() != null ? account.getSubcategory() : "",
+                    request.getPurpose(),
+                    request.getTemplateType(),
+                    request.getLanguage());
 
             // Construct JSON request for Gemini
             JSONObject textPart = new JSONObject();
@@ -118,7 +123,9 @@ public class AITemplateController {
             // Send request to Gemini API
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest httpRequest = HttpRequest.newBuilder()
-                    .uri(URI.create("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + apiKey))
+                    .uri(URI.create(
+                            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
+                                    + apiKey))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody.toString(), StandardCharsets.UTF_8))
                     .build();

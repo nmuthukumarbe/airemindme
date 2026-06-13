@@ -535,7 +535,7 @@ public String getRegister(
 		return "remindmeui/promotions";
 	}
 
-	@GetMapping("/aitemplates.html")
+	@GetMapping({"/aitemplates.html", "/ai-templates.html"})
 public String getCatalogTemplates(Model model) {
 
     Account loggedIn = SecurityUtil.getCurrentAccountId();
