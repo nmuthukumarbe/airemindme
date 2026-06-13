@@ -59,6 +59,15 @@ public class Account {
 	@Column(name = "business_phone", length = 20)
 	private String businessPhone;
 
+	@Column(length = 50)
+	private String country;
+
+	@Column(length = 10)
+	private String currency;
+
+	@Column(length = 30)
+	private String language;
+
 	// Getters and Setters
 	public Integer getId() {
 		return id;
@@ -180,6 +189,30 @@ public String getBusinessPhone() {
 
 public void setBusinessPhone(String businessPhone) {
     this.businessPhone = businessPhone;
+}
+
+public String getCountry() {
+    return country;
+}
+
+public void setCountry(String country) {
+    this.country = country;
+}
+
+public String getCurrency() {
+    return currency;
+}
+
+public void setCurrency(String currency) {
+    this.currency = currency;
+}
+
+public String getLanguage() {
+    return language;
+}
+
+public void setLanguage(String language) {
+    this.language = language;
 }
 
 }

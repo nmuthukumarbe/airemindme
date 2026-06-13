@@ -11,6 +11,11 @@ public class SignupRequestDto {
     private String gstNumber;
     private String address;
     private String password;
+    private String businessCategory;
+    private String country;
+    private String currency;
+    private String defaultLanguage;
+    private String selectedPlan;
 
     // Getters and Setters
     public String getName() {
@@ -83,5 +88,45 @@ public class SignupRequestDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getBusinessCategory() {
+        return businessCategory;
+    }
+
+    public void setBusinessCategory(String businessCategory) {
+        this.businessCategory = businessCategory;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getDefaultLanguage() {
+        return defaultLanguage;
+    }
+
+    public void setDefaultLanguage(String defaultLanguage) {
+        this.defaultLanguage = defaultLanguage;
+    }
+
+    public String getSelectedPlan() {
+        return selectedPlan;
+    }
+
+    public void setSelectedPlan(String selectedPlan) {
+        this.selectedPlan = selectedPlan;
     }
 }

@@ -26,32 +26,36 @@ import com.server.realsync.entity.User;
 import com.server.realsync.services.AccountService;
 import com.server.realsync.services.UserService;
 
-
 @RestController
 @RequestMapping("/api/accounts")
 public class AccountController {
 
     @Autowired
     private AccountService service;
-    
+
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
-    public ResponseEntity<com.server.realsync.dto.SignupResponseDto> signup(@RequestBody com.server.realsync.dto.SignupRequestDto requestDto) {
+    public ResponseEntity<com.server.realsync.dto.SignupResponseDto> signup(
+            @RequestBody com.server.realsync.dto.SignupRequestDto requestDto) {
         try {
             service.registerAccount(requestDto);
-            return ResponseEntity.ok(new com.server.realsync.dto.SignupResponseDto(true, "Account created successfully"));
+            return ResponseEntity
+                    .ok(new com.server.realsync.dto.SignupResponseDto(true, "Account created successfully"));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(new com.server.realsync.dto.SignupResponseDto(false, e.getMessage()));
+            return ResponseEntity.badRequest()
+                    .body(new com.server.realsync.dto.SignupResponseDto(false, e.getMessage()));
         } catch (IllegalStateException e) {
-            return ResponseEntity.badRequest().body(new com.server.realsync.dto.SignupResponseDto(false, e.getMessage()));
+            return ResponseEntity.badRequest()
+                    .body(new com.server.realsync.dto.SignupResponseDto(false, e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new com.server.realsync.dto.SignupResponseDto(false, "Registration failed: " + e.getMessage()));
+                    .body(new com.server.realsync.dto.SignupResponseDto(false,
+                            "Registration failed: " + e.getMessage()));
         }
     }
 
@@ -75,9 +79,9 @@ public class AccountController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Account> updateAccount(@PathVariable Integer id, @RequestBody Account account) {
-    	Account existingAccount = service.findById(id).get();
-        if (existingAccount!=null) {
-        	existingAccount.setName(account.getName());
+        Account existingAccount = service.findById(id).get();
+        if (existingAccount != null) {
+            existingAccount.setName(account.getName());
             existingAccount.setMobile(account.getMobile());
             existingAccount.setEmail(account.getEmail());
             existingAccount.setAddress(account.getAddress());
@@ -97,53 +101,64 @@ public class AccountController {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
     @PostMapping("/resetAppPassword")
     public ResponseEntity<User> resetPassword(@RequestBody PasswordResetDto passwordResetDto) {
         User user = userService.findByUserId(passwordResetDto.getUserId());
-    	if(passwordEncoder.matches(passwordResetDto.getCurrentPassword(),user.getPassword())) {
-    		//
-    		user.setPassword(new BCryptPasswordEncoder().encode(passwordResetDto.getNewPassword()));
-    		userService.saveUser(user);
-    		return new ResponseEntity<User>(user, HttpStatus.OK);
-    	} else {
-    		return new ResponseEntity<User>(user, HttpStatus.INSUFFICIENT_STORAGE);
-    	}
-    	
+        if (passwordEncoder.matches(passwordResetDto.getCurrentPassword(), user.getPassword())) {
+            //
+            user.setPassword(new BCryptPasswordEncoder().encode(passwordResetDto.getNewPassword()));
+            userService.saveUser(user);
+            return new ResponseEntity<User>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<User>(user, HttpStatus.INSUFFICIENT_STORAGE);
+        }
+
     }
-    
+
     @PostMapping("/saveUser")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
-    	User existingUser = null;
-    	try {
-    		existingUser = userService.findByUsername(user.getUsername());
-    	} catch(Exception e) {
-    		System.out.println("User not found:"+user.getUsername());
-    	}
-    	if(existingUser == null) {
-    		//create
-    		user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-    		int accountId = 0;
-    	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    	    if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
-    	        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-    	        accountId = customUserDetails.getAccountId();
-    	    }
+        User existingUser = null;
+        try {
+            existingUser = userService.findByUsername(user.getUsername());
+        } catch (Exception e) {
+            System.out.println("User not found:" + user.getUsername());
+        }
+        if (existingUser == null) {
+            // create
+            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            int accountId = 0;
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+                CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+                accountId = customUserDetails.getAccountId();
+            }
 
-    	    Account account = new Account();
-    	    account.setId(accountId);
-    		user.setAccount(account);
-    		userService.saveUser(user);
-    		return new ResponseEntity<User>(user, HttpStatus.OK);
-    	} else {
-    		//update
-    		existingUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-    		existingUser.setFullName(user.getFullName());
-    		existingUser.setRole(user.getRole());
-    		existingUser.setEmail(user.getEmail());
-    		userService.saveUser(existingUser);
-    		return new ResponseEntity<User>(user, HttpStatus.OK);
-    	}
+            Account account = new Account();
+            account.setId(accountId);
+            user.setAccount(account);
+            userService.saveUser(user);
+            return new ResponseEntity<User>(user, HttpStatus.OK);
+        } else {
+            // update
+            existingUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+            existingUser.setFullName(user.getFullName());
+            existingUser.setRole(user.getRole());
+            existingUser.setEmail(user.getEmail());
+            userService.saveUser(existingUser);
+            return new ResponseEntity<User>(user, HttpStatus.OK);
+        }
     }
+
+    @GetMapping("/check-email")
+    public ResponseEntity<Boolean> checkEmail(String email) {
+        return ResponseEntity.ok(service.emailExists(email));
+    }
+    @GetMapping("/check-mobile")
+    public ResponseEntity<Boolean> checkMobile(String mobile) {
+        return ResponseEntity.ok(service.mobileExists(mobile));
+    }
+
     
+
 }

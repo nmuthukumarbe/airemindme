@@ -853,6 +853,549 @@
       }
     }
 
+    /* Industry Showcase */
+    .industry-section {
+      padding: 100px 1.5rem;
+      background: var(--white);
+    }
+    .industry-grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+    .industry-card {
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .industry-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+      border-color: var(--primary-blue);
+    }
+    .industry-card-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(147, 51, 234, 0.1));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary-blue);
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .industry-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark-slate);
+      margin-bottom: 0.75rem;
+    }
+    .industry-card p {
+      color: var(--slate-600);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Product Showcase Interactive Mockup */
+    .showcase-section {
+      padding: 100px 1.5rem;
+      background: var(--slate-50);
+    }
+    .showcase-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+    .showcase-tab {
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      border: 1px solid var(--slate-200);
+      background: var(--white);
+      color: var(--slate-600);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .showcase-tab.active {
+      background: linear-gradient(to right, var(--primary-blue), var(--primary-purple));
+      color: var(--white);
+      border-color: transparent;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+    }
+    .mockup-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #0f172a;
+      border-radius: 1.5rem;
+      border: 1px solid #334155;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+    }
+    .mockup-header {
+      background: #1e293b;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid #334155;
+    }
+    .mockup-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .mockup-dot.red { background: #ef4444; }
+    .mockup-dot.yellow { background: #f59e0b; }
+    .mockup-dot.green { background: #10b981; }
+    .mockup-address {
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 0.8rem;
+      padding: 0.25rem 2rem;
+      border-radius: 4px;
+      margin-left: 2rem;
+      flex-grow: 1;
+      max-width: 400px;
+      text-align: center;
+    }
+    .mockup-body {
+      padding: 2rem;
+      color: #f1f5f9;
+      min-height: 400px;
+    }
+    .mockup-view {
+      display: none;
+    }
+    .mockup-view.active {
+      display: block;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* AI Section */
+    .ai-section {
+      padding: 100px 1.5rem;
+      background: var(--white);
+    }
+    .ai-grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    .ai-card {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.02), rgba(147, 51, 234, 0.02));
+      border: 1px solid var(--slate-200);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      transition: all 0.3s ease;
+    }
+    .ai-card:hover {
+      border-color: var(--primary-purple);
+      box-shadow: 0 15px 30px rgba(147, 51, 234, 0.05);
+    }
+    .ai-prompt {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+      color: var(--slate-600);
+      position: relative;
+    }
+    .ai-prompt::before {
+      content: "AI Prompt Preview";
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      background: var(--white);
+      padding: 0 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary-purple);
+    }
+    .ai-output {
+      background: #0f172a;
+      color: var(--white);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      font-size: 0.9rem;
+      border-left: 4px solid var(--primary-purple);
+    }
+
+    /* WhatsApp Section */
+    .whatsapp-section {
+      padding: 100px 1.5rem;
+      background: var(--slate-50);
+    }
+    .whatsapp-grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+    .whatsapp-preview-card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      justify-content: space-between;
+    }
+    .whatsapp-chat-container {
+      background: #efeae2;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-height: 200px;
+      border: 1px solid var(--slate-200);
+    }
+    .whatsapp-chat-bubble {
+      background: #d9fdd3;
+      color: #111b21;
+      padding: 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      position: relative;
+      align-self: flex-start;
+      max-width: 90%;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    .whatsapp-chat-bubble::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -8px;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 8px 8px 0;
+      border-color: transparent #d9fdd3 transparent transparent;
+    }
+    .whatsapp-chat-bubble .time {
+      display: block;
+      text-align: right;
+      font-size: 0.75rem;
+      color: #667781;
+      margin-top: 0.5rem;
+    }
+    .whatsapp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #25d366;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    /* Customer Journey Flow */
+    .journey-section {
+      padding: 100px 1.5rem;
+      background: var(--white);
+    }
+    .journey-flow {
+      max-width: 1200px;
+      margin: 4rem auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .journey-step {
+      flex: 1;
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      border-radius: 1.5rem;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    .journey-step:hover {
+      border-color: var(--primary-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(37,99,235,0.04);
+    }
+    .journey-icon {
+      width: 55px;
+      height: 55px;
+      background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.25rem;
+      font-size: 1.35rem;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+    }
+    .journey-step h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dark-slate);
+      margin-bottom: 0.5rem;
+    }
+    .journey-step p {
+      color: var(--slate-600);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .journey-arrow {
+      color: var(--slate-400);
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Comparison Section */
+    .comparison-section {
+      padding: 100px 1.5rem;
+      background: var(--white);
+    }
+    .comparison-table-wrapper {
+      max-width: 1000px;
+      margin: 3rem auto 0;
+      overflow-x: auto;
+      border: 1px solid var(--slate-200);
+      border-radius: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    }
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      background: var(--white);
+    }
+    .comparison-table th, .comparison-table td {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--slate-200);
+    }
+    .comparison-table th {
+      background: var(--slate-50);
+      font-weight: 700;
+      color: var(--dark-slate);
+    }
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+    .comparison-badge {
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .comparison-yes {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .comparison-no {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* Trust Section */
+    .trust-section {
+      padding: 100px 1.5rem;
+      background: var(--slate-50);
+    }
+    .testimonials-grid {
+      max-width: 1280px;
+      margin: 3rem auto 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+    .testimonial-card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: 1.5rem;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+      transition: all 0.3s;
+    }
+    .testimonial-card:hover {
+      box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    }
+    .testimonial-stars {
+      color: #fbbf24;
+      margin-bottom: 1rem;
+    }
+    .testimonial-user {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .testimonial-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--slate-200);
+      object-fit: cover;
+    }
+    .testimonial-info h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--dark-slate);
+    }
+    .testimonial-info p {
+      font-size: 0.85rem;
+      color: var(--slate-600);
+    }
+    .trust-badges {
+      max-width: 900px;
+      margin: 5rem auto 0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 3rem;
+      border-top: 1px solid var(--slate-200);
+      padding-top: 4rem;
+    }
+    .trust-badge-item {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--slate-600);
+      max-width: 250px;
+    }
+    .trust-badge-item i {
+      font-size: 2.5rem;
+      color: var(--primary-blue);
+      background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .trust-badge-item h4 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--dark-slate);
+    }
+    .trust-badge-item p {
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      padding: 100px 1.5rem;
+      background: var(--white);
+    }
+    .faq-list {
+      max-width: 850px;
+      margin: 3rem auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .faq-item {
+      border: 1px solid var(--slate-200);
+      border-radius: 1rem;
+      overflow: hidden;
+      background: var(--white);
+      transition: all 0.3s ease;
+    }
+    .faq-question {
+      padding: 1.5rem;
+      font-weight: 700;
+      color: var(--dark-slate);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      font-size: 1.1rem;
+    }
+    .faq-answer {
+      padding: 0 1.5rem 1.5rem;
+      color: var(--slate-600);
+      display: none;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+    .faq-item.active {
+      border-color: var(--primary-blue);
+      box-shadow: 0 5px 15px rgba(37,99,235,0.03);
+    }
+    .faq-item.active .faq-question i {
+      transform: rotate(180deg);
+      color: var(--primary-blue);
+    }
+    .faq-question i {
+      transition: transform 0.3s ease;
+      color: var(--slate-400);
+    }
+
+    /* Pricing Toggle Switcher */
+    .pricing-switcher {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 4rem;
+    }
+    .pricing-toggle-container {
+      background: var(--slate-100);
+      padding: 0.35rem;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      width: 440px;
+      justify-content: space-between;
+      border: 1px solid var(--slate-200);
+    }
+    .pricing-toggle-option {
+      flex: 1;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--slate-600);
+      padding: 0.6rem 0;
+      z-index: 1;
+      transition: color 0.3s;
+      user-select: none;
+    }
+    .pricing-toggle-option.active {
+      color: var(--white);
+    }
+    .pricing-toggle-bg {
+      position: absolute;
+      height: calc(100% - 0.7rem);
+      width: calc(25% - 0.35rem);
+      background: linear-gradient(to right, var(--primary-blue), var(--primary-purple));
+      border-radius: 50px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      left: 0.35rem;
+    }
+
     html {
       scroll-behavior: smooth;
     }
@@ -864,17 +1407,22 @@
   <header>
     <div class="header-container">
       <a href="#" class="logo">
-        <div class="logo-icon overflow-hidden bg-white p-1">
-          <img src="/assets/logo.jpeg" alt="Numen Logo" class="w-full h-full object-cover rounded-xl">
-        </div>
+        <div
+				class="logo-icon inline-flex items-center justify-center w-16 h-16 rounded-3xl overflow-hidden shadow-lg shadow-indigo-200 mb-4 bg-white">
+
+				<img src="/assets/logo.jpeg" alt="Numen Logo" class="w-full h-full object-cover">
+
+			</div>
         <span class="logo-text">Numen</span>
       </a>
 
       <nav>
         <ul>
+          <li><a href="#industries">Industries</a></li>
+          <li><a href="#showcase">Product Demo</a></li>
           <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How It Works</a></li>
           <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li>
         </ul>
       </nav>
 
@@ -894,42 +1442,312 @@
     <div class="hero-container">
       <div class="hero-badge">
         <i class="fas fa-star"></i>
-        <span>Trusted by 5,000+ Businesses</span>
+        <span>Trusted by 5,000+ Service Businesses</span>
       </div>
 
       <h1>
-        Never Miss a Customer
-        <span class="gradient-text">Engagement Opportunity</span>
+        Run Your Entire Service Business
+        <span class="gradient-text">From One Platform</span>
       </h1>
 
       <p>
-        Automate customer reminders, greetings, and promotions through WhatsApp, SMS, and Email.<br>
-        Keep your customers engaged and coming back for more.
+        Appointments, automated reminders, invoices, and WhatsApp marketing in one place.<br>
+        Build relationships, reduce no-shows, and increase customer retention.
       </p>
 
       <div class="hero-buttons">
         <a href="register.html" class="btn btn-primary btn-hero">
-          Start Free Trial
+          Start 21-Day Free Trial
           <i class="fas fa-arrow-right"></i>
         </a>
-        <button class="btn btn-secondary btn-hero">
+        <a href="#showcase" class="btn btn-secondary btn-hero">
           Watch Demo
-        </button>
+        </a>
       </div>
 
       <div class="stats-card">
         <div class="stats-grid">
           <div class="stat-item">
-            <div class="stat-value">98%</div>
-            <div class="stat-label">Delivery Rate</div>
+            <div class="stat-value">98.5%</div>
+            <div class="stat-label">WhatsApp Delivery</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">2.5M+</div>
-            <div class="stat-label">Messages Sent</div>
+            <div class="stat-value">3.2M+</div>
+            <div class="stat-label">Messages Processed</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">45%</div>
-            <div class="stat-label">Avg. Engagement</div>
+            <div class="stat-value">4.8★</div>
+            <div class="stat-label">Average User Rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Industry Showcase Section -->
+  <section id="industries" class="industry-section">
+    <div class="section-header">
+      <h2 class="section-title">Built Specially for Your <span class="gradient-text">Industry</span></h2>
+      <p class="section-subtitle">
+        See how service centers, clinics, salons, and home services use Numen to digitize their operations.
+      </p>
+    </div>
+
+    <div class="industry-grid">
+      <!-- Car Service -->
+      <div class="industry-card feature-card">
+        <div class="industry-card-icon">
+          <i class="fas fa-car"></i>
+        </div>
+        <h3>Car Service & Wash Centers</h3>
+        <p>Send service due alerts based on vehicle mileage, coordinate bays, issue professional digital estimates, and request post-service feedback automatically.</p>
+      </div>
+
+      <!-- Dental Clinic & Doctors -->
+      <div class="industry-card feature-card">
+        <div class="industry-card-icon">
+          <i class="fas fa-user-md"></i>
+        </div>
+        <h3>Dental Clinics & Doctors</h3>
+        <p>Manage patient registration, schedule appointments, send WhatsApp slot confirmations, and issue pre-appointment instructions to minimize no-shows.</p>
+      </div>
+
+      <!-- Salons -->
+      <div class="industry-card feature-card">
+        <div class="industry-card-icon">
+          <i class="fas fa-spa"></i>
+        </div>
+        <h3>Salons & Beauty Parlors</h3>
+        <p>Provide 24/7 online booking page, assign stylists, send birthday greetings with seasonal discount codes, and keep chairs filled.</p>
+      </div>
+
+      <!-- Gyms -->
+      <div class="industry-card feature-card">
+        <div class="industry-card-icon">
+          <i class="fas fa-dumbbell"></i>
+        </div>
+        <h3>Gyms & Fitness Centers</h3>
+        <p>Automate membership expiration notifications, coordinate trainer schedules, send motivational greetings, and track member attendance seamlessly.</p>
+      </div>
+
+      <!-- Hospitals -->
+      <div class="industry-card feature-card">
+        <div class="industry-card-icon">
+          <i class="fas fa-hospital"></i>
+        </div>
+        <h3>Hospitals & Healthcare</h3>
+        <p>Enable online doctor booking, organize department shifts, notify emergency schedules, and request patient health check reminders.</p>
+      </div>
+
+      <!-- Home Services -->
+      <div class="industry-card feature-card">
+        <div class="industry-card-icon">
+          <i class="fas fa-tools"></i>
+        </div>
+        <h3>AC & RO Service Providers</h3>
+        <p>Schedule technician dispatches, auto-remind customers for periodic filter replacements, send PDF invoices on completion, and capture online payments.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Showcase Section -->
+  <section id="showcase" class="showcase-section">
+    <div class="section-header">
+      <h2 class="section-title">Explore the <span class="gradient-text">Interactive Platform</span></h2>
+      <p class="section-subtitle">
+        Click the tabs below to preview the modern and highly responsive user interface designed to run your business.
+      </p>
+    </div>
+
+    <div class="showcase-tabs">
+      <button class="showcase-tab active" onclick="switchShowcaseTab(event, 'dashboard')">Dashboard</button>
+      <button class="showcase-tab" onclick="switchShowcaseTab(event, 'customers')">Customer Management</button>
+      <button class="showcase-tab" onclick="switchShowcaseTab(event, 'invoices')">Invoices & Billing</button>
+      <button class="showcase-tab" onclick="switchShowcaseTab(event, 'appointments')">Appointments</button>
+      <button class="showcase-tab" onclick="switchShowcaseTab(event, 'reports')">Reports & Analytics</button>
+    </div>
+
+    <div class="mockup-container">
+      <div class="mockup-header">
+        <span class="mockup-dot red"></span>
+        <span class="mockup-dot yellow"></span>
+        <span class="mockup-dot green"></span>
+        <div class="mockup-address">https://app.reminderme.in/dashboard</div>
+      </div>
+      <div class="mockup-body">
+        <!-- Dashboard View -->
+        <div id="mockup-dashboard" class="mockup-view active" style="font-family: system-ui, sans-serif;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h4 style="margin:0; font-size: 1.25rem;">Dashboard Overview</h4>
+            <span style="background: rgba(37, 99, 235, 0.2); color: #60a5fa; font-size: 0.8rem; padding: 0.25rem 0.75rem; border-radius: 50px; font-weight: 700;">Live Metrics</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155;">
+              <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">Total Sales</p>
+              <h3 style="font-size: 1.75rem; color: #fff; margin:0;">₹1,84,500</h3>
+              <span style="color: #10b981; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-arrow-up"></i> +14.2%</span>
+            </div>
+            <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155;">
+              <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">Active Clients</p>
+              <h3 style="font-size: 1.75rem; color: #fff; margin:0;">1,420</h3>
+              <span style="color: #10b981; font-size: 0.75rem; font-weight: 600;"><i class="fas fa-arrow-up"></i> +8.1%</span>
+            </div>
+            <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155;">
+              <p style="color: #94a3b8; font-size: 0.8rem; margin-bottom: 0.5rem; text-transform: uppercase;">WhatsApp Sent</p>
+              <h3 style="font-size: 1.75rem; color: #fff; margin:0;">12,850</h3>
+              <span style="color: #60a5fa; font-size: 0.75rem; font-weight: 600;">99.2% Delivered</span>
+            </div>
+          </div>
+          <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155;">
+            <h5 style="margin: 0 0 1rem 0; font-size: 0.95rem; color: #fff;">Recent Activity</h5>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.85rem;">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+                <span>🚗 Car Service reminder sent to <strong>Ramesh Kumar</strong></span>
+                <span style="color: #10b981; font-weight: 600;">Delivered</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 0.5rem;">
+                <span>📅 Appointment booked by <strong>Dr. Priya (Dental Clinic)</strong></span>
+                <span style="color: #60a5fa; font-weight: 600;">Scheduled</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding-bottom: 0.25rem;">
+                <span>💵 Invoice #INV-8820 raised for <strong>Karan Johar</strong></span>
+                <span style="color: #fbbf24; font-weight: 600;">Paid</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer Management View -->
+        <div id="mockup-customers" class="mockup-view" style="font-family: system-ui, sans-serif;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h4 style="margin:0; font-size: 1.25rem;">Customer Management</h4>
+            <button style="background: #2563eb; border: none; color: #fff; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600;"><i class="fas fa-plus"></i> Add Customer</button>
+          </div>
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; color: #cbd5e1;">
+            <thead>
+              <tr style="border-bottom: 2px solid #334155; color: #94a3b8;">
+                <th style="padding: 0.75rem;">Name</th>
+                <th style="padding: 0.75rem;">Phone</th>
+                <th style="padding: 0.75rem;">Category</th>
+                <th style="padding: 0.75rem;">Last Visit</th>
+                <th style="padding: 0.75rem;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid #1e293b;">
+                <td style="padding: 0.75rem; font-weight: 600; color: #fff;">Amit Sharma</td>
+                <td style="padding: 0.75rem;">+91 98765 43210</td>
+                <td style="padding: 0.75rem;">Car Service</td>
+                <td style="padding: 0.75rem;">Yesterday</td>
+                <td style="padding: 0.75rem;"><span style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Active</span></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #1e293b;">
+                <td style="padding: 0.75rem; font-weight: 600; color: #fff;">Dr. Anjali Verma</td>
+                <td style="padding: 0.75rem;">+91 99887 76655</td>
+                <td style="padding: 0.75rem;">Dental Clinic</td>
+                <td style="padding: 0.75rem;">3 days ago</td>
+                <td style="padding: 0.75rem;"><span style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Active</span></td>
+              </tr>
+              <tr style="border-bottom: 1px solid #1e293b;">
+                <td style="padding: 0.75rem; font-weight: 600; color: #fff;">Sneha Reddy</td>
+                <td style="padding: 0.75rem;">+91 95551 22334</td>
+                <td style="padding: 0.75rem;">Salon</td>
+                <td style="padding: 0.75rem;">1 week ago</td>
+                <td style="padding: 0.75rem;"><span style="background: rgba(16, 185, 129, 0.2); color: #34d399; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem;">Active</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Invoices View -->
+        <div id="mockup-invoices" class="mockup-view" style="font-family: system-ui, sans-serif;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h4 style="margin:0; font-size: 1.25rem;">Invoice Generator</h4>
+            <span style="font-weight: 700; color: #60a5fa;">#INV-2026-042</span>
+          </div>
+          <div style="background: #1e293b; padding: 1.5rem; border-radius: 0.75rem; border: 1px solid #334155; font-size: 0.85rem;">
+            <div style="display:flex; justify-content: space-between; margin-bottom: 1rem;">
+              <div>
+                <strong>Billed To:</strong>
+                <p style="margin: 0.25rem 0 0 0; color: #94a3b8;">Amit Sharma (Car Service)</p>
+              </div>
+              <div style="text-align: right;">
+                <strong>Date:</strong>
+                <p style="margin: 0.25rem 0 0 0; color: #94a3b8;">13 Jun 2026</p>
+              </div>
+            </div>
+            <hr style="border: 0; border-top: 1px solid #334155; margin: 1rem 0;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Full Synthetic Engine Oil Change</span>
+              <span>₹2,499.00</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Oil Filter Replacement</span>
+              <span>₹450.00</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+              <span>Wheel Alignment & Balancing</span>
+              <span>₹850.00</span>
+            </div>
+            <hr style="border: 0; border-top: 1px solid #334155; margin: 1rem 0;">
+            <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1rem; color: #fff;">
+              <span>Total Bill (Incl. Tax)</span>
+              <span>₹3,799.00</span>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+              <button style="background: #22c55e; border: none; color: #fff; padding: 0.4rem 1rem; border-radius: 6px; cursor: pointer; font-weight: 600;"><i class="fab fa-whatsapp"></i> Send PDF Invoice</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Appointments View -->
+        <div id="mockup-appointments" class="mockup-view" style="font-family: system-ui, sans-serif;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h4 style="margin:0; font-size: 1.25rem;">Upcoming Appointments</h4>
+            <span style="font-weight: 600; font-size: 0.8rem; background: rgba(37,99,235,0.2); color:#60a5fa; padding: 0.25rem 0.5rem; border-radius: 4px;">Today's Schedule</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div style="background: #1e293b; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #3b82f6; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: #fff;">10:00 AM - Vikram Singh</strong>
+                <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: #94a3b8;">AC Repair & Maintenance Dispatch</p>
+              </div>
+              <span style="font-size: 0.8rem; background: rgba(59, 130, 246, 0.1); color: #60a5fa; padding: 0.25rem 0.5rem; border-radius: 4px;">Assigned</span>
+            </div>
+            <div style="background: #1e293b; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #10b981; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: #fff;">11:30 AM - Priya Sharma</strong>
+                <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: #94a3b8;">Hair Spa & Detailing Booking</p>
+              </div>
+              <span style="font-size: 0.8rem; background: rgba(16, 185, 129, 0.1); color: #34d399; padding: 0.25rem 0.5rem; border-radius: 4px;">Confirmed</span>
+            </div>
+            <div style="background: #1e293b; padding: 1rem; border-radius: 0.75rem; border-left: 4px solid #fbbf24; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="color: #fff;">02:00 PM - Amit Patel</strong>
+                <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: #94a3b8;">Personal Training Session (Gym)</p>
+              </div>
+              <span style="font-size: 0.8rem; background: rgba(251, 191, 36, 0.1); color: #fcd34d; padding: 0.25rem 0.5rem; border-radius: 4px;">Pending Confirmation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reports View -->
+        <div id="mockup-reports" class="mockup-view" style="font-family: system-ui, sans-serif;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h4 style="margin:0; font-size: 1.25rem;">Analytics & Campaign ROI</h4>
+            <span style="font-size: 0.8rem; background: rgba(239, 68, 68, 0.1); color: #f87171; padding: 0.25rem 0.5rem; border-radius: 4px;">Monthly Report</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+            <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155; text-align: center;">
+              <h3 style="font-size: 2rem; color: #10b981; margin:0 0 0.5rem 0;">8.4x</h3>
+              <strong style="font-size: 0.9rem; color: #fff;">Average Campaign ROI</strong>
+              <p style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: #94a3b8;">Revenue generated vs messaging costs</p>
+            </div>
+            <div style="background: #1e293b; padding: 1.25rem; border-radius: 0.75rem; border: 1px solid #334155; text-align: center;">
+              <h3 style="font-size: 2rem; color: #60a5fa; margin:0 0 0.5rem 0;">98.4%</h3>
+              <strong style="font-size: 0.9rem; color: #fff;">WhatsApp Open Rate</strong>
+              <p style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: #94a3b8;">High customer engagement metrics</p>
+            </div>
           </div>
         </div>
       </div>
@@ -944,7 +1762,7 @@
         <span class="gradient-text">Engage Your Customers</span>
       </h2>
       <p class="section-subtitle">
-        Powerful features designed to help you build stronger relationships with your customers
+        Automate tasks and maintain high engagement values with tools engineered for reliability.
       </p>
     </div>
 
@@ -953,96 +1771,194 @@
         <div class="feature-icon">
           <i class="fab fa-whatsapp"></i>
         </div>
-        <h3>WhatsApp Integration</h3>
-        <p>Send automated reminders directly through WhatsApp Business API</p>
+        <h3>WhatsApp Automation</h3>
+        <p>Send reminders, promotional offers, estimates, and invoices via official WhatsApp Business APIs.</p>
       </div>
 
       <div class="feature-card">
         <div class="feature-icon">
-          <i class="fas fa-mobile-alt"></i>
+          <i class="fas fa-magic"></i>
         </div>
-        <h3>SMS Messaging</h3>
-        <p>Reach customers instantly with reliable SMS notifications</p>
+        <h3>AI Assistant & Generators</h3>
+        <p>Create hyper-targeted campaign templates, birthday wishes, and reminder notifications in seconds.</p>
       </div>
 
       <div class="feature-card">
         <div class="feature-icon">
-          <i class="fas fa-envelope"></i>
+          <i class="fas fa-file-invoice-dollar"></i>
         </div>
-        <h3>Email Campaigns</h3>
-        <p>Professional email reminders and promotional content</p>
+        <h3>Digital Sales Invoices</h3>
+        <p>Generate clean digital bills, share PDFs, and collect payments directly through multiple payment modes.</p>
       </div>
 
       <div class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-users"></i>
         </div>
-        <h3>Customer Management</h3>
-        <p>Centralized database for all your customer interactions</p>
+        <h3>Customer Database</h3>
+        <p>Understand visiting frequencies, order summaries, preferences, and custom service intervals.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <h3>Slot Booking & Scheduling</h3>
+        <p>Avoid double-bookings, coordinate technician rosters, and auto-confirm scheduled appointments.</p>
       </div>
 
       <div class="feature-card">
         <div class="feature-icon">
           <i class="fas fa-chart-bar"></i>
         </div>
-        <h3>Analytics & Reports</h3>
-        <p>Track engagement and measure campaign performance</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">
-          <i class="fas fa-clock"></i>
-        </div>
-        <h3>Smart Scheduling</h3>
-        <p>Automate reminders based on custom triggers and timelines</p>
+        <h3>Advanced Reports</h3>
+        <p>Measure WhatsApp delivery percentages, customer repeat rates, invoice dues, and sales growth.</p>
       </div>
     </div>
   </section>
 
-  <!-- How It Works Section -->
-  <section id="how-it-works" class="how-it-works">
+  <!-- AI Section -->
+  <section id="ai-features" class="ai-section">
     <div class="section-header">
-      <h2 class="section-title">How It Works</h2>
+      <h2 class="section-title">Built-in <span class="gradient-text">AI Generation Engine</span></h2>
       <p class="section-subtitle">
-        Get started in minutes with our simple four-step process
+        Generate context-aware templates in multiple Indian and international languages instantly.
       </p>
     </div>
 
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-number">01</div>
-        <div class="step-icon">
-          <i class="fas fa-users"></i>
+    <div class="ai-grid">
+      <div class="ai-card feature-card">
+        <h3>AI Reminder Generator</h3>
+        <p>Draft tailored service alerts based on specific vehicle diagnostic errors, customer profiles, or dental pre-op instructions.</p>
+        <div class="ai-prompt">"Draft a service reminder for Amit Sharma. Car service overdue by 15 days."</div>
+        <div class="ai-output">
+          "Hi Amit, your Maruti Swift service was due on 30-May. Schedule your appointment today with Numen to avoid fuel mileage drop!"
         </div>
-        <h3>Import Your Customers</h3>
-        <p>Upload your customer database or integrate with your existing CRM system</p>
       </div>
 
-      <div class="step-card">
-        <div class="step-number">02</div>
-        <div class="step-icon">
-          <i class="fas fa-bullseye"></i>
+      <div class="ai-card feature-card">
+        <h3>AI Greeting Generator</h3>
+        <p>Produce delightful personal wishes, festive greetings, and milestone celebrations automatically.</p>
+        <div class="ai-prompt">"Write a warm Diwali greeting with a 10% grooming coupon."</div>
+        <div class="ai-output">
+          "May this Diwali bring light & joy! ✨ Enjoy a relaxing session at Spark Salons with 10% off. Code: FESTIVE10. Book now!"
         </div>
-        <h3>Create Campaigns</h3>
-        <p>Design automated reminder sequences, greetings, and promotional messages</p>
       </div>
 
-      <div class="step-card">
-        <div class="step-number">03</div>
-        <div class="step-icon">
-          <i class="fas fa-bolt"></i>
+      <div class="ai-card feature-card">
+        <h3>AI Promotion Generator</h3>
+        <p>Generate highly persuasive copy for weekend packages, monsoon service offers, or salon loyalty deals.</p>
+        <div class="ai-prompt">"Generate a rain-ready car wash promotional alert."</div>
+        <div class="ai-output">
+          "Monsoon is here! 🌧️ Protect your car's coat. Get our premium hydrophobic wax coating at ₹1,499. Slots filling fast!"
         </div>
-        <h3>Set Triggers</h3>
-        <p>Configure when and how messages are sent based on customer behavior</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WhatsApp Section -->
+  <section id="whatsapp-features" class="whatsapp-section">
+    <div class="section-header">
+      <h2 class="section-title">Fully Automated <span class="gradient-text">WhatsApp Alerts</span></h2>
+      <p class="section-subtitle">
+        Utilize high-conversion notification workflows that reach your clients where they are.
+      </p>
+    </div>
+
+    <div class="whatsapp-grid">
+      <!-- WhatsApp Reminder -->
+      <div class="whatsapp-preview-card feature-card">
+        <div>
+          <span class="whatsapp-badge"><i class="fab fa-whatsapp"></i> WhatsApp Reminders</span>
+          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.5rem;">Notify clients regarding scheduled check-ups, service routines, or subscription renewals.</p>
+        </div>
+        <div class="whatsapp-chat-container">
+          <div class="whatsapp-chat-bubble">
+            🔔 <strong>Reminder</strong><br>
+            Dear Amit, your car service is due. Tap below to book your bay.<br>
+            <span style="color: #2563eb; font-weight: 600;">[Book Appointment]</span>
+            <span class="time">10:00 AM</span>
+          </div>
+        </div>
       </div>
 
-      <div class="step-card">
-        <div class="step-number">04</div>
-        <div class="step-icon">
-          <i class="fas fa-chart-line"></i>
+      <!-- WhatsApp Promotion -->
+      <div class="whatsapp-preview-card feature-card">
+        <div>
+          <span class="whatsapp-badge"><i class="fab fa-whatsapp"></i> WhatsApp Promotions</span>
+          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.5rem;">Broadcast rich campaigns, discount vouchers, and festival updates to your segment list.</p>
         </div>
-        <h3>Track & Optimize</h3>
-        <p>Monitor engagement metrics and refine your messaging strategy</p>
+        <div class="whatsapp-chat-container">
+          <div class="whatsapp-chat-bubble">
+            🎉 <strong>Weekend Offer</strong><br>
+            Get flat 20% off on premium facial grooming this Saturday. Code: SPA20.<br>
+            <span style="color: #2563eb; font-weight: 600;">[Claim Discount]</span>
+            <span class="time">11:15 AM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- WhatsApp Invoice -->
+      <div class="whatsapp-preview-card feature-card">
+        <div>
+          <span class="whatsapp-badge"><i class="fab fa-whatsapp"></i> WhatsApp Invoices</span>
+          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.5rem;">Deliver PDF receipts and invoice tracking links immediately upon billing completion.</p>
+        </div>
+        <div class="whatsapp-chat-container">
+          <div class="whatsapp-chat-bubble">
+            🧾 <strong>Invoice Generated</strong><br>
+            Thanks for visiting! Your invoice #INV-4921 has been generated.<br>
+            Amount Paid: ₹3,799.00<br>
+            <span style="color: #2563eb; font-weight: 600;">[Download PDF]</span>
+            <span class="time">04:30 PM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer Journey Section -->
+  <section class="journey-section">
+    <div class="section-header">
+      <h2 class="section-title">The Customer <span class="gradient-text">Journey Workflow</span></h2>
+      <p class="section-subtitle">
+        How Numen converts raw customer entries into recurring bookings and revenue.
+      </p>
+    </div>
+
+    <div class="journey-flow">
+      <div class="journey-step">
+        <div class="journey-icon"><i class="fas fa-user-plus"></i></div>
+        <h3>Customer Added</h3>
+        <p>Client enters system via CSV import or check-in form.</p>
+      </div>
+      <div class="journey-arrow"><i class="fas fa-chevron-right"></i></div>
+
+      <div class="journey-step">
+        <div class="journey-icon"><i class="fas fa-comment-dots"></i></div>
+        <h3>Reminder Sent</h3>
+        <p>AI crafts & transmits WhatsApp service alerts automatically.</p>
+      </div>
+      <div class="journey-arrow"><i class="fas fa-chevron-right"></i></div>
+
+      <div class="journey-step">
+        <div class="journey-icon"><i class="fas fa-calendar-check"></i></div>
+        <h3>Slot Booked</h3>
+        <p>Customer taps booking link & schedules a convenient slot.</p>
+      </div>
+      <div class="journey-arrow"><i class="fas fa-chevron-right"></i></div>
+
+      <div class="journey-step">
+        <div class="journey-icon"><i class="fas fa-file-invoice"></i></div>
+        <h3>Invoice Raised</h3>
+        <p>Digital invoice is generated and pushed directly to chat.</p>
+      </div>
+      <div class="journey-arrow"><i class="fas fa-chevron-right"></i></div>
+
+      <div class="journey-step">
+        <div class="journey-icon"><i class="fas fa-hand-holding-usd"></i></div>
+        <h3>Payment Received</h3>
+        <p>Bill is cleared online and dashboard stats refresh instantly.</p>
       </div>
     </div>
   </section>
@@ -1050,66 +1966,264 @@
   <!-- Pricing Section -->
   <section id="pricing" class="pricing">
     <div class="section-header">
-      <h2 class="section-title">Simple, Transparent Pricing</h2>
+      <h2 class="section-title">Simple, Flat-rate <span class="gradient-text">Pricing</span></h2>
       <p class="section-subtitle">
-        Choose the perfect plan for your business. No hidden fees, cancel anytime.
+        Start with a 21-day trial. No credit card required. Upgrade, downgrade, or cancel anytime.
       </p>
     </div>
 
+    <div class="pricing-switcher">
+      <div class="pricing-toggle-container" onclick="toggleBillingPeriod(event)">
+        <div class="pricing-toggle-bg" id="billingBg"></div>
+        <div class="pricing-toggle-option active" data-period="monthly">Monthly</div>
+        <div class="pricing-toggle-option" data-period="quarterly">Quarterly (5% Off)</div>
+        <div class="pricing-toggle-option" data-period="half-yearly">Half-Year (10% Off)</div>
+        <div class="pricing-toggle-option" data-period="annual">Annual (20% Off)</div>
+      </div>
+    </div>
+
     <div class="pricing-grid">
-      <div class="pricing-card">
+      <!-- Starter Plan -->
+      <div class="pricing-card feature-card">
         <h3>Starter</h3>
-        <p class="pricing-description">Perfect for small businesses just getting started</p>
+        <p class="pricing-description">Perfect for small garages, clinics, or salons starting digital engagement.</p>
         <div class="price">
-          <span class="price-amount">$49</span>
+          <span class="price-amount" id="price-starter">₹399</span>
           <span class="price-period">/month</span>
         </div>
         <ul class="features-list">
-          <li><i class="fas fa-check-circle"></i> Up to 1,000 customers</li>
-          <li><i class="fas fa-check-circle"></i> 5,000 messages/month</li>
-          <li><i class="fas fa-check-circle"></i> WhatsApp + SMS + Email</li>
-          <li><i class="fas fa-check-circle"></i> Basic analytics</li>
-          <li><i class="fas fa-check-circle"></i> Email support</li>
+          <li><i class="fas fa-check-circle"></i> Up to 1,000 active clients</li>
+          <li><i class="fas fa-check-circle"></i> WhatsApp + SMS + Email alerts</li>
+          <li><i class="fas fa-check-circle"></i> Basic Invoice Generator</li>
+          <li><i class="fas fa-check-circle"></i> Standard Slot Booking Links</li>
+          <li><i class="fas fa-check-circle"></i> Email & Chat Support</li>
         </ul>
-        <a href="register.html" class="btn btn-pricing">Start Free Trial</a>
+        <a href="register.html" class="btn btn-pricing">Start 21-Day Free Trial</a>
       </div>
 
-      <div class="pricing-card featured">
+      <!-- Growth Plan (Featured) -->
+      <div class="pricing-card featured feature-card" style="border: 2px solid var(--primary-blue); box-shadow: 0 20px 45px rgba(37, 99, 235, 0.15);">
         <div class="popular-badge">Most Popular</div>
-        <h3>Professional</h3>
-        <p class="pricing-description">For growing businesses with advanced needs</p>
+        <h3>Growth</h3>
+        <p class="pricing-description">For expanding service hubs seeking high-conversion WhatsApp integration.</p>
         <div class="price">
-          <span class="price-amount">$149</span>
+          <span class="price-amount" id="price-growth">₹699</span>
           <span class="price-period">/month</span>
         </div>
         <ul class="features-list">
-          <li><i class="fas fa-check-circle"></i> Up to 10,000 customers</li>
-          <li><i class="fas fa-check-circle"></i> 50,000 messages/month</li>
-          <li><i class="fas fa-check-circle"></i> All messaging channels</li>
-          <li><i class="fas fa-check-circle"></i> Advanced analytics & reports</li>
-          <li><i class="fas fa-check-circle"></i> Priority support</li>
-          <li><i class="fas fa-check-circle"></i> Custom templates</li>
-          <li><i class="fas fa-check-circle"></i> API access</li>
+          <li><i class="fas fa-check-circle"></i> Up to 5,000 active clients</li>
+          <li><i class="fas fa-check-circle"></i> Priority WhatsApp delivery routes</li>
+          <li><i class="fas fa-check-circle"></i> Advanced AI template generators</li>
+          <li><i class="fas fa-check-circle"></i> Dynamic PDF invoice attachments</li>
+          <li><i class="fas fa-check-circle"></i> Custom multi-language content</li>
+          <li><i class="fas fa-check-circle"></i> 24/7 priority hotline support</li>
         </ul>
-        <a href="register.html" class="btn btn-pricing featured">Start Free Trial</a>
+        <a href="register.html" class="btn btn-pricing featured">Start 21-Day Free Trial</a>
       </div>
 
-      <div class="pricing-card">
-        <h3>Enterprise</h3>
-        <p class="pricing-description">Tailored solutions for large organizations</p>
+      <!-- Business Plan -->
+      <div class="pricing-card feature-card">
+        <h3>Business</h3>
+        <p class="pricing-description">For multi-location service hubs needing advanced analytics and scale.</p>
         <div class="price">
-          <span class="price-amount">Custom</span>
+          <span class="price-amount" id="price-business">₹1,299</span>
+          <span class="price-period">/month</span>
         </div>
         <ul class="features-list">
-          <li><i class="fas fa-check-circle"></i> Unlimited customers</li>
-          <li><i class="fas fa-check-circle"></i> Unlimited messages</li>
+          <li><i class="fas fa-check-circle"></i> Unlimited active clients</li>
+          <li><i class="fas fa-check-circle"></i> Multi-location dashboard access</li>
+          <li><i class="fas fa-check-circle"></i> Customized greeting workflows</li>
           <li><i class="fas fa-check-circle"></i> Dedicated account manager</li>
-          <li><i class="fas fa-check-circle"></i> Custom integrations</li>
-          <li><i class="fas fa-check-circle"></i> White-label options</li>
-          <li><i class="fas fa-check-circle"></i> SLA guarantee</li>
-          <li><i class="fas fa-check-circle"></i> 24/7 phone support</li>
+          <li><i class="fas fa-check-circle"></i> API webhook access</li>
+          <li><i class="fas fa-check-circle"></i> Premium analytics & reports</li>
         </ul>
-        <a href="register.html" class="btn btn-pricing">Contact Sales</a>
+        <a href="register.html" class="btn btn-pricing">Start 21-Day Free Trial</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section class="comparison-section">
+    <div class="section-header">
+      <h2 class="section-title">Why Choose <span class="gradient-text">Numen</span>?</h2>
+      <p class="section-subtitle">
+        See how we compare against outdated manual spreadsheets and generic messaging tools.
+      </p>
+    </div>
+
+    <div class="comparison-table-wrapper">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Feature / Capacity</th>
+            <th>Numen</th>
+            <th>Manual Sheets / Books</th>
+            <th>Other Alert APIs</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>WhatsApp PDF Invoices</strong></td>
+            <td><span class="comparison-badge comparison-yes"><i class="fas fa-check"></i> Yes</span></td>
+            <td><span class="comparison-badge comparison-no"><i class="fas fa-times"></i> No</span></td>
+            <td><span class="comparison-badge comparison-no"><i class="fas fa-times"></i> No</span></td>
+          </tr>
+          <tr>
+            <td><strong>AI Content Generator</strong></td>
+            <td><span class="comparison-badge comparison-yes"><i class="fas fa-check"></i> Yes</span></td>
+            <td><span class="comparison-badge comparison-no"><i class="fas fa-times"></i> No</span></td>
+            <td><span class="comparison-badge comparison-no"><i class="fas fa-times"></i> No</span></td>
+          </tr>
+          <tr>
+            <td><strong>Multi-Language Formats</strong></td>
+            <td><span class="comparison-badge comparison-yes"><i class="fas fa-check"></i> Yes</span></td>
+            <td><span class="comparison-badge comparison-no"><i class="fas fa-times"></i> No</span></td>
+            <td><span class="comparison-badge comparison-no"><i class="fas fa-times"></i> Limited</span></td>
+          </tr>
+          <tr>
+            <td><strong>Client Feedback Loops</strong></td>
+            <td><span class="comparison-badge comparison-yes"><i class="fas fa-check"></i> Yes</span></td>
+            <td><span class="comparison-badge comparison-no"><i class="fas fa-times"></i> No</span></td>
+            <td><span class="comparison-badge comparison-no"><i class="fas fa-times"></i> No</span></td>
+          </tr>
+          <tr>
+            <td><strong>Automated Follow-ups</strong></td>
+            <td><span class="comparison-badge comparison-yes"><i class="fas fa-check"></i> Yes</span></td>
+            <td><span class="comparison-badge comparison-no"><i class="fas fa-times"></i> Manual Only</span></td>
+            <td><span class="comparison-badge comparison-no"><i class="fas fa-times"></i> Code Required</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Trust Section -->
+  <section class="trust-section">
+    <div class="section-header">
+      <h2 class="section-title">Trusted by <span class="gradient-text">Industry Leaders</span></h2>
+      <p class="section-subtitle">
+        Join over 5,000+ businesses who rely on Numen daily for operations and messaging.
+      </p>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <p>"Our car wash business saw a 28% increase in repeat customers within the first month. The automated WhatsApp service reminders are absolute game-changers."</p>
+        <div class="testimonial-user">
+          <div class="testimonial-info">
+            <h4>Rajesh Kumar</h4>
+            <p>Owner, AutoGlide Service Hub</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <p>"We used to lose hours calling clients to confirm appointments. Now, Numen handles everything, and our patient no-show rate has dropped to near zero."</p>
+        <div class="testimonial-user">
+          <div class="testimonial-info">
+            <h4>Dr. Vikram Mehta</h4>
+            <p>Chief Dentist, DentalCare Clinic</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <div class="testimonial-stars">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <p>"The AI Promotion generator draft feature saves us hours of styling copy every festival season. Our bookings were full 2 weeks before Diwali!"</p>
+        <div class="testimonial-user">
+          <div class="testimonial-info">
+            <h4>Priya Nair</h4>
+            <p>Founder, Grace & Glow Salons</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-badges">
+      <div class="trust-badge-item">
+        <i class="fas fa-shield-alt"></i>
+        <h4>100% Secure & Private</h4>
+        <p>Your client databases and sales records are completely encrypted.</p>
+      </div>
+      <div class="trust-badge-item">
+        <i class="fas fa-database"></i>
+        <h4>Automated Daily Backups</h4>
+        <p>No risk of database corruption. Clean restoration backups ready.</p>
+      </div>
+      <div class="trust-badge-item">
+        <i class="fas fa-check-double"></i>
+        <h4>99.99% Network Uptime</h4>
+        <p>Official APIs ensure delivery of alerts and invoices instantly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="faq-section">
+    <div class="section-header">
+      <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
+      <p class="section-subtitle">
+        Everything you need to know about our trial periods, integrations, and setup capabilities.
+      </p>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(event)">How does the 21-day free trial work? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">You get unlimited, full access to all features under the Growth plan for 21 days. No credit card is required. You can upgrade to a paid plan at any time.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(event)">Do I need my own WhatsApp Business API? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">We handle the official WhatsApp Business setup for you. You don't need any complex engineering or approval processes—it works right out of the box.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(event)">Can I send PDF invoices via WhatsApp? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Yes, Numen automatically converts estimates and billing lists into modern PDF invoices and dispatches them straight to your client's WhatsApp.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(event)">Does the AI generate messages in Indian languages? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Yes, our AI Generator supports English, Hindi, Tamil, Telugu, Kannada, Bengali, Gujarati, Marathi, and multiple other regional languages.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(event)">Can I import my existing customer list? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Absolutely. You can upload any CSV or Excel sheet, and our intelligent parser will align names, numbers, and due dates immediately.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(event)">Are there any setup fees? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">No, there are no signup or configuration fees. The setup process is entirely guided and free.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(event)">Is my business data secure? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Security is our highest priority. All customer phone numbers, invoices, and transaction metrics are stored securely using database encryption. We run automated daily backups.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(event)">Can I cancel or change my plan anytime? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Yes, you can upgrade, downgrade, or cancel your active subscription directly from your settings dashboard with zero lock-in contracts.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(event)">What is the difference between plans? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Plans scale based on the number of active clients you manage. The Growth plan unlocks priority routes, advanced AI template generation, and multi-language support.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(event)">How do online booking links work? <i class="fas fa-chevron-down"></i></div>
+        <div class="faq-answer">Numen gives you a dedicated booking web page. Clients can view open slots, pick styling chairs or diagnostic slots, and receive auto-confirmation alerts on WhatsApp.</div>
       </div>
     </div>
   </section>
@@ -1118,21 +2232,18 @@
   <section class="cta">
     <div class="cta-container">
       <div class="cta-content">
-        <h2>Ready to Transform Your Customer Engagement?</h2>
+        <h2>Ready to Transform Your Service Business?</h2>
         <p>
-          Join thousands of businesses already using Numen to stay connected with their customers
+          Join thousands of salons, clinics, workshops, and gyms using Numen to scale operational efficiency.
         </p>
         <div class="cta-buttons">
           <a href="register.html" class="btn btn-white btn-cta">
-            Start Your Free Trial
+            Start Your 21-Day Free Trial
             <i class="fas fa-arrow-right"></i>
           </a>
-          <button class="btn btn-outline-white btn-cta">
-            Schedule a Demo
-          </button>
         </div>
         <p class="cta-note">
-          No credit card required • 14-day free trial • Cancel anytime
+          No credit card required • 21-day free trial • Cancel anytime
         </p>
       </div>
     </div>
@@ -1145,12 +2256,12 @@
         <div>
           <div class="footer-brand">
             <div class="footer-logo-icon">
-              <i class="fas fa-bell"></i>
+              <i class="fas fa-bell-slash"></i>
             </div>
             <span>Numen</span>
           </div>
           <p class="footer-description">
-            Automating customer engagement through smart reminders and messaging.
+            All-in-one business operating platform designed for service centers, salons, clinics, and service professionals.
           </p>
           <div class="footer-security">
             <i class="fas fa-shield-alt"></i>
@@ -1163,8 +2274,8 @@
           <ul class="footer-links">
             <li><a href="#features">Features</a></li>
             <li><a href="#pricing">Pricing</a></li>
-            <li><a href="#">Integrations</a></li>
-            <li><a href="#">API</a></li>
+            <li><a href="#industries">Industries</a></li>
+            <li><a href="#showcase">Product Demo</a></li>
           </ul>
         </div>
 
@@ -1183,7 +2294,6 @@
           <ul class="footer-links">
             <li><a href="#">Privacy Policy</a></li>
             <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">GDPR</a></li>
             <li><a href="#">Security</a></li>
           </ul>
         </div>
@@ -1195,14 +2305,89 @@
           <a href="#"><i class="fab fa-twitter"></i></a>
           <a href="#"><i class="fab fa-github"></i></a>
           <a href="#"><i class="fab fa-linkedin"></i></a>
-          <a href="#"><i class="fab fa-dribbble"></i></a>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- JavaScript for Scroll Animations -->
+  <!-- JavaScript for Interactive Components -->
   <script>
+    // FAQ Accordion Toggle
+    function toggleFaq(event) {
+      const item = event.currentTarget.parentElement;
+      const answer = item.querySelector('.faq-answer');
+      const isActive = item.classList.contains('active');
+
+      // Close all FAQs first
+      document.querySelectorAll('.faq-item').forEach(el => {
+        el.classList.remove('active');
+        el.querySelector('.faq-answer').style.display = 'none';
+      });
+
+      if (!isActive) {
+        item.classList.add('active');
+        answer.style.display = 'block';
+      }
+    }
+
+    // Product Showcase Interactive Tabs
+    function switchShowcaseTab(event, tabName) {
+      // Deactivate all tabs
+      document.querySelectorAll('.showcase-tab').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      // Activate clicked tab
+      event.currentTarget.classList.add('active');
+
+      // Hide all mockup views
+      document.querySelectorAll('.mockup-view').forEach(view => {
+        view.classList.remove('active');
+      });
+      // Show matching mockup view
+      const activeView = document.getElementById(`mockup-${tabName}`);
+      if (activeView) {
+        activeView.classList.add('active');
+      }
+
+      // Update mockup URL address bar text dynamically
+      const addressBar = document.querySelector('.mockup-address');
+      if (addressBar) {
+        addressBar.textContent = `https://app.reminderme.in/${tabName}`;
+      }
+    }
+
+    // Pricing billing cycle slider calculation
+    const pricingData = {
+      monthly: { starter: "₹399", growth: "₹699", business: "₹1,299" },
+      quarterly: { starter: "₹379", growth: "₹664", business: "₹1,234" },
+      'half-yearly': { starter: "₹359", growth: "₹629", business: "₹1,169" },
+      annual: { starter: "₹319", growth: "₹559", business: "₹1,039" }
+    };
+
+    function toggleBillingPeriod(event) {
+      const targetOption = event.target.closest('.pricing-toggle-option');
+      if (!targetOption) return;
+
+      const period = targetOption.getAttribute('data-period');
+      
+      // Update active toggle class
+      document.querySelectorAll('.pricing-toggle-option').forEach(opt => {
+        opt.classList.remove('active');
+      });
+      targetOption.classList.add('active');
+
+      // Move background slider
+      const bg = document.getElementById('billingBg');
+      const optionsArray = Array.from(document.querySelectorAll('.pricing-toggle-option'));
+      const index = optionsArray.indexOf(targetOption);
+      bg.style.left = `calc(${index * 25}% + 0.35rem)`;
+
+      // Update pricing text in DOM
+      document.getElementById('price-starter').textContent = pricingData[period].starter;
+      document.getElementById('price-growth').textContent = pricingData[period].growth;
+      document.getElementById('price-business').textContent = pricingData[period].business;
+    }
+
     // Intersection Observer for scroll animations
     const observerOptions = {
       threshold: 0.1,
@@ -1217,18 +2402,8 @@
       });
     }, observerOptions);
 
-    // Observe all feature cards
+    // Observe all feature/pricing/showcase cards
     document.querySelectorAll('.feature-card').forEach(card => {
-      observer.observe(card);
-    });
-
-    // Observe all step cards
-    document.querySelectorAll('.step-card').forEach(card => {
-      observer.observe(card);
-    });
-
-    // Observe all pricing cards
-    document.querySelectorAll('.pricing-card').forEach(card => {
       observer.observe(card);
     });
 
@@ -1247,30 +2422,32 @@
     });
 
     // Add parallax effect on scroll
-    let lastScrollY = window.scrollY;
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
       const hero = document.querySelector('.hero-container');
-
       if (hero && scrollY < 600) {
-        hero.style.transform = `translateY(${scrollY * 0.3}px)`;
-        hero.style.opacity = 1 - (scrollY / 800);
+        hero.style.transform = `translateY(${scrollY * 0.25}px)`;
+        hero.style.opacity = 1 - (scrollY / 850);
       }
-
-      lastScrollY = scrollY;
     });
 
-    // Pricing card hover effect
-    const pricingCards = document.querySelectorAll('.pricing-card:not(.featured)');
-    pricingCards.forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-10px)';
+    // Mobile Menu Toggle logic
+    const toggleBtn = document.querySelector('.mobile-menu-toggle');
+    const navUl = document.querySelector('nav ul');
+    if (toggleBtn && navUl) {
+      toggleBtn.addEventListener('click', () => {
+        const isVisible = navUl.style.display === 'flex';
+        navUl.style.display = isVisible ? 'none' : 'flex';
+        navUl.style.flexDirection = 'column';
+        navUl.style.position = 'absolute';
+        navUl.style.top = '70px';
+        navUl.style.left = '0';
+        navUl.style.right = '0';
+        navUl.style.background = '#fff';
+        navUl.style.padding = '1.5rem';
+        navUl.style.borderBottom = '1px solid var(--slate-200)';
       });
-
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0)';
-      });
-    });
+    }
   </script>
 </body>
 

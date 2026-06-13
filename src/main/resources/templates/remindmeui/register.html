@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
       --blue: #2563eb;
@@ -79,7 +80,7 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 520px;
+      max-width: 580px;
     }
 
     /* ---- LOGO ---- */
@@ -106,10 +107,8 @@
     .logo-name {
       font-size: 1.75rem;
       font-weight: 800;
-      background: var(--grad);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #6b7280;
+      /* Tailwind gray-500 */
       display: block;
       margin-bottom: .2rem;
     }
@@ -360,21 +359,7 @@
       transition: color .25s;
     }
 
-    .input-wrap i.ir {
-      position: absolute;
-      right: .85rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--slate-400);
-      font-size: .82rem;
-      cursor: pointer;
-      transition: color .25s;
-    }
-
-    .input-wrap i.ir:hover {
-      color: var(--slate-600);
-    }
-
+    .input-wrap select,
     .input-wrap input,
     .input-wrap textarea {
       width: 100%;
@@ -387,6 +372,28 @@
       font-family: 'Inter', sans-serif;
       transition: all .25s;
       outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .input-wrap select {
+      cursor: pointer;
+    }
+
+    .input-wrap select:disabled {
+      background: var(--slate-100);
+      color: var(--slate-500);
+      cursor: not-allowed;
+    }
+
+    .input-wrap .select-arrow {
+      position: absolute;
+      right: .85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--slate-400);
+      pointer-events: none;
+      font-size: .8rem;
     }
 
     .input-wrap textarea {
@@ -400,6 +407,7 @@
       color: var(--slate-400);
     }
 
+    .input-wrap select:focus,
     .input-wrap input:focus,
     .input-wrap textarea:focus {
       border-color: var(--blue);
@@ -407,16 +415,19 @@
       box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
     }
 
+    .input-wrap select:focus~i.il,
     .input-wrap input:focus~i.il {
       color: var(--blue);
     }
 
+    .field.valid .input-wrap select,
     .field.valid .input-wrap input,
     .field.valid .input-wrap textarea {
       border-color: var(--success);
       background: white;
     }
 
+    .field.invalid .input-wrap select,
     .field.invalid .input-wrap input,
     .field.invalid .input-wrap textarea {
       border-color: var(--error);
@@ -490,7 +501,7 @@
       gap: .7rem;
     }
 
-    @media(max-width:420px) {
+    @media(max-width:480px) {
       .field-row {
         grid-template-columns: 1fr;
       }
@@ -498,26 +509,26 @@
 
     /* ---- PLANS ---- */
     .plans-label {
-      font-size: .76rem;
+      font-size: .8rem;
       font-weight: 700;
       color: var(--slate-700);
-      margin-bottom: .55rem;
+      margin-bottom: .75rem;
       letter-spacing: .02em;
     }
 
     .plans-grid {
-      display: flex;
-      flex-direction: column;
-      gap: .55rem;
-      margin-bottom: 1rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .plan-card {
       border: 1.5px solid var(--slate-200);
-      border-radius: 13px;
-      padding: .85rem 1rem;
+      border-radius: 16px;
+      padding: 1.25rem;
       cursor: pointer;
-      transition: all .22s ease;
+      transition: all .25s ease;
       background: var(--slate-50);
       position: relative;
     }
@@ -525,12 +536,13 @@
     .plan-card:hover {
       border-color: #93c5fd;
       background: #eff6ff;
+      transform: translateY(-2px);
     }
 
     .plan-card.selected {
       border-color: var(--blue);
       background: #eff6ff;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1), 0 10px 25px rgba(37, 99, 235, 0.05);
     }
 
     .plan-top {
@@ -538,39 +550,41 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: .5rem;
+      margin-bottom: 0.75rem;
     }
 
     .plan-name-row {
       display: flex;
       align-items: center;
-      gap: .45rem;
+      gap: .5rem;
     }
 
     .plan-name {
-      font-size: .88rem;
-      font-weight: 700;
+      font-size: 1.05rem;
+      font-weight: 800;
       color: var(--dark);
     }
 
     .popular-pill {
       background: var(--grad);
       color: white;
-      font-size: .58rem;
+      font-size: .62rem;
       font-weight: 800;
-      padding: .18rem .5rem;
+      padding: .2rem .6rem;
       border-radius: 50px;
       letter-spacing: .05em;
     }
 
     .plan-desc {
-      font-size: .74rem;
+      font-size: .8rem;
       color: var(--slate-500);
-      margin-top: .22rem;
+      font-weight: 500;
+      margin-top: .15rem;
     }
 
     .plan-radio {
-      width: 17px;
-      height: 17px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       border: 2px solid var(--slate-300);
       display: flex;
@@ -578,7 +592,6 @@
       justify-content: center;
       flex-shrink: 0;
       transition: all .22s;
-      margin-top: 2px;
     }
 
     .plan-card.selected .plan-radio {
@@ -588,76 +601,49 @@
 
     .plan-card.selected .plan-radio::after {
       content: '';
-      width: 5px;
-      height: 5px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       background: white;
     }
 
+    .plan-price-row {
+      margin-bottom: 0.75rem;
+    }
+
+    .plan-price-amount {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--dark);
+    }
+
+    .plan-price-period {
+      font-size: 0.82rem;
+      color: var(--slate-500);
+    }
+
     /* feat chips */
     .feat-row {
-      display: flex;
-      gap: .75rem;
-      flex-wrap: wrap;
-      padding-top: .9rem;
-      margin-top: .9rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: .5rem;
+      padding-top: .75rem;
+      margin-top: .75rem;
       border-top: 1px solid var(--slate-200);
     }
 
     .feat-chip {
       display: flex;
       align-items: center;
-      gap: .3rem;
-      font-size: .7rem;
-      color: var(--slate-500);
+      gap: .4rem;
+      font-size: .75rem;
+      color: var(--slate-600);
+      font-weight: 500;
     }
 
     .feat-chip i {
-      color: var(--blue);
-      font-size: .62rem;
-    }
-
-    /* ---- PASSWORD STRENGTH ---- */
-    .pw-wrap {
-      margin-top: .55rem;
-    }
-
-    .pw-bar {
-      height: 3px;
-      background: var(--slate-200);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-bottom: .45rem;
-    }
-
-    .pw-fill {
-      height: 100%;
-      border-radius: 4px;
-      width: 0;
-      transition: width .35s ease, background .35s ease;
-    }
-
-    .pw-checks {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: .25rem;
-    }
-
-    .pw-check {
-      font-size: .7rem;
-      color: var(--slate-400);
-      display: flex;
-      align-items: center;
-      gap: .3rem;
-      transition: color .25s;
-    }
-
-    .pw-check i {
-      font-size: .6rem;
-    }
-
-    .pw-check.ok {
       color: var(--success);
+      font-size: .7rem;
     }
 
     /* ---- BUTTONS ---- */
@@ -733,93 +719,6 @@
 
     .spinner {
       animation: spin .7s linear infinite;
-    }
-
-    /* ---- CONFIRM REVIEW ---- */
-    .confirm-box {
-      background: var(--slate-50);
-      border: 1px solid var(--slate-200);
-      border-radius: 14px;
-      overflow: hidden;
-      margin-bottom: 1rem;
-    }
-
-    .confirm-sect {
-      font-size: .68rem;
-      font-weight: 800;
-      color: var(--blue);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-      padding: .65rem 1rem .35rem;
-      background: #eff6ff;
-      border-bottom: 1px solid #dbeafe;
-    }
-
-    .confirm-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: .6rem 1rem;
-      border-bottom: 1px solid var(--slate-100);
-    }
-
-    .confirm-row:last-child {
-      border-bottom: none;
-    }
-
-    .confirm-k {
-      font-size: .78rem;
-      color: var(--slate-500);
-    }
-
-    .confirm-v {
-      font-size: .78rem;
-      font-weight: 600;
-      color: var(--dark);
-      text-align: right;
-      max-width: 60%;
-      word-break: break-all;
-    }
-
-    .confirm-v.plan {
-      background: var(--grad);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-weight: 800;
-    }
-
-    .confirm-green {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 12px;
-      padding: .75rem 1rem;
-      display: flex;
-      align-items: flex-start;
-      gap: .55rem;
-      margin-bottom: 1rem;
-    }
-
-    .confirm-green i {
-      color: var(--success);
-      margin-top: 2px;
-      flex-shrink: 0;
-      font-size: .85rem;
-    }
-
-    .confirm-green p {
-      font-size: .8rem;
-      color: #15803d;
-      font-weight: 500;
-      line-height: 1.5;
-    }
-
-    .confirm-green p span {
-      display: block;
-      color: #16a34a;
-      font-size: .74rem;
-      font-weight: 400;
-      margin-top: .12rem;
     }
 
     /* ---- ERROR TOAST ---- */
@@ -963,6 +862,22 @@
     .signin-link a:hover {
       color: #1d4ed8;
     }
+
+    /* Free Trial Badge */
+    .trial-badge-banner {
+      background: #eff6ff;
+      border: 1.5px dashed var(--blue);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      color: var(--blue);
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
   </style>
 </head>
 
@@ -972,15 +887,18 @@
 
     <!-- Logo -->
     <div class="logo-section">
-      <div class="logo-mark"><i class="fas fa-bell"></i></div>
-      <span class="logo-name">Numen</span>
+      <div
+        class="logo-icon inline-flex items-center justify-center w-16 h-16 rounded-3xl overflow-hidden shadow-lg shadow-indigo-200 mb-4 bg-white">
+        <img src="/assets/logo.jpeg" alt="Numen Logo" class="w-full h-full object-cover">
+      </div>
+      <span class="logo-name ">Numen</span>
       <div class="logo-tagline">Never Miss a Customer Engagement Opportunity</div>
       <span class="trust-badge"><i class="fas fa-star"></i> Trusted by 5,000+ Businesses</span>
     </div>
 
     <!-- Badges -->
     <div class="badges-row">
-      <span class="badge-chip"><i class="fas fa-check"></i> 14-Day Free Trial</span>
+      <span class="badge-chip"><i class="fas fa-check"></i> 21-Day Free Trial</span>
       <span class="badge-chip"><i class="fas fa-lock"></i> Secure Registration</span>
       <span class="badge-chip"><i class="fas fa-credit-card"></i> No Credit Card</span>
     </div>
@@ -1006,7 +924,7 @@
         </div>
         <div class="step-item">
           <div class="step-dot future" id="dot3"><span id="d3">3</span></div>
-          <div class="step-label future" id="lbl3">Security</div>
+          <div class="step-label future" id="lbl3">Choose Plan</div>
         </div>
       </div>
 
@@ -1057,10 +975,10 @@
         </div>
       </div>
 
-      <!-- STEP 2: BUSINESS + PLAN -->
+      <!-- STEP 2: BUSINESS DETAILS -->
       <div class="step-panel" id="panel2">
         <div class="panel-title">Business Details</div>
-        <div class="panel-sub">Set up your business profile and choose a plan</div>
+        <div class="panel-sub">Tell us about your business profile</div>
         <div class="field-group">
 
           <div class="field" id="f-bizName">
@@ -1096,6 +1014,84 @@
             <div class="field-error">Business phone is required</div>
           </div>
 
+          <div class="field" id="f-bizCategory">
+            <label>Business Category</label>
+            <div class="input-wrap">
+              <i class="fas fa-tags il"></i>
+              <select id="businessCategory" required>
+                <option value="" disabled selected>Select Business Category</option>
+                <option value="Car Service Center">Car Service Center</option>
+                <option value="Bike Service Center">Bike Service Center</option>
+                <option value="Car Wash">Car Wash</option>
+                <option value="Salon">Salon</option>
+                <option value="Beauty Parlour">Beauty Parlour</option>
+                <option value="Spa">Spa</option>
+                <option value="Dental Clinic">Dental Clinic</option>
+                <option value="Medical Clinic">Medical Clinic</option>
+                <option value="Hospital">Hospital</option>
+                <option value="Gym">Gym</option>
+                <option value="Fitness Center">Fitness Center</option>
+                <option value="AC Service">AC Service</option>
+                <option value="RO Service">RO Service</option>
+                <option value="Electronics Service">Electronics Service</option>
+                <option value="Mobile Service">Mobile Service</option>
+                <option value="Computer Service">Computer Service</option>
+                <option value="Real Estate">Real Estate</option>
+                <option value="Education">Education</option>
+                <option value="Other">Other</option>
+              </select>
+              <i class="fas fa-chevron-down select-arrow"></i>
+              <i class="fas fa-check-circle status-icon ok"></i>
+              <i class="fas fa-exclamation-circle status-icon err"></i>
+            </div>
+            <div class="field-error">Please select a category</div>
+          </div>
+
+          <div class="field-row">
+            <div class="field" id="f-country">
+              <label>Country</label>
+              <div class="input-wrap">
+                <i class="fas fa-globe il"></i>
+                <select id="country" onchange="handleCountryChange()">
+                  <option value="India" selected>India</option>
+                  <option value="France">France</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="United States">United States</option>
+                  <option value="Zimbabwe">Zimbabwe</option>
+                </select>
+                <i class="fas fa-chevron-down select-arrow"></i>
+              </div>
+            </div>
+
+            <div class="field" id="f-currency">
+              <label>Currency</label>
+              <div class="input-wrap">
+                <i class="fas fa-money-bill-wave il"></i>
+                <select id="currency" disabled>
+                  <option value="INR ₹" selected>INR ₹</option>
+                  <option value="EUR €">EUR €</option>
+                  <option value="GBP £">GBP £</option>
+                  <option value="USD $">USD $</option>
+                </select>
+                <i class="fas fa-chevron-down select-arrow"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="field" id="f-language">
+            <label>Default Language</label>
+            <div class="input-wrap">
+              <i class="fas fa-language il"></i>
+              <select id="defaultLanguage">
+                <option value="English" selected>English</option>
+                <option value="Tamil">Tamil</option>
+                <option value="Hindi">Hindi</option>
+                <option value="French">French</option>
+              </select>
+              <i class="fas fa-chevron-down select-arrow"></i>
+            </div>
+          </div>
+
           <div class="field-row">
             <div class="field" id="f-gst">
               <label>GST Number <span class="opt">(optional)</span></label>
@@ -1113,49 +1109,6 @@
             </div>
           </div>
 
-          <!-- Plan -->
-          <div>
-            <div class="plans-label">Select Your Plan</div>
-            <div class="plans-grid">
-              <div class="plan-card" id="plan-starter" onclick="selectPlan('starter')">
-                <div class="plan-top">
-                  <div>
-                    <div class="plan-name-row"><span class="plan-name">Starter</span></div>
-                    <div class="plan-desc">Up to 500 customers · 1,000 messages/month</div>
-                  </div>
-                  <div class="plan-radio"></div>
-                </div>
-              </div>
-              <div class="plan-card selected" id="plan-professional" onclick="selectPlan('professional')">
-                <div class="plan-top">
-                  <div>
-                    <div class="plan-name-row">
-                      <span class="plan-name">Professional</span>
-                      <span class="popular-pill">POPULAR</span>
-                    </div>
-                    <div class="plan-desc">Up to 5,000 customers · 10,000 messages/month</div>
-                  </div>
-                  <div class="plan-radio"></div>
-                </div>
-              </div>
-              <div class="plan-card" id="plan-enterprise" onclick="selectPlan('enterprise')">
-                <div class="plan-top">
-                  <div>
-                    <div class="plan-name-row"><span class="plan-name">Enterprise</span></div>
-                    <div class="plan-desc">Unlimited customers · Unlimited messaging · Dedicated support</div>
-                  </div>
-                  <div class="plan-radio"></div>
-                </div>
-              </div>
-            </div>
-            <div class="feat-row">
-              <span class="feat-chip"><i class="fab fa-whatsapp"></i> WhatsApp Campaigns</span>
-              <span class="feat-chip"><i class="fas fa-sms"></i> SMS Automation</span>
-              <span class="feat-chip"><i class="fas fa-envelope"></i> Email Marketing</span>
-              <span class="feat-chip"><i class="fas fa-chart-bar"></i> Analytics</span>
-            </div>
-          </div>
-
         </div>
         <div class="btn-row">
           <button class="btn-back" onclick="goStep(1)"><i class="fas fa-arrow-left"></i> Back</button>
@@ -1163,74 +1116,112 @@
         </div>
       </div>
 
-      <!-- STEP 3: SECURITY + CONFIRM -->
+      <!-- STEP 3: PLAN SELECTION -->
       <div class="step-panel" id="panel3">
-        <div class="panel-title">Account Security</div>
-        <div class="panel-sub">Create a strong password to protect your account</div>
-        <div class="field-group">
+        <div class="panel-title">Choose Plan</div>
+        <div class="panel-sub">Select the plan that fits your business scaling needs</div>
 
-          <div class="field" id="f-pw">
-            <label>Password</label>
-            <div class="input-wrap">
-              <i class="fas fa-lock il"></i>
-              <input type="password" id="password" placeholder="Create a strong password" oninput="checkPw()">
-              <i class="fas fa-eye ir" id="togPw" onclick="togglePw('password','togPw')"></i>
-            </div>
-            <div class="field-error">Password must meet all requirements below</div>
-            <div class="pw-wrap">
-              <div class="pw-bar">
-                <div class="pw-fill" id="pwFill"></div>
-              </div>
-              <div class="pw-checks">
-                <span class="pw-check" id="c-upper"><i class="fas fa-circle"></i> One uppercase</span>
-                <span class="pw-check" id="c-lower"><i class="fas fa-circle"></i> One lowercase</span>
-                <span class="pw-check" id="c-num"><i class="fas fa-circle"></i> One number</span>
-                <span class="pw-check" id="c-len"><i class="fas fa-circle"></i> Min 8 characters</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="field" id="f-cpw">
-            <label>Confirm Password</label>
-            <div class="input-wrap">
-              <i class="fas fa-lock il"></i>
-              <input type="password" id="confirmPassword" placeholder="Repeat your password">
-              <i class="fas fa-eye ir" id="togCpw" onclick="togglePw('confirmPassword','togCpw')"></i>
-              <i class="fas fa-check-circle status-icon ok"></i>
-              <i class="fas fa-exclamation-circle status-icon err"></i>
-            </div>
-            <div class="field-error">Passwords do not match</div>
-          </div>
-
+        <!-- Trial Badge Banner -->
+        <div class="trial-badge-banner">
+          <span>🎉 Includes 21-Day Free Trial (No Credit Card Required)</span>
         </div>
 
-        <!-- Review -->
-        <div style="margin-top:1.4rem">
-          <div class="panel-title" style="font-size:.95rem;margin-bottom:.7rem">Review Your Details</div>
-          <div class="confirm-box">
-            <div class="confirm-sect">Personal</div>
-            <div class="confirm-row"><span class="confirm-k">Name</span><span class="confirm-v" id="rv-name">—</span>
+        <div class="field-group">
+          <!-- Plan Selection -->
+          <div>
+            <div class="plans-grid">
+
+              <!-- Starter Plan -->
+              <div class="plan-card" id="plan-starter" onclick="selectPlan('starter')">
+                <div class="plan-top">
+                  <div>
+                    <div class="plan-name-row"><span class="plan-name">Starter</span></div>
+                    <div class="plan-desc">Best for: Small Businesses</div>
+                  </div>
+                  <div class="plan-radio"></div>
+                </div>
+                <div class="plan-price-row">
+                  <span class="plan-price-amount">₹399</span><span class="plan-price-period">/month</span>
+                </div>
+                <div class="feat-row">
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> 500 Customers</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> Unlimited Reminders & Greetings</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> Unlimited Invoices & Appointments</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> 25 AI Template Generations</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> 50 Free WhatsApp Credits</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> Single User & Email Support</span>
+                </div>
+              </div>
+
+              <!-- Growth Plan -->
+              <div class="plan-card selected" id="plan-growth" onclick="selectPlan('growth')">
+                <div class="plan-top">
+                  <div>
+                    <div class="plan-name-row">
+                      <span class="plan-name">Growth</span>
+                      <span class="popular-pill">MOST POPULAR</span>
+                    </div>
+                    <div class="plan-desc">Best for: Growing Businesses</div>
+                  </div>
+                  <div class="plan-radio"></div>
+                </div>
+                <div class="plan-price-row">
+                  <span class="plan-price-amount">₹699</span><span class="plan-price-period">/month</span>
+                </div>
+                <div class="feat-row">
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> 2500 Customers</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> Everything in Starter</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> 75 AI Template Generations</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> 150 Free WhatsApp Credits</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> 3 Staff Users & Scheduling</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> Priority Live Support</span>
+                </div>
+              </div>
+
+              <!-- Business Plan -->
+              <div class="plan-card" id="plan-business" onclick="selectPlan('business')">
+                <div class="plan-top">
+                  <div>
+                    <div class="plan-name-row"><span class="plan-name">Business</span></div>
+                    <div class="plan-desc">Best for: Large Businesses</div>
+                  </div>
+                  <div class="plan-radio"></div>
+                </div>
+                <div class="plan-price-row">
+                  <span class="plan-price-amount">₹999</span><span class="plan-price-period">/month</span>
+                </div>
+                <div class="feat-row">
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> 5000 Customers</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> Everything in Growth</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> 200 AI Template Generations</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> 300 Free WhatsApp Credits</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> 10 Staff Users</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> Advanced Analytics & Custom
+                    Branding</span>
+                </div>
+              </div>
+
+              <!-- Enterprise Plan -->
+              <div class="plan-card" id="plan-enterprise" onclick="selectPlan('enterprise')">
+                <div class="plan-top">
+                  <div>
+                    <div class="plan-name-row"><span class="plan-name">Enterprise</span></div>
+                    <div class="plan-desc">For Multi-branch and Unlimited Scale</div>
+                  </div>
+                  <div class="plan-radio"></div>
+                </div>
+                <div class="plan-price-row">
+                  <span class="plan-price-amount">Contact Sales</span>
+                </div>
+                <div class="feat-row">
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> Unlimited Customers & Staff</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> Multi Branch Support</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> Dedicated REST API Webhooks</span>
+                  <span class="feat-chip"><i class="fas fa-check-circle"></i> Custom On-Premise Integrations</span>
+                </div>
+              </div>
+
             </div>
-            <div class="confirm-row"><span class="confirm-k">Email</span><span class="confirm-v" id="rv-email">—</span>
-            </div>
-            <div class="confirm-row"><span class="confirm-k">Mobile</span><span class="confirm-v"
-                id="rv-mobile">—</span></div>
-            <div class="confirm-sect">Business</div>
-            <div class="confirm-row"><span class="confirm-k">Business Name</span><span class="confirm-v"
-                id="rv-bizName">—</span></div>
-            <div class="confirm-row"><span class="confirm-k">Business Email</span><span class="confirm-v"
-                id="rv-bizEmail">—</span></div>
-            <div class="confirm-row"><span class="confirm-k">Business Phone</span><span class="confirm-v"
-                id="rv-bizPhone">—</span></div>
-            <div class="confirm-sect">Plan</div>
-            <div class="confirm-row"><span class="confirm-k">Selected Plan</span><span class="confirm-v plan"
-                id="rv-plan">—</span></div>
-          </div>
-          <div class="confirm-green">
-            <i class="fas fa-shield-alt"></i>
-            <p>Secure Setup Complete · Free Trial Activated
-              <span>14-day free trial starts today. No credit card needed.</span>
-            </p>
           </div>
         </div>
 
@@ -1246,7 +1237,7 @@
         <div class="btn-row">
           <button class="btn-back" onclick="goStep(2)"><i class="fas fa-arrow-left"></i> Back</button>
           <button class="btn-next" id="submitBtn" onclick="handleSubmit()">
-            <i class="fas fa-rocket"></i> Create Account
+            <i class="fas fa-rocket"></i> Create Free Account
           </button>
         </div>
       </div>
@@ -1256,8 +1247,8 @@
         <div class="success-check"><i class="fas fa-check"></i></div>
         <div class="success-title">Welcome to Numen!</div>
         <p class="success-sub">Your account has been created successfully.</p>
-        <p class="success-note">🎉 Your free trial has been activated.</p>
-        <p class="redirect-note">Redirecting to login<span id="rdots"></span></p>
+        <p class="success-note">🎉 Your 21-day free trial has been activated.</p>
+        <p class="redirect-note">Redirecting to Dashboard<span id="rdots"></span></p>
       </div>
 
       <div class="signin-link" id="signinLink">
@@ -1270,13 +1261,27 @@
 
   <script>
     let step = 1;
-    let selectedPlan = 'professional';
+    let selectedPlan = 'growth';
+
+    const countryCurrencyMap = {
+      "India": "INR ₹",
+      "France": "EUR €",
+      "United Kingdom": "GBP £",
+      "United States": "USD $",
+      "Zimbabwe": "USD $"
+    };
+
+    function handleCountryChange() {
+      const countryVal = document.getElementById('country').value;
+      const currencySelect = document.getElementById('currency');
+      const currencyVal = countryCurrencyMap[countryVal] || "USD $";
+      currencySelect.value = currencyVal;
+    }
 
     function goStep(n) {
       if (n > step && !validateStep(step)) return;
       step = n;
       document.querySelectorAll('.step-panel').forEach((p, i) => p.classList.toggle('active', i + 1 === n));
-      if (n === 3) fillReview();
       updateStepper(n);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -1318,16 +1323,8 @@
         ok = vf('businessName', v => v.length > 0, 'f-bizName') && ok;
         ok = vf('businessEmail', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), 'f-bizEmail') && ok;
         ok = vf('businessPhone', v => v.length >= 7, 'f-bizPhone') && ok;
+        ok = vf('businessCategory', v => v !== "", 'f-bizCategory') && ok;
         return ok;
-      }
-      if (s === 3) {
-        const pw = document.getElementById('password').value;
-        const cpw = document.getElementById('confirmPassword').value;
-        const pwOk = /[A-Z]/.test(pw) && /[a-z]/.test(pw) && /\d/.test(pw) && pw.length >= 8;
-        setF('f-pw', pwOk);
-        const cpwOk = pw === cpw && cpw.length > 0;
-        setF('f-cpw', cpwOk);
-        return pwOk && cpwOk;
       }
       return true;
     }
@@ -1351,6 +1348,7 @@
       businessName: { test: v => v.length > 0, fid: 'f-bizName' },
       businessEmail: { test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), fid: 'f-bizEmail' },
       businessPhone: { test: v => v.length >= 7, fid: 'f-bizPhone' },
+      businessCategory: { test: v => v !== "", fid: 'f-bizCategory' }
     };
     Object.keys(rules).forEach(id => {
       const el = document.getElementById(id);
@@ -1363,59 +1361,30 @@
           setF(r.fid, r.test(el.value.trim()));
       });
     });
-    document.getElementById('confirmPassword').addEventListener('input', () => {
-      const cpw = document.getElementById('confirmPassword').value;
-      const pw = document.getElementById('password').value;
-      if (cpw.length > 0) setF('f-cpw', pw === cpw);
+
+    // tel sanitization
+    document.getElementById('mobile').addEventListener('input', function () {
+      this.value = this.value.replace(/\D/g, '');
+    });
+    document.getElementById('businessPhone').addEventListener('input', function () {
+      this.value = this.value.replace(/[^\d\s\-\+\(\)]/g, '');
     });
 
     function selectPlan(p) {
       selectedPlan = p;
-      ['starter', 'professional', 'enterprise'].forEach(x => {
+      ['starter', 'growth', 'business', 'enterprise'].forEach(x => {
         document.getElementById('plan-' + x).classList.toggle('selected', x === p);
       });
     }
 
-    function checkPw() {
-      const pw = document.getElementById('password').value;
-      const u = /[A-Z]/.test(pw), l = /[a-z]/.test(pw), n = /\d/.test(pw), len = pw.length >= 8;
-      setChk('c-upper', u); setChk('c-lower', l); setChk('c-num', n); setChk('c-len', len);
-      const score = [u, l, n, len].filter(Boolean).length;
-      const fill = document.getElementById('pwFill');
-      fill.style.width = ['0%', '25%', '50%', '75%', '100%'][score];
-      fill.style.background = ['', '#ef4444', '#f59e0b', '#f59e0b', '#10b981'][score] || '#ef4444';
-    }
-    function setChk(id, ok) {
-      const el = document.getElementById(id);
-      el.classList.toggle('ok', ok);
-      el.querySelector('i').className = ok ? 'fas fa-check-circle' : 'fas fa-circle';
-    }
-
-    function togglePw(inp, ico) {
-      const el = document.getElementById(inp);
-      const ic = document.getElementById(ico);
-      el.type = el.type === 'password' ? 'text' : 'password';
-      ic.className = (el.type === 'text' ? 'fas fa-eye-slash' : 'fas fa-eye') + ' ir';
-    }
-
-    function fillReview() {
-      const pl = { starter: 'Starter', professional: 'Professional', enterprise: 'Enterprise' };
-      const s = (id) => document.getElementById(id).value || '—';
-      document.getElementById('rv-name').textContent = s('name');
-      document.getElementById('rv-email').textContent = s('email');
-      document.getElementById('rv-mobile').textContent = s('mobile');
-      document.getElementById('rv-bizName').textContent = s('businessName');
-      document.getElementById('rv-bizEmail').textContent = s('businessEmail');
-      document.getElementById('rv-bizPhone').textContent = s('businessPhone');
-      document.getElementById('rv-plan').textContent = pl[selectedPlan] || 'Professional';
-    }
-
     async function handleSubmit() {
-      if (!validateStep(3)) return;
       const btn = document.getElementById('submitBtn');
       btn.disabled = true;
       btn.innerHTML = '<i class="fas fa-circle-notch spinner"></i> Creating Account...';
       document.getElementById('apiError').classList.remove('show');
+
+      // Auto-generate backend compatible password satisfying complexity rules
+      const autoPassword = "NumenSetup2026@" + Math.floor(Math.random() * 900000 + 100000);
 
       const payload = {
         name: document.getElementById('name').value.trim(),
@@ -1426,7 +1395,12 @@
         businessPhone: document.getElementById('businessPhone').value.trim(),
         gstNumber: document.getElementById('gstNumber').value.trim(),
         address: document.getElementById('address').value.trim(),
-        password: document.getElementById('password').value,
+        password: autoPassword,
+        businessCategory: document.getElementById('businessCategory').value,
+        country: document.getElementById('country').value,
+        currency: document.getElementById('currency').value,
+        defaultLanguage: document.getElementById('defaultLanguage').value,
+        selectedPlan: selectedPlan
       };
 
       try {
@@ -1443,13 +1417,13 @@
           document.getElementById('apiErrorMsg').textContent = msg;
           document.getElementById('apiError').classList.add('show');
           btn.disabled = false;
-          btn.innerHTML = '<i class="fas fa-rocket"></i> Create Account';
+          btn.innerHTML = '<i class="fas fa-rocket"></i> Create Free Account';
         }
       } catch (e) {
         document.getElementById('apiErrorMsg').textContent = 'Network error. Please check your connection.';
         document.getElementById('apiError').classList.add('show');
         btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-rocket"></i> Create Account';
+        btn.innerHTML = '<i class="fas fa-rocket"></i> Create Free Account';
       }
     }
 
@@ -1462,7 +1436,9 @@
       let c = 0;
       const d = document.getElementById('rdots');
       setInterval(() => { d.textContent = '.'.repeat((c++ % 3) + 1); }, 500);
-      setTimeout(() => { window.location.href = 'login.html'; }, 3500);
+
+      // Redirect to Dashboard (home.html mapping in controllers)
+      setTimeout(() => { window.location.href = 'home.html'; }, 3000);
     }
 
     function launchConfetti() {
@@ -1477,6 +1453,36 @@
       }
       setTimeout(() => wrap.innerHTML = '', 5000);
     }
+
+
+    document.getElementById('email').addEventListener('blur', async function () {
+
+      const email = this.value.trim();
+      if (!email) return;
+
+      const res = await fetch(`/api/accounts/check-email?email=${encodeURIComponent(email)}`);
+      const exists = await res.json();
+
+      if (exists) {
+        document.getElementById('f-email').classList.add('invalid');
+        document.querySelector('#f-email .field-error').textContent =
+          'Email OR Mobile Number already registered';
+      }
+    });
+    document.getElementById('mobile').addEventListener('blur', async function () {
+
+      const mobile = this.value.trim();
+      if (mobile.length !== 10) return;
+
+      const res = await fetch(`/api/accounts/check-mobile?mobile=${mobile}`);
+      const exists = await res.json();
+
+      if (exists) {
+        document.getElementById('f-mobile').classList.add('invalid');
+        document.querySelector('#f-mobile .field-error').textContent =
+          'Email or Mobile Number already registered';
+      }
+    });
   </script>
 </body>
 
